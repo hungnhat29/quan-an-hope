@@ -17,3 +17,6 @@
 - Q-11 | 2026-11-14 | chặn: không | Chọn sai dụng cụ thì sao? Constitution §5.1 chỉ nói sai thứ tự → Lạc vị. Mặc định đang code: sai dụng cụ → Lạc vị (StoveTests.AC4_SaiDungCu_RaLacVi) | trạng thái: OPEN
 - Q-12 | 2026-11-14 | chặn: không | Làm tròn tiền? Mặc định đang code: giá và tip làm tròn riêng tới 1G, 0,5 lên (Payment.RoundMoney) | trạng thái: OPEN
 - Q-13 | 2026-11-14 | chặn: không | balance.json thêm storm_day, counter_slots, dish.max_tier, payment (số từ constitution). sim_balance.py vẫn viết sẵn các số này. Có cần ghi lịch sử constitution / sửa sim không? | trạng thái: OPEN
+- Q-14 | 2026-11-14 | chặn: không | Hết nguyên liệu và vé khi còn khách? Mặc định đang code: nút Đóng quán sớm, khách còn lại ra về, không trả không phạt (GameSession.CloseEarly) | trạng thái: OPEN
+- Q-15 | 2026-11-14 | chặn: không | Tiền đền bù làm ví âm được không? Mặc định đang code: được | trạng thái: OPEN
+- Q-16 | 2026-11-14 | chặn: không | Constitution §5.1: lấy đĩa rồi bấm vào bếp để múc (2 bước). Mặc định đang code: một nút Múc ra đĩa | trạng thái: OPEN

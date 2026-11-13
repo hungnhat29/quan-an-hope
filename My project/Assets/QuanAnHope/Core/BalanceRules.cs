@@ -72,6 +72,23 @@ namespace QuanAnHope.Core
             throw new InvalidOperationException("Balance khong co bang mon toi thieu");
         }
 
+        /// <summary>So no phai tra vao dau ngay nay; 0 neu khong den han (constitution muc 2).</summary>
+        public static int DebtDueOn(this Balance b, int day)
+        {
+            foreach (DebtEntry d in b.debts)
+                if (d.day == day) return d.amount;
+            return 0;
+        }
+
+        /// <summary>Khoan no gan nhat co ngay den han sau ngay nay; null neu khong con.</summary>
+        public static DebtEntry NextDebtAfter(this Balance b, int day)
+        {
+            DebtEntry next = null;
+            foreach (DebtEntry d in b.debts)
+                if (d.day > day && (next == null || d.day < next.day)) next = d;
+            return next;
+        }
+
         static int ByRound(int[] values, int round, string what)
         {
             if (round < 1 || round > values.Length)

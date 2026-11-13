@@ -13,7 +13,8 @@ namespace QuanAnHope.EditorTools
     /// <summary>Nhap balance/balance.json + balance/recipes.json thanh BalanceData.asset.</summary>
     public static class BalanceImporter
     {
-        public const string AssetPath = "Assets/QuanAnHope/Data/BalanceData.asset";
+        /// <summary>Nam trong Resources de game tai duoc luc chay (Resources.Load("BalanceData")).</summary>
+        public const string AssetPath = "Assets/QuanAnHope/Resources/BalanceData.asset";
 
         /// <summary>Thu muc balance/ o goc repo (ngoai project Unity).</summary>
         public static string BalanceFolder

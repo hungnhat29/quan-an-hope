@@ -3,7 +3,7 @@
 Thời gian: Chủ nhật 15/11 → Thứ bảy 21/11/2026 (7 ngày)
 Nguồn luật: `specs/constitution.md` v1.1. Nguồn số: `balance/balance.json`, `balance/recipes.json`. Hình ảnh: `docs/art-bible/` v1.0. Không có Blender trong sprint này.
 
-Cập nhật 14/11: theo constitution v1.1 (nguyên liệu, công thức, thời gian nấu, quầy chờ) và câu trả lời của bạn (nút Mở quán). **Ngày 1, 2, 3 đã xong** (108 test xanh) — xem `.dev-memory/acceptance/2026-11-14.md`.
+Cập nhật 14/11: theo constitution v1.1 (nguyên liệu, công thức, thời gian nấu, quầy chờ) và câu trả lời của bạn (nút Mở quán). **Cả 7 ngày đã xong ngày 14/11**: 120 test luật chơi + 3 kịch bản giả lập người chơi xanh, build Windows thành công. Chờ bạn chơi thử — xem `.dev-memory/acceptance/2026-11-14-sprint-1.md`.
 
 ## 1. Mục tiêu
 
@@ -159,23 +159,23 @@ Mỗi ngày theo cùng nhịp: **spec → test đỏ → code → test xanh → 
 - **Test đỏ → code:** `DishFormula` (b, thanh tỉ lệ, quay bậc), `RecipeLookup` (cặp chính + phụ → công thức), `Stove` (dụng cụ, thứ tự gồm đồ kho, sai → Lạc vị), `Counter` (quầy chờ 3 đĩa), `CustomerGenerator` (dải độ dễ tính), `RequiredTier`, `Payment`.
 - **Xong khi:** F-003 AC 1–4, 7, 8 và F-004 AC 1–7 xanh.
 
-### Ngày 4 — T4 18/11 — Vòng ngày, trả nợ, bot (F-005)
+### Ngày 4 — Vòng ngày, trả nợ, bot (F-005) — ĐÃ XONG ngày 14/11
 - **Spec:** F-005.
 - **Test đỏ → code:** `GameSession` (trạng thái: chuẩn bị → mở quán → phục vụ → kết thúc ngày → thu nợ → kết quả), `NaiveBot` chơi trên Core.
 - **Kiểm chéo:** chạy `sim_balance.py` (đặt `PYTHONUTF8=1`) và so tỉ lệ qua ngày 4 với bot C#.
 - **Xong khi:** F-005 AC 1–5 và F-004 AC 9 xanh. Từ đây toàn bộ luật vòng 1 đã chạy được không cần hình.
 
-### Ngày 5 — T5 19/11 — Thiết kế UI, HUD và Góc 2 (F-006, F-002 AC 7)
+### Ngày 5 — Thiết kế UI, HUD và Góc 2 (F-006, F-002 AC 7) — ĐÃ XONG ngày 14/11
 - **Thiết kế (1 giờ đầu):** phác 3 màn Góc 2, Góc 4, Góc 1 trên giấy hoặc ảnh chụp cảnh hiện có: vị trí nút, chỗ hiện bậc nguyên liệu (màu theo bậc), bảng tỉ lệ vòng, thanh tỉ lệ món. Lưu vào `docs/sprint-1/ui/`.
 - **Code:** tải Baloo 2 bản `.ttf` (Art Bible §13; gói hiện chỉ có `.woff2`) và tạo font TextMeshPro; bảng màu bậc từ `docs/art-bible/palette/palette.json`; tạo asmdef Game; `GameController` giữ `GameSession`; HUD; nút "Nhét vé" ở Góc 2, thùng hiện món kèm bậc, bảng tỉ lệ của vòng; ẩn bảng tỉ lệ máy gacha đồ ăn.
 - **Xong khi:** bấm Play, nhét vé, thấy nguyên liệu và số vé giảm.
 
-### Ngày 6 — T6 20/11 — Góc 4 và Góc 1 (F-003 AC 5–6, F-004 AC 8)
+### Ngày 6 — Góc 4 và Góc 1 (F-003 AC 5–6, F-004 AC 8) — ĐÃ XONG ngày 14/11
 - **Góc 4:** chọn nguyên liệu, giữ chuột để sơ chế (thanh tiến trình), chọn chảo hoặc nồi, bấm để cho từng thứ vào theo thứ tự (thanh thứ tự nấu), thanh tỉ lệ bậc món, chờ nấu, lấy đĩa và múc ra quầy chờ.
 - **Góc 1:** nút Mở quán; khách xuất hiện với % dễ tính, chọn món đã nấu, bấm chuông, hiện tiền và tip, đổi mặt vui/giận bằng `FaceSwap`.
 - **Xong khi:** hoàn thành một vòng gacha → nấu → phục vụ → nhận tiền trong lúc Play.
 
-### Ngày 7 — T7 21/11 — Khép vòng, chơi thử, nghiệm thu
+### Ngày 7 — Khép vòng, chơi thử, nghiệm thu — ĐÃ XONG ngày 14/11 (phần chơi thử bằng tay chờ bạn)
 - **Code:** màn kết thúc ngày (thu trong ngày, tiền hiện có, nợ sắp tới), chuyển ngày, màn thu nợ đầu ngày 4, màn "Qua vòng 1" và màn thua, nút chơi lại.
 - **Chơi thử:** chạy danh sách ở mục 7 ít nhất 3 lượt trọn vẹn; ghi lỗi, sửa lỗi chặn.
 - **Đóng sprint:** chạy toàn bộ test, build Windows thử, báo cáo nghiệm thu (ma trận AC → test → kết quả), ghi việc dời sang sprint 2.
@@ -189,9 +189,9 @@ Mỗi ngày theo cùng nhịp: **spec → test đỏ → code → test xanh → 
 | F-003 | `DishFormulaTests.cs`, `StoveTests.cs`, `KitchenTests.cs` | 1–4, 7, 8 | 5, 6 |
 | F-004 | `CustomerTests.cs`, `PaymentTests.cs`, `GameSessionTests.cs` | 1–7, 9 | 8 |
 | F-005 | `GameSessionTests.cs`, `NaiveBotTests.cs` | 1–5 | — |
-| F-006 | — | — | 1–4 |
+| F-006 | `Tests/PlayMode/PlaythroughTests.cs` (giả lập) | — | 1–4 |
 
-Tổng: 37 AC, trong đó 29 tự động và 8 kiểm tay. Đã xanh sau ngày 3: 23/29 AC tự động (F-001: 3, F-002: 7, F-003: 6, F-004: 7). Còn lại: F-004 AC 9 và F-005 AC 1–5 (ngày 4).
+Tổng: 37 AC, trong đó 29 tự động và 8 kiểm tay. Sau ngày 7: 29/29 AC tự động xanh; 8 AC kiểm tay đã qua giả lập PlayMode (bấm nút trên cảnh thật) và chờ bạn chơi thử xác nhận.
 
 ## 7. Danh sách chơi thử (ngày 7)
 
@@ -244,4 +244,7 @@ Mới phát sinh:
 | Q-10 | Nút Mở quán chưa có trong constitution. Có thêm vào §6 (bản 1.2) không? | Có, khi bạn đồng ý; hiện ghi trong spec F-004 |
 | Q-11 | Chọn sai dụng cụ (ví dụ nấu trứng chiên bằng nồi) thì sao? Constitution chỉ nói sai thứ tự → Lạc vị | Coi như sai công thức → Lạc vị |
 | Q-12 | Tiền làm tròn thế nào? Constitution không nói; mô phỏng giữ số lẻ | Giá và tip làm tròn riêng tới 1G gần nhất |
+| Q-14 | Hết nguyên liệu và vé khi còn khách thì sao? Constitution không nói | Có nút Đóng quán sớm: khách còn lại ra về, không trả, không phạt |
+| Q-15 | Tiền đền bù có làm ví âm được không? | Được |
+| Q-16 | Constitution §5.1 tả hai bước lấy đĩa rồi múc. Có cần tách không? | Gộp thành một nút Múc ra đĩa |
 | Q-13 | `balance.json` được thêm `storm_day`, `counter_slots`, `dish.max_tier`, `payment` (số lấy từ constitution §4.3, §5.1, §5.3, §6.5). Có cần ghi vào lịch sử constitution không? | Không; không có con số mới, chỉ chuyển số từ mô phỏng sang dữ liệu |

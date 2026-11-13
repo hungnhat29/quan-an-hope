@@ -1,0 +1,21 @@
+{
+  "name": "QuanAnHope.Game",
+  "rootNamespace": "QuanAnHope.Game",
+  "references": [
+    "QuanAnHope.Core",
+    "QuanAnHope.Data",
+    "BepNhanPham.Runtime",
+    "Unity.TextMeshPro",
+    "Unity.InputSystem",
+    "UnityEngine.UI"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

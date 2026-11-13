@@ -1,0 +1,22 @@
+{
+  "name": "QuanAnHope.Tests.PlayMode",
+  "rootNamespace": "QuanAnHope.PlayTests",
+  "references": [
+    "QuanAnHope.Core",
+    "QuanAnHope.Data",
+    "QuanAnHope.Game",
+    "BepNhanPham.Runtime",
+    "Unity.TextMeshPro",
+    "UnityEngine.UI",
+    "UnityEngine.TestRunner"
+  ],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": true,
+  "precompiledReferences": ["nunit.framework.dll"],
+  "autoReferenced": false,
+  "defineConstraints": ["UNITY_INCLUDE_TESTS"],
+  "versionDefines": [],
+  "noEngineReferences": false
+}
