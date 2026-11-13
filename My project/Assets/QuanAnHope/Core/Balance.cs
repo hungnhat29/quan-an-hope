@@ -14,6 +14,13 @@ namespace QuanAnHope.Core
         public int days;
         public int ticketsPerDay;
         public int bossBonus;
+
+        /// <summary>Ngay "sau mua": bang ti le va kich thuoc thung rieng (constitution muc 4.3).</summary>
+        public int stormDay;
+
+        /// <summary>So dia quay cho giu duoc (constitution muc 5.1).</summary>
+        public int counterSlots;
+        public PaymentRules payment = new PaymentRules();
         public DebtEntry[] debts = new DebtEntry[0];
         public RoundRange[] rounds = new RoundRange[0];
         public TierTable[] ingredientOdds = new TierTable[0];
@@ -64,6 +71,9 @@ namespace QuanAnHope.Core
         public float offset;
         public float blackoutPenalty;
 
+        /// <summary>Bac cao nhat nau ra duoc (Tuyet hao); Huyen thoai chi ra qua nuoc sot.</summary>
+        public int maxTier;
+
         /// <summary>He so gia theo bac mon 0..5.</summary>
         public float[] priceMult = new float[0];
 
@@ -104,6 +114,16 @@ namespace QuanAnHope.Core
     {
         public int minEasy;
         public int tier;
+    }
+
+    /// <summary>He so tra tien va tip (constitution muc 6.5).</summary>
+    [Serializable]
+    public class PaymentRules
+    {
+        public float tipBase;
+        public float tipPerTier;
+        public float underPayShare;
+        public float penaltyBaseShare;
     }
 
     [Serializable]

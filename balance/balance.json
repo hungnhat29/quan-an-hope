@@ -105,7 +105,8 @@
    "2": 70,
    "3": 85,
    "4": 100
-  }
+  },
+  "max_tier": 4
  },
  "customers": {
   "per_day": {
@@ -290,6 +291,14 @@
     "bt_t5": 1.0
    }
   }
+ },
+ "storm_day": 3,
+ "counter_slots": 3,
+ "payment": {
+  "tip_base": 0.3,
+  "tip_per_tier": 0.2,
+  "under_pay_share": 0.5,
+  "penalty_base_share": 0.3
  },
  "_note": "Nguon so lieu duy nhat cho can bang. Sua o day roi chay: python3 sim_balance.py"
 }

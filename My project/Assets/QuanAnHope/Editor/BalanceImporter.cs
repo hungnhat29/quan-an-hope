@@ -58,6 +58,17 @@ namespace QuanAnHope.EditorTools
             b.days = Int(root, "days");
             b.ticketsPerDay = Int(root, "tickets_per_day");
             b.bossBonus = Int(root, "boss_bonus");
+            b.stormDay = Int(root, "storm_day");
+            b.counterSlots = Int(root, "counter_slots");
+
+            JObject payment = Obj(root, "payment");
+            b.payment = new PaymentRules
+            {
+                tipBase = Float(payment, "tip_base"),
+                tipPerTier = Float(payment, "tip_per_tier"),
+                underPayShare = Float(payment, "under_pay_share"),
+                penaltyBaseShare = Float(payment, "penalty_base_share"),
+            };
 
             b.debts = NumberedKeys(Obj(root, "debt_days"))
                 .Select(p => new DebtEntry { day = p.Key, amount = (int)p.Value })
@@ -87,6 +98,7 @@ namespace QuanAnHope.EditorTools
                 weightPhu = Float(dish, "w_phu"),
                 offset = Float(dish, "offset"),
                 blackoutPenalty = Float(dish, "blackout_penalty"),
+                maxTier = Int(dish, "max_tier"),
                 priceMult = Arr(dish, "price_mult").Select(v => (float)v).ToArray(),
                 basePriceByRound = ByRound(Obj(dish, "base_price"), b.rounds),
             };

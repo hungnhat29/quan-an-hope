@@ -12,7 +12,7 @@ Cập nhật: 2026-11-14
 - docs/ROADMAP.md, docs/sprint-1/impl-plan.md — kế hoạch
 - My project/ — project Unity
   - Assets/BepNhanPham/ — cảnh 4 góc dựng bằng khối cơ bản: Editor/BuildNhaHang.cs (menu "Bep Nhan Pham > Dung nha hang"), Scripts/CameraRig.cs, FaceSwap.cs, Bob.cs, Shaders/ToonFlat|Outline|UnlitAlpha, Scenes/NhaHang.unity, Generated/ (bị tạo lại mỗi lần dựng)
-  - Assets/QuanAnHope/ — Core (Balance.cs, RecipeBook.cs; không UnityEngine), Data (BalanceData SO + .asset), Editor (BalanceImporter: menu "Quán Ăn Hope > Nhập balance.json"), Tests/EditMode. Game: chưa tạo
+  - Assets/QuanAnHope/ — Core (không UnityEngine): Balance.cs, RecipeBook.cs (dữ liệu); BalanceRules.cs (tra cứu theo ngày/vòng); Randomness.cs (IRandom, SeededRandom, TierRoller); Ingredients.cs (TicketWallet, IngredientGacha, IngredientStock); Cooking.cs (DishFormula, RecipeLookup, PrepStation, Stove, Counter); Customers.cs (CustomerGenerator, Payment), Data (BalanceData SO + .asset), Editor (BalanceImporter: menu "Quán Ăn Hope > Nhập balance.json"), Tests/EditMode. Game: chưa tạo
   - Assets/BepNhanPham/Editor/PreviewCapture.cs — chụp 4 góc; RebuildAll cho batchmode
 ## Quy ước
 - Namespace cũ: BepNhanPham. Code mới: QuanAnHope.*; Core không tham chiếu UnityEngine

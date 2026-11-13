@@ -3,7 +3,7 @@
 Thời gian: Chủ nhật 15/11 → Thứ bảy 21/11/2026 (7 ngày)
 Nguồn luật: `specs/constitution.md` v1.1. Nguồn số: `balance/balance.json`, `balance/recipes.json`. Hình ảnh: `docs/art-bible/` v1.0. Không có Blender trong sprint này.
 
-Cập nhật 14/11: theo constitution v1.1 (nguyên liệu, công thức, thời gian nấu, quầy chờ) và câu trả lời của bạn (nút Mở quán). **Ngày 1 đã xong** — xem `.dev-memory/acceptance/2026-11-14.md`.
+Cập nhật 14/11: theo constitution v1.1 (nguyên liệu, công thức, thời gian nấu, quầy chờ) và câu trả lời của bạn (nút Mở quán). **Ngày 1, 2, 3 đã xong** (108 test xanh) — xem `.dev-memory/acceptance/2026-11-14.md`.
 
 ## 1. Mục tiêu
 
@@ -149,12 +149,12 @@ Mỗi ngày theo cùng nhịp: **spec → test đỏ → code → test xanh → 
 - **Xong khi:** 3 AC của F-001 xanh; chạy được test bằng dòng lệnh.
 - **Kết quả:** 12/12 test xanh; repo `github.com/hungnhat29/quan-an-hope` (riêng tư); cảnh đã chỉnh theo Art Bible (hậu kỳ, camera, viền).
 
-### Ngày 2 — T2 16/11 — Vé và gacha nguyên liệu (F-002, phần logic)
+### Ngày 2 — Vé và gacha nguyên liệu (F-002, phần logic) — ĐÃ XONG ngày 14/11
 - **Spec:** F-002.
 - **Test đỏ → code:** `IRandom` + bản seed cố định; `TierTable.Roll`; `TicketWallet`; `IngredientGacha.Pull(day)` trả về hai thùng, mỗi thùng một loại nguyên liệu đã mở khóa, từng món có bậc riêng; kho nguyên liệu trong ngày.
 - **Xong khi:** AC 1–6 xanh, gồm hai test thống kê 100.000 lần.
 
-### Ngày 3 — T3 17/11 — Nấu ăn và khách (F-003, F-004, phần logic)
+### Ngày 3 — Nấu ăn và khách (F-003, F-004, phần logic) — ĐÃ XONG ngày 14/11
 - **Spec:** F-003, F-004.
 - **Test đỏ → code:** `DishFormula` (b, thanh tỉ lệ, quay bậc), `RecipeLookup` (cặp chính + phụ → công thức), `Stove` (dụng cụ, thứ tự gồm đồ kho, sai → Lạc vị), `Counter` (quầy chờ 3 đĩa), `CustomerGenerator` (dải độ dễ tính), `RequiredTier`, `Payment`.
 - **Xong khi:** F-003 AC 1–4, 7, 8 và F-004 AC 1–7 xanh.
@@ -186,12 +186,12 @@ Mỗi ngày theo cùng nhịp: **spec → test đỏ → code → test xanh → 
 | --- | --- | --- | --- |
 | F-001 | `BalanceDataTests.cs` | 1, 2, 3 | — |
 | F-002 | `TicketWalletTests.cs`, `IngredientGachaTests.cs`, `TierTableStatTests.cs` | 1–6, 8 | 7 |
-| F-003 | `DishFormulaTests.cs`, `StoveTests.cs`, `CounterTests.cs`, `RecipeLookupTests.cs` | 1–4, 7, 8 | 5, 6 |
-| F-004 | `CustomerGeneratorTests.cs`, `PaymentTests.cs`, `GameSessionTests.cs` | 1–7, 9 | 8 |
+| F-003 | `DishFormulaTests.cs`, `StoveTests.cs`, `KitchenTests.cs` | 1–4, 7, 8 | 5, 6 |
+| F-004 | `CustomerTests.cs`, `PaymentTests.cs`, `GameSessionTests.cs` | 1–7, 9 | 8 |
 | F-005 | `GameSessionTests.cs`, `NaiveBotTests.cs` | 1–5 | — |
 | F-006 | — | — | 1–4 |
 
-Tổng: 37 AC, trong đó 29 tự động và 8 kiểm tay. F-001: 3/3 đã xanh.
+Tổng: 37 AC, trong đó 29 tự động và 8 kiểm tay. Đã xanh sau ngày 3: 23/29 AC tự động (F-001: 3, F-002: 7, F-003: 6, F-004: 7). Còn lại: F-004 AC 9 và F-005 AC 1–5 (ngày 4).
 
 ## 7. Danh sách chơi thử (ngày 7)
 
@@ -242,3 +242,6 @@ Mới phát sinh:
 | --- | --- | --- |
 | Q-9 | Art Bible ghi "thanh 10 ô relic", constitution §7.1 ghi tối đa 8. Theo bên nào? | Constitution (8); sửa Góc 3 ở sprint 2 |
 | Q-10 | Nút Mở quán chưa có trong constitution. Có thêm vào §6 (bản 1.2) không? | Có, khi bạn đồng ý; hiện ghi trong spec F-004 |
+| Q-11 | Chọn sai dụng cụ (ví dụ nấu trứng chiên bằng nồi) thì sao? Constitution chỉ nói sai thứ tự → Lạc vị | Coi như sai công thức → Lạc vị |
+| Q-12 | Tiền làm tròn thế nào? Constitution không nói; mô phỏng giữ số lẻ | Giá và tip làm tròn riêng tới 1G gần nhất |
+| Q-13 | `balance.json` được thêm `storm_day`, `counter_slots`, `dish.max_tier`, `payment` (số lấy từ constitution §4.3, §5.1, §5.3, §6.5). Có cần ghi vào lịch sử constitution không? | Không; không có con số mới, chỉ chuyển số từ mô phỏng sang dữ liệu |

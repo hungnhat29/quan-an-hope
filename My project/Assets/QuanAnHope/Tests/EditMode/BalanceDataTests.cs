@@ -99,6 +99,18 @@ namespace QuanAnHope.Tests
         }
 
         [Test]
+        public void AC1_SoBoSungNgay2Va3() // constitution muc 4.3, 5.1, 5.3, 6.5
+        {
+            Assert.AreEqual(3, balance.stormDay);
+            Assert.AreEqual(3, balance.counterSlots);
+            Assert.AreEqual(4, balance.dish.maxTier);
+            Assert.AreEqual(0.3f, balance.payment.tipBase, 1e-6f);
+            Assert.AreEqual(0.2f, balance.payment.tipPerTier, 1e-6f);
+            Assert.AreEqual(0.5f, balance.payment.underPayShare, 1e-6f);
+            Assert.AreEqual(0.3f, balance.payment.penaltyBaseShare, 1e-6f);
+        }
+
+        [Test]
         public void AC1_Khach() // constitution muc 6.2, 6.3, 6.4
         {
             CollectionAssert.AreEqual(new[] { 6, 8, 5, 9 }, balance.customers.perDayByRound);

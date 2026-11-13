@@ -14,3 +14,6 @@
 - Q-8 | 2026-11-14 | chặn: sprint 5 | Lưu/tải game và hướng dẫn ngày 1 chưa có trong constitution — có thêm không? | trạng thái: OPEN
 - Q-9 | 2026-11-14 | chặn: sprint 2 (Góc 3) | Art Bible asset_list ghi "thanh 10 ô relic", constitution §7.1 ghi tối đa 8. Mặc định: constitution (8) | trạng thái: OPEN
 - Q-10 | 2026-11-14 | chặn: không | Nút Mở quán chưa có trong constitution; có thêm vào §6 (v1.2) không? Mặc định: ghi trong spec F-004, nguồn = tin nhắn 14/11 | trạng thái: OPEN
+- Q-11 | 2026-11-14 | chặn: không | Chọn sai dụng cụ thì sao? Constitution §5.1 chỉ nói sai thứ tự → Lạc vị. Mặc định đang code: sai dụng cụ → Lạc vị (StoveTests.AC4_SaiDungCu_RaLacVi) | trạng thái: OPEN
+- Q-12 | 2026-11-14 | chặn: không | Làm tròn tiền? Mặc định đang code: giá và tip làm tròn riêng tới 1G, 0,5 lên (Payment.RoundMoney) | trạng thái: OPEN
+- Q-13 | 2026-11-14 | chặn: không | balance.json thêm storm_day, counter_slots, dish.max_tier, payment (số từ constitution). sim_balance.py vẫn viết sẵn các số này. Có cần ghi lịch sử constitution / sửa sim không? | trạng thái: OPEN

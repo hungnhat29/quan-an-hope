@@ -16,6 +16,13 @@ MonoBehaviour:
     days: 22
     ticketsPerDay: 3
     bossBonus: 11500
+    stormDay: 3
+    counterSlots: 3
+    payment:
+      tipBase: 0.3
+      tipPerTier: 0.2
+      underPayShare: 0.5
+      penaltyBaseShare: 0.3
     debts:
     - day: 4
       amount: 400
@@ -61,6 +68,7 @@ MonoBehaviour:
       weightPhu: 0.4
       offset: 0.8
       blackoutPenalty: 0.3
+      maxTier: 4
       priceMult:
       - 0.2
       - 0.5
