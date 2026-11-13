@@ -2,16 +2,18 @@
 Cập nhật: 2026-11-14
 ## Stack
 - Unity 6000.6.9f1 (D:\Unity\6000.6.9f1), URP 17.6.0, Input System 1.20.1, uGUI 2.6.0 [nguồn: My project/Packages/manifest.json]
-- Chưa có: com.unity.test-framework, git repo, Blender
+- Test: com.unity.test-framework 1.8.0 (builtin), Newtonsoft 3.2.1. Git + LFS, remote github.com/hungnhat29/quan-an-hope. Chưa có: Blender, gh CLI
 ## Lệnh
 - test: xem STATE.md | mô phỏng: PYTHONUTF8=1 python balance/sim_balance.py
 ## Cấu trúc
-- constitution.md — nguồn sự thật cao nhất (v1.0)
+- specs/constitution.md — nguồn sự thật cao nhất (v1.1); specs/sprint-1/F-00x-*/ — spec, plan, tasks
+- docs/art-bible/ — Art Bible v1.0 (html, pdf, palette.json, asset_list.csv); docs/preview/ — ảnh chụp 4 góc
 - balance/ — balance.json, relics.json, sim_balance.py (giải nén từ QuanAnHope_constitution.zip ngày 14/11)
 - docs/ROADMAP.md, docs/sprint-1/impl-plan.md — kế hoạch
 - My project/ — project Unity
   - Assets/BepNhanPham/ — cảnh 4 góc dựng bằng khối cơ bản: Editor/BuildNhaHang.cs (menu "Bep Nhan Pham > Dung nha hang"), Scripts/CameraRig.cs, FaceSwap.cs, Bob.cs, Shaders/ToonFlat|Outline|UnlitAlpha, Scenes/NhaHang.unity, Generated/ (bị tạo lại mỗi lần dựng)
-  - Assets/QuanAnHope/ — (chưa tạo) Core / Data / Game / Editor / Tests theo impl plan mục 3
+  - Assets/QuanAnHope/ — Core (Balance.cs, RecipeBook.cs; không UnityEngine), Data (BalanceData SO + .asset), Editor (BalanceImporter: menu "Quán Ăn Hope > Nhập balance.json"), Tests/EditMode. Game: chưa tạo
+  - Assets/BepNhanPham/Editor/PreviewCapture.cs — chụp 4 góc; RebuildAll cho batchmode
 ## Quy ước
 - Namespace cũ: BepNhanPham. Code mới: QuanAnHope.*; Core không tham chiếu UnityEngine
 - Số liệu chỉ ở balance/*.json → ScriptableObject (Điều 2)

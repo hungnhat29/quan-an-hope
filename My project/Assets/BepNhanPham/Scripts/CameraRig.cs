@@ -5,18 +5,22 @@ namespace BepNhanPham
     /// <summary>
     /// Xoay camera giua 4 goc cua nha hang va bat/tat UI cua tung goc.
     /// Goi Next() / Prev() tu nut bam, hoac GoTo(0..3) tu code.
+    /// Art Bible muc 9: xoay 90 do trong 0,35 giay, ease-in-out.
     /// </summary>
     public class CameraRig : MonoBehaviour
     {
         public GameObject[] cornerUI;
-        public float turnSpeed = 6f;
+        public float turnDuration = 0.35f;
         public int index = 0;
-        float yaw;
+
+        float fromYaw, toYaw, currentYaw;
+        float progress = 1f;
 
         void Start()
         {
-            yaw = index * 90f;
-            transform.localRotation = Quaternion.Euler(0f, yaw, 0f);
+            currentYaw = fromYaw = toYaw = index * 90f;
+            progress = 1f;
+            transform.localRotation = Quaternion.Euler(0f, currentYaw, 0f);
             RefreshUI();
         }
 
@@ -27,7 +31,9 @@ namespace BepNhanPham
         {
             int delta = i - index;
             index = ((i % 4) + 4) % 4;
-            yaw += delta * 90f;
+            fromYaw = currentYaw;
+            toYaw += delta * 90f;
+            progress = 0f;
             RefreshUI();
         }
 
@@ -42,8 +48,11 @@ namespace BepNhanPham
 
         void Update()
         {
-            Quaternion target = Quaternion.Euler(0f, yaw, 0f);
-            transform.localRotation = Quaternion.Slerp(transform.localRotation, target, Mathf.Clamp01(Time.deltaTime * turnSpeed));
+            if (progress >= 1f) return;
+            progress = turnDuration <= 0f ? 1f : Mathf.Min(1f, progress + Time.deltaTime / turnDuration);
+            float eased = progress * progress * (3f - 2f * progress);
+            currentYaw = Mathf.Lerp(fromYaw, toYaw, eased);
+            transform.localRotation = Quaternion.Euler(0f, currentYaw, 0f);
         }
     }
 }

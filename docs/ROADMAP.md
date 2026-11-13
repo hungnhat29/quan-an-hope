@@ -1,6 +1,6 @@
 # Roadmap 10 tuần — Quán ăn của Hope
 
-Lập ngày 14/11/2026 · Nguồn: `constitution.md` v1.0, project Unity hiện có (`My project/Assets/BepNhanPham`), `balance/`.
+Lập ngày 14/11/2026 · Nguồn: `specs/constitution.md` v1.1, `docs/art-bible/` v1.0, project Unity hiện có (`My project/Assets/BepNhanPham`), `balance/`.
 Khung thời gian: 15/11/2026 → 23/01/2027. Tuần 1–8 là phần bắt buộc; tuần 9–10 là hoàn thiện và đệm.
 
 ## Nguyên tắc xếp lịch

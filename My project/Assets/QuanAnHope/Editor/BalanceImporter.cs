@@ -1,0 +1,234 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Newtonsoft.Json.Linq;
+using QuanAnHope.Core;
+using QuanAnHope.Data;
+using UnityEditor;
+using UnityEngine;
+
+namespace QuanAnHope.EditorTools
+{
+    /// <summary>Nhap balance/balance.json + balance/recipes.json thanh BalanceData.asset.</summary>
+    public static class BalanceImporter
+    {
+        public const string AssetPath = "Assets/QuanAnHope/Data/BalanceData.asset";
+
+        /// <summary>Thu muc balance/ o goc repo (ngoai project Unity).</summary>
+        public static string BalanceFolder
+        {
+            get { return Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "balance")); }
+        }
+
+        public static string BalanceJsonPath { get { return Path.Combine(BalanceFolder, "balance.json"); } }
+        public static string RecipesJsonPath { get { return Path.Combine(BalanceFolder, "recipes.json"); } }
+
+        [MenuItem("Quán Ăn Hope/Nhập balance.json")]
+        public static void Import()
+        {
+            ImportTo(AssetPath);
+            Debug.Log("Quán Ăn Hope: đã nhập balance.json + recipes.json vào " + AssetPath);
+        }
+
+        /// <summary>Doc hai file JSON va ghi (hoac ghi de) asset tai <paramref name="assetPath"/>.</summary>
+        public static BalanceData ImportTo(string assetPath)
+        {
+            Balance balance = ParseBalance(File.ReadAllText(BalanceJsonPath));
+            RecipeBook recipes = ParseRecipes(File.ReadAllText(RecipesJsonPath));
+
+            var asset = AssetDatabase.LoadAssetAtPath<BalanceData>(assetPath);
+            if (asset == null)
+            {
+                asset = ScriptableObject.CreateInstance<BalanceData>();
+                AssetDatabase.CreateAsset(asset, assetPath);
+            }
+            asset.balance = balance;
+            asset.recipes = recipes;
+            EditorUtility.SetDirty(asset);
+            AssetDatabase.SaveAssets();
+            return asset;
+        }
+
+        public static Balance ParseBalance(string json)
+        {
+            JObject root = JObject.Parse(json);
+            var b = new Balance();
+
+            b.days = Int(root, "days");
+            b.ticketsPerDay = Int(root, "tickets_per_day");
+            b.bossBonus = Int(root, "boss_bonus");
+
+            b.debts = NumberedKeys(Obj(root, "debt_days"))
+                .Select(p => new DebtEntry { day = p.Key, amount = (int)p.Value })
+                .ToArray();
+
+            b.rounds = NumberedKeys(Obj(root, "rounds"))
+                .Select(p => new RoundRange { round = p.Key, firstDay = (int)p.Value[0], lastDay = (int)p.Value[1] })
+                .ToArray();
+
+            b.ingredientOdds = Obj(root, "ingredient_odds").Properties()
+                .Select(p => new TierTable { id = p.Name, percents = p.Value.Select(v => (int)v).ToArray() })
+                .ToArray();
+
+            JObject crate = Obj(root, "crate_size");
+            b.crateSize = new CrateSize
+            {
+                phu = Int(crate, "phu"),
+                chinh = Int(crate, "chinh"),
+                phuStorm = Int(crate, "phu_storm"),
+                chinhStorm = Int(crate, "chinh_storm"),
+            };
+
+            JObject dish = Obj(root, "dish");
+            b.dish = new DishRules
+            {
+                weightChinh = Float(dish, "w_chinh"),
+                weightPhu = Float(dish, "w_phu"),
+                offset = Float(dish, "offset"),
+                blackoutPenalty = Float(dish, "blackout_penalty"),
+                priceMult = Arr(dish, "price_mult").Select(v => (float)v).ToArray(),
+                basePriceByRound = ByRound(Obj(dish, "base_price"), b.rounds),
+            };
+
+            JObject customers = Obj(root, "customers");
+            JObject perDay = Obj(customers, "per_day");
+            b.customers = new CustomerRules
+            {
+                perDayByRound = ByRound(perDay, b.rounds),
+                perDayDay14 = Int(perDay, "d14"),
+                easyBands = NumberedKeys(Obj(customers, "easy_bands"))
+                    .Select(p => new RoundBands
+                    {
+                        round = p.Key,
+                        bands = p.Value
+                            .Select(band => new EasyBand { min = (int)band[0], max = (int)band[1], share = (float)band[2] })
+                            .ToArray(),
+                    })
+                    .ToArray(),
+                requiredTier = Arr(customers, "required_tier")
+                    .Select(pair => new RequiredTier { minEasy = (int)pair[0], tier = (int)pair[1] })
+                    .ToArray(),
+                bossEasy = Int(customers, "boss_easy"),
+            };
+
+            JObject start = Obj(root, "start");
+            b.start = new StartRules
+            {
+                money = Int(start, "money"),
+                bonusTickets = Int(start, "bonus_tickets"),
+                relicShopFromDay = Int(start, "relic_shop_from_day"),
+            };
+
+            return b;
+        }
+
+        public static RecipeBook ParseRecipes(string json)
+        {
+            JObject root = JObject.Parse(json);
+            var book = new RecipeBook();
+
+            JObject timing = Obj(root, "timing");
+            book.timing = new CookTiming
+            {
+                stepSeconds = Float(timing, "step_s"),
+                plateSeconds = Float(timing, "plate_s"),
+                serveSeconds = Float(timing, "serve_s"),
+                warnFactor = Float(timing, "warn_factor"),
+                burnFactor = Float(timing, "burn_factor"),
+                burnFromRound = Int(timing, "burn_from_round"),
+            };
+
+            book.pantry = Arr(root, "pantry").Select(v => (string)v).ToArray();
+            book.bases = Arr(root, "bases").Select(v => (string)v).ToArray();
+
+            book.sides = Arr(root, "phu").Cast<JObject>()
+                .Select(o => new SideIngredient
+                {
+                    id = Str(o, "id"),
+                    name = Str(o, "name"),
+                    prep = Str(o, "prep"),
+                    prepSeconds = Float(o, "prep_s"),
+                    unlockRound = Int(o, "unlock_round"),
+                })
+                .ToArray();
+
+            book.mains = Arr(root, "chinh").Cast<JObject>()
+                .Select(o => new MainIngredient
+                {
+                    id = Str(o, "id"),
+                    name = Str(o, "name"),
+                    group = Str(o, "group"),
+                    prep = Str(o, "prep"),
+                    prepSeconds = Float(o, "prep_s"),
+                    tool = Str(o, "tool"),
+                    baseName = Str(o, "base"),
+                    cookSeconds = Float(o, "cook_s"),
+                    unlockRound = Int(o, "unlock_round"),
+                })
+                .ToArray();
+
+            book.recipes = Arr(root, "recipes").Cast<JObject>().Select(ParseRecipe).ToArray();
+            return book;
+        }
+
+        static Recipe ParseRecipe(JObject o)
+        {
+            string id = Str(o, "id");
+            string[] parts = id.Split(new[] { "__" }, StringSplitOptions.None);
+            if (parts.Length != 2)
+                throw new FormatException("recipes.json: id cong thuc phai co dang <chinh>__<phu>, gap: " + id);
+
+            return new Recipe
+            {
+                id = id,
+                name = Str(o, "name"),
+                group = Str(o, "group"),
+                mainId = parts[0],
+                sideId = parts[1],
+                tool = Str(o, "tool"),
+                baseName = Str(o, "base"),
+                steps = Arr(o, "steps").Select(v => (string)v).ToArray(),
+                cookSeconds = Float(o, "cook_s"),
+                warnSeconds = Float(o, "warn_s"),
+                burnSeconds = Float(o, "burn_s"),
+                unlockRound = Int(o, "unlock_round"),
+            };
+        }
+
+        // ---------- doc JSON: thieu truong thi bao loi ro rang, khong am tham dung 0 ----------
+
+        static JToken Need(JObject o, string key)
+        {
+            JToken t = o[key];
+            if (t == null || t.Type == JTokenType.Null)
+                throw new FormatException("Thieu truong \"" + key + "\" trong " + (string.IsNullOrEmpty(o.Path) ? "goc JSON" : o.Path));
+            return t;
+        }
+
+        static int Int(JObject o, string key) { return (int)Need(o, key); }
+        static float Float(JObject o, string key) { return (float)Need(o, key); }
+        static string Str(JObject o, string key) { return (string)Need(o, key); }
+        static JObject Obj(JObject o, string key) { return (JObject)Need(o, key); }
+        static JArray Arr(JObject o, string key) { return (JArray)Need(o, key); }
+
+        /// <summary>Cac khoa la so ("1", "4", ...) theo thu tu tang dan; bo qua khoa khong phai so (vd "d14").</summary>
+        static IEnumerable<KeyValuePair<int, JToken>> NumberedKeys(JObject o)
+        {
+            var list = new List<KeyValuePair<int, JToken>>();
+            foreach (JProperty p in o.Properties())
+            {
+                int n;
+                if (int.TryParse(p.Name, out n)) list.Add(new KeyValuePair<int, JToken>(n, p.Value));
+            }
+            list.Sort((a, c) => a.Key.CompareTo(c.Key));
+            return list;
+        }
+
+        /// <summary>Gia tri theo vong, chi so 0 = vong 1; moi vong trong <paramref name="rounds"/> phai co.</summary>
+        static int[] ByRound(JObject o, RoundRange[] rounds)
+        {
+            return rounds.Select(r => Int(o, r.round.ToString())).ToArray();
+        }
+    }
+}

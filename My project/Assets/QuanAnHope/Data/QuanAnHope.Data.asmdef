@@ -1,0 +1,14 @@
+{
+  "name": "QuanAnHope.Data",
+  "rootNamespace": "QuanAnHope.Data",
+  "references": ["QuanAnHope.Core"],
+  "includePlatforms": [],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

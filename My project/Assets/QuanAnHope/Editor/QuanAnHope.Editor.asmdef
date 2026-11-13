@@ -1,0 +1,14 @@
+{
+  "name": "QuanAnHope.Editor",
+  "rootNamespace": "QuanAnHope.EditorTools",
+  "references": ["QuanAnHope.Core", "QuanAnHope.Data"],
+  "includePlatforms": ["Editor"],
+  "excludePlatforms": [],
+  "allowUnsafeCode": false,
+  "overrideReferences": false,
+  "precompiledReferences": [],
+  "autoReferenced": true,
+  "defineConstraints": [],
+  "versionDefines": [],
+  "noEngineReferences": false
+}

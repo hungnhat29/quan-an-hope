@@ -1,9 +1,16 @@
 # QUESTIONS
-- Q-1 | 2026-11-14 | chặn: không | Link https://claude.ai/share/04faf079-... không đọc được bằng fetch (chỉ trả vỏ ứng dụng). Kế hoạch dựa trên constitution.md + project. Trong phiên đó có yêu cầu nào chưa vào constitution không? | trạng thái: OPEN
-- Q-2 | 2026-11-14 | chặn: lịch sprint 1 | Mỗi ngày có bao nhiêu giờ làm? Mặc định 3–4 giờ | trạng thái: OPEN
-- Q-3 | 2026-11-14 | chặn: spec F-002..F-005 | Năm điểm tự diễn giải ở constitution §9 (dòng 339–344) đã xác nhận chưa? Mặc định: đúng | trạng thái: OPEN
-- Q-4 | 2026-11-14 | chặn: F-002 hiển thị | Tên nguyên liệu và món vòng 1? Mặc định tạm: cà chua, thịt bò, "Bò sốt cà" | trạng thái: OPEN
-- Q-5 | 2026-11-14 | chặn: F-005 | Nhịp khách đến trong ngày; đồng hồ 9:00–21:00 có chạy ở vòng 1 không? Mặc định: lần lượt, chưa chạy đồng hồ | trạng thái: OPEN
-- Q-6 | 2026-11-14 | chặn: F-003 | Được nấu trước nhiều món rồi mới phục vụ không? Mặc định: được, bỏ cuối ngày | trạng thái: OPEN
-- Q-7 | 2026-11-14 | chặn: F-003 AC4 | "Thứ tự công thức" với 2 nguyên liệu là gì? Mặc định: đồ phụ trước, chính sau | trạng thái: OPEN
+- Q-1 | 2026-11-14 | chặn: không | Link claude.ai/share không đọc được bằng fetch. Có yêu cầu nào trong phiên đó chưa vào constitution không? | trạng thái: OPEN (constitution v1.1 và Art Bible có vẻ đã chứa nội dung phiên đó)
+- Q-2 | 2026-11-14 | Mỗi ngày có bao nhiêu giờ? | trạng thái: CLOSED
+  - Trả lời 2026-11-14: "tôi có 3-4 giờ để làm dự án này hoặc hơn"
+- Q-3 | 2026-11-14 | Các điểm tự diễn giải ở constitution §9 | trạng thái: CLOSED
+  - Trả lời 2026-11-14: "3 và 4 đã được cập nhật ở specs/constitution.md balance/" (v1.1)
+- Q-4 | 2026-11-14 | Tên nguyên liệu và món vòng 1 | trạng thái: CLOSED
+  - Trả lời 2026-11-14: như Q-3 → constitution §4.5, §5.8, balance/recipes.json
+- Q-5 | 2026-11-14 | Nhịp khách đến; đồng hồ 9:00–21:00 ở vòng 1 | trạng thái: CLOSED một phần
+  - Trả lời 2026-11-14: "ở vòng 1 khách đến lần lượt và cập nhật thêm là có nút mở quán ở góc 1, khi nào nhấn mở quán thì mới bắt đầu có khách"
+  - Đồng hồ: không trả lời → mặc định chưa chạy trong sprint 1
+- Q-6 | 2026-11-14 | Nấu trước nhiều món? | trạng thái: CLOSED — mặc định; constitution v1.1 §5.1: quầy chờ 3 đĩa
+- Q-7 | 2026-11-14 | Thứ tự công thức | trạng thái: CLOSED — constitution v1.1 §5.8
 - Q-8 | 2026-11-14 | chặn: sprint 5 | Lưu/tải game và hướng dẫn ngày 1 chưa có trong constitution — có thêm không? | trạng thái: OPEN
+- Q-9 | 2026-11-14 | chặn: sprint 2 (Góc 3) | Art Bible asset_list ghi "thanh 10 ô relic", constitution §7.1 ghi tối đa 8. Mặc định: constitution (8) | trạng thái: OPEN
+- Q-10 | 2026-11-14 | chặn: không | Nút Mở quán chưa có trong constitution; có thêm vào §6 (v1.2) không? Mặc định: ghi trong spec F-004, nguồn = tin nhắn 14/11 | trạng thái: OPEN

@@ -1,7 +1,9 @@
 # Impl plan — Sprint 1: Lát cắt dọc vòng 1
 
 Thời gian: Chủ nhật 15/11 → Thứ bảy 21/11/2026 (7 ngày)
-Nguồn luật: `constitution.md` v1.0. Nguồn số: `balance/balance.json`. Không có Blender trong sprint này.
+Nguồn luật: `specs/constitution.md` v1.1. Nguồn số: `balance/balance.json`, `balance/recipes.json`. Hình ảnh: `docs/art-bible/` v1.0. Không có Blender trong sprint này.
+
+Cập nhật 14/11: theo constitution v1.1 (nguyên liệu, công thức, thời gian nấu, quầy chờ) và câu trả lời của bạn (nút Mở quán). **Ngày 1 đã xong** — xem `.dev-memory/acceptance/2026-11-14.md`.
 
 ## 1. Mục tiêu
 
@@ -9,8 +11,8 @@ Cuối ngày 21/11, bạn mở Unity, bấm Play và chơi được trọn vòng
 
 1. Ngày 1 bắt đầu với 100G và 5 vé trắng.
 2. Sang Góc 2, nhét vé, nhận thùng đồ phụ và thùng nguyên liệu chính, thấy bậc từng món và bảng tỉ lệ của vòng.
-3. Sang Góc 4, sơ chế, cho vào nồi đúng thứ tự, thấy thanh tỉ lệ bậc món, múc ra đĩa.
-4. Sang Góc 1, thấy khách cùng độ dễ tính (%), bấm chuông phục vụ, nhận tiền và tip (hoặc bị trừ tiền).
+3. Sang Góc 4, sơ chế trên thớt, chọn chảo hoặc nồi, cho nguyên liệu và đồ kho vào đúng thứ tự công thức, thấy thanh tỉ lệ bậc món, múc ra đĩa; quầy chờ giữ được 3 đĩa.
+4. Sang Góc 1, bấm **Mở quán** thì khách mới bắt đầu đến, lần lượt từng người; thấy độ dễ tính (%), bấm chuông phục vụ, nhận tiền và tip (hoặc bị trừ tiền).
 5. Hết khách thì kết thúc ngày; chơi tiếp ngày 2 và ngày 3 (ngày 3 nguyên liệu ít và tệ hơn).
 6. Đầu ngày 4 bị thu 400G: đủ tiền thì thấy màn "Qua vòng 1", thiếu thì thấy màn thua.
 
@@ -24,7 +26,7 @@ Cuối ngày 21/11, bạn mở Unity, bấm Play và chơi được trọn vòng
 | Model và animation Blender | Chưa cài, chưa học | 7–8 |
 | Menu, cốt truyện, lưu game, âm thanh | Không cần để chơi thử lát cắt | 5–6 |
 
-Hệ quả cần biết: trong sprint 1, ngày 2–3 chưa có cửa hàng relic dù constitution mở từ ngày 2, và món nấu dư bị bỏ cuối ngày vì chưa có tủ lạnh.
+Hệ quả cần biết: trong sprint 1, ngày 2–3 chưa có cửa hàng relic dù constitution mở từ ngày 2, và đĩa còn trên quầy chờ bị bỏ cuối ngày vì chưa có tủ lạnh. Vòng 1 chỉ có 3 đồ phụ × 3 nguyên liệu chính (9 món), không có quá lửa (§5.9).
 
 ## 2. Hiện trạng
 
@@ -74,7 +76,7 @@ Mỗi tính năng có một `spec.md` viết đầy đủ Given/When/Then vào �
 ### F-001 Dữ liệu cân bằng
 | AC | Nội dung | Nguồn |
 | --- | --- | --- |
-| 1 | Nhập `balance.json` sinh ra `BalanceData.asset` với mọi trường sprint 1 dùng | Điều 2 |
+| 1 | Nhập `balance.json` và `recipes.json` sinh ra `BalanceData.asset` với mọi trường sprint 1 dùng (gồm nguyên liệu, công thức, thời gian nấu) | Điều 2, §4.5, §5.8 |
 | 2 | Giá trị trong asset bằng giá trị trong JSON | constitution dòng 7 |
 | 3 | Mỗi bảng tỉ lệ bậc có tổng 100 | §4.3 |
 
@@ -88,6 +90,7 @@ Mỗi tính năng có một `spec.md` viết đầy đủ Given/When/Then vào �
 | 5 | Quay 100.000 lần, mỗi bậc lệch không quá ±1 điểm phần trăm so với bảng (cả hai bảng) | Điều 3 |
 | 6 | Nguyên liệu chưa dùng bị bỏ cuối ngày | §4.2 |
 | 7 | Bảng tỉ lệ của vòng hiện tại hiện cho người chơi | Điều 4 |
+| 8 | Mỗi thùng chỉ có một loại nguyên liệu, chọn ngẫu nhiên đều trong các loại đã mở khóa ở vòng hiện tại (vòng 1: cà chua, hành tây, rau muống; trứng gà, thịt heo, đậu phụ); có test thống kê | §4.2, §4.5, Điều 3 |
 
 ### F-003 Nấu ăn
 | AC | Nội dung | Nguồn |
@@ -95,9 +98,11 @@ Mỗi tính năng có một `spec.md` viết đầy đủ Given/When/Then vào �
 | 1 | `b = 0,6 × bậc chính + 0,4 × bậc phụ + 0,8`; món ra bậc `floor(b)` hoặc `floor(b)+1`, xác suất lên bằng phần lẻ; kẹp trong [Lạc vị, Tuyệt hảo] | §5.3 |
 | 2 | Năm ví dụ trong bảng §5.3 cho đúng thanh tỉ lệ (1+1 → 20% Dở, 80% Bình thường; …; 4+2 → 100% Tuyệt hảo) | §5.3 |
 | 3 | Test thống kê 100.000 lần cho một cặp nguyên liệu, lệch không quá ±1 điểm | Điều 3 |
-| 4 | Cho sai thứ tự thì món ra Lạc vị | §5.1 |
+| 4 | Thứ tự cho vào lấy từ công thức, gồm cả đồ kho; cho sai thứ tự thì món ra Lạc vị | §5.1, §5.8 |
 | 5 | Thanh tỉ lệ bậc món hiện trên nồi khi đang nấu | Điều 4, §5.3 |
-| 6 | Trình tự thao tác: thớt (giữ để sơ chế) → nồi (cho đúng thứ tự, chờ) → đĩa (múc) | §5.1 |
+| 6 | Trình tự thao tác: thớt (giữ đủ thời gian sơ chế của nguyên liệu) → chọn dụng cụ (chảo/nồi) → cho từng thứ đúng thứ tự → chờ đủ thời gian nấu của món → đĩa (múc) | §5.1, §4.5, §5.8 |
+| 7 | Quầy chờ giữ tối đa 3 đĩa đã nấu, không giảm bậc; đầy thì không múc thêm được | §5.1 |
+| 8 | Tên, dụng cụ, đế món và thời gian nấu của món tra được từ cặp nguyên liệu chính + đồ phụ (9 món vòng 1) | §5.8 |
 
 ### F-004 Khách và trả tiền
 | AC | Nội dung | Nguồn |
@@ -110,12 +115,13 @@ Mỗi tính năng có một `spec.md` viết đầy đủ Given/When/Then vào �
 | 6 | `chênh ≤ −2`: không trả, quán bị trừ 30% giá gốc | §6.5 |
 | 7 | Giá = giá gốc vòng 1 (60G) × hệ số bậc món | §5.2 |
 | 8 | Độ dễ tính hiện bằng % trên khách; bấm chuông để phục vụ | §6.3, §5.1 |
+| 9 | Góc 1 có nút **Mở quán**; chưa bấm thì chưa có khách; sau khi bấm khách đến lần lượt, người sau vào khi người trước đã được phục vụ | Bạn trả lời ngày 14/11 |
 
 ### F-005 Vòng ngày và trả nợ
 | AC | Nội dung | Nguồn |
 | --- | --- | --- |
 | 1 | Bắt đầu với 100G | §3 |
-| 2 | Ngày kết thúc khi khách cuối đã được phục vụ; sang ngày mới thì cộng vé, bỏ nguyên liệu thừa | §2, §4.2 |
+| 2 | Ngày kết thúc khi khách cuối đã được phục vụ; sang ngày mới thì cộng vé, bỏ nguyên liệu thừa và đĩa còn trên quầy chờ | §2, §4.2, §5.1 |
 | 3 | Đầu ngày 4 thu 400G; không đủ thì thua | §2 |
 | 4 | Đủ tiền thì hiện màn "Qua vòng 1" (điểm dừng của lát cắt) | phạm vi sprint |
 | 5 | Bot "không đọc chỉ số" (chọn món giá to, phục vụ theo thứ tự) chạy 2.000 ván trên Core, tỉ lệ qua lần trả nợ 1 khớp mô phỏng (100%) | Điều 1 |
@@ -128,44 +134,45 @@ Mỗi tính năng có một `spec.md` viết đầy đủ Given/When/Then vào �
 | 3 | Bảng tỉ lệ máy gacha đồ ăn ở Góc 2 bị ẩn | Điều 4 |
 | 4 | Chơi được từ ngày 1 tới màn kết quả mà không cần mở Inspector | mục tiêu sprint |
 
-AC 5–6 của F-003, AC 8 của F-004 và toàn bộ F-006 kiểm bằng tay theo danh sách chơi thử ở mục 7.
+AC 7 của F-002, AC 5–6 của F-003, AC 8 của F-004 và toàn bộ F-006 kiểm bằng tay theo danh sách chơi thử ở mục 7.
 
 ## 5. Lịch 7 ngày
 
 Mỗi ngày theo cùng nhịp: **spec → test đỏ → code → test xanh → kiểm bằng mắt**. Ước lượng mỗi ngày 3–4 giờ; nếu bạn có ít hơn, xem mục 8.
 
-### Ngày 1 — CN 15/11 — Nền dự án và dữ liệu (F-001)
+### Ngày 1 — Nền dự án và dữ liệu (F-001) — ĐÃ XONG ngày 14/11
 - **Thiết lập:** `git init` ở thư mục gốc, `.gitignore` cho Unity (bỏ `Library/`, `Logs/`, `UserSettings/`, `Temp/`), Git LFS cho `.fbx .png .blend .wav`, commit đầu.
 - **Gói:** thêm `com.unity.test-framework` và `com.unity.nuget.newtonsoft-json` qua Package Manager.
-- **Khung:** tạo thư mục và 3 asmdef + asmdef test; một test rỗng chạy xanh để xác nhận đường ống.
+- **Khung:** tạo thư mục, asmdef Core / Data / Editor + asmdef test. (Asmdef Game dời sang ngày 5, khi có script đầu tiên.)
 - **Spec:** `specs/sprint-1/F-001-du-lieu/spec.md`.
 - **Test đỏ → code:** lớp `Balance` (Core), `BalanceData` (ScriptableObject), menu `Quán Ăn Hope > Nhập balance.json`.
 - **Xong khi:** 3 AC của F-001 xanh; chạy được test bằng dòng lệnh.
+- **Kết quả:** 12/12 test xanh; repo `github.com/hungnhat29/quan-an-hope` (riêng tư); cảnh đã chỉnh theo Art Bible (hậu kỳ, camera, viền).
 
 ### Ngày 2 — T2 16/11 — Vé và gacha nguyên liệu (F-002, phần logic)
 - **Spec:** F-002.
-- **Test đỏ → code:** `IRandom` + bản seed cố định; `TierTable.Roll`; `TicketWallet`; `IngredientGacha.Pull(day)` trả về danh sách nguyên liệu (loại, bậc); kho nguyên liệu trong ngày.
+- **Test đỏ → code:** `IRandom` + bản seed cố định; `TierTable.Roll`; `TicketWallet`; `IngredientGacha.Pull(day)` trả về hai thùng, mỗi thùng một loại nguyên liệu đã mở khóa, từng món có bậc riêng; kho nguyên liệu trong ngày.
 - **Xong khi:** AC 1–6 xanh, gồm hai test thống kê 100.000 lần.
 
 ### Ngày 3 — T3 17/11 — Nấu ăn và khách (F-003, F-004, phần logic)
 - **Spec:** F-003, F-004.
-- **Test đỏ → code:** `DishFormula` (b, thanh tỉ lệ, quay bậc), `Pot` (thứ tự nguyên liệu, sai → Lạc vị), `CustomerGenerator` (dải độ dễ tính), `RequiredTier`, `Payment`.
-- **Xong khi:** F-003 AC 1–4 và F-004 AC 1–7 xanh.
+- **Test đỏ → code:** `DishFormula` (b, thanh tỉ lệ, quay bậc), `RecipeLookup` (cặp chính + phụ → công thức), `Stove` (dụng cụ, thứ tự gồm đồ kho, sai → Lạc vị), `Counter` (quầy chờ 3 đĩa), `CustomerGenerator` (dải độ dễ tính), `RequiredTier`, `Payment`.
+- **Xong khi:** F-003 AC 1–4, 7, 8 và F-004 AC 1–7 xanh.
 
 ### Ngày 4 — T4 18/11 — Vòng ngày, trả nợ, bot (F-005)
 - **Spec:** F-005.
-- **Test đỏ → code:** `GameSession` (trạng thái: chuẩn bị → phục vụ → kết thúc ngày → thu nợ → kết quả), `NaiveBot` chơi trên Core.
+- **Test đỏ → code:** `GameSession` (trạng thái: chuẩn bị → mở quán → phục vụ → kết thúc ngày → thu nợ → kết quả), `NaiveBot` chơi trên Core.
 - **Kiểm chéo:** chạy `sim_balance.py` (đặt `PYTHONUTF8=1`) và so tỉ lệ qua ngày 4 với bot C#.
-- **Xong khi:** F-005 AC 1–5 xanh. Từ đây toàn bộ luật vòng 1 đã chạy được không cần hình.
+- **Xong khi:** F-005 AC 1–5 và F-004 AC 9 xanh. Từ đây toàn bộ luật vòng 1 đã chạy được không cần hình.
 
 ### Ngày 5 — T5 19/11 — Thiết kế UI, HUD và Góc 2 (F-006, F-002 AC 7)
 - **Thiết kế (1 giờ đầu):** phác 3 màn Góc 2, Góc 4, Góc 1 trên giấy hoặc ảnh chụp cảnh hiện có: vị trí nút, chỗ hiện bậc nguyên liệu (màu theo bậc), bảng tỉ lệ vòng, thanh tỉ lệ món. Lưu vào `docs/sprint-1/ui/`.
-- **Code:** nhập font tiếng Việt cho TextMeshPro; `GameController` giữ `GameSession`; HUD; nút "Nhét vé" ở Góc 2, thùng hiện món kèm bậc, bảng tỉ lệ của vòng; ẩn bảng tỉ lệ máy gacha đồ ăn.
+- **Code:** tải Baloo 2 bản `.ttf` (Art Bible §13; gói hiện chỉ có `.woff2`) và tạo font TextMeshPro; bảng màu bậc từ `docs/art-bible/palette/palette.json`; tạo asmdef Game; `GameController` giữ `GameSession`; HUD; nút "Nhét vé" ở Góc 2, thùng hiện món kèm bậc, bảng tỉ lệ của vòng; ẩn bảng tỉ lệ máy gacha đồ ăn.
 - **Xong khi:** bấm Play, nhét vé, thấy nguyên liệu và số vé giảm.
 
 ### Ngày 6 — T6 20/11 — Góc 4 và Góc 1 (F-003 AC 5–6, F-004 AC 8)
-- **Góc 4:** chọn nguyên liệu, giữ chuột để sơ chế (thanh tiến trình), bấm để cho vào nồi theo thứ tự, thanh tỉ lệ bậc món trên nồi, chờ nấu, lấy đĩa và múc.
-- **Góc 1:** khách xuất hiện với % dễ tính, chọn món đã nấu, bấm chuông, hiện tiền và tip, đổi mặt vui/giận bằng `FaceSwap`.
+- **Góc 4:** chọn nguyên liệu, giữ chuột để sơ chế (thanh tiến trình), chọn chảo hoặc nồi, bấm để cho từng thứ vào theo thứ tự (thanh thứ tự nấu), thanh tỉ lệ bậc món, chờ nấu, lấy đĩa và múc ra quầy chờ.
+- **Góc 1:** nút Mở quán; khách xuất hiện với % dễ tính, chọn món đã nấu, bấm chuông, hiện tiền và tip, đổi mặt vui/giận bằng `FaceSwap`.
 - **Xong khi:** hoàn thành một vòng gacha → nấu → phục vụ → nhận tiền trong lúc Play.
 
 ### Ngày 7 — T7 21/11 — Khép vòng, chơi thử, nghiệm thu
@@ -178,21 +185,21 @@ Mỗi ngày theo cùng nhịp: **spec → test đỏ → code → test xanh → 
 | Tính năng | File test dự kiến | AC tự động | AC kiểm tay |
 | --- | --- | --- | --- |
 | F-001 | `BalanceDataTests.cs` | 1, 2, 3 | — |
-| F-002 | `TicketWalletTests.cs`, `IngredientGachaTests.cs`, `TierTableStatTests.cs` | 1–6 | 7 |
-| F-003 | `DishFormulaTests.cs`, `PotTests.cs` | 1–4 | 5, 6 |
-| F-004 | `CustomerGeneratorTests.cs`, `PaymentTests.cs` | 1–7 | 8 |
+| F-002 | `TicketWalletTests.cs`, `IngredientGachaTests.cs`, `TierTableStatTests.cs` | 1–6, 8 | 7 |
+| F-003 | `DishFormulaTests.cs`, `StoveTests.cs`, `CounterTests.cs`, `RecipeLookupTests.cs` | 1–4, 7, 8 | 5, 6 |
+| F-004 | `CustomerGeneratorTests.cs`, `PaymentTests.cs`, `GameSessionTests.cs` | 1–7, 9 | 8 |
 | F-005 | `GameSessionTests.cs`, `NaiveBotTests.cs` | 1–5 | — |
 | F-006 | — | — | 1–4 |
 
-Tổng: 33 AC, trong đó 25 tự động và 8 kiểm tay.
+Tổng: 37 AC, trong đó 29 tự động và 8 kiểm tay. F-001: 3/3 đã xanh.
 
 ## 7. Danh sách chơi thử (ngày 7)
 
 1. Play: HUD ghi Ngày 1, 100G, nợ 400G, 5 vé.
-2. Góc 2: nhét 1 vé → 5 đồ phụ + 3 chính, vé còn 4; bảng tỉ lệ ghi 25/57/15/3/0/0.
-3. Góc 4: nấu chính bậc 1 + phụ bậc 1 → thanh ghi 20% Dở, 80% Bình thường.
+2. Góc 2: nhét 1 vé → một thùng 5 đồ phụ cùng loại + một thùng 3 nguyên liệu chính cùng loại, vé còn 4; bảng tỉ lệ ghi 25/57/15/3/0/0.
+3. Góc 4: nấu chính bậc 1 + phụ bậc 1 đúng thứ tự công thức → thanh ghi 20% Dở, 80% Bình thường; tên món đúng (ví dụ Trứng chiên cà chua).
 4. Góc 4: cố ý cho sai thứ tự → Lạc vị.
-5. Góc 1: phục vụ khách ≥80% món Dở → được trả đủ và có tip.
+5. Góc 1: chưa bấm Mở quán thì không có khách; bấm rồi khách đầu tiên vào. Phục vụ khách ≥80% món Dở → được trả đủ và có tip.
 6. Góc 1: phục vụ khách 35–59% món Dở → không trả, tiền bị trừ 18G.
 7. Phục vụ đủ 6 khách → màn kết thúc ngày; sang ngày 2 có thêm 3 vé cộng với vé thừa; nguyên liệu thừa biến mất.
 8. Ngày 3: mỗi lượt chỉ 3 đồ phụ + 2 chính; bảng tỉ lệ ghi 50/42/8/0/0/0.
@@ -210,15 +217,28 @@ Tổng: 33 AC, trong đó 25 tự động và 8 kiểm tay.
 | Mỗi ngày chỉ có 1–2 giờ | Giữ ngày 1–4 (toàn bộ logic + test), dồn ngày 5–7 sang đầu sprint 2; mục tiêu "chơi thử được" trễ khoảng 3–4 ngày |
 | `sim_balance.py` lỗi mã hoá trên Windows | Chạy với `PYTHONUTF8=1` |
 
-## 9. Câu hỏi cần bạn trả lời trước ngày làm tương ứng
+## 9. Câu hỏi
 
-Chi tiết ở `.dev-memory/QUESTIONS.md`. Mỗi câu có phương án mặc định; nếu bạn không trả lời, mình dùng mặc định và ghi rõ trong spec.
+Đã trả lời ngày 14/11:
 
-| # | Câu hỏi | Mặc định | Cần trước |
-| --- | --- | --- | --- |
-| Q-2 | Mỗi ngày bạn có bao nhiêu giờ? | 3–4 giờ | Ngày 1 |
-| Q-3 | Năm điểm tự diễn giải ở constitution §9 đã được bạn xác nhận chưa? | Coi như đúng | Ngày 2 |
-| Q-4 | Tên nguyên liệu và món cho vòng 1? | Tên tạm theo cảnh hiện có: cà chua (phụ), thịt bò (chính), món "Bò sốt cà" | Ngày 2 |
-| Q-5 | Khách đến theo nhịp nào trong ngày, và đồng hồ 9:00–21:00 có chạy ở vòng 1 không? | Khách đến lần lượt, người sau vào khi người trước xong; đồng hồ chưa chạy trong sprint 1 | Ngày 4 |
-| Q-6 | Có được nấu trước nhiều món rồi mới phục vụ không? | Được; món nằm ở quầy, bỏ cuối ngày | Ngày 3 |
-| Q-7 | "Thứ tự công thức" là gì với công thức 2 nguyên liệu? | Đồ phụ trước, nguyên liệu chính sau (theo ảnh xem trước Góc 4) | Ngày 3 |
+| # | Câu hỏi | Trả lời |
+| --- | --- | --- |
+| Q-2 | Mỗi ngày có bao nhiêu giờ? | 3–4 giờ hoặc hơn |
+| Q-3 | Các điểm tự diễn giải ở constitution §9 | Đã cập nhật trong constitution v1.1 |
+| Q-4 | Tên nguyên liệu và món vòng 1 | Constitution §4.5, §5.8 và `balance/recipes.json` |
+| Q-5 | Nhịp khách đến | Vòng 1 khách đến lần lượt; Góc 1 có nút Mở quán, bấm thì mới bắt đầu có khách |
+| Q-7 | Thứ tự công thức | Theo cột "Thứ tự cho vào" ở constitution §5.8 |
+
+Dùng mặc định (bạn không trả lời):
+
+| # | Câu hỏi | Mặc định |
+| --- | --- | --- |
+| Q-5b | Đồng hồ 9:00–21:00 có chạy ở vòng 1 không? | Chưa chạy trong sprint 1 |
+| Q-6 | Có được nấu trước nhiều món rồi mới phục vụ không? | Được, tối đa 3 đĩa trên quầy chờ (constitution §5.1) |
+
+Mới phát sinh:
+
+| # | Câu hỏi | Mặc định |
+| --- | --- | --- |
+| Q-9 | Art Bible ghi "thanh 10 ô relic", constitution §7.1 ghi tối đa 8. Theo bên nào? | Constitution (8); sửa Góc 3 ở sprint 2 |
+| Q-10 | Nút Mở quán chưa có trong constitution. Có thêm vào §6 (bản 1.2) không? | Có, khi bạn đồng ý; hiện ghi trong spec F-004 |
