@@ -1,0 +1,42 @@
+GIMP Palette
+Name: Quan an cua Hope - Art Bible 1.0
+Columns: 6
+#
+# NhanVat_DoVat
+ 43  35  33	Muc vien #2B2321
+255 243 220	Kem #FFF3DC
+232  96  79	San ho #E8604F
+242 193  78	Vang mu tat #F2C14E
+140 201 174	Bac ha #8CC9AE
+156 199 216	Xanh troi #9CC7D8
+201 179 240	Tim oai huong #C9B3F0
+233 160 160	Hong rem #E9A0A0
+251 224 195	Da #FBE0C3
+239 231 218	Toc bac #EFE7DA
+125 184 122	La #7DB87A
+242 160 166	Ma hong #F2A0A6
+ 74  63  58	Vest chu no #4A3F3A
+# MoiTruong
+243 223 184	Tuong #F3DFB8
+233 206 158	Hoa van tuong #E9CE9E
+227 190 147	San #E3BE93
+201 156 107	Net san #C99C6B
+185 127  82	Go dam #B97F52
+214 155 104	Go nhat #D69B68
+204 184 179	Mau bong (nhan) #CCB8B3
+233 185 140	Troi pho #E9B98C
+255 196 107	Anh nen #FFC46B
+# Bac_NguyenLieu
+163 144 100	0 Oi thiu #A39064
+255 255 255	1 Binh thuong #FFFFFF
+140 201 174	2 Tot #8CC9AE
+156 199 216	3 Tuoi #9CC7D8
+201 179 240	4 Xuat sac #C9B3F0
+242 193  78	5 Hiem #F2C14E
+# Bac_MonAn
+163 144 100	Lac vi #A39064
+217 207 192	Do #D9CFC0
+255 255 255	Binh thuong #FFFFFF
+140 201 174	Ngon #8CC9AE
+201 179 240	Tuyet hao #C9B3F0
+242 193  78	Huyen thoai #F2C14E

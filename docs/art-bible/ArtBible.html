@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Art Bible — Quán ăn của Hope</title>
+<style>
+/* Layout: one reading column with numbered sections; sheets sit full column width. Single warm look matching the game. */
+@font-face{font-family:'Baloo 2';font-weight:700;src:url(fonts/baloo-2-vietnamese-700-normal.woff2) format('woff2');unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB}
+@font-face{font-family:'Baloo 2';font-weight:700;src:url(fonts/baloo-2-latin-ext-700-normal.woff2) format('woff2');unicode-range:U+0100-024F,U+1E00-1E9F}
+@font-face{font-family:'Baloo 2';font-weight:700;src:url(fonts/baloo-2-latin-700-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:'Baloo 2';font-weight:800;src:url(fonts/baloo-2-vietnamese-800-normal.woff2) format('woff2');unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB}
+@font-face{font-family:'Baloo 2';font-weight:800;src:url(fonts/baloo-2-latin-ext-800-normal.woff2) format('woff2');unicode-range:U+0100-024F,U+1E00-1E9F}
+@font-face{font-family:'Baloo 2';font-weight:800;src:url(fonts/baloo-2-latin-800-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:'Be Vietnam Pro';font-weight:400;src:url(fonts/be-vietnam-pro-vietnamese-400-normal.woff2) format('woff2');unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB}
+@font-face{font-family:'Be Vietnam Pro';font-weight:400;src:url(fonts/be-vietnam-pro-latin-ext-400-normal.woff2) format('woff2');unicode-range:U+0100-024F,U+1E00-1E9F}
+@font-face{font-family:'Be Vietnam Pro';font-weight:400;src:url(fonts/be-vietnam-pro-latin-400-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+2000-206F}
+@font-face{font-family:'Be Vietnam Pro';font-weight:600;src:url(fonts/be-vietnam-pro-vietnamese-600-normal.woff2) format('woff2');unicode-range:U+0102-0103,U+0110-0111,U+0128-0129,U+0168-0169,U+01A0-01A1,U+01AF-01B0,U+0300-0309,U+0323,U+0329,U+1EA0-1EF9,U+20AB}
+@font-face{font-family:'Be Vietnam Pro';font-weight:600;src:url(fonts/be-vietnam-pro-latin-ext-600-normal.woff2) format('woff2');unicode-range:U+0100-024F,U+1E00-1E9F}
+@font-face{font-family:'Be Vietnam Pro';font-weight:600;src:url(fonts/be-vietnam-pro-latin-600-normal.woff2) format('woff2');unicode-range:U+0000-00FF,U+2000-206F}
+:root{
+  color-scheme: light;
+  --ink:#2B2321; --paper:#FFFBF2; --cream:#FFF3DC; --coral:#E8604F; --must:#F2C14E; --mint:#8CC9AE; --line:#E6D3B3; --quiet:#5A4A44;
+  --display:'Baloo 2','Trebuchet MS',sans-serif; --body:'Be Vietnam Pro','Segoe UI',system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--paper);color:var(--ink);font:400 16px/1.65 var(--body)}
+main{max-width:980px;margin:0 auto;padding-block:40px 80px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);line-height:1.1;text-wrap:balance;margin:0}
+h1{font-size:56px;font-weight:800}
+h2{font-size:34px;font-weight:800;margin:64px 0 12px;padding-top:12px;border-top:4px solid var(--ink);display:flex;gap:14px;align-items:baseline}
+h2 .n{font-size:20px;background:var(--ink);color:var(--cream);border-radius:12px;padding:0 10px}
+h3{font-size:23px;font-weight:700;margin:28px 0 8px}
+p{margin:0 0 12px;max-width:72ch}
+.lead{font-size:19px;max-width:66ch}
+.cover{display:grid;grid-template-columns:1.2fr 1fr;gap:28px;align-items:center;margin-bottom:24px}
+.cover img{width:100%;border:4px solid var(--ink);border-radius:22px;box-shadow:0 6px 0 var(--ink)}
+.meta{font:600 14px/1.5 var(--body);color:var(--quiet);margin-top:12px}
+.pillars{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:18px 0}
+.pill{border:4px solid var(--ink);border-radius:22px;padding:14px 16px;background:var(--cream);box-shadow:0 5px 0 var(--ink)}
+.pill b{display:block;font:800 21px/1.15 var(--display);margin-bottom:4px}
+.rule{border-left:0;background:var(--ink);color:var(--cream);border-radius:18px;padding:14px 18px;margin:16px 0;font-weight:600}
+.rule b{color:var(--must)}
+figure{margin:18px 0}
+figure img{width:100%;display:block;border-radius:16px;border:3px solid var(--line)}
+figcaption{font-size:14px;color:var(--quiet);margin-top:6px}
+.tbl{overflow-x:auto;margin:12px 0 16px}
+table{border-collapse:collapse;width:100%;font-size:15px;font-variant-numeric:tabular-nums}
+th,td{text-align:left;vertical-align:top;padding:8px 10px;border-bottom:2px solid var(--line)}
+th{font:800 15px/1.3 var(--display);border-bottom:3px solid var(--ink)}
+td code,p code,li code{font-family:ui-monospace,Consolas,monospace;font-size:14px;background:var(--cream);padding:1px 5px;border-radius:6px}
+.sw{display:inline-block;width:16px;height:16px;border:2px solid var(--ink);border-radius:5px;vertical-align:-3px;margin-right:6px}
+ul,ol{margin:0 0 12px;padding-left:22px;max-width:72ch} li{margin:3px 0}
+.toc{columns:2;gap:24px;margin:16px 0 0;padding:16px 20px;border:3px solid var(--ink);border-radius:18px;background:var(--cream);list-style:none}
+.toc li{break-inside:avoid} .toc a{color:var(--ink);font-weight:600;text-decoration:none} .toc a:hover{text-decoration:underline}
+.two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+.callout{border:3px dashed var(--coral);border-radius:16px;padding:12px 16px;margin:14px 0;background:#FFF1E8}
+a{color:#B4432F}
+@media (max-width:760px){.cover,.two{grid-template-columns:1fr}.pillars{grid-template-columns:1fr}.toc{columns:1}h1{font-size:40px}h2{font-size:28px}}
+@media print{@page{size:A4;margin:14mm} body{font-size:11.5pt} main{max-width:none;padding:0} h2{break-after:avoid;margin-top:28px} figure,table,.pill,.rule{break-inside:avoid} .toc{columns:2} a{color:inherit;text-decoration:none}}
+</style>
+</head>
+<body>
+<main>
+
+<div class="cover">
+  <div>
+    <h1>Art Bible</h1>
+    <div style="font:800 26px/1.2 var(--display);margin-top:6px">Quán ăn của Hope (tên tạm)</div>
+    <p class="lead" style="margin-top:14px">Sổ tay hình ảnh cho mọi người vẽ, dựng, làm hiệu ứng và UI cho game. Mỗi quy tắc ở đây đều đo được: có mã màu, có kích thước, có ví dụ nên và không nên.</p>
+    <div class="meta">Phiên bản 1.0 · 14/11/2026 · Đi cùng <code>specs/constitution.md</code> v1.0</div>
+  </div>
+  <img src="images/12_bon_goc_phong.png" alt="Bốn góc phòng của quán">
+</div>
+
+<ol class="toc">
+  <li><a href="#s1">1. Đọc trong 1 phút</a></li>
+  <li><a href="#s2">2. Cách làm bản này (phản biện bản mẫu)</a></li>
+  <li><a href="#s3">3. Trụ cột hình ảnh</a></li>
+  <li><a href="#s4">4. Màu sắc</a></li>
+  <li><a href="#s5">5. Hình khối</a></li>
+  <li><a href="#s6">6. Nhân vật</a></li>
+  <li><a href="#s7">7. Nguyên liệu và món ăn</a></li>
+  <li><a href="#s8">8. Môi trường: căn phòng 4 góc</a></li>
+  <li><a href="#s9">9. Camera và khung hình</a></li>
+  <li><a href="#s10">10. Viền, ánh sáng, hậu kỳ</a></li>
+  <li><a href="#s11">11. Hiệu ứng (VFX)</a></li>
+  <li><a href="#s12">12. Animation</a></li>
+  <li><a href="#s13">13. Giao diện (UI)</a></li>
+  <li><a href="#s14">14. Quy cách kỹ thuật</a></li>
+  <li><a href="#s15">15. Duyệt asset, lỗi thường gặp</a></li>
+  <li><a href="#s16">16. Asset làm bằng AI hoặc thuê ngoài</a></li>
+  <li><a href="#s17">17. Phiên bản và tham khảo</a></li>
+</ol>
+
+<h2 id="s1"><span class="n">1</span>Đọc trong 1 phút</h2>
+<div class="pillars">
+  <div class="pill"><b>Ấm như phim hoạt hình cũ</b>Nền trầm, màu nước, hạt phim, viền tối quanh khung — cảm giác hoạt hình thập niên 1930.</div>
+  <div class="pill"><b>Tròn, phẳng, viền đậm</b>Nhân vật và đồ vật đơn giản, bo tròn, 2 tông màu, viền #2B2321; mắt vòng tròn rỗng.</div>
+  <div class="pill"><b>Đọc được trong 1 giây</b>Bậc nguyên liệu, bậc món, tâm trạng khách phải nhìn là hiểu — không cần đọc số.</div>
+</div>
+<div class="rule"><b>Quy tắc phân xử</b> khi hai quy tắc mâu thuẫn: <b>Đọc được lối chơi</b> &gt; <b>Dễ thương</b> &gt; <b>Đúng chất cổ điển</b>. Ví dụ: hạt phim làm mờ con số trên bảng tỉ lệ → giảm hạt phim ở vùng UI, không làm mờ số.</div>
+<p>Trụ cột thứ ba đến thẳng từ constitution (Điều 1): người chơi không đọc chỉ số vẫn phải đi được 60% chặng đường, nên hình ảnh phải tự nói lên "cái này tốt hơn cái kia".</p>
+
+<h2 id="s2"><span class="n">2</span>Cách làm bản này</h2>
+<p>Bản tham khảo bạn gửi (<a href="https://laiapachon.github.io/Art-Bible/">Art Bible của Laia Pachon</a>) là một bài giới thiệu tốt về <em>art bible là gì</em>: nó giải thích vai trò (giữ phong cách đồng nhất, giải thích ý đồ của art director), thời điểm viết (sau GDD, trước khi sản xuất art), và liệt kê các mục nên có. Nhưng nó là khung chung, không phải một art bible thật — phần lớn mục chỉ nói "nên có gì" mà không có quy tắc cụ thể. Mình giữ bộ khung của nó và lấp các chỗ trống bằng cách làm của các art bible công khai đã dùng trong sản xuất thật.</p>
+<div class="tbl"><table>
+<tr><th>Mục trong bản mẫu</th><th>Điểm tốt</th><th>Thiếu sót</th><th>Bản này xử lý thế nào</th></tr>
+<tr><td>Định nghĩa, thời điểm, câu hỏi cần trả lời</td><td>Rõ ràng, đúng</td><td>Không có quy tắc phân xử khi các quy tắc mâu thuẫn</td><td>Thêm quy tắc phân xử (mục 1), theo cách 0 A.D. viết "lối chơi thắng tả thực"</td></tr>
+<tr><td>Art Style, Color Palette</td><td>Nhắc đúng các chủ đề: tỉ lệ, chất liệu, sắc độ, độ bão hòa</td><td>Chỉ có tính từ, không có mã màu hay con số</td><td>Mã màu cụ thể, màu dành riêng cho bậc, độ bão hòa nền vs nhân vật (mục 4)</td></tr>
+<tr><td>Character Art</td><td>Chia từng nhân vật, có biểu cảm, tỉ lệ, trang phục</td><td>Không có thước đo tỉ lệ</td><td>Tỉ lệ theo đơn vị "đầu", quy cách mắt bằng %, bộ 7 biểu cảm (mục 6)</td></tr>
+<tr><td>Level of Detail</td><td>Đúng ý: chi tiết theo mức quan trọng</td><td>Phần môi trường bị bỏ dở</td><td>"Ngưỡng chi tiết" đo bằng vật thật (dưới 10 cm thì vẽ vào texture), ngân sách texture theo mức người chơi nhìn thấy (mục 8)</td></tr>
+<tr><td>Camera</td><td>Nhắc góc nhìn, FOV</td><td>Không có số</td><td>Chiều cao, khoảng lùi, FOV, vùng an toàn bằng % (mục 9)</td></tr>
+<tr><td>Texture &amp; Surface, Environment</td><td>Có nhắc thời tiết, độ mở</td><td>Không có hướng sáng, không đo bóng</td><td>Hướng sáng tính theo camera, bóng là một màu nhân cụ thể (mục 10)</td></tr>
+<tr><td>User Interface</td><td>Đúng ý: UI phải tách khỏi thế giới game</td><td>Không có thành phần, kích thước, kiểu chữ</td><td>UI kit có bo góc, viền, bóng, cỡ chữ tối thiểu, màu theo vai trò nút (mục 13)</td></tr>
+<tr><td>Technical Guidelines</td><td>Liệt kê đúng chủ đề (xuất file, đặt tên, giới hạn)</td><td>Để trống, không có quy cách nào</td><td>Đơn vị, trục, tên file, thư mục, ngân sách tam giác và texture (mục 14)</td></tr>
+<tr><td>(không có)</td><td></td><td>Không có Animation, VFX, danh sách asset, lỗi thường gặp</td><td>Thêm mục 11, 12, 15, file <code>asset_list.csv</code>, và mục 16 cho asset làm bằng AI</td></tr>
+</table></div>
+<p>Năm điều mình mượn từ art bible công khai (theo bài tổng hợp của Makko và tài liệu gốc của các dự án):</p>
+<ol>
+  <li><strong>Quy tắc phân xử</strong> — 0 A.D. ghi rõ "lối chơi thắng tả thực khi hai bên mâu thuẫn".</li>
+  <li><strong>Hướng sáng nói theo một khung tham chiếu cố định</strong> — Battle for Wesnoth quy định ánh sáng từ phía trên bên phải của người vẽ, không phải của nhân vật.</li>
+  <li><strong>Bóng và viền là con số</strong> — Liberated Pixel Cup ghi bóng bằng một mã màu cụ thể với độ đục 60%; Battle for Wesnoth không bao giờ dùng đen tuyền cho viền.</li>
+  <li><strong>Ngưỡng chi tiết gắn với vật thật</strong> — 0 A.D.: vật nhỏ hơn bàn tay thì vẽ vào texture, không dựng hình.</li>
+  <li><strong>Danh sách lỗi thường gặp</strong> để người duyệt soát nhanh; và với VFX, nguyên tắc của Riot: mỗi hiệu ứng một điểm nhấn chính, độ bão hòa ở tầm trung.</li>
+</ol>
+<p>Thêm một điều từ kinh nghiệm studio (thảo luận trên GameDev.net): danh sách asset chi tiết để ở bảng tính riêng, không nhét vào art bible — ở đây là <code>asset_list.csv</code>.</p>
+
+<h2 id="s3"><span class="n">3</span>Trụ cột hình ảnh</h2>
+<p><strong>Khán giả:</strong> người chơi PC thích game ấm áp, hài hước, có yếu tố may rủi; nhiều người biết hoạt hình đời thường kiểu Hàn Quốc và game hoạt hình cổ điển. <strong>Cảm xúc chủ đạo:</strong> căng thẳng vì nợ nhưng vẫn dễ thương và buồn cười — giống một tập hoạt hình đời thường hơn là một phim kinh dị về tiền.</p>
+<div class="tbl"><table>
+<tr><th>Trụ cột</th><th>Áp dụng cho</th><th>Đo bằng</th></tr>
+<tr><td>Ấm như phim hoạt hình cũ</td><td>Nền, ngoài cửa, hậu kỳ</td><td>Độ bão hòa nền thấp hơn nhân vật; có Film Grain + Vignette (mục 10)</td></tr>
+<tr><td>Tròn, phẳng, viền đậm</td><td>Nhân vật, đồ ăn, máy móc, UI</td><td>Bo góc ≥ 25% cạnh ngắn; 2 tông; viền #2B2321 đúng độ dày (mục 5, 10)</td></tr>
+<tr><td>Đọc được trong 1 giây</td><td>Bậc, giá, tâm trạng, nút bấm</td><td>Màu bậc dành riêng; số quan trọng ≥ 26 px ở 1280×720 (mục 4, 13)</td></tr>
+</table></div>
+
+<h2 id="s4"><span class="n">4</span>Màu sắc</h2>
+<figure><img src="images/01_palette_chinh.png" alt="Bảng màu nhân vật và đồ vật"><figcaption>Bảng màu nhân vật và đồ vật. File màu: <code>palette/</code>.</figcaption></figure>
+<figure><img src="images/02_palette_moitruong.png" alt="Bảng màu môi trường"></figure>
+<ul>
+  <li><strong>Nền luôn trầm hơn nhân vật:</strong> màu môi trường có độ bão hòa thấp hơn màu nhân vật/đồ vật ít nhất 15 điểm (thang HSB); vật tương tác phải nổi lên khỏi tường ngay cả khi ảnh chuyển sang thang xám.</li>
+  <li><strong>Không dùng đen tuyền và trắng tinh cho mảng lớn:</strong> đen là #2B2321; trắng tinh #FFFFFF chỉ dùng cho bậc "Bình thường", găng tay, đĩa, mắt.</li>
+  <li><strong>Màu bóng:</strong> nhân màu gốc với #CCB8B3 (bóng hơi ấm, hơi tím) — không tự chọn màu bóng riêng.</li>
+</ul>
+<h3>Màu dành riêng cho bậc</h3>
+<figure><img src="images/03_mau_bac.png" alt="Màu bậc nguyên liệu và món ăn"></figure>
+<p>Sáu màu bậc chỉ được dùng ở <strong>khung bậc, viền đĩa, thanh tỉ lệ và hiệu ứng lộ bậc</strong>. Không dùng để trang trí tường, áo khách hay UI khác — nếu tím bậc 4 xuất hiện khắp nơi, người chơi sẽ mất khả năng "nhìn là biết đồ xịn". Bậc 5 / Huyền thoại luôn có thêm hào quang vàng.</p>
+<h3>Ánh sáng theo giờ và sự kiện</h3>
+<div class="tbl"><table>
+<tr><th>Thời điểm</th><th>Màu phủ toàn cảnh</th><th>Ghi chú</th></tr>
+<tr><td>9:00 – 15:00</td><td><span class="sw" style="background:#FFF6E6"></span>#FFF6E6, 0%</td><td>Chuẩn</td></tr>
+<tr><td>15:00 – 21:00</td><td><span class="sw" style="background:#FFD9B0"></span>#FFD9B0, tăng dần tới 20%</td><td>Chiều ấm</td></tr>
+<tr><td>Sau 21:00</td><td><span class="sw" style="background:#C9B3F0"></span>#C9B3F0, 20%</td><td>Phục vụ khách cuối</td></tr>
+<tr><td>Ngày 2 mưa</td><td><span class="sw" style="background:#9CC7D8"></span>#9CC7D8, 25% ngoài cửa</td><td>Vệt mưa vẽ tay ngoài cửa, trong phòng giữ ấm</td></tr>
+<tr><td>Ngày 8 mất điện</td><td>Tối toàn cảnh 60%</td><td>Ánh nến ấm #FFC46B, bán kính 2,5 m quanh bếp và quầy</td></tr>
+<tr><td>Vòng 3 (tin xấu)</td><td>Giảm bão hòa ngoài cửa 30%</td><td>Phố vắng, quán bên cạnh sáng hơn</td></tr>
+</table></div>
+
+<h2 id="s5"><span class="n">5</span>Hình khối</h2>
+<figure><img src="images/07_hinh_khoi.png" alt="Ngôn ngữ hình khối"></figure>
+<ul>
+  <li><strong>Thân thiện = tròn:</strong> khách, đồ ăn, máy móc, UI dùng hình tròn, bầu dục, vuông bo góc ≥ 25% cạnh ngắn.</li>
+  <li><strong>Quyền lực = chữ nhật bo nhỏ:</strong> chỉ dành cho chủ nợ và đồ của ông (két tiền, cặp, mũ). Bo góc 5–10%.</li>
+  <li><strong>Nguy hiểm = tam giác:</strong> lửa, cháy khét, gân giận. Không dùng tam giác trên vật thân thiện.</li>
+  <li><strong>Hình bóng (silhouette):</strong> mỗi khách phải phân biệt được chỉ bằng hình bóng đen ở kích thước 64 px.</li>
+</ul>
+
+<h2 id="s6"><span class="n">6</span>Nhân vật</h2>
+<figure><img src="images/06_ti_le_nhan_vat.png" alt="Tỉ lệ nhân vật"></figure>
+<ul>
+  <li><strong>Khách:</strong> cao 2–2,4 đầu; đầu chiếm khoảng 45–50% chiều cao. Tay chân là ống cao su — không khuỷu, không gối, cong theo đường cung mềm; tay kết thúc bằng găng trắng tròn.</li>
+  <li><strong>Chủ nợ:</strong> cao 3,6 đầu (tính cả mũ), thân chữ nhật, vest #4A3F3A, dây vàng #F2C14E. Là nhân vật duy nhất có vai vuông.</li>
+  <li><strong>Hope:</strong> người chơi nhìn từ góc nhìn của Hope nên Hope chỉ xuất hiện trong phân cảnh mở đầu và kết thúc. Cao 2,4 đầu, tạp dề #E8604F.</li>
+  <li><strong>Con gái chủ nợ:</strong> chỉ xuất hiện ở cảnh kết; dùng lại bộ màu của chủ nợ nhưng hình khối tròn — báo hiệu "người tốt trong nhà khó tính".</li>
+</ul>
+<h3>Mắt và khuôn mặt</h3>
+<figure><img src="images/04_mat_quy_cach.png" alt="Quy cách mắt"></figure>
+<p>Mắt là <strong>vòng tròn rỗng</strong> viền đậm, hở một khe khoảng 40° ở phía trên, khe hướng vào giữa mặt. Không có tròng đen và đốm sáng (trừ biểu cảm "Chờ" và "Chủ nợ" có con ngươi nhỏ). Mặt vẽ thành ảnh 2D 800×500 px nền trong suốt, dán lên phần trước đầu 3D; đổi biểu cảm bằng cách đổi ảnh.</p>
+<figure><img src="images/05_mat_bieu_cam.png" alt="Bộ biểu cảm"></figure>
+<div class="tbl"><table>
+<tr><th>Biểu cảm</th><th>Dùng khi</th></tr>
+<tr><td>Vui</td><td>Món đạt hoặc vượt yêu cầu</td></tr>
+<tr><td>Chờ</td><td>Đang đợi món (đổ mồ hôi khi gần hết kiên nhẫn)</td></tr>
+<tr><td>Giận</td><td>Món thấp hơn yêu cầu từ 2 bậc, hoặc chờ quá lâu</td></tr>
+<tr><td>Ngạc nhiên</td><td>Món Tuyệt hảo / Huyền thoại, hoặc nhận tip lớn</td></tr>
+<tr><td>Buồn</td><td>Món thấp hơn yêu cầu 1 bậc</td></tr>
+<tr><td>Đang ăn</td><td>Trong lúc ăn</td></tr>
+<tr><td>Chủ nợ (lạnh lùng)</td><td>Mặc định của chủ nợ; chỉ đổi sang Ngạc nhiên ở ngày 21 khi được món Tuyệt hảo</td></tr>
+</table></div>
+
+<h2 id="s7"><span class="n">7</span>Nguyên liệu và món ăn</h2>
+<figure><img src="images/08_nguyen_lieu_theo_bac.png" alt="Nguyên liệu theo bậc"></figure>
+<p>Mỗi nguyên liệu có <strong>một hình dáng duy nhất</strong> cho mọi bậc; bậc đọc bằng ba lớp cùng lúc để người mù màu vẫn phân biệt được: <strong>màu khung</strong>, <strong>biểu cảm</strong>, <strong>phụ kiện</strong> (ruồi → mặt phẳng → giọt nước → lấp lánh → vương miện → kính đen và hào quang).</p>
+<div class="tbl"><table>
+<tr><th>Nhóm</th><th>Hình thùng</th><th>Màu thùng</th></tr>
+<tr><td>Đồ phụ (rau, củ, quả)</td><td>Thùng gỗ thấp, có nan</td><td>Gỗ nhạt #D69B68</td></tr>
+<tr><td>Nguyên liệu chính (thịt, cá, tôm)</td><td>Thùng gỗ cao hơn, đai sắt</td><td>Gỗ đậm #B97F52</td></tr>
+<tr><td>Đột phá (sơn hào hải vị)</td><td>Rương có nắp vòm, phát sáng</td><td>Tím #C9B3F0 + viền vàng</td></tr>
+</table></div>
+<h3>Món ăn theo bậc</h3>
+<div class="tbl"><table>
+<tr><th>Bậc món</th><th>Viền đĩa</th><th>Hơi bốc lên</th><th>Mặt của món</th></tr>
+<tr><td>Lạc vị</td><td>#A39064</td><td>Khói xám nét gấp khúc</td><td>Mắt X</td></tr>
+<tr><td>Dở</td><td>#D9CFC0</td><td>Không có</td><td>Buồn</td></tr>
+<tr><td>Bình thường</td><td>#FFFFFF</td><td>3 nét hơi trắng</td><td>Mặt phẳng</td></tr>
+<tr><td>Ngon</td><td>#8CC9AE</td><td>Trái tim trắng</td><td>Vui</td></tr>
+<tr><td>Tuyệt hảo</td><td>#C9B3F0</td><td>Trái tim trắng + lấp lánh</td><td>Ngạc nhiên</td></tr>
+<tr><td>Huyền thoại (Món Hy Vọng)</td><td>#F2C14E + hào quang</td><td>Trái tim vàng</td><td>Kính đen + vương miện</td></tr>
+</table></div>
+
+<h2 id="s8"><span class="n">8</span>Môi trường: căn phòng 4 góc</h2>
+<figure><img src="images/12_bon_goc_phong.png" alt="Bốn góc phòng"><figcaption>Bản dựng tham chiếu (khối cơ bản). Bản cuối thay khối bằng model Blender nhưng giữ bố cục.</figcaption></figure>
+<ul>
+  <li><strong>Kích thước:</strong> phòng 8 × 8 m, cao 5 m. Bốn tường dùng chung giấy dán tường, sàn gỗ, nẹp gỗ chân tường và cột góc. Đây là thứ cho người chơi biết mình đang ở một nhà hàng — không đổi giấy dán tường theo góc.</li>
+  <li><strong>Màu nhấn theo góc</strong> (chỉ ở đồ vật, không ở tường): Góc 1 Giao món — san hô (rèm vải, đèn lồng); Góc 2 Gacha — xanh trời và tím (máy, cổng dịch chuyển); Góc 3 Sách & Relic — tím và vàng (bệ relic); Góc 4 Bếp — đỏ và kem (nồi, bếp).</li>
+  <li><strong>Ngoài cửa (Góc 1):</strong> cảnh phố vẽ 2D kiểu hoạt hình 1930s, giảm bão hòa, có hạt phim; cửa vòm có rèm vải nhiều tà bo tròn — không có chữ trên rèm, chỉ có hình trái tim và bát.</li>
+  <li><strong>Ngưỡng chi tiết:</strong> vật nhỏ hơn 10 cm (đồng xu, nhãn gia vị, vân gỗ, chữ trên bảng) vẽ vào texture hoặc decal, không dựng hình.</li>
+  <li><strong>Ngân sách texture theo mức người chơi nhìn thấy:</strong> vật ở giữa khung hình và hay tương tác (máy gacha, nồi, quầy) 1024 px; vật nhỏ 512 px; tường, sàn, cảnh ngoài cửa 2048 px (lặp lại được).</li>
+</ul>
+
+<h2 id="s9"><span class="n">9</span>Camera và khung hình</h2>
+<figure><img src="images/11_vung_an_toan_camera.png" alt="Vùng an toàn"></figure>
+<div class="tbl"><table>
+<tr><th>Thông số</th><th>Giá trị</th></tr>
+<tr><td>Góc nhìn</td><td>Người thứ nhất (mắt của Hope)</td></tr>
+<tr><td>Chiều cao mắt</td><td>1,75 m</td></tr>
+<tr><td>Vị trí</td><td>Lùi 1,4 m từ tâm phòng, quay mặt vào tường đang xem</td></tr>
+<tr><td>FOV dọc</td><td>55° (khung 16:9)</td></tr>
+<tr><td>Nghiêng xuống</td><td>4,6°</td></tr>
+<tr><td>Xoay giữa góc</td><td>90°, 0,35 giây, ease-in-out</td></tr>
+<tr><td>Vùng lối chơi</td><td>80% giữa chiều ngang; mọi vật bấm được phải nằm trong đó</td></tr>
+<tr><td>Vùng UI</td><td>Trên 12% (HUD), dưới 14% (nút), hai bên 7% (mũi tên xoay)</td></tr>
+</table></div>
+<p>Đồ của góc bên cạnh được phép lọt vào hai mép khung (là căn phòng thật), nhưng không được có vật tương tác ở đó.</p>
+
+<h2 id="s10"><span class="n">10</span>Viền, ánh sáng, hậu kỳ</h2>
+<figure><img src="images/09_vien_va_bong.png" alt="Viền và bóng"></figure>
+<div class="tbl"><table>
+<tr><th>Hạng mục</th><th>Quy định</th></tr>
+<tr><td>Viền</td><td>Màu #2B2321. Nhân vật và máy lớn 0,028 m (≈ 5 px ở 1280×720); đạo cụ nhỏ 0,018 m (≈ 3 px); tường, sàn, trần không viền 3D (nét đã vẽ trong texture). Làm bằng inverted hull trong shader.</td></tr>
+<tr><td>Tô bóng</td><td>2 tông: sáng và bóng (màu gốc × #CCB8B3), ranh giới sắc, không gradient.</td></tr>
+<tr><td>Hướng sáng</td><td>Cố định theo camera: từ trên xuống, hơi chếch sang phải và về phía người nhìn. Vector trong shader: (0,2; 1; −0,15).</td></tr>
+<tr><td>Bóng đổ</td><td>Không dùng bóng đổ thời gian thực. Dưới nhân vật và máy có bóng tròn #2B2321 độ đục 20%.</td></tr>
+<tr><td>Hậu kỳ (URP Volume)</td><td>Vignette 0,35 (màu #2B1A10); Film Grain 0,25 (loại Medium); Color Adjustments: Saturation −5, Color Filter #FFF1DE. Không Bloom, trừ hào quang bậc 5.</td></tr>
+<tr><td>Vùng UI</td><td>Hạt phim không phủ lên chữ và số (đặt lớp UI trên lớp hậu kỳ).</td></tr>
+</table></div>
+
+<h2 id="s11"><span class="n">11</span>Hiệu ứng (VFX)</h2>
+<ul>
+  <li><strong>Mỗi hiệu ứng một điểm nhấn chính,</strong> các phần còn lại là phụ trợ (theo hướng dẫn VFX của Riot). Độ bão hòa ở tầm trung; chỉ hào quang bậc 5 được sáng gắt.</li>
+  <li><strong>Từ vựng hình:</strong> trái tim = tích cực; ngôi sao 4 cánh = độ hiếm; xoắn ốc = dịch chuyển (cổng thả thùng); khói gấp khúc = thất bại; tia nước nhỏ = mồ hôi, sốt ruột.</li>
+  <li><strong>Mọi hạt đều có viền</strong> #2B2321 vẽ sẵn trong texture, giống đồ vật.</li>
+</ul>
+<div class="tbl"><table>
+<tr><th>Hiệu ứng</th><th>Thời lượng</th><th>Ghi chú</th></tr>
+<tr><td>Thùng rơi qua cổng dịch chuyển</td><td>1,2 giây</td><td>Xoắn ốc mở → thùng rơi → nảy 2 lần → lấp lánh</td></tr>
+<tr><td>Lộ bậc nguyên liệu</td><td>0,4 giây mỗi món; bậc 4–5: 1,5 giây</td><td>Bậc cao dừng lại lâu hơn, có âm thanh riêng</td></tr>
+<tr><td>Món ra lò</td><td>0,6 giây</td><td>Hơi bốc theo bậc (mục 7)</td></tr>
+<tr><td>Khách vui / tip</td><td>0,8 giây</td><td>Trái tim + đồng xu bay về ô Ví</td></tr>
+<tr><td>Cháy / Lạc vị</td><td>0,8 giây</td><td>Khói gấp khúc, rung camera 0,15 giây</td></tr>
+<tr><td>Nước sốt thần thánh</td><td>1,0 giây</td><td>Vòng xoáy vàng quanh đĩa; nếu hỏng: khói xám</td></tr>
+</table></div>
+
+<h2 id="s12"><span class="n">12</span>Animation</h2>
+<div class="tbl"><table>
+<tr><th>Loại</th><th>Làm ở đâu</th><th>Quy định</th></tr>
+<tr><td>Nhân vật (có xương)</td><td>Blender</td><td>Key "trên 2" (12 khung/giây, Stepped) để có chất hoạt hình cũ. Squash &amp; stretch tối đa ±15%. Tay chân ống cao su đi theo đường cung, không gập góc.</td></tr>
+<tr><td>Vòng lặp đứng chờ</td><td>Blender</td><td>2 giây, nhún nhẹ ±3% chiều cao</td></tr>
+<tr><td>Phản ứng (vui, giận…)</td><td>Blender</td><td>0,6–1,2 giây, giữ tư thế đỉnh 2–4 khung để gây cười</td></tr>
+<tr><td>Chớp mắt</td><td>Unity (đổi ảnh mặt)</td><td>0,12 giây, ngẫu nhiên mỗi 3–5 giây</td></tr>
+<tr><td>Máy móc, UI, camera</td><td>Unity (tween)</td><td>60 khung/giây mượt; nảy (overshoot) 10–15%</td></tr>
+</table></div>
+<p>Danh sách động tác tối thiểu cho mỗi khách: chờ, vẫy chào, ăn, vui, giận, bỏ đi. Mọi khách dùng chung một rig để dùng lại animation.</p>
+
+<h2 id="s13"><span class="n">13</span>Giao diện (UI)</h2>
+<figure><img src="images/10_ui_kit.png" alt="UI kit"></figure>
+<div class="tbl"><table>
+<tr><th>Thành phần</th><th>Quy định</th></tr>
+<tr><td>Khung</td><td>Bo góc 18–22 px, viền 4 px #2B2321, bóng đặc lệch xuống 5 px (không làm mờ). Thế giới game không có kiểu bóng này — đó là cách UI tách khỏi cảnh.</td></tr>
+<tr><td>Chữ</td><td>Baloo 2, đậm 700/800 (hỗ trợ tiếng Việt). Tối thiểu 14 px ở 1280×720; con số quan trọng (tiền, vé, giá, %) tối thiểu 26 px.</td></tr>
+<tr><td>Nút</td><td>Cao tối thiểu 52 px. Màu theo vai trò: hành động chính san hô #E8604F; xác nhận/dừng bạc hà #8CC9AE; trung tính kem #FFF3DC; vé/gacha vàng #F2C14E; relic tím #C9B3F0.</td></tr>
+<tr><td>Bảng tỉ lệ</td><td>Luôn nằm ngang, từ kém nhất (trái) đến xịn nhất (phải), mỗi ô dùng màu bậc.</td></tr>
+<tr><td>Biểu tượng</td><td>Vẽ nét, cùng độ dày viền; không dùng emoji.</td></tr>
+<tr><td>Thực hiện</td><td>Unity UGUI + TextMeshPro; ảnh trong gói hiện tại là ảnh tạm.</td></tr>
+</table></div>
+
+<h2 id="s14"><span class="n">14</span>Quy cách kỹ thuật</h2>
+<div class="tbl"><table>
+<tr><th>Hạng mục</th><th>Quy định</th></tr>
+<tr><td>Đơn vị</td><td>Mét. 1 đơn vị Blender = 1 m Unity. Gốc tọa độ ở chân vật, giữa đáy.</td></tr>
+<tr><td>Xuất từ Blender</td><td>FBX; Forward −Z, Up Y; Apply Transform; áp dụng scale/rotation (Ctrl+A) trước khi xuất.</td></tr>
+<tr><td>Ngân sách tam giác</td><td>Khách ≤ 6.000; chủ nợ ≤ 8.000; máy lớn ≤ 3.000; đạo cụ nhỏ ≤ 800; món ăn ≤ 1.500; nguyên liệu ≤ 600</td></tr>
+<tr><td>Chất liệu</td><td>Một shader toon chung (màu + texture tùy chọn). Tối đa 3 chất liệu mỗi mesh.</td></tr>
+<tr><td>Texture</td><td>PNG, sRGB; kích thước lũy thừa của 2 (trừ ảnh mặt 800×500 và UI).</td></tr>
+<tr><td>Rig</td><td>Khoảng 12–16 xương; tay chân dùng Bendy Bones.</td></tr>
+</table></div>
+<h3>Đặt tên</h3>
+<div class="tbl"><table>
+<tr><th>Tiền tố</th><th>Loại</th><th>Ví dụ</th></tr>
+<tr><td><code>SM_</code></td><td>Mesh tĩnh</td><td><code>SM_MayThaThung.fbx</code></td></tr>
+<tr><td><code>SK_</code></td><td>Mesh có xương</td><td><code>SK_Khach_BaCu.fbx</code></td></tr>
+<tr><td><code>A_</code></td><td>Animation</td><td><code>A_Khach_Vui.fbx</code></td></tr>
+<tr><td><code>T_</code></td><td>Texture</td><td><code>T_Mat_Vui.png</code>, <code>T_Tuong_HoaVan.png</code></td></tr>
+<tr><td><code>M_</code></td><td>Material</td><td><code>M_Toon_SanHo.mat</code></td></tr>
+<tr><td><code>VFX_</code></td><td>Hiệu ứng</td><td><code>VFX_CongDichChuyen.prefab</code></td></tr>
+<tr><td><code>UI_</code></td><td>Giao diện</td><td><code>UI_Nut_PhucVu.png</code></td></tr>
+</table></div>
+<p>Thư mục trong Unity: <code>Assets/Art/{Models, Textures, Materials, Animations, VFX, UI}</code>; file gốc <code>.blend</code>, <code>.kra</code> để ở <code>SourceArt/</code> ngoài <code>Assets/</code>, dùng Git LFS.</p>
+
+<h2 id="s15"><span class="n">15</span>Duyệt asset và lỗi thường gặp</h2>
+<p>Mỗi asset đi qua 3 lần duyệt: (1) hình bóng đen ở 64 px, (2) màu phẳng chưa bóng, (3) ảnh chụp trong Unity ở 1280×720, đặt trong góc phòng của nó.</p>
+<figure><img src="images/13_nen_va_khong_nen.png" alt="Nên và không nên"></figure>
+<h3>Lỗi thường gặp</h3>
+<ol>
+  <li>Viền đen tuyền #000000 thay vì #2B2321.</li>
+  <li>Thêm gradient hoặc bóng mềm vào nhân vật.</li>
+  <li>Mắt vẽ chấm đen có đốm sáng (sai phong cách đã chốt).</li>
+  <li>Dùng màu bậc (đặc biệt tím và vàng) để trang trí.</li>
+  <li>Máy móc cạnh vuông sắc, mất cảm giác thân thiện.</li>
+  <li>Vật tương tác nằm ngoài vùng 80% giữa khung hình.</li>
+  <li>Chữ nằm trong ảnh texture thay vì TextMeshPro.</li>
+  <li>Nền bão hòa ngang nhân vật, làm khách "chìm" vào tường.</li>
+  <li>Dựng hình cho vật nhỏ hơn 10 cm.</li>
+  <li>Quên áp dụng scale trước khi xuất FBX (vật bị to gấp 100 lần trong Unity).</li>
+</ol>
+
+<h2 id="s16"><span class="n">16</span>Asset làm bằng AI hoặc thuê ngoài</h2>
+<p>Các art bible công khai viết cho nhiều người vẽ cùng lúc; khi dùng công cụ AI hoặc nhiều người thuê ngoài, rủi ro là asset trôi dần khỏi phong cách sau vài chục lần làm. Những thứ sau phải giữ <strong>cố định tuyệt đối</strong> và kiểm cho mọi asset:</p>
+<ul>
+  <li>Màu viền #2B2321 và độ dày theo mục 10.</li>
+  <li>Sáu màu bậc chỉ dùng đúng chỗ.</li>
+  <li>Mắt vòng tròn rỗng theo quy cách mục 6.</li>
+  <li>Tỉ lệ đầu–thân theo mục 6.</li>
+  <li>Hướng sáng và màu bóng theo mục 10.</li>
+  <li>Khung 800×500 cho ảnh mặt, 1280×720 cho ảnh duyệt.</li>
+</ul>
+<div class="callout">Không dùng hình ảnh, nhân vật hay khung hình của kênh 소맥거핀 hoặc của Cuphead làm dữ liệu đầu vào hay để tô lại. Hai nguồn đó chỉ là cảm hứng về phong cách; mọi nhân vật, bối cảnh trong game là của riêng dự án.</div>
+
+<h2 id="s17"><span class="n">17</span>Phiên bản và tham khảo</h2>
+<p><strong>1.0 (14/11/2026):</strong> bản đầu, dựa trên các bản phác 2D/3D và gói Unity 4 góc đã làm; khớp constitution v1.0. Thay đổi quy tắc nào thì tăng phiên bản và ghi ở đây.</p>
+<ul>
+  <li><a href="https://laiapachon.github.io/Art-Bible/">Laia Pachon — Art Bible (khung tham khảo)</a></li>
+  <li><a href="https://blog.makko.ai/what-public-game-art-bibles-say/">What Four Public Game Art Bibles Actually Say (0 A.D., Liberated Pixel Cup, Battle for Wesnoth, Riot VFX)</a></li>
+  <li><a href="https://gamedev.net/forums/topic/552212-creating-art-biblestyle-guide/4955332/">GameDev.net — Creating Art Bible/Style Guide</a></li>
+</ul>
+
+</main>
+</body>
+</html>

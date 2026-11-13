@@ -1,0 +1,46 @@
+﻿ID,Ten,Loai,Goc,Cong cu,Dinh dang,Ngan sach,Uu tien,Ghi chu
+ENV-01,Tuong giay dan (dung chung 4 goc),Texture lap,Chung,Krita,T_ PNG 2048,2048 px,Demo,Hoa van cham tron + sao 4 canh
+ENV-02,San go,Texture lap,Chung,Krita,T_ PNG 2048,2048 px,Demo,
+ENV-03,Nep chan tuong + cot goc,Mesh,Chung,Unity ProBuilder,prefab,200 tam giac,Demo,
+ENV-04,Canh pho ngoai cua (ngay thuong),Tranh 2D,Goc 1,Krita,T_ PNG 2048,2048 px,Demo,"Kieu hoat hinh 1930s, hat phim"
+ENV-05,Canh pho ngoai cua (mua / vang khach),Tranh 2D,Goc 1,Krita,T_ PNG 2048,2048 px,Sau demo,Bien the cho su kien
+G1-01,Cua vom + khung go,Mesh,Goc 1,Blender,SM_ FBX,1500 tam giac,Demo,
+G1-02,Rem vai 4 ta,Mesh + texture,Goc 1,Blender + Krita,SM_ FBX,800 tam giac,Demo,"Hinh tim va bat, khong co chu"
+G1-03,Quay bar,Mesh,Goc 1,ProBuilder hoac Blender,SM_,2000 tam giac,Demo,
+G1-04,Chuong phuc vu,Mesh,Goc 1,Blender,SM_ FBX,400 tam giac,Demo,
+G1-05,"Den long x2, day bong den",Mesh,Goc 1,Blender,SM_ FBX,600 tam giac,Demo,
+G1-06,"Bien dung ""Hom nay""",Mesh + texture,Goc 1,Blender + Krita,SM_ FBX,400 tam giac,Demo,
+G2-01,May tha thung + cong dich chuyen,Mesh,Goc 2,Blender,SM_ FBX,3000 tam giac,Demo,
+G2-02,Tru nhet ve,Mesh,Goc 2,Blender,SM_ FBX,800 tam giac,Demo,
+G2-03,Thung do phu / chinh / dot pha,Mesh x3,Goc 2,Blender,SM_ FBX,400 tam giac moi thung,Demo,Mau theo muc 7
+G2-04,May nang pham mon,Mesh,Goc 2,Blender,SM_ FBX,3000 tam giac,Demo,
+G2-05,Bang ti le ngang,UI trong canh,Goc 2,Unity UGUI,prefab,,Demo,Chu bang TextMeshPro
+G3-01,Gia sach + sach nau an,Mesh,Goc 3,Blender,SM_ FBX,1200 tam giac,Demo,Trang sach la UI
+G3-02,Be relic x3,Mesh,Goc 3,ProBuilder,prefab,300 tam giac,Demo,
+G3-03,Thanh 10 o relic,Mesh,Goc 3,ProBuilder,prefab,300 tam giac,Demo,
+G3-04,Relic 22 mon (bieu tuong 3D nho),Mesh,Goc 3,Blender,SM_ FBX,800 tam giac moi mon,Demo: 15 mon,Uu tien 3 mon 1 ve cua moi bo
+G4-01,Bep + lo,Mesh,Goc 4,Blender,SM_ FBX,2000 tam giac,Demo,
+G4-02,Noi co mat,Mesh,Goc 4,Blender,SM_ FBX,1500 tam giac,Demo,Mat la anh 2D
+G4-03,"Thot, dao, dia",Mesh,Goc 4,Blender,SM_ FBX,800 tam giac,Demo,
+G4-04,"May hut mui, ke gia vi",Mesh,Goc 4,Blender,SM_ FBX,1200 tam giac,Demo,
+G4-05,Tu lanh,Mesh,Goc 4,Blender,SM_ FBX,1500 tam giac,Demo,Tu lanh nam o goc 4
+CH-01,Rig khach dung chung,Rig,Chung,Blender,SK_ FBX,12-16 xuong,Demo,Bendy Bones cho tay chan
+CH-02,"Khach: ba cu, hoc sinh, dan van phong, ong chu nhau, reviewer, gia dinh",Mesh x6,Goc 1,Blender,SK_ FBX,6000 tam giac moi khach,Demo: 4,"Doi dau, toc, mau ao"
+CH-03,Chu no,Mesh + rig,Goc 1,Blender,SK_ FBX,8000 tam giac,Demo,
+CH-04,"Hope, con gai chu no",Mesh,Phan canh,Blender,SK_ FBX,6000 tam giac,Sau demo,Chi trong canh mo dau / ket thuc
+AN-01,"Dong tac khach: cho, vay, an, vui, gian, bo di",Animation x6,Goc 1,Blender,A_ FBX,12 khung/giay stepped,Demo,
+FA-01,Bo mat 7 bieu cam,Anh 2D,Chung,Krita,T_ PNG 800x500,,Demo,Quy cach muc 6
+FD-01,Nguyen lieu: 6 phu + 6 chinh + 4 dot pha,Mesh,Goc 2/4,Blender,SM_ FBX,600 tam giac moi mon,Demo: 3 + 3 + 2,
+FD-02,"Khung bac nguyen lieu + phu kien (ruoi, giot nuoc, lap lanh, vuong mien, kinh den)",Mesh/sprite,Chung,Blender + Krita,,,Demo,
+FD-03,Mon an 6 cong thuc x dia theo bac,Mesh,Goc 1/4,Blender,SM_ FBX,1500 tam giac moi mon,Demo: 3,
+FD-04,Mon Hy Vong (huyen thoai),Mesh,Goc 1,Blender,SM_ FBX,2000 tam giac,Demo,
+VFX-01,Cong dich chuyen + thung roi,VFX,Goc 2,Unity Particle System,VFX_ prefab,,Demo,"1,2 giay"
+VFX-02,"Lo bac (lap lanh, hao quang bac 5)",VFX,Chung,Unity Particle System,VFX_ prefab,,Demo,
+VFX-03,"Hoi trai tim, khoi chay, dong xu tip, nuoc sot",VFX,Chung,Unity Particle System,VFX_ prefab,,Demo,
+VFX-04,"Mua (ngay 2), nen (ngay 8)",VFX + anh sang,Goc 1/4,Unity,VFX_ prefab,,Demo,
+UI-01,"HUD: ngay, gio, no, vi, ve trang, ve den",UI,Chung,Unity UGUI + TMP,UI_ prefab,,Demo,
+UI-02,Bong thoai khach + thanh kien nhan,UI,Goc 1,Unity UGUI + TMP,UI_ prefab,,Demo,
+UI-03,"The relic, thanh thu tu nau, thanh khoang bac mon",UI,Goc 3/4,Unity UGUI + TMP,UI_ prefab,,Demo,
+UI-04,"Cua hang vat pham (nuoc sot, ve den, may)",UI,Chung,Unity UGUI + TMP,UI_ prefab,,Demo,
+UI-05,"Man ket ngay, man tra no, man thua/thang",UI,Chung,Unity UGUI + TMP,UI_ prefab,,Demo,
+PP-01,"Volume hau ky (vignette, film grain, mau theo gio)",Thiet lap,Chung,Unity URP,Volume profile,,Demo,Muc 10

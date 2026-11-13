@@ -1,0 +1,43 @@
+# Unity
+/My project/[Ll]ibrary/
+/My project/[Tt]emp/
+/My project/[Oo]bj/
+/My project/[Bb]uild/
+/My project/[Bb]uilds/
+/My project/[Ll]ogs/
+/My project/[Uu]ser[Ss]ettings/
+/My project/[Mm]emoryCaptures/
+/My project/[Rr]ecordings/
+/My project/*.csproj
+/My project/*.sln
+/My project/*.slnx
+/My project/*.suo
+/My project/*.user
+/My project/*.pidb
+/My project/*.booproj
+/My project/.vs/
+/My project/.vscode/
+/My project/.idea/
+/My project/.utmp/
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+sysinfo.txt
+crashlytics-build.properties
+
+# Ket qua test / log
+TestResults*.xml
+*.log
+
+# He dieu hanh, cong cu
+.DS_Store
+Thumbs.db
+__pycache__/
+*.pyc
+
+# Goi nen goc (noi dung da giai nen vao docs/ va balance/)
+/*.zip
+
+# Bo nho dev-pilot: chi muc tu sinh
+/.dev-memory/index/manifest.tsv
+/.dev-memory/index/last-sync.txt

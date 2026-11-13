@@ -1,0 +1,295 @@
+{
+ "days": 22,
+ "debt_days": {
+  "4": 400,
+  "9": 2200,
+  "15": 8200,
+  "22": 26200
+ },
+ "boss_bonus": 11500,
+ "tickets_per_day": 3,
+ "rounds": {
+  "1": [
+   1,
+   3
+  ],
+  "2": [
+   4,
+   8
+  ],
+  "3": [
+   9,
+   14
+  ],
+  "4": [
+   15,
+   21
+  ]
+ },
+ "ingredient_odds": {
+  "r1": [
+   25,
+   57,
+   15,
+   3,
+   0,
+   0
+  ],
+  "storm": [
+   50,
+   42,
+   8,
+   0,
+   0,
+   0
+  ],
+  "r2": [
+   15,
+   40,
+   33,
+   10,
+   2,
+   0
+  ],
+  "r3": [
+   10,
+   28,
+   35,
+   20,
+   6,
+   1
+  ],
+  "r4": [
+   6,
+   18,
+   33,
+   28,
+   12,
+   3
+  ],
+  "black": [
+   0,
+   0,
+   0,
+   62,
+   30,
+   8
+  ]
+ },
+ "crate_size": {
+  "phu": 5,
+  "chinh": 3,
+  "phu_storm": 3,
+  "chinh_storm": 2
+ },
+ "breakthrough": {
+  "base_chance": 0,
+  "items": 2,
+  "tier5_share": 0.3
+ },
+ "dish": {
+  "w_chinh": 0.6,
+  "w_phu": 0.4,
+  "offset": 0.8,
+  "blackout_penalty": 0.3,
+  "price_mult": [
+   0.2,
+   0.5,
+   1.0,
+   1.8,
+   3.2,
+   6.0
+  ],
+  "base_price": {
+   "1": 60,
+   "2": 70,
+   "3": 85,
+   "4": 100
+  }
+ },
+ "customers": {
+  "per_day": {
+   "1": 6,
+   "2": 8,
+   "3": 5,
+   "4": 9,
+   "d14": 8
+  },
+  "easy_bands": {
+   "1": [
+    [
+     60,
+     95,
+     0.9
+    ],
+    [
+     35,
+     59,
+     0.1
+    ],
+    [
+     10,
+     34,
+     0.0
+    ]
+   ],
+   "2": [
+    [
+     60,
+     95,
+     0.75
+    ],
+    [
+     35,
+     59,
+     0.22
+    ],
+    [
+     10,
+     34,
+     0.03
+    ]
+   ],
+   "3": [
+    [
+     60,
+     95,
+     0.3
+    ],
+    [
+     35,
+     59,
+     0.5
+    ],
+    [
+     10,
+     34,
+     0.2
+    ]
+   ],
+   "4": [
+    [
+     60,
+     95,
+     0.6
+    ],
+    [
+     35,
+     59,
+     0.32
+    ],
+    [
+     10,
+     34,
+     0.08
+    ]
+   ]
+  },
+  "required_tier": [
+   [
+    80,
+    1
+   ],
+   [
+    60,
+    2
+   ],
+   [
+    35,
+    3
+   ],
+   [
+    0,
+    4
+   ]
+  ],
+  "boss_easy": 5
+ },
+ "sauce": {
+  "unlock_day": 4,
+  "price": 450,
+  "step": 45,
+  "max": 20,
+  "odds_early": {
+   "fail": 12,
+   "same": 18,
+   "up1": 50,
+   "up2": 20,
+   "legend": 0
+  },
+  "odds_late": {
+   "fail": 12,
+   "same": 16,
+   "up1": 48,
+   "up2": 20,
+   "legend": 4
+  },
+  "late_from_day": 9
+ },
+ "black_ticket": {
+  "price": 700,
+  "step": 120,
+  "max": 5
+ },
+ "machine": {
+  "price": 800,
+  "uses_per_day": 3,
+  "odds": {
+   "trash": 15,
+   "down1": 20,
+   "same": 25,
+   "up1": 28,
+   "up2": 10,
+   "up3": 2
+  }
+ },
+ "fridge": {
+  "slots": 2,
+  "decay_days": 3
+ },
+ "relic_cap": 8,
+ "start": {
+  "money": 100,
+  "bonus_tickets": 2,
+  "relic_shop_from_day": 2
+ },
+ "set_bonus": {
+  "vuon": {
+   "2": {
+    "phu_up": 0.2
+   },
+   "3": {
+    "phu_min": 2,
+    "phu_up": 0.35
+   },
+   "4": {
+    "phu_plus": 1
+   }
+  },
+  "cho": {
+   "2": {
+    "chinh_up": 0.2
+   },
+   "3": {
+    "chinh_min": 2,
+    "chinh_up": 0.25
+   },
+   "4": {
+    "chinh_plus": 1
+   }
+  },
+  "sonhao": {
+   "2": {
+    "bt_chance": 0.15
+   },
+   "3": {
+    "bt_items": 1
+   },
+   "4": {
+    "bt_chance": 0.2,
+    "bt_t5": 1.0
+   }
+  }
+ },
+ "_note": "Nguon so lieu duy nhat cho can bang. Sua o day roi chay: python3 sim_balance.py"
+}
