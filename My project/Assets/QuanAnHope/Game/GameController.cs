@@ -65,6 +65,14 @@ namespace QuanAnHope.Game
 
         void Awake()
         {
+            // Ban build luon mo toan man hinh o do phan giai goc, ke ca khi lan chay truoc da luu che do cua so
+            // (Unity nho che do man hinh trong registry). Editor va batchmode giu nguyen.
+            if (!Application.isEditor && !Application.isBatchMode)
+            {
+                Resolution native = Screen.currentResolution;
+                Screen.SetResolution(native.width, native.height, FullScreenMode.FullScreenWindow);
+            }
+
             data = Resources.Load<BalanceData>(BalanceResource);
             if (data == null)
             {
@@ -80,6 +88,7 @@ namespace QuanAnHope.Game
             if (playerGo == null) playerGo = new GameObject("Player");
             Player = PlayerController.Attach(playerGo);
             Player.SecondaryPressed += PutDown;
+            FaceBillboard.View = Player.Cam;
 
             NewGame(Environment.TickCount);
             Room = new RoomView(this, GameObject.Find(RoomRootName).transform);
@@ -281,6 +290,7 @@ namespace QuanAnHope.Game
             if (!DayRunning) return false;
             if (Session.Stove.Tool == null) { Say("Chọn dụng cụ trên giá trước: Chảo, Nồi hoặc Vỉ nướng."); return false; }
             if (!Session.Stove.AddPantry(item)) { Say("Bếp đang nấu, chưa cho thêm được."); return false; }
+            if (Room != null) Room.OnAddedToStove(null, item);
             Say("Đã cho " + item + ".");
             return true;
         }
@@ -297,6 +307,7 @@ namespace QuanAnHope.Game
                 if (stove.Tool == null) { Say("Chọn dụng cụ trên giá trước: Chảo, Nồi hoặc Vỉ nướng."); return false; }
                 string name = HeldIngredient.name;
                 if (!Session.AddToStove(HeldIngredient)) { Say("Bếp không nhận thêm " + name + " lúc này."); return false; }
+                if (Room != null) Room.OnAddedToStove(HeldIngredient, null);
                 Hand = HandKind.Empty;
                 HeldIngredient = null;
                 Say("Đã cho " + name + " vào " + stove.Tool.ToLowerInvariant() + ".");
@@ -313,6 +324,7 @@ namespace QuanAnHope.Game
                     return false;
                 }
                 Hand = HandKind.Empty;
+                if (dish.tier == 0) Player.Shake(0.15f); // Lac vi: rung camera 0,15 giay (Art Bible muc 11)
                 Say(dish.name + ": " + UiKit.DishTierName[dish.tier] + ". Đĩa đã lên quầy chờ.");
                 return true;
             }
@@ -398,6 +410,7 @@ namespace QuanAnHope.Game
             Dish dish = HeldDish;
             int index = IndexOnCounter(dish);
             if (index < 0) return false;
+            string ordered = Session.CurrentCustomer.orderName;
             PaymentResult paid = Session.Serve(index);
             if (paid == null) return false;
 
@@ -408,7 +421,9 @@ namespace QuanAnHope.Game
             ServedShowLeft = ReactionSeconds * 2f;
             if (Session.Phase != GamePhase.Open) ClearHands();
 
-            if (paid.outcome == PaymentOutcome.Satisfied)
+            if (paid.wrongOrder)
+                Toast = "Sai món: khách gọi " + ordered + ". Khách giận, quán đền " + (-paid.amount) + "G.";
+            else if (paid.outcome == PaymentOutcome.Satisfied)
                 Toast = "Khách vui: +" + paid.amount + "G (món " + paid.price + "G, tip " + paid.tip + "G).";
             else if (paid.outcome == PaymentOutcome.Disappointed)
                 Toast = "Món thấp hơn 1 bậc: khách chỉ trả " + paid.amount + "G, không tip.";

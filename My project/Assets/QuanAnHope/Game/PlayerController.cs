@@ -102,7 +102,24 @@ namespace QuanAnHope.Game
             if (held && holdTarget != null && holdTarget == Focus && holdTarget.Hold != null) holdTarget.Hold(dt);
             if (!held) holdTarget = null;
             if (secondary && SecondaryPressed != null) SecondaryPressed();
+
+            if (shakeLeft > 0f)
+            {
+                shakeLeft -= dt;
+                Vector3 jitter = shakeLeft > 0f ? (Vector3)(UnityEngine.Random.insideUnitCircle * 0.025f) : Vector3.zero;
+                Cam.transform.localPosition = new Vector3(0f, EyeHeight, 0f) + jitter;
+            }
         }
+
+        float shakeLeft;
+
+        /// <summary>Rung camera ngan (Art Bible muc 11: chay / Lac vi 0,15 giay).</summary>
+        public void Shake(float seconds)
+        {
+            shakeLeft = Mathf.Max(shakeLeft, seconds);
+        }
+
+        public bool Shaking { get { return shakeLeft > 0f; } }
 
         void ReadDevices(ref Vector2 move, ref bool pressed, ref bool held, ref bool secondary)
         {

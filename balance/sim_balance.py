@@ -6,6 +6,13 @@ import json, random, statistics, sys, os
 HERE=os.path.dirname(os.path.abspath(__file__))
 B=json.load(open(os.environ.get('BAL',os.path.join(HERE,'balance.json'))))
 RL=json.load(open(os.environ.get('RELICS',os.path.join(HERE,'relics.json'))))
+RC=json.load(open(os.path.join(HERE,'recipes.json'),encoding='utf-8'))
+# Constitution 1.3 muc 6.7: khach goi mot mon cu the (cong thuc = loai chinh + loai phu). ORDERS=0 de so voi luat cu.
+ORDERS=os.environ.get('ORDERS','1')!='0'
+BOSS_ANY=os.environ.get('BOSS_ANY','1')!='0'
+def unlocked(group,rd):
+    return [x['id'] for x in RC[group] if 1<=x['unlock_round']<=rd and x.get('group','chinh')=='chinh']
+BT_TYPES=[x['id'] for x in RC['chinh'] if x.get('group')=='dotpha']
 SET_BONUS={st:{int(k):v for k,v in th.items()} for st,th in B['set_bonus'].items()}
 def rnd_tier(odds,r): 
     x=r.random()*sum(odds); a=0
@@ -19,7 +26,7 @@ def round_of(d):
     return 4
 class P:
     def __init__(s,style,seed):
-        s.style=style; s.r=random.Random(seed); s.money=0; s.tk=0; s.black=0; s.black_bought=0
+        s.style=style; s.r=random.Random(seed); s.rt=random.Random(seed+10**6); s.money=0; s.tk=0; s.black=0; s.black_bought=0
         s.sauce=0; s.sauce_bought=0; s.machine=False; s.relics=[]; s.fridge=[]; s.target=None
     def fx(s):
         f={}
@@ -55,10 +62,15 @@ def pull(p,day,black=False):
             out.append(t)
         return out
     phu=gen(nphu,'phu'); ch=gen(nch,'chinh')
+    # Moi thung mot loai (constitution 4.2): gan loai cho tung mon de ghep cong thuc.
+    # Loai va mon goi dung RNG rieng (p.rt) de chuoi bac giong het ban truoc: ORDERS=0 cho dung so cu.
+    pt=p.rt.choice(unlocked('phu',rd)); ct=p.rt.choice(unlocked('chinh',rd))
+    phu=[(t,pt) for t in phu]; ch=[(t,ct) for t in ch]
     btc=B['breakthrough']['base_chance']+f.get('bt_chance',0)
     if r.random()<btc:
+        bt=p.rt.choice(BT_TYPES)
         for _ in range(B['breakthrough']['items']+int(f.get('bt_items',0))):
-            ch.append(5 if r.random()<B['breakthrough']['tier5_share']+f.get('bt_t5',0) else 4)
+            ch.append((5 if r.random()<B['breakthrough']['tier5_share']+f.get('bt_t5',0) else 4,bt))
     return phu,ch
 def cook(p,day,ch,phu):
     D=B['dish']; f=p.fx(); r=p.r
@@ -166,53 +178,95 @@ def run(style,seed,log=False):
             a,b=pull(p,day,True); phu+=a; ch+=b
         p.black-=nb
         # --- cook
+        # Mon = (bac, cong thuc); cong thuc = loai chinh + loai phu.
+        tier=lambda d:d[0]
         dishes=[]
-        if style!='naive': ch.sort(reverse=True); phu.sort(reverse=True)
+        if style!='naive': ch.sort(key=tier,reverse=True); phu.sort(key=tier,reverse=True)
         else: r.shuffle(ch); r.shuffle(phu)
         k=0
         for c in ch:
             if k>=len(phu): break
             take=phu[k:k+1]
-            k+=1; dishes.append(cook(p,day,c,take))
+            k+=1; dishes.append((cook(p,day,c[0],[take[0][0]]),c[1]+'__'+take[0][1]))
         # sauce / machine
         if p.sauce:
             if style=='naive':
                 for i in range(len(dishes)):
-                    if p.sauce and r.random()<0.4: dishes[i]=sauce_roll(p,day,dishes[i]); p.sauce-=1
+                    if p.sauce and r.random()<0.4: dishes[i]=(sauce_roll(p,day,dishes[i][0]),dishes[i][1]); p.sauce-=1
             else:
-                need_top = day>=19 and not any(d>=4 for d,_ in p.fridge)
-                for i in sorted(range(len(dishes)),key=lambda i:-dishes[i]):
-                    if p.sauce and dishes[i]==3 and (need_top or rd>=3): dishes[i]=sauce_roll(p,day,dishes[i]); p.sauce-=1
+                need_top = day>=19 and not any(d[0]>=4 for d,_ in p.fridge)
+                for i in sorted(range(len(dishes)),key=lambda i:-dishes[i][0]):
+                    if p.sauce and dishes[i][0]==3 and (need_top or rd>=3): dishes[i]=(sauce_roll(p,day,dishes[i][0]),dishes[i][1]); p.sauce-=1
         if p.machine:
             uses=B['machine']['uses_per_day']
             for i in range(len(dishes)):
-                if uses and dishes[i]<=1: 
-                    v=machine_roll(p,dishes[i]); uses-=1; dishes[i]=v
-            dishes=[d for d in dishes if d>=0]
+                if uses and dishes[i][0]<=1:
+                    v=machine_roll(p,dishes[i][0]); uses-=1; dishes[i]=(v,dishes[i][1])
+            dishes=[d for d in dishes if d[0]>=0]
         dishes+= [d for d,_ in p.fridge]; p.fridge=[]
         # --- serve
         imp=0 if rd==1 else (8 if style=='naive' else 3)*(1-min(0.9,f.get('patience',0)))
-        if style=='naive':
-            for E in cust:
-                if not dishes: break
-                t=dishes.pop(0); v,_=pay(p,day,E,t,imp); p.money+=v
-                if day==21 and E==B['customers']['boss_easy'] and t>=4: p.money+=B['boss_bonus']
-        else:
-            order=sorted(cust,key=lambda E:E)  # strict first
-            if day<21: keep=[d for d in sorted(dishes,reverse=True) if d>=4][:1] if day>=17 else []
+        def serve(E,t):
+            v,_=pay(p,day,E,t,imp); p.money+=v
+            if day==21 and E==B['customers']['boss_easy'] and t>=4: p.money+=B['boss_bonus']
+        if ORDERS:
+            # Khach den lan luot, goi ngau nhien mot cong thuc con lam duoc (constitution 1.3 muc 6.7);
+            # nguoi choi chi chon dia trong dung cong thuc do.
+            if style!='naive' and day<21 and day>=17:
+                keep=sorted(dishes,key=tier,reverse=True)[:1]; keep=[d for d in keep if d[0]>=4]
             else: keep=[]
             for d in keep: dishes.remove(d)
-            dishes.sort(reverse=True)
+            # Vong 1 khach vao lan luot; tu vong 2 toi da 3 khach cung ngoi (constitution 6.1),
+            # nguoi choi gioi chon khach nao phuc vu truoc.
+            seats=1 if rd==1 else 3
+            queue=list(cust); waiting=[]
+            def order_for(E):
+                boss=day==21 and E==B['customers']['boss_easy']
+                if boss and BOSS_ANY: return None          # chu no: "mon ngon nhat cua quan"
+                return p.rt.choice(sorted({d[1] for d in dishes}))
+            def pick(E,want):
+                same=[d for d in dishes if want is None or d[1]==want]
+                if not same: return None
+                if style=='naive': return same[0]
+                rq=required(max(1,E-imp))
+                ok=[x for x in same if (4 if x[0]==5 else x[0])>=rq]
+                return min(ok,key=tier) if ok else max(same,key=tier)
+            while dishes and (queue or waiting):
+                while queue and len(waiting)<seats:
+                    E=queue.pop(0); waiting.append((E,order_for(E)))
+                if style=='naive' or len(waiting)==1: i=0
+                else:
+                    # uu tien khach co mon dat yeu cau (khach kho nhat truoc), khong thi khach de tinh nhat
+                    def key(j):
+                        E,w=waiting[j]; d=pick(E,w)
+                        if d is None: return (2,0)
+                        good=(4 if d[0]==5 else d[0])>=required(max(1,E-imp))
+                        return (0,E) if good else (1,-E)
+                    i=min(range(len(waiting)),key=key)
+                E,w=waiting.pop(i); d=pick(E,w)
+                if d is None:                                # mon goi da het: goi lai mon con lam duoc
+                    w=order_for(E); d=pick(E,w)
+                dishes.remove(d); serve(E,d[0])
+            dishes=keep+sorted(dishes,key=tier,reverse=True)
+        elif style=='naive':
+            for E in cust:
+                if not dishes: break
+                serve(E,dishes.pop(0)[0])
+        else:
+            order=sorted(cust,key=lambda E:E)  # strict first
+            if day<21: keep=[d for d in sorted(dishes,key=tier,reverse=True) if d[0]>=4][:1] if day>=17 else []
+            else: keep=[]
+            for d in keep: dishes.remove(d)
+            dishes.sort(key=tier,reverse=True)
             for E in order:
                 if not dishes: break
                 rq=required(max(1,E-imp))
-                ok=[d for d in dishes if (4 if d==5 else d)>=rq]
-                t=min(ok) if ok else max(dishes)
-                dishes.remove(t); v,_=pay(p,day,E,t,imp); p.money+=v
-                if day==21 and E==B['customers']['boss_easy'] and t>=4: p.money+=B['boss_bonus']
-            dishes=keep+sorted(dishes,reverse=True)
+                ok=[d for d in dishes if (4 if d[0]==5 else d[0])>=rq]
+                d=min(ok,key=tier) if ok else max(dishes,key=tier)
+                dishes.remove(d); serve(E,d[0])
+            dishes=keep+sorted(dishes,key=tier,reverse=True)
         cap=B['fridge']['slots']+int(f.get('fridge',0))
-        p.fridge=[(d,0) for d in sorted(dishes,reverse=True)[:cap]]
+        p.fridge=[(d,0) for d in sorted(dishes,key=tier,reverse=True)[:cap]]
     return dict(win=True,day=22,p=p)
 def add_relic(p,o):
     if len(p.relics)>=B['relic_cap']:

@@ -1,6 +1,6 @@
 # Constitution — Quán ăn của Hope (tên tạm)
 
-Phiên bản 1.2 · 14/11/2026 · Trạng thái: chuyển sang game 3D góc nhìn thứ nhất, thông tin nằm trên đồ vật; số cân bằng giữ nguyên từ 1.0
+Phiên bản 1.3 · 14/11/2026 · Trạng thái: khách gọi một món cụ thể, sách ghi giá bán; game 3D góc nhìn thứ nhất; số cân bằng giữ nguyên từ 1.0
 
 Đây là nguồn sự thật cao nhất của dự án. Mọi spec, plan, task và dòng code phải tuân theo file này. Khi một spec mâu thuẫn với constitution, constitution thắng; muốn đổi thì sửa constitution trước (tăng số phiên bản, ghi lý do ở mục 9).
 
@@ -13,11 +13,11 @@ Các con số cân bằng nằm ở hai nơi phải luôn khớp nhau: bảng tr
 ### Điều 1 — Độ khó mục tiêu
 Game nằm trong khoảng **trung bình-dễ đến trung bình-khó**. Ba mốc dưới đây là cổng chấp nhận; mọi thay đổi số liệu phải chạy lại mô phỏng và vẫn đạt cả ba:
 
-| Kiểu người chơi | Cách chơi | Mục tiêu | Kết quả mô phỏng v1.0 |
-| --- | --- | --- | --- |
-| Không đọc chỉ số | Chọn món có giá to, tỉ lệ to; phục vụ theo thứ tự khách đến | Đi qua **≥ 60%** chặng đường | Đi được trung bình 66% (qua lần trả nợ 1: 100%, lần 2: 86%) |
-| Chơi tốt, có **≥ 3 món cùng một bộ relic** | Gom bộ, giữ món ngon cho khách khó tính và boss | Thắng **≥ 70%** (phần còn lại do may) | Bộ Chợ Sớm 82%, Sơn Hào 84%, Vườn Nhà 71%; đủ 4 món: 87–97% |
-| Chơi tốt nhưng không gom bộ | Như trên, chỉ mua relic lẻ | Thấp hơn rõ so với người gom bộ | 64% |
+| Kiểu người chơi | Cách chơi | Mục tiêu | Kết quả mô phỏng v1.0 | Mô phỏng v1.3 (khách gọi món) |
+| --- | --- | --- | --- | --- |
+| Không đọc chỉ số | Chọn món có giá to, tỉ lệ to; phục vụ theo thứ tự khách đến | Đi qua **≥ 60%** chặng đường | Đi được trung bình 66% (qua lần trả nợ 1: 100%, lần 2: 86%) | 67% (100%, 87%) |
+| Chơi tốt, có **≥ 3 món cùng một bộ relic** | Gom bộ, giữ món ngon cho khách khó tính và boss | Thắng **≥ 70%** (phần còn lại do may) | Bộ Chợ Sớm 82%, Sơn Hào 84%, Vườn Nhà 71%; đủ 4 món: 87–97% | 82% (gộp mọi bộ; chưa tách theo bộ) |
+| Chơi tốt nhưng không gom bộ | Như trên, chỉ mua relic lẻ | Thấp hơn rõ so với người gom bộ | 64% | 56% |
 
 ### Điều 2 — Dữ liệu tách khỏi code
 Mọi tỉ lệ, giá, nợ, hệ số, danh sách relic là dữ liệu (ScriptableObject sinh từ `balance.json` / `relics.json`). Chỉnh cân bằng không được phải sửa code.
@@ -50,7 +50,7 @@ Mỗi tính năng: `spec.md` (luật + tiêu chí chấp nhận Given/When/Then)
 Thông tin của một thứ hiện **trên chính thứ đó trong phòng**, không hiện thành bảng phẳng trên màn hình:
 - Nguyên liệu nằm trong thùng; **bậc đọc bằng màu** (đế bậc dưới mỗi món, Art Bible §7), không cần chữ.
 - Tỉ lệ gacha: bảng treo trên tường Góc 2. Khoảng bậc món, thứ tự đã cho vào, tiến độ nấu: bảng nhỏ ngay trên bếp. Tiến độ sơ chế: thanh ngay trên thớt.
-- Công thức: trang của quyển sách ở Góc 3. Độ dễ tính: bong bóng trên đầu khách. Đĩa món: nằm trên quầy chờ, viền đĩa theo màu bậc.
+- Công thức và giá bán theo bậc: trang của quyển sách ở Góc 3. Độ dễ tính và món khách gọi: bong bóng trên đầu khách. Đĩa món: nằm trên quầy chờ, viền đĩa theo màu bậc.
 - **HUD chỉ hiện con số và thông tin ngắn:** ngày, tiền, nợ, vé, tâm ngắm, gợi ý tương tác của đồ đang nhìn, thứ đang cầm, thông báo một dòng. HUD không có nút bấm.
 - Màn kết thúc ngày, qua vòng, thua là màn ngoài phòng (Điều 5) nên được dùng nút.
 
@@ -293,6 +293,8 @@ Ngoại lệ tên: Thịt bò + Cà chua = **Mì Ý bò sốt cà chua** (món x
 
 Sách nấu ăn (Góc 3) là quyển sách đặt trên giá: mỗi trang đôi là một món như bản phác — trang trái tên món, dụng cụ, đế món, thời gian nấu; trang phải thứ tự cho vào, mỗi bước một số tròn. Bấm trang phải để lật tới, trang trái để lật lui. Sách tự mở trang khi nguyên liệu tương ứng mở khóa, ghi kỷ lục bậc cao nhất từng nấu cho mỗi món. Mọi món dùng chung giá gốc của vòng (mục 5.2), nên công thức chỉ thay đổi trải nghiệm, không làm lệch cân bằng.
 
+**Giá bán trên trang sách (từ 1.3):** trang trái mỗi món ghi giá bán của vòng hiện tại theo từng bậc, Lạc vị → Tuyệt hảo (= giá gốc × hệ số bậc, mục 5.2; vòng 1: 12G · 30G · 60G · 108G · 192G), kèm ghi chú "khách trả thêm tip" (mục 6.5). Huyền thoại không ghi vì chỉ có một món riêng (mục 5.4). Mọi món chung bảng giá theo vòng (bạn chọn ngày 14/11).
+
 ### 5.9 Thời gian nấu và quá lửa
 
 | Cách nấu | Dụng cụ | Thời gian nấu |
@@ -361,6 +363,7 @@ Gọi `chênh = bậc món − bậc tối thiểu`, `khó = 1 − độ dễ t�
 | chênh ≥ 0 | `giá` + tip = `giá × khó × (0,3 + 0,2 × chênh)` |
 | chênh = −1 | 50% `giá`, không tip |
 | chênh ≤ −2 | Không trả, quán **bị trừ 30% giá gốc** (đền bù) |
+| **Sai món** (đĩa khác món khách gọi, mục 6.7) | Khách nhận đĩa nhưng giận: không trả, quán **bị trừ 30% giá gốc** — bất kể bậc món |
 
 Hệ quả đúng ý bạn: khách khó tính được món bậc cao → tip nhiều; khách dễ tính được món bậc cao → tip ít; món dưới yêu cầu xa → bị trừ tiền.
 
@@ -375,6 +378,16 @@ Vòng 1 không tính giờ. Từ vòng 2, sau một **khoảng an toàn**, độ
 | Ngày 8 (mất điện) | +15 giây so với vòng 2 |
 
 Về tra cứu: mình không tìm được con số công bố chính thức về thời gian chờ của Overcooked, Cook Serve Delicious hay Papa's Pizzeria (các nguồn chỉ mô tả có thanh kiên nhẫn, không ghi giây). Các con số trên là mình tự đặt theo thời gian nấu của game này (trung bình 17–19 giây một món, mục 5.9): khoảng an toàn 60 giây đủ để nấu liền cho cả 3 khách ở vòng 2; vòng 3 (45 giây) thì khách thứ ba bắt đầu sốt ruột nếu không có món làm sẵn ở quầy chờ hoặc tủ lạnh — dễ hơn các game nấu ăn thông thường như bạn yêu cầu. Cần kiểm lại khi playtest.
+
+### 6.7 Khách gọi món (từ 1.3)
+Mỗi khách khi vào **gọi một món cụ thể** (một công thức ở mục 5.8), hiện trên bong bóng cạnh đầu khách cùng độ dễ tính.
+- **Món gọi là món nấu được:** khách chọn ngẫu nhiên, đều nhau, một trong các món đang làm được ngay lúc vào — đĩa trên quầy chờ (hoặc tủ lạnh), món đang trên bếp, và mọi cặp (loại chính, loại phụ) đang có trong kho. Nếu không làm được món nào, khách gọi ngẫu nhiên một món đã mở khóa trong sách.
+- **Mang sai món:** khách vẫn nhận đĩa nhưng giận (mục 6.5): không trả, quán bị trừ 30% giá gốc. Đĩa đó mất.
+- **Đúng món:** trả tiền và tip theo bậc như mục 6.5.
+- **Chủ nợ ngày 21** không gọi món cụ thể: ông gọi "món ngon nhất của quán" và nhận mọi món (vẫn cần Tuyệt hảo trở lên để được thưởng, mục 8). *(cần bạn xác nhận, Q-20)*
+- Từ vòng 2 có tối đa 3 khách cùng ngồi (mục 6.1), mỗi người một món gọi; người chơi chọn phục vụ ai trước.
+
+Mô phỏng (mục 9): người chơi không đọc chỉ số vẫn đi được 67%; người gom bộ thắng 82%. Nếu chủ nợ cũng gọi món ngẫu nhiên thì người gom bộ còn 73% — sát mốc 70% của Điều 1, nên chủ nợ là ngoại lệ.
 
 ---
 
@@ -458,6 +471,7 @@ Mô phỏng: với giá nước sốt 450G, 10% người chơi may mắn mua đ�
 - Lịch sử phiên bản:
   - **1.0 (14/11/2026):** bản đầu từ ý tưởng của bạn; mọi con số đánh dấu "claude" đã được tính và kiểm bằng mô phỏng.
   - **1.1 (14/11/2026):** thêm danh sách nguyên liệu (mục 4.5), công thức và 120 món (5.8), thời gian nấu và quá lửa (5.9), quầy chờ 3 đĩa (5.1); mỗi thùng chỉ một loại nguyên liệu (4.2). Không đổi số cân bằng: mô phỏng vẫn tính mỗi món 1 chính + 1 phụ với giá gốc theo vòng. Quá lửa chưa có trong mô phỏng — nó chỉ phạt người chơi bỏ quên bếp.
+  - **1.3 (14/11/2026):** theo yêu cầu của bạn "khách hàng phải order 1 món ăn cụ thể và từng món phải hiển thị giá ở trên quyển sách công thức". Thêm mục 6.7 (gọi món), dòng "Sai món" ở 6.5, giá bán theo bậc trên trang sách (5.8), Điều 9 cập nhật vị trí thông tin. Ba lựa chọn do bạn trả lời 14/11: gọi món nấu được, sai món coi như khách giận, giá chung theo vòng ghi theo bậc. Không đổi số trong dữ liệu. Mô phỏng `sim_balance.py` thêm loại nguyên liệu cho từng thùng, công thức cho từng đĩa, khách gọi món, và 3 khách cùng ngồi từ vòng 2 (trước đây mô phỏng cho người chơi tự ghép món với khách bất kỳ); chạy `ORDERS=0` để ra lại số cũ.
   - **1.2 (14/11/2026):** theo nghiệm thu sprint 1 của bạn ("game này là 3D nhưng hiện tại chơi như game 2D"): Điều 5 đổi từ xoay camera 90° sang tự đi lại góc nhìn thứ nhất; thêm Điều 9 (thông tin nằm trên đồ vật, HUD chỉ số liệu); mục 4.2, 5.1, 5.8 tả lại thao tác bằng đồ vật; mục 6.1 thêm nút Mở quán (bạn trả lời 14/11) và đóng quán sớm. Không đổi số cân bằng; mô phỏng không bị ảnh hưởng. Thời gian đi lại trong phòng chưa có trong ước tính "17–19 giây một món" ở mục 5.9 — cần đo lại khi playtest vòng 2 (có tính giờ chờ).
 
 ### Các điểm mình đã tự diễn giải (cần bạn xác nhận)

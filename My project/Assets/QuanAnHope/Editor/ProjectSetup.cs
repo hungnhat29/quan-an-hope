@@ -36,6 +36,10 @@ namespace QuanAnHope.EditorTools
         public static void BuildWindows()
         {
             const string output = "Builds/Windows/QuanAnHope.exe";
+            // Toan man hinh, do phan giai goc cua man hinh (nguoi dung yeu cau 14/11).
+            PlayerSettings.fullScreenMode = FullScreenMode.FullScreenWindow;
+            PlayerSettings.defaultIsNativeResolution = true;
+            PlayerSettings.resizableWindow = false;
             var options = new BuildPlayerOptions
             {
                 scenes = new[] { GameScene },

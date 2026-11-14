@@ -6,6 +6,10 @@ namespace QuanAnHope.Core
     {
         /// <summary>Do de tinh, phan tram; cang cao cang de (constitution muc 6.3).</summary>
         public int easiness;
+
+        /// <summary>Mon khach goi (id cong thuc "chinh__phu") va ten mon (constitution muc 6.7).</summary>
+        public string orderId;
+        public string orderName;
     }
 
     /// <summary>Sinh khach theo khoang do de tinh cua vong (constitution muc 6.3).</summary>
@@ -68,6 +72,9 @@ namespace QuanAnHope.Core
 
         /// <summary>So tien vi thay doi; am khi quan phai den bu.</summary>
         public int amount;
+
+        /// <summary>Dia khac mon khach goi: khach nhan nhung gian (constitution muc 6.7).</summary>
+        public bool wrongOrder;
     }
 
     /// <summary>Tra tien va tip (constitution muc 5.2, 6.5). Tien lam tron den 1G.</summary>
@@ -105,6 +112,17 @@ namespace QuanAnHope.Core
                 result.amount = -RoundMoney((double)b.payment.penaltyBaseShare * b.BasePrice(round));
             }
             return result;
+        }
+
+        /// <summary>Mang sai mon: khach nhan dia nhung khong tra, quan den bu nhu khach gian (constitution muc 6.5, 6.7).</summary>
+        public static PaymentResult WrongOrder(Balance b, int round)
+        {
+            return new PaymentResult
+            {
+                outcome = PaymentOutcome.Angry,
+                wrongOrder = true,
+                amount = -RoundMoney((double)b.payment.penaltyBaseShare * b.BasePrice(round)),
+            };
         }
 
         static double RawPrice(Balance b, int round, int dishTier)

@@ -27,6 +27,9 @@ namespace QuanAnHope.Game
         static readonly Color SteelLight = UiKit.Hex("#C9C1B6");
         static readonly Color PlateWhite = UiKit.Hex("#FFFFFF");
 
+        /// <summary>Kich thuoc dai ti le bac mon tren bang bep (mm tren do vat).</summary>
+        public static readonly Vector2 BarSize = new Vector2(1420f, 104f);
+
         readonly GameController g;
         readonly Transform root, goc1, goc2, goc3, goc4;
         readonly Dictionary<string, Interactable> stations = new Dictionary<string, Interactable>();
@@ -49,8 +52,13 @@ namespace QuanAnHope.Game
         GameObject potGroup, steam;
         Transform knob;
         TextMeshProUGUI stoveSteps, stoveStatus;
-        Transform stoveBarRow;
+        GameObject stoveBarRoot;
+        readonly TextMeshProUGUI[] barCells = new TextMeshProUGUI[6];
         ProgressBar cookBar;
+        readonly Dictionary<string, GameObject> jars = new Dictionary<string, GameObject>();
+        readonly Dictionary<string, Color> jarColors = new Dictionary<string, Color>();
+        Transform panRoot;
+        readonly List<PanItem> panItems = new List<PanItem>();
         readonly Transform[] shelfSlots = new Transform[3];
         readonly List<GameObject> shelfDishes = new List<GameObject>();
 
@@ -66,6 +74,9 @@ namespace QuanAnHope.Game
         TextMeshProUGUI pageTitle, pageInfo, pageFooter, rightTitle;
         Transform stepList;
         Image dishFood, dishBase;
+        TextMeshProUGUI priceHeader;
+        // Gia theo 5 bac Lac vi -> Tuyet hao; Huyen thoai chi co mot mon rieng (constitution muc 5.4) nen khong ghi o day.
+        readonly TextMeshProUGUI[] priceCells = new TextMeshProUGUI[5];
         int page;
 
         // Tay
@@ -112,6 +123,15 @@ namespace QuanAnHope.Game
         public GameObject BoardItem { get { return boardItem; } }
         public GameObject HandModel { get { return handModel; } }
         public IReadOnlyList<GameObject> ShelfDishes { get { return shelfDishes; } }
+
+        /// <summary>Do da cho vao dung cu tren bep (nguyen lieu va giot gia vi), theo thu tu.</summary>
+        public IReadOnlyList<PanItem> PanItems { get { return panItems; } }
+        public Transform PanRoot { get { return panRoot; } }
+        public GameObject Jar(string item)
+        {
+            GameObject j;
+            return jars.TryGetValue(item, out j) ? j : null;
+        }
 
         Interactable Register(Interactable i)
         {
@@ -306,7 +326,7 @@ namespace QuanAnHope.Game
             for (int shelf = 0; shelf < 2; shelf++)
                 Toon.Prim(PrimitiveType.Cube, goc4, "KeGiaVi" + shelf, new Vector3(-2.75f, 1.86f + 0.55f * shelf, 3.84f), new Vector3(2.0f, 0.06f, 0.3f),
                     WoodDark, Toon.OutlineSmall);
-            Color[] jarColors = { UiKit.Mustard, UiKit.Cream, UiKit.Hex("#EFE7DA"), UiKit.Hex("#A5644A"), UiKit.Hex("#5A5250"),
+            Color[] jarColorList = { UiKit.Mustard, UiKit.Cream, UiKit.Hex("#EFE7DA"), UiKit.Hex("#A5644A"), UiKit.Hex("#5A5250"),
                 PlateWhite, UiKit.Hex("#F6D06A"), UiKit.Hex("#F08A6A"), UiKit.Hex("#7DB87A") };
             for (int i = 0; i < pantry.Length; i++)
             {
@@ -316,9 +336,13 @@ namespace QuanAnHope.Game
                 float y = 1.89f + 0.55f * shelf;
                 string item = pantry[i];
                 GameObject jar = Toon.Prim(PrimitiveType.Cylinder, goc4, "Lo_" + item, new Vector3(x, y + 0.15f, 3.82f), new Vector3(0.2f, 0.3f, 0.2f),
-                    jarColors[i % jarColors.Length], Toon.OutlineSmall);
-                Toon.Prim(PrimitiveType.Cylinder, jar.transform.parent, "Nap_" + item, new Vector3(x, y + 0.32f, 3.82f), new Vector3(0.22f, 0.05f, 0.22f),
-                    WoodDark, Toon.OutlineSmall);
+                    jarColorList[i % jarColorList.Length], Toon.OutlineSmall);
+                // Nap la con cua lo de nghieng cung lo khi rot.
+                Toon.Prim(PrimitiveType.Cylinder, jar.transform, "Nap_" + item, new Vector3(0f, 0.17f / 0.15f, 0f), new Vector3(1.1f, 0.05f / 0.15f, 1.1f),
+                    WoodDark, Toon.OutlineSmall * 3f);
+                jar.AddComponent<Wobble>();
+                jars[item] = jar;
+                jarColors[item] = jarColorList[i % jarColorList.Length];
                 Register(Interactable.Add(jar, "Jar_" + item, Vector3.zero, new Vector3(1.6f, 1.3f, 1.6f),
                     () => g.Session.Stove.Tool == null ? item + " · chọn dụng cụ trước" : "Cho " + item + " vào " + g.Session.Stove.Tool.ToLowerInvariant(),
                     () => g.AddPantry(item)));
@@ -361,12 +385,26 @@ namespace QuanAnHope.Game
             Register(Interactable.Add(stoveHit, "Stove", Vector3.zero, new Vector3(1.4f, 0.8f, 1.0f), StovePrompt, () => g.UseStove()));
 
             // Bang nho tren bep: dung cu + thu tu da cho, khoang bac mon, tien do nau (constitution muc 5.3, Dieu 9).
-            Canvas panel = UiKit.WorldCanvas(goc4, "BangBep", new Vector3(0f, 2.28f, 2.95f), Quaternion.Euler(-15f, 0f, 0f), new Vector2(1500f, 620f));
-            Image pb = UiKit.Panel(panel.transform, "Nen", new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1500f, 620f), UiKit.Cream);
+            Canvas panel = UiKit.WorldCanvas(goc4, "BangBep", new Vector3(0f, 2.24f, 2.95f), Quaternion.Euler(-15f, 0f, 0f), new Vector2(1500f, 520f));
+            Image pb = UiKit.Panel(panel.transform, "Nen", new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1500f, 520f), UiKit.Cream);
             pb.raycastTarget = false;
             stoveSteps = UiKit.Label(pb.transform, "ThuTu", new Vector2(0.5f, 1f), new Vector2(0f, -20f), new Vector2(1420f, 190f), "", 66f);
-            stoveBarRow = UiKit.Grid(pb.transform, "ThanhTiLe", new Vector2(0.5f, 1f), new Vector2(0f, -220f), new Vector2(1420f, 210f), 2,
-                new Vector2(700f, 210f), 20f).transform;
+
+            // Thanh ti le bac mon: mot dai chu nhat dai, thap; du 6 bac ke ca bac 0% (tin nhan nguoi dung 14/11).
+            Image strip = UiKit.Panel(pb.transform, "ThanhTiLe", new Vector2(0.5f, 1f), new Vector2(0f, -222f), new Vector2(BarSize.x, BarSize.y), UiKit.Ink, false);
+            strip.raycastTarget = false;
+            stoveBarRoot = strip.gameObject;
+            float segment = (BarSize.x - 8f) / barCells.Length;
+            for (int tier = 0; tier < barCells.Length; tier++)
+            {
+                RectTransform cell = UiKit.Box(strip.transform, "Bar_" + tier, new Vector2(0f, 0.5f), new Vector2(4f + segment * tier + 2f, 0f),
+                    new Vector2(segment - 4f, BarSize.y - 8f));
+                var img = cell.gameObject.AddComponent<Image>();
+                img.color = UiKit.DishTier[tier];
+                img.raycastTarget = false;
+                barCells[tier] = UiKit.Text(cell, "", 40f, TextAlignmentOptions.Center, 4f);
+                barCells[tier].lineSpacing = -28f;
+            }
             stoveStatus = UiKit.Label(pb.transform, "TrangThai", new Vector2(0.5f, 0f), new Vector2(0f, 90f), new Vector2(1420f, 90f), "", 54f);
             cookBar = ProgressBar.Create(pb.transform, "DangNau", new Vector2(0.5f, 0f), new Vector2(0f, 24f), new Vector2(1420f, 60f), UiKit.Coral);
 
@@ -436,6 +474,97 @@ namespace QuanAnHope.Game
             return t;
         }
 
+        // ---- Do trong dung cu tren bep (hinh anh + animation khi cho vao) ----
+
+        /// <summary>Tam mat dung cu, ban kinh xep do va ti le do theo dung cu dang dat tren bep.</summary>
+        static void PanSpec(string tool, out Vector3 center, out float radius, out float scale)
+        {
+            switch (tool)
+            {
+                // Mieng noi (1,74 m) ngang tam mat nguoi choi: do noi tren mat canh o nua sau, nho len khoi mieng noi de nhin thay.
+                case "Nồi": center = new Vector3(0f, 1.83f, 3.3f); radius = 0.3f; scale = 2.4f; return;
+                case "Vỉ nướng": center = new Vector3(0f, 1.2f, 3.3f); radius = 0.16f; scale = 2f; return;
+                default: center = new Vector3(0f, 1.215f, 3.3f); radius = 0.17f; scale = 2f; return;
+            }
+        }
+
+        /// <summary>
+        /// Cho thu index trong dung cu. Chao / vi: vong tron, bat dau o phia nguoi choi.
+        /// Noi: vong cung o nua sau (z duong, xa nguoi choi) de mep noi phia truoc khong che.
+        /// </summary>
+        static Vector3 PanSlot(int index, float radius, bool deep)
+        {
+            float a, r;
+            if (deep)
+            {
+                a = Mathf.Deg2Rad * (90f + (index % 2 == 0 ? 1f : -1f) * 30f * ((index + 1) / 2));
+                r = radius * (index < 7 ? 0.72f : 0.25f);
+            }
+            else
+            {
+                a = Mathf.Deg2Rad * (-90f + 62f * index);
+                r = radius * (index < 6 ? 0.72f : 0.35f);
+            }
+            return new Vector3(Mathf.Cos(a) * r, 0.006f * (index / 6), Mathf.Sin(a) * r);
+        }
+
+        void PlacePanRoot(string tool)
+        {
+            Vector3 center;
+            float radius, scale;
+            PanSpec(tool, out center, out radius, out scale);
+            if (panRoot == null) panRoot = Toon.Empty(goc4, "DoTrongBep", center).transform;
+            panRoot.localPosition = center;
+            for (int i = 0; i < panItems.Count; i++)
+                if (panItems[i] != null) panItems[i].Retarget(PanSlot(i, radius, tool == "Nồi"));
+        }
+
+        /// <summary>
+        /// Goi ngay khi bep nhan them mot thu (truoc khi ve lai tay): nguyen lieu bay tu tay vao dung cu,
+        /// gia vi thi lo nghieng va mot giot mau lo bay vao. Do nam lai trong dung cu toi khi muc / do bo.
+        /// </summary>
+        public void OnAddedToStove(Ingredient ingredient, string pantryItem)
+        {
+            Stove stove = g.Session.Stove;
+            PlacePanRoot(stove.Tool);
+            Vector3 center;
+            float radius, scale;
+            PanSpec(stove.Tool, out center, out radius, out scale);
+            Vector3 slot = PanSlot(panItems.Count, radius, stove.Tool == "Nồi");
+
+            GameObject go;
+            Vector3 from;
+            if (ingredient != null)
+            {
+                ItemView v = ItemView.Create(panRoot, ingredient, scale, false);
+                v.SetPrepared(true);
+                go = v.gameObject;
+                from = handModel != null ? handModel.transform.position : handAnchor.position;
+            }
+            else
+            {
+                go = Toon.Empty(panRoot, "GiaVi_" + pantryItem, Vector3.zero);
+                Color c;
+                if (!jarColors.TryGetValue(pantryItem, out c)) c = UiKit.Cream;
+                Toon.Prim(PrimitiveType.Sphere, go.transform, "Giot", new Vector3(0f, 0.012f, 0f), new Vector3(0.075f, 0.026f, 0.075f), c, 0.006f);
+                go.transform.localScale = Vector3.one * scale;
+                GameObject jar = Jar(pantryItem);
+                from = jar != null ? jar.transform.position + Vector3.down * 0.05f : panRoot.position + Vector3.up * 0.5f;
+                if (jar != null) jar.GetComponent<Wobble>().Play();
+            }
+            panItems.Add(PanItem.Launch(go, panRoot, from, slot));
+        }
+
+        void RefreshPan(Stove stove)
+        {
+            if (stove.Added.Count == 0 || stove.Added.Count < panItems.Count)
+            {
+                foreach (PanItem p in panItems) if (p != null) Object.Destroy(p.gameObject);
+                panItems.Clear();
+            }
+            if (stove.Tool != null && panRoot != null) PlacePanRoot(stove.Tool);
+        }
+
         string BoardPrompt()
         {
             if (g.OnBoard == null)
@@ -489,16 +618,21 @@ namespace QuanAnHope.Game
             else if (stove.Added.Count == 0) stoveSteps.text = stove.Tool + ": chưa cho gì vào";
             else stoveSteps.text = stove.Tool + ": " + string.Join(" → ", stove.Added);
 
-            UiKit.Clear(stoveBarRow);
             TierChance[] bar = stove.Bar();
+            stoveBarRoot.SetActive(bar != null);
             if (bar != null)
             {
-                for (int i = 0; i < bar.Length; i++)
+                var pct = new int[barCells.Length];
+                foreach (TierChance c in bar)
+                    if (c.tier >= 0 && c.tier < pct.Length) pct[c.tier] = Mathf.RoundToInt((float)(c.chance * 100.0));
+                for (int tier = 0; tier < barCells.Length; tier++)
                 {
-                    string label = Mathf.RoundToInt((float)(bar[i].chance * 100.0)) + "%\n<size=56>" + UiKit.DishTierName[bar[i].tier] + "</size>";
-                    UiKit.Chip(stoveBarRow, "Bar_" + i, label, UiKit.DishTier[bar[i].tier], null, 100f).GetComponentInChildren<TextMeshProUGUI>().lineSpacing = -30f;
+                    barCells[tier].text = "<size=28>" + UiKit.DishTierName[tier] + "</size>\n" + pct[tier] + "%";
+                    barCells[tier].alpha = pct[tier] > 0 ? 1f : 0.45f;
                 }
             }
+
+            RefreshPan(stove);
 
             switch (stove.State)
             {
@@ -511,6 +645,7 @@ namespace QuanAnHope.Game
             var signature = new List<Dish>(s.Counter.Dishes);
             signature.Add(g.HeldDish);
             if (SameDishes(signature, shownDishes)) return;
+            var previous = new List<Dish>(shownDishes);
             shownDishes.Clear();
             shownDishes.AddRange(signature);
             foreach (GameObject d in shelfDishes) Object.Destroy(d);
@@ -526,6 +661,7 @@ namespace QuanAnHope.Game
                 Canvas tag = UiKit.WorldCanvas(model.transform, "TenMon", new Vector3(0f, -0.2f, -0.3f), Quaternion.identity, new Vector2(470f, 120f));
                 Image tb = UiKit.Panel(tag.transform, "Nen", new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(470f, 120f), UiKit.Cream, false);
                 UiKit.Text(tb.transform, captured.name, 50f, TextAlignmentOptions.Center, 6f);
+                if (!previous.Contains(dish)) Pop.Play(model, 0.6f); // mon ra lo 0,6 giay (Art Bible muc 11)
                 shelfDishes.Add(model);
             }
         }
@@ -550,17 +686,26 @@ namespace QuanAnHope.Game
 
             GameObject bell = Toon.Empty(goc1, "Chuong", new Vector3(1.3f, 1.35f, 2.15f));
             Register(Interactable.Add(bell, "Bell", Vector3.zero, new Vector3(0.55f, 0.45f, 0.55f),
-                () => g.Hand == HandKind.Dish ? (g.Session.CurrentCustomer != null ? "Bấm chuông: phục vụ " + g.HeldDish.name : "Chưa có khách")
-                    : "Chuông · cầm đĩa từ quầy chờ tới đây",
+                BellPrompt,
                 () => g.RingBell()));
 
-            Canvas bubbleCanvas = UiKit.WorldCanvas(goc1, "BongThoai", new Vector3(-1.4f, 2.75f, 3.0f), Quaternion.identity, new Vector2(1000f, 420f));
-            Image bb = UiKit.Panel(bubbleCanvas.transform, "Nen", new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1000f, 420f), UiKit.Cream);
-            bubbleText = UiKit.Text(bb.transform, "", 120f);
-            bubbleText.lineSpacing = -25f;
+            // Bong bong canh dau khach: so thu tu, do de tinh, mon khach goi (constitution muc 6.7, Dieu 9).
+            Canvas bubbleCanvas = UiKit.WorldCanvas(goc1, "BongThoai", new Vector3(-1.4f, 2.8f, 3.0f), Quaternion.identity, new Vector2(1300f, 520f));
+            Image bb = UiKit.Panel(bubbleCanvas.transform, "Nen", new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1300f, 520f), UiKit.Cream);
+            bubbleText = UiKit.Text(bb.transform, "", 100f, TextAlignmentOptions.Center, 30f);
+            bubbleText.lineSpacing = -20f;
             bubble = bubbleCanvas.gameObject;
 
             servedSpot = Toon.Empty(goc1, "DiaVuaPhucVu", new Vector3(-0.2f, 1.22f, 2.25f)).transform;
+        }
+
+        string BellPrompt()
+        {
+            Customer c = g.Session.CurrentCustomer;
+            if (g.Hand != HandKind.Dish) return c != null ? "Chuông · mang " + c.orderName + " từ quầy chờ tới đây" : "Chuông · cầm đĩa từ quầy chờ tới đây";
+            if (c == null) return "Chưa có khách";
+            if (g.HeldDish.recipeId != c.orderId) return "Sai món: khách gọi " + c.orderName + " (bấm vẫn đưa, khách sẽ giận)";
+            return "Bấm chuông: phục vụ " + g.HeldDish.name;
         }
 
         void RefreshServe()
@@ -576,7 +721,8 @@ namespace QuanAnHope.Game
             bool waiting = s.Phase == GamePhase.Open && s.CurrentCustomer != null;
             bubble.SetActive(waiting);
             if (waiting)
-                bubbleText.text = "<size=70>Khách " + (s.ServedToday + 1) + "/" + s.CustomersToday + "</size>\nDễ tính " + s.CurrentCustomer.easiness + "%";
+                bubbleText.text = "<size=78>Khách " + (s.ServedToday + 1) + "/" + s.CustomersToday + " · Dễ tính " + s.CurrentCustomer.easiness + "%</size>\n"
+                    + "Gọi: " + s.CurrentCustomer.orderName;
 
             if (servedDish != null) Object.Destroy(servedDish);
             servedDish = null;
@@ -604,11 +750,25 @@ namespace QuanAnHope.Game
             pageTitle = UiKit.Label(left, "TenMon", new Vector2(0.5f, 1f), new Vector2(0f, -40f), new Vector2(820f, 170f), "", 92f);
             pageInfo = UiKit.Label(left, "ThongTin", new Vector2(0.5f, 1f), new Vector2(0f, -215f), new Vector2(820f, 90f), "", 48f);
             // Hinh dia mon nhu ban phac: dia trang hinh bau duc, mon u len o giua.
-            dishBase = UiKit.Box(left, "Dia", new Vector2(0.5f, 0.5f), new Vector2(0f, -150f), new Vector2(520f, 170f)).gameObject.AddComponent<Image>();
+            dishBase = UiKit.Box(left, "Dia", new Vector2(0.5f, 0.5f), new Vector2(0f, -40f), new Vector2(480f, 150f)).gameObject.AddComponent<Image>();
             dishBase.sprite = UiKit.Circle;
             dishBase.color = PlateWhite;
-            dishFood = UiKit.Box(left, "Mon", new Vector2(0.5f, 0.5f), new Vector2(0f, -105f), new Vector2(300f, 170f)).gameObject.AddComponent<Image>();
+            dishFood = UiKit.Box(left, "Mon", new Vector2(0.5f, 0.5f), new Vector2(0f, 0f), new Vector2(280f, 150f)).gameObject.AddComponent<Image>();
             dishFood.sprite = UiKit.Circle;
+
+            // Gia ban theo bac mon (tin nhan nguoi dung 14/11; constitution muc 5.2, 5.8): moi o to mau bac mon.
+            priceHeader = UiKit.Label(left, "TieuDeGia", new Vector2(0.5f, 0f), new Vector2(0f, 260f), new Vector2(820f, 70f), "", 48f);
+            RectTransform prices = UiKit.Box(left, "GiaBan", new Vector2(0.5f, 0f), new Vector2(0f, 120f), new Vector2(820f, 130f));
+            float cell = 820f / priceCells.Length;
+            for (int tier = 0; tier < priceCells.Length; tier++)
+            {
+                Image c = UiKit.Panel(prices, "Gia_" + tier, new Vector2(0f, 0.5f), new Vector2(cell * tier + 4f, 0f), new Vector2(cell - 8f, 126f),
+                    UiKit.DishTier[tier], false);
+                c.raycastTarget = false;
+                // Ten bac va gia la hai dong chu rieng: ten dai ("Binh thuong") tu thu nho, khong lam nho so gia.
+                UiKit.Label(c.transform, "Ten", new Vector2(0.5f, 1f), new Vector2(0f, -6f), new Vector2(cell - 16f, 44f), UiKit.DishTierName[tier], 28f);
+                priceCells[tier] = UiKit.Label(c.transform, "Gia", new Vector2(0.5f, 0f), new Vector2(0f, 8f), new Vector2(cell - 16f, 66f), "", 50f);
+            }
             pageFooter = UiKit.Label(left, "Trang", new Vector2(0.5f, 0f), new Vector2(0f, 40f), new Vector2(820f, 70f), "", 44f);
 
             // Trang phai: thu tu cho vao, moi buoc mot so tron.
@@ -667,6 +827,10 @@ namespace QuanAnHope.Game
             pageInfo.text = r.tool + " · đế " + r.baseName + " · nấu " + r.cookSeconds.ToString("0.#") + " giây";
             pageFooter.text = "Trang " + (page + 1) + " / " + recipes.Count + " công thức";
             dishFood.color = IngredientArt.ColorOf(r.mainId);
+            GameSession s = g.Session;
+            priceHeader.text = "Giá bán · vòng " + s.Round + " (khách trả thêm tip)";
+            for (int tier = 0; tier < priceCells.Length; tier++)
+                priceCells[tier].text = Payment.Price(s.Balance, s.Round, tier) + "G";
             rightTitle.text = "Thứ tự cho vào " + r.tool.ToLowerInvariant();
 
             UiKit.Clear(stepList);
@@ -748,7 +912,7 @@ namespace QuanAnHope.Game
                     handModel = DishModel.EmptyPlate(handAnchor);
                     break;
                 case HandKind.Dish:
-                    handModel = DishModel.Create(handAnchor, g.HeldDish, g.Session.Recipes);
+                    handModel = DishModel.Create(handAnchor, g.HeldDish, g.Session.Recipes, false);
                     break;
             }
             if (handModel != null)
@@ -767,6 +931,8 @@ namespace QuanAnHope.Game
             if (stove.State == StoveState.Cooking && stove.CookSeconds > 0f) cookBar.Set(stove.Elapsed / stove.CookSeconds);
             else cookBar.Set(stove.State == StoveState.Ready ? 1f : 0f);
             if (knob != null) knob.localEulerAngles = new Vector3(-90f, stove.State == StoveState.Cooking ? 90f : 0f, 0f);
+            bool cooking = stove.State == StoveState.Cooking;
+            foreach (PanItem p in panItems) if (p != null) p.Sizzle = cooking;
             foreach (CrateView c in crates.Values) c.Tick(dt);
             foreach (ItemView i in items.Values) if (i != null) i.Tick(dt);
         }
@@ -840,18 +1006,36 @@ namespace QuanAnHope.Game
             Vector3 size;
             IngredientArt.Shape(ing.typeId, out type, out size);
             float h = type == PrimitiveType.Capsule ? size.y * 2f : size.y;
-            GameObject b = Toon.Prim(type, go.transform, "Than", new Vector3(0f, 0.012f + h * 0.5f, 0f), size, IngredientArt.ColorOf(ing.typeId), 0.006f,
+            Color bodyColor = IngredientArt.ColorOf(ing.typeId);
+            if (ing.tier == 0) bodyColor = Color.Lerp(bodyColor, SpoiledBody, 0.6f); // anh 08: bac 0 than xin mau
+            GameObject b = Toon.Prim(type, go.transform, "Than", new Vector3(0f, 0.012f + h * 0.5f, 0f), size, bodyColor, 0.006f,
                 type == PrimitiveType.Capsule ? new Vector3(0f, 0f, 90f) : Vector3.zero);
             if (type == PrimitiveType.Capsule) b.transform.localPosition = new Vector3(0f, 0.012f + size.x * 0.5f, 0f);
             v.body = b.transform;
             v.bodyScale = b.transform.localScale;
+
+            // Mat theo bac (Art Bible muc 7: bac doc bang mau khung + bieu cam + phu kien), luon quay ve nguoi choi.
+            float wide = type == PrimitiveType.Capsule ? size.y * 2f : size.x;
+            float tall = type == PrimitiveType.Capsule ? size.x : size.y;
+            float faceSize = 2.1f * Mathf.Max(Mathf.Min(wide, tall), 0.6f * Mathf.Max(wide, tall));
+            // Day mat ra bang ban kinh bao cua than (ke ca khi thai lat rong ra 1,2 lan) de mat khong lot vao trong khoi
+            // khi nhin xeo (khoi vuong tren tay, tren thot). Mat nam tren tia tu tam than toi mat nguoi nen khong lech.
+            Vector3 extent = type == PrimitiveType.Capsule ? new Vector3(size.y * 2f, size.x, size.x) : size;
+            float depth = 0.5f * 1.2f * extent.magnitude;
+            v.Face = FaceBillboard.Create(go.transform, b.transform, FaceArt.Ingredient(ing.tier), faceSize, depth);
             return v;
         }
+
+        static readonly Color SpoiledBody = UiKit.Hex("#8F7F5A");
+
+        /// <summary>Mat cua mon (anh theo bac).</summary>
+        public FaceBillboard Face { get; private set; }
 
         public void SetPrepared(bool prepared)
         {
             if (body == null) return;
             body.localScale = prepared ? new Vector3(bodyScale.x * 1.2f, bodyScale.y * 0.45f, bodyScale.z * 1.2f) : bodyScale;
+            if (Face != null) Face.SetSizeFactor(prepared ? 0.8f : 1f);
         }
 
         /// <summary>Lo bac: hien dan trong 0,4 giay (Art Bible muc 11); bac 4-5 lau hon.</summary>
@@ -948,19 +1132,26 @@ namespace QuanAnHope.Game
             return go;
         }
 
-        public static GameObject Create(Transform parent, Dish dish, RecipeBook book)
+        /// <summary>
+        /// Dia mon: vien dia mau bac, mon co mat theo bac mon va hoi bay len theo bac (Art Bible muc 7).
+        /// fx = false khi cam tren tay (hoi khong che tam nhin).
+        /// </summary>
+        public static GameObject Create(Transform parent, Dish dish, RecipeBook book, bool fx = true)
         {
+            int tier = Mathf.Clamp(dish.tier, 0, UiKit.DishTier.Length - 1);
             GameObject go = Toon.Empty(parent, "DiaMon", Vector3.zero);
-            Color rim = UiKit.DishTier[Mathf.Clamp(dish.tier, 0, UiKit.DishTier.Length - 1)];
+            Color rim = UiKit.DishTier[tier];
             Toon.Prim(PrimitiveType.Cylinder, go.transform, "VienDia", new Vector3(0f, 0.012f, 0f), new Vector3(0.38f, 0.024f, 0.38f), rim, Toon.OutlineSmall);
             Toon.Prim(PrimitiveType.Cylinder, go.transform, "LongDia", new Vector3(0f, 0.02f, 0f), new Vector3(0.28f, 0.024f, 0.28f), UiKit.Hex("#FFFFFF"), 0f);
-            Toon.Prim(PrimitiveType.Sphere, go.transform, "DeMon", new Vector3(-0.04f, 0.05f, 0.02f), new Vector3(0.16f, 0.07f, 0.14f), UiKit.Hex("#FFF3DC"), 0.008f);
+            Toon.Prim(PrimitiveType.Sphere, go.transform, "DeMon", new Vector3(-0.06f, 0.05f, 0.05f), new Vector3(0.15f, 0.07f, 0.12f), UiKit.Hex("#FFF3DC"), 0.008f);
             string mainId = dish.recipeId != null && dish.recipeId.Contains("__") ? dish.recipeId.Substring(0, dish.recipeId.IndexOf("__")) : "";
             string sideId = dish.recipeId != null && dish.recipeId.Contains("__") ? dish.recipeId.Substring(dish.recipeId.IndexOf("__") + 2) : "";
-            Toon.Prim(PrimitiveType.Sphere, go.transform, "Mon", new Vector3(0.05f, 0.06f, -0.02f), new Vector3(0.14f, 0.08f, 0.12f),
-                dish.tier == 0 ? UiKit.Hex("#A39064") : IngredientArt.ColorOf(mainId), 0.008f);
-            Toon.Prim(PrimitiveType.Sphere, go.transform, "Rau", new Vector3(0.09f, 0.08f, 0.03f), new Vector3(0.06f, 0.04f, 0.06f),
+            GameObject food = Toon.Prim(PrimitiveType.Sphere, go.transform, "Mon", new Vector3(0.01f, 0.07f, -0.01f), new Vector3(0.17f, 0.1f, 0.15f),
+                tier == 0 ? UiKit.Hex("#A39064") : IngredientArt.ColorOf(mainId), 0.008f);
+            Toon.Prim(PrimitiveType.Sphere, go.transform, "Rau", new Vector3(0.09f, 0.07f, 0.06f), new Vector3(0.06f, 0.04f, 0.06f),
                 IngredientArt.ColorOf(sideId), 0.006f);
+            FaceBillboard.Create(go.transform, food.transform, FaceArt.Dish(tier), 0.17f, 0.08f, "MatMon");
+            if (fx) DishFx.Create(go.transform, tier, null);
             return go;
         }
     }

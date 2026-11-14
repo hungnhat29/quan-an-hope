@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace QuanAnHope.Core
 {
@@ -145,8 +146,69 @@ namespace QuanAnHope.Core
             CustomersToday = Balance.CustomersPerDay(Day);
             ServedToday = 0;
             Phase = GamePhase.Open;
-            CurrentCustomer = customers.Next(Round);
+            CurrentCustomer = NextCustomer();
             return true;
+        }
+
+        // ---------- goi mon (constitution muc 6.7) ----------
+
+        const string StandardGroup = "chinh";
+
+        /// <summary>Khach moi vao: quay do de tinh roi goi mot mon.</summary>
+        Customer NextCustomer()
+        {
+            Customer c = customers.Next(Round);
+            Recipe order = ChooseOrder();
+            c.orderId = order.id;
+            c.orderName = order.name;
+            return c;
+        }
+
+        /// <summary>
+        /// Nhung mon lam duoc ngay luc nay, sap theo id: dia tren quay cho, mon dang tren bep,
+        /// va moi cap (loai chinh, loai phu) dang co trong kho.
+        /// </summary>
+        public List<Recipe> MakeableRecipes()
+        {
+            var byId = new SortedDictionary<string, Recipe>(StringComparer.Ordinal);
+            foreach (Dish d in Counter.Dishes) AddRecipe(byId, Lookup.ById(d.recipeId));
+            AddRecipe(byId, Stove.PendingRecipe);
+
+            var mains = new List<string>();
+            var sides = new List<string>();
+            foreach (Ingredient i in Stock.Items)
+            {
+                List<string> list = i.kind == IngredientKind.Main ? mains : sides;
+                if (!list.Contains(i.typeId)) list.Add(i.typeId);
+            }
+            foreach (string m in mains)
+                foreach (string p in sides)
+                    AddRecipe(byId, Lookup.Find(m, p));
+            return new List<Recipe>(byId.Values);
+        }
+
+        static void AddRecipe(SortedDictionary<string, Recipe> byId, Recipe r)
+        {
+            if (r != null && !byId.ContainsKey(r.id)) byId[r.id] = r;
+        }
+
+        /// <summary>Mon trong sach da mo khoa o vong hien tai (constitution muc 5.8).</summary>
+        public List<Recipe> BookRecipes()
+        {
+            var list = new List<Recipe>();
+            foreach (Recipe r in Recipes.recipes)
+                if (r.group == StandardGroup && r.unlockRound >= 1 && r.unlockRound <= Round) list.Add(r);
+            return list;
+        }
+
+        /// <summary>
+        /// Chon mon cho khach: deu giua cac mon lam duoc; khong lam duoc mon nao thi deu giua cac mon trong sach.
+        /// </summary>
+        public Recipe ChooseOrder()
+        {
+            List<Recipe> candidates = MakeableRecipes();
+            if (candidates.Count == 0) candidates = BookRecipes();
+            return candidates[rng.NextInt(0, candidates.Count - 1)];
         }
 
         /// <summary>Bam chuong: dua dia o vi tri nay tren quay cho cho khach dang doi. Null neu khong phuc vu duoc.</summary>
@@ -156,14 +218,17 @@ namespace QuanAnHope.Core
             if (counterIndex < 0 || counterIndex >= Counter.Dishes.Count) return null;
 
             Dish dish = Counter.TakeAt(counterIndex);
-            PaymentResult payment = Payment.Settle(Balance, Round, CurrentCustomer.easiness, dish.tier);
+            // Sai mon: khach nhan dia nhung gian (constitution muc 6.7).
+            PaymentResult payment = dish.recipeId == CurrentCustomer.orderId
+                ? Payment.Settle(Balance, Round, CurrentCustomer.easiness, dish.tier)
+                : Payment.WrongOrder(Balance, Round);
             Money += payment.amount;
             IncomeToday += payment.amount;
             LastPayment = payment;
             ServedToday++;
 
             if (ServedToday >= CustomersToday) EndDay();
-            else CurrentCustomer = customers.Next(Round);
+            else CurrentCustomer = NextCustomer();
             return payment;
         }
 
@@ -259,13 +324,24 @@ namespace QuanAnHope.Core
             s.OpenShop();
             while (s.Phase == GamePhase.Open)
             {
-                if (s.Counter.Dishes.Count == 0 && !CookOne(s))
+                // Phuc vu dung mon khach goi (constitution muc 6.7); khong nau duoc thi dong quan.
+                string want = s.CurrentCustomer.orderId;
+                int index = IndexOnCounter(s, want);
+                if (index < 0 && CookFor(s, want)) index = IndexOnCounter(s, want);
+                if (index < 0)
                 {
                     s.CloseEarly();
                     break;
                 }
-                s.Serve(0);
+                s.Serve(index);
             }
+        }
+
+        static int IndexOnCounter(GameSession s, string recipeId)
+        {
+            for (int i = 0; i < s.Counter.Dishes.Count; i++)
+                if (s.Counter.Dishes[i].recipeId == recipeId) return i;
+            return -1;
         }
 
         /// <summary>Nau mot mon tu cap nguyen lieu dau tien trong kho, dung cong thuc. False neu khong du do.</summary>
@@ -285,7 +361,30 @@ namespace QuanAnHope.Core
                 if (side == null && i.kind == IngredientKind.Side) side = i;
             }
             if (main == null || side == null) return false;
+            return Cook(s, main, side);
+        }
 
+        /// <summary>Nau dung mon co id nay tu kho (quay them thung neu thieu). False neu khong du do.</summary>
+        public static bool CookFor(GameSession s, string recipeId)
+        {
+            Recipe want = s.Lookup.ById(recipeId);
+            if (want == null || s.Counter.IsFull || s.Stove.State != StoveState.Empty) return false;
+            while (true)
+            {
+                Ingredient main = null, side = null;
+                foreach (Ingredient i in s.Stock.Items)
+                {
+                    if (main == null && i.kind == IngredientKind.Main && i.typeId == want.mainId) main = i;
+                    if (side == null && i.kind == IngredientKind.Side && i.typeId == want.sideId) side = i;
+                }
+                if (main != null && side != null) return Cook(s, main, side);
+                PullResult pull;
+                if (!s.PullCrates(out pull)) return false;
+            }
+        }
+
+        static bool Cook(GameSession s, Ingredient main, Ingredient side)
+        {
             Recipe recipe = s.Lookup.Find(main.typeId, side.typeId);
             if (recipe == null) return false;
 

@@ -163,6 +163,8 @@ namespace QuanAnHope.PlayTests
                 Assert.AreEqual(HandKind.Ingredient, g.Hand);
                 Assert.AreSame(c, g.HeldIngredient);
                 Assert.IsNotNull(g.Room.HandModel, "do dang cam phai hien truoc mat");
+                yield return null;
+                AssertFaceOutside(g.Room.HandModel);
                 yield break;
             }
             Assert.Fail("Khong nhin trung mon " + ing.name + " nao trong thung");
@@ -182,6 +184,7 @@ namespace QuanAnHope.PlayTests
             yield return Use("Board");
             Assert.AreSame(ing, g.OnBoard, "nguyen lieu phai nam tren thot");
             Assert.IsNotNull(g.Room.BoardItem);
+            AssertFaceOutside(g.Room.BoardItem);
             yield return HoldOn("Board", () => ing.prepared, ing.prepSeconds + 5f);
             yield return Use("Board");
             Assert.AreSame(ing, g.HeldIngredient, "cam nguyen lieu da so che len");
@@ -189,11 +192,15 @@ namespace QuanAnHope.PlayTests
             Assert.AreEqual(HandKind.Empty, g.Hand);
         }
 
-        /// <summary>Nau mot mon bang tay theo dung cong thuc (hoac dao 2 buoc dau de ra Lac vi).</summary>
-        IEnumerator CookOne(bool correctOrder = true)
+        /// <summary>
+        /// Nau mot mon bang tay theo dung cong thuc (hoac dao 2 buoc dau de ra Lac vi).
+        /// recipeId = mon khach goi; null thi lay cap chinh + phu dau tien trong kho.
+        /// </summary>
+        IEnumerator CookOne(bool correctOrder = true, string recipeId = null)
         {
-            Ingredient main = S.Stock.Items.FirstOrDefault(i => i.kind == IngredientKind.Main);
-            Ingredient side = S.Stock.Items.FirstOrDefault(i => i.kind == IngredientKind.Side);
+            Recipe want = recipeId != null ? S.Lookup.ById(recipeId) : null;
+            Ingredient main = S.Stock.Items.FirstOrDefault(i => i.kind == IngredientKind.Main && (want == null || i.typeId == want.mainId));
+            Ingredient side = S.Stock.Items.FirstOrDefault(i => i.kind == IngredientKind.Side && (want == null || i.typeId == want.sideId));
             Assert.IsNotNull(main, "Kho het nguyen lieu chinh");
             Assert.IsNotNull(side, "Kho het do phu");
             Recipe r = S.Lookup.Find(main.typeId, side.typeId);
@@ -210,15 +217,30 @@ namespace QuanAnHope.PlayTests
             }
             foreach (string step in steps)
             {
+                int inPan = g.Room.PanItems.Count;
                 if (step == main.name) yield return PrepareAndAdd(main);
                 else if (step == side.name) yield return PrepareAndAdd(side);
-                else yield return Use("Jar_" + step);
+                else
+                {
+                    yield return Use("Jar_" + step);
+                    Assert.IsNotNull(g.Room.Jar(step).GetComponent<Wobble>(), "lo gia vi nghieng khi rot");
+                }
+                // Cho vao co hinh anh: mot vat moi bay vao dung cu va nam lai trong do (tin nhan 14/11).
+                Assert.AreEqual(inPan + 1, g.Room.PanItems.Count, "cho " + step + " phai co vat bay vao bep");
+                yield return CheckPanSettled();
             }
 
             Assert.IsNotNull(S.Stove.Bar(), "thanh ti le phai co khi du chinh + phu");
-            StringAssert.Contains("%", TextOf("BangBep"), "khoang bac mon hien tren bang cua bep (Dieu 9)");
+            CheckTierStrip();
             yield return Use("Knob");
             Assert.AreEqual(StoveState.Cooking, S.Stove.State);
+            Assert.IsTrue(g.Room.PanItems.All(p => p.Sizzle), "dang nau thi do trong bep rung");
+            if (shotCooking != null)
+            {
+                yield return WalkTo(StandFor(g.Room.PanRoot.position));
+                yield return Shot(shotCooking, g.Room.PanRoot.position + new Vector3(0f, 0.3f, 0f));
+                shotCooking = null;
+            }
             yield return WaitUntil(() => S.Stove.State == StoveState.Ready, r.cookSeconds + 5f, "nau " + r.name);
             int before = S.Counter.Dishes.Count;
             yield return Use("PlateStack");
@@ -226,19 +248,133 @@ namespace QuanAnHope.PlayTests
             yield return Use("Stove");
             Assert.AreEqual(before + 1, S.Counter.Dishes.Count, "dia phai len quay cho");
             Assert.AreEqual(HandKind.Empty, g.Hand);
+            Assert.AreEqual(0, g.Room.PanItems.Count, "muc ra dia thi bep trong");
+            yield return null;
+            CheckDishFaces();
         }
 
+        string shotCooking;
+
+        /// <summary>Moi vat da cho vao deu da roi xuong, nam trong long dung cu, co mat theo bac (nguyen lieu).</summary>
+        IEnumerator CheckPanSettled()
+        {
+            yield return WaitUntil(() => g.Room.PanItems.All(p => p.Landed), 3f, "do bay vao bep");
+            Transform pan = g.Room.PanRoot;
+            float radius = S.Stove.Tool == "Nồi" ? 0.55f : 0.29f;
+            foreach (PanItem p in g.Room.PanItems)
+            {
+                Vector3 d = p.transform.position - pan.position;
+                Assert.Less(new Vector2(d.x, d.z).magnitude, radius, p.name + " phai nam trong " + S.Stove.Tool);
+                Assert.Less(Mathf.Abs(d.y), 0.05f, p.name + " nam tren mat dung cu");
+                ItemView v = p.GetComponent<ItemView>();
+                if (v == null) continue;
+                Assert.AreEqual("Mat_NguyenLieu_" + v.Tier, v.Face.Texture.name);
+                AssertFaceOutside(p.gameObject);
+            }
+        }
+
+        /// <summary>Tam mat nam ngoai khoi bao cua than mon, nen khong bi chinh than mon che (khoi vuong nhin xeo).</summary>
+        static void AssertFaceOutside(GameObject item)
+        {
+            ItemView v = item.GetComponent<ItemView>();
+            Assert.IsNotNull(v, item.name + " khong phai nguyen lieu");
+            Renderer body = item.transform.Find("Than").GetComponent<Renderer>();
+            // Ban kinh mat cau bao than (khong dung hop AABB: khoi bi xoay thi AABB phinh to hon khoi that).
+            float radius = Vector3.Scale(body.localBounds.extents, body.transform.lossyScale).magnitude;
+            float d = Vector3.Distance(v.Face.transform.position, body.bounds.center);
+            Assert.GreaterOrEqual(d, radius * 0.98f, "mat cua " + item.name + " lot vao trong than");
+        }
+
+        /// <summary>Thanh ti le bac mon: mot dai dai, thap, du 6 bac ke ca 0% (tin nhan 14/11).</summary>
+        void CheckTierStrip()
+        {
+            Transform strip = FindAny("ThanhTiLe");
+            Assert.IsNotNull(strip);
+            Assert.IsTrue(strip.gameObject.activeInHierarchy);
+            var rt = (RectTransform)strip;
+            Assert.LessOrEqual(rt.sizeDelta.y, 110f, "dai ti le thap (mm tren bang bep)");
+            Assert.Greater(rt.sizeDelta.x / rt.sizeDelta.y, 10f, "dai ti le dai va mong");
+            TierChance[] bar = S.Stove.Bar();
+            int total = 0;
+            for (int tier = 0; tier < 6; tier++)
+            {
+                Transform cell = strip.Find("Bar_" + tier);
+                Assert.IsNotNull(cell, "thieu bac " + tier);
+                string text = cell.GetComponentInChildren<TextMeshProUGUI>().text;
+                StringAssert.Contains(UiKit.DishTierName[tier], text);
+                int expected = bar.Where(c => c.tier == tier).Select(c => Mathf.RoundToInt((float)(c.chance * 100.0))).DefaultIfEmpty(0).First();
+                StringAssert.EndsWith("\n" + expected + "%", text, "bac " + tier);
+                total += expected;
+            }
+            Assert.AreEqual(100f, total, 1f);
+            Assert.IsTrue(bar.Length < 6, "bo du lieu nay phai co it nhat 1 bac 0% de kiem");
+        }
+
+        /// <summary>Moi dia tren quay cho: mat theo bac mon, hoi bay len theo bac (Art Bible muc 7).</summary>
+        void CheckDishFaces()
+        {
+            for (int i = 0; i < g.Room.ShelfDishes.Count; i++)
+            {
+                Dish dish = S.Counter.Dishes[i];
+                GameObject model = g.Room.ShelfDishes[i];
+                FaceBillboard face = model.GetComponentsInChildren<FaceBillboard>().First(f => f.name == "MatMon");
+                Assert.AreEqual("Mat_Mon_" + dish.tier, face.Texture.name, dish.name);
+                Assert.Greater(Vector3.Dot(face.transform.forward, P.Cam.transform.forward), 0.99f, "mat mon quay ve nguoi choi");
+                DishFx fx = model.GetComponent<DishFx>();
+                Assert.IsNotNull(fx);
+                Assert.AreEqual(DishFx.KindFor(dish.tier), fx.Kind);
+                Assert.AreEqual(dish.tier == 1 ? 0 : 1, System.Math.Sign(fx.Count), "bac " + dish.tier);
+            }
+        }
+
+        int OrderedOnShelf()
+        {
+            for (int i = 0; i < S.Counter.Dishes.Count; i++)
+                if (S.Counter.Dishes[i].recipeId == S.CurrentCustomer.orderId) return i;
+            return -1;
+        }
+
+        /// <summary>Doc mon khach goi tren bong bong, nau dung mon (neu quay cho chua co), mang ra, bam chuong.</summary>
         IEnumerator ServeOne()
         {
-            if (S.Counter.Dishes.Count == 0) yield return CookOne();
+            string order = S.CurrentCustomer.orderName;
+            StringAssert.Contains(order, TextOf("BongThoai"), "mon khach goi hien tren bong bong (Dieu 9)");
+            CollectionAssert.Contains(S.MakeableRecipes().Select(r => r.id).ToList(), S.CurrentCustomer.orderId, "khach goi mon lam duoc");
+            if (OrderedOnShelf() < 0) yield return CookOne(true, S.CurrentCustomer.orderId);
             yield return null;
-            GameObject dish = g.Room.ShelfDishes[0];
+            int index = OrderedOnShelf();
+            Assert.GreaterOrEqual(index, 0, "quay cho phai co " + order);
+            GameObject dish = g.Room.ShelfDishes[index];
             yield return Use(dish.GetComponent<Interactable>());
             Assert.AreEqual(HandKind.Dish, g.Hand);
+            Assert.AreEqual(S.CurrentCustomer.orderId, g.HeldDish.recipeId);
+            StringAssert.StartsWith("Bấm chuông: phục vụ", BellPrompt());
             int money = S.Money;
             int expected = Payment.Settle(S.Balance, S.Round, S.CurrentCustomer.easiness, g.HeldDish.tier).amount;
             yield return Use("Bell");
             Assert.AreEqual(money + expected, S.Money, "tien doi dung bang tinh tien");
+        }
+
+        string BellPrompt()
+        {
+            return g.Room.Station("Bell").Prompt();
+        }
+
+        /// <summary>Dua mot dia khac mon khach goi: goi y o chuong canh bao, khach nhan nhung gian (constitution muc 6.7).</summary>
+        IEnumerator ServeWrongDish()
+        {
+            int index = -1;
+            for (int i = 0; i < S.Counter.Dishes.Count; i++)
+                if (S.Counter.Dishes[i].recipeId != S.CurrentCustomer.orderId) index = i;
+            Assert.GreaterOrEqual(index, 0, "can mot dia khac mon de thu");
+            yield return Use(g.Room.ShelfDishes[index].GetComponent<Interactable>());
+            StringAssert.StartsWith("Sai món: khách gọi " + S.CurrentCustomer.orderName, BellPrompt());
+            int money = S.Money;
+            int served = S.ServedToday;
+            yield return Use("Bell");
+            Assert.AreEqual(money - 18, S.Money, "sai mon: quan den 30% x 60G");
+            Assert.AreEqual(served + 1, S.ServedToday);
+            StringAssert.StartsWith("Sai món", g.Toast);
         }
 
         IEnumerator PlayDay(int pulls, string shotPrefix)
@@ -382,6 +518,11 @@ namespace QuanAnHope.PlayTests
                 string expected = ColorUtility.ToHtmlStringRGB(UiKit.IngredientTier[ing.tier]);
                 Assert.AreEqual(expected, ColorUtility.ToHtmlStringRGB(v.DiscColor), "bac doc bang mau de");
                 Assert.AreEqual(expected, ColorUtility.ToHtmlStringRGB(v.Disc.GetComponent<MeshRenderer>().sharedMaterial.GetColor("_Color")));
+                // Mat theo bac (Art Bible muc 7, anh 08), quay ve nguoi choi
+                Assert.IsNotNull(v.Face, ing.name + " phai co mat");
+                Assert.AreEqual("Mat_NguyenLieu_" + ing.tier, v.Face.Texture.name);
+                Assert.Greater(Vector3.Dot(v.Face.transform.forward, P.Cam.transform.forward), 0.99f);
+                Assert.IsNull(v.Face.GetComponent<Collider>(), "mat khong chan tia nhin");
                 itemCount++;
             }
             Assert.AreEqual(8, itemCount);
@@ -395,6 +536,9 @@ namespace QuanAnHope.PlayTests
             string page1 = TextOf("TrangSach");
             StringAssert.Contains("Trang 1 / 9", page1);
             StringAssert.Contains("Thứ tự cho vào", page1);
+            // Gia ban theo bac mon tren trang sach (vong 1: gia goc 60G x he so bac, constitution muc 5.2)
+            StringAssert.Contains("Giá bán", page1);
+            foreach (string price in new[] { "12G", "30G", "60G", "108G", "192G" }) StringAssert.Contains(price, page1);
             yield return Shot("3d_sach.png", g.Room.Station("BookNext").WorldCenter + new Vector3(0.45f, 0f, 0f));
             P.TapPrimary();
             yield return null;
@@ -446,6 +590,7 @@ namespace QuanAnHope.PlayTests
             Assert.AreEqual(0, S.Counter.Dishes[0].tier, "sai thu tu phai ra Lac vi");
 
             // Mon dung cong thuc
+            shotCooking = "3d_bep_dang_nau.png";
             yield return CookOne();
             yield return WalkTo(new Vector3(-1.2f, 0f, 0.2f));
             yield return Shot("3d_bep.png", new Vector3(-3.3f, 1.75f, 0f));
@@ -457,20 +602,36 @@ namespace QuanAnHope.PlayTests
             yield return Use("ShopSign");
             Assert.AreEqual(GamePhase.Open, S.Phase);
             StringAssert.Contains("Dễ tính " + S.CurrentCustomer.easiness + "%", TextOf("BongThoai"));
+            StringAssert.Contains(S.CurrentCustomer.orderName, TextOf("BongThoai"), "khach goi mot mon cu the");
             yield return WalkTo(new Vector3(0.3f, 0f, 0.9f));
             yield return Shot("3d_goc1_khach.png", new Vector3(-0.6f, 2.1f, 3.0f));
+            bool wrongTried = false;
             while (S.Phase == GamePhase.Open)
             {
                 yield return ServeOne();
                 if (S.ServedToday == 1 && S.Phase == GamePhase.Open)
                 {
-                    yield return CookOne();
-                    yield return Use(g.Room.ShelfDishes[0].GetComponent<Interactable>());
+                    // Khach 2: nau dung mon goi, chup luc cam dia toi chuong.
+                    if (OrderedOnShelf() < 0) yield return CookOne(true, S.CurrentCustomer.orderId);
+                    yield return Use(g.Room.ShelfDishes[OrderedOnShelf()].GetComponent<Interactable>());
                     yield return Approach(g.Room.Station("Bell"));
                     yield return Shot("3d_cam_dia_toi_chuong.png");
                     yield return Use("Bell");
                 }
+                if (S.ServedToday == 2 && S.Phase == GamePhase.Open && !wrongTried)
+                {
+                    // Khach 3: thu dua sai mon (constitution muc 6.7).
+                    string other = S.MakeableRecipes().Select(r => r.id).FirstOrDefault(id => id != S.CurrentCustomer.orderId);
+                    if (S.Counter.Dishes.All(d => d.recipeId == S.CurrentCustomer.orderId) && other != null)
+                        yield return CookOne(true, other);
+                    if (S.Counter.Dishes.Any(d => d.recipeId != S.CurrentCustomer.orderId))
+                    {
+                        yield return ServeWrongDish();
+                        wrongTried = true;
+                    }
+                }
             }
+            Assert.IsTrue(wrongTried, "van gia lap nay phai thu dua sai mon mot lan");
             Assert.AreEqual(6, S.ServedToday);
             Assert.IsTrue(g.ShowsOverlay);
             yield return Shot("3d_het_ngay_1.png");

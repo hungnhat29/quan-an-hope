@@ -1,4 +1,4 @@
-ART BIBLE - QUAN AN CUA HOPE (ten tam) - phien ban 1.1 (14/11/2026)
+ART BIBLE - QUAN AN CUA HOPE (ten tam) - phien ban 1.3 (14/11/2026)
 
 Mo file:
 - ArtBible.html : ban chinh, mo bang trinh duyet (chay offline, font da kem trong thu muc fonts/).
@@ -13,4 +13,4 @@ Thu muc:
 - asset_list.csv : danh sach asset cho ban demo (mo bang Excel / Google Sheets).
 - fonts/    : Baloo 2 va Be Vietnam Pro (giay phep SIL Open Font License, kem theo).
 
-Ban 1.1 (14/11/2026), di cung specs/constitution.md v1.2 (game 3D goc nhin thu nhat). Khi doi quy tac hinh anh, tang so phien ban o muc 17.
+Ban 1.2 (14/11/2026): them mat nguyen lieu / mon tren vat 3D, hieu ung cho do vao bep, dai ti le bac mon du 6 bac. Ban 1.1, di cung specs/constitution.md v1.2 (game 3D goc nhin thu nhat). Khi doi quy tac hinh anh, tang so phien ban o muc 17.

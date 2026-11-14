@@ -75,6 +75,13 @@ namespace QuanAnHope.Core
             Recipe r;
             return byId.TryGetValue(mainId + IdSeparator + sideId, out r) ? r : null;
         }
+
+        /// <summary>Cong thuc theo id ("chinh__phu"); null neu khong co.</summary>
+        public Recipe ById(string id)
+        {
+            Recipe r;
+            return id != null && byId.TryGetValue(id, out r) ? r : null;
+        }
     }
 
     /// <summary>Thot: giu du thoi gian so che cua nguyen lieu thi xong (constitution muc 4.5, 5.1).</summary>
@@ -242,6 +249,16 @@ namespace QuanAnHope.Core
             added.Add(ingredient.name);
             State = StoveState.Filling;
             return true;
+        }
+
+        /// <summary>Mon dang nam tren bep (da du chinh + phu, ke ca dang nau / da chin); null neu chua du.</summary>
+        public Recipe PendingRecipe
+        {
+            get
+            {
+                if (Recipe != null) return Recipe;
+                return main != null && side != null ? lookup.Find(main.typeId, side.typeId) : null;
+            }
         }
 
         /// <summary>Thanh ti le bac mon; null khi chua du nguyen lieu chinh va do phu.</summary>

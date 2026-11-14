@@ -22,3 +22,5 @@
 - Q-16 | 2026-11-14 | chặn: không | Constitution §5.1: lấy đĩa rồi bấm vào bếp để múc (2 bước). Mặc định đang code: một nút Múc ra đĩa | trạng thái: CLOSED — bản 3D làm đúng 2 bước như constitution §5.1 (lấy đĩa trống, bấm vào bếp)
 - Q-17 | 2026-11-14 | chặn: không | Tốc độ đi 2,6 m/s, độ nhạy chuột 0,1°/px, tầm với 3 m (Art Bible §9) có hợp tay không? | trạng thái: OPEN
 - Q-18 | 2026-11-14 | chặn: không | Thùng gộp theo loại (mọi cà chua của ngày chung một thùng) thay vì mỗi lượt gacha một cặp thùng riêng — đã ghi vào constitution v1.2 §4.2; đồng ý không? | trạng thái: OPEN
+- Q-19 | 2026-11-14 | chặn: không | Dải tỉ lệ bậc món "cao 2–3 cm": đang hiểu là cỡ nhìn trên màn hình; dải thật trên bảng bếp 10,4 cm × 1,42 m (Art Bible 1.2 §13). Cần to/nhỏ hơn? | trạng thái: OPEN
+- Q-20 | 2026-11-14 | chặn: không | Chủ nợ ngày 21 gọi "món ngon nhất của quán" (nhận mọi món) thay vì món cụ thể? Mô phỏng: ngoại lệ 82%, không ngoại lệ 73% (mốc 70%). Đã ghi constitution 1.3 §6.7 | trạng thái: OPEN
