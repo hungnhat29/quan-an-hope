@@ -1,5 +1,7 @@
 # F-006 — Giao diện lát cắt
 
+> **Đã được thay thế bởi [F-007](../F-007-choi-3d/spec.md) (14/11/2026).** Người dùng nghiệm thu chức năng nhưng yêu cầu chuyển sang 3D: bỏ nút chuyển góc, tự đi lại, thông tin nằm trên đồ vật. Phần dưới giữ lại để tra lịch sử; AC-2 và mục "Cách làm" không còn đúng.
+
 Trạng thái: giả lập đạt, chờ người chơi thử (14/11/2026) · Nguồn: `specs/constitution.md` v1.1, `docs/art-bible/` v1.0 · Duyệt: bảng AC trong `docs/sprint-1/impl-plan.md`, người dùng yêu cầu thực hiện ngày 5–7 (14/11/2026)
 
 ## Luật

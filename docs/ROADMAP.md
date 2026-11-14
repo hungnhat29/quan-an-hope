@@ -31,8 +31,13 @@ Khung thời gian: 15/11/2026 → 23/01/2027. Tuần 1–8 là phần bắt bu�
 Kế hoạch chi tiết: [sprint-1/impl-plan.md](sprint-1/impl-plan.md).
 Nền dự án (Git, LFS, test framework, nhập `balance.json` thành ScriptableObject), gacha nguyên liệu, nấu ăn, khách và trả tiền, vòng ngày, trả nợ ngày 4.
 
+### Sprint 1b — Chuyển sang 3D (làm ngày 14/11, theo nghiệm thu sprint 1)
+Constitution v1.2 (Điều 5, Điều 9), Art Bible v1.1. Người chơi tự đi lại góc nhìn thứ nhất, tương tác bằng tâm ngắm; thông tin nằm trên đồ vật; HUD chỉ số liệu. Spec: `specs/sprint-1/F-007-choi-3d/spec.md`.
+
+**Áp dụng cho mọi sprint sau:** mỗi tính năng mới phải có đồ vật 3D để bấm và chỗ đặt thông tin trên đồ vật (Art Bible §8, §13); mỗi giả lập PlayMode đi bằng `PlayerController` và bấm qua tâm ngắm, không gọi tắt vào luật.
+
 ### Sprint 2 — Relic (22–28/11)
-- Cửa hàng relic ở Góc 3: 3 relic khác nhau mỗi ngày từ ngày 2, trả bằng vé trắng, tối đa 8, đầy thì bỏ một cái.
+- Cửa hàng relic ở Góc 3: 3 relic là vật 3D trên 3 bệ, giá và hiệu ứng trên thẻ dựng trước bệ; bấm để mua bằng vé trắng; relic đã có đặt lên giá 8 ô (tối đa 8, đầy thì bỏ một cái).
 - Hiệu ứng của 12 relic bộ + 10 relic lẻ có tác dụng trong vòng 1–2; thưởng bộ 2/3/4 món.
 - Thùng đột phá (0% + relic), 2 món, 70/30.
 - Relic chỉ có tác dụng với hệ thống chưa làm (Tủ lạnh 2 cửa, Hũ sốt cũ, Đồng hồ cát, Máy pha cà phê) được mua và giữ được, hiệu ứng nối ở sprint 3.

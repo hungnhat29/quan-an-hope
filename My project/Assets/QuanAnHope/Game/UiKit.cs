@@ -69,6 +69,36 @@ namespace QuanAnHope.Game
             }
         }
 
+        static Sprite circle;
+
+        /// <summary>Hinh tron (keo dan thanh bau duc): ruot trang, vien muc 8% ban kinh.</summary>
+        public static Sprite Circle
+        {
+            get
+            {
+                if (circle != null) return circle;
+                const int size = 128;
+                var tex = new Texture2D(size, size, TextureFormat.RGBA32, false) { name = "UI_Circle", wrapMode = TextureWrapMode.Clamp };
+                var px = new Color32[size * size];
+                float r = size * 0.5f;
+                for (int y = 0; y < size; y++)
+                    for (int x = 0; x < size; x++)
+                    {
+                        float d = new Vector2(x + 0.5f - r, y + 0.5f - r).magnitude;
+                        float alpha = Mathf.Clamp01(r - d);
+                        float fill = Mathf.Clamp01(r - d - size * 0.08f);
+                        Color c = Color.Lerp(Ink, Color.white, fill);
+                        c.a = alpha;
+                        px[y * size + x] = c;
+                    }
+                tex.SetPixels32(px);
+                tex.Apply();
+                circle = Sprite.Create(tex, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f), 100f);
+                circle.name = "UI_Circle";
+                return circle;
+            }
+        }
+
         /// <summary>Hinh chu nhat bo goc: ruot trang, vien muc; to mau bang Image.color.</summary>
         public static Sprite Rounded
         {
@@ -111,6 +141,24 @@ namespace QuanAnHope.Game
         {
             Color c;
             return ColorUtility.TryParseHtmlString(hex, out c) ? c : Color.magenta;
+        }
+
+        /// <summary>
+        /// Bang chu gan tren do vat trong phong (constitution Dieu 9). Don vi ben trong la milimet:
+        /// sizeMm (1000, 500) la tam bang 1 m x 0,5 m. Mat chu huong ve phia nguoi dung giua phong (truc +z cua goc la tuong).
+        /// </summary>
+        public static Canvas WorldCanvas(Transform parent, string name, Vector3 localPos, Quaternion localRot, Vector2 sizeMm)
+        {
+            var go = new GameObject(name, typeof(RectTransform), typeof(Canvas));
+            var rt = (RectTransform)go.transform;
+            rt.SetParent(parent, false);
+            rt.localPosition = localPos;
+            rt.localRotation = localRot;
+            rt.sizeDelta = sizeMm;
+            rt.localScale = Vector3.one * 0.001f;
+            var c = go.GetComponent<Canvas>();
+            c.renderMode = RenderMode.WorldSpace;
+            return c;
         }
 
         /// <summary>Khung co neo, tam va kich thuoc tinh theo he 1280x720.</summary>

@@ -1,9 +1,9 @@
 # Impl plan — Sprint 1: Lát cắt dọc vòng 1
 
 Thời gian: Chủ nhật 15/11 → Thứ bảy 21/11/2026 (7 ngày)
-Nguồn luật: `specs/constitution.md` v1.1. Nguồn số: `balance/balance.json`, `balance/recipes.json`. Hình ảnh: `docs/art-bible/` v1.0. Không có Blender trong sprint này.
+Nguồn luật: `specs/constitution.md` v1.2. Nguồn số: `balance/balance.json`, `balance/recipes.json`. Hình ảnh: `docs/art-bible/` v1.1. Không có Blender trong sprint này.
 
-Cập nhật 14/11: theo constitution v1.1 (nguyên liệu, công thức, thời gian nấu, quầy chờ) và câu trả lời của bạn (nút Mở quán). **Cả 7 ngày đã xong ngày 14/11**: 120 test luật chơi + 3 kịch bản giả lập người chơi xanh, build Windows thành công. Chờ bạn chơi thử — xem `.dev-memory/acceptance/2026-11-14-sprint-1.md`.
+Cập nhật 14/11: theo constitution v1.1 (nguyên liệu, công thức, thời gian nấu, quầy chờ) và câu trả lời của bạn (nút Mở quán). **Cả 7 ngày đã xong ngày 14/11.** Bạn nghiệm thu chức năng và yêu cầu chuyển sang 3D góc nhìn thứ nhất; phần làm lại là [F-007](../../specs/sprint-1/F-007-choi-3d/spec.md). Chờ bạn chơi thử bản 3D — xem `.dev-memory/acceptance/2026-11-14-sprint-1-3d.md`.
 
 ## 1. Mục tiêu
 
@@ -189,7 +189,7 @@ Mỗi ngày theo cùng nhịp: **spec → test đỏ → code → test xanh → 
 | F-003 | `DishFormulaTests.cs`, `StoveTests.cs`, `KitchenTests.cs` | 1–4, 7, 8 | 5, 6 |
 | F-004 | `CustomerTests.cs`, `PaymentTests.cs`, `GameSessionTests.cs` | 1–7, 9 | 8 |
 | F-005 | `GameSessionTests.cs`, `NaiveBotTests.cs` | 1–5 | — |
-| F-006 | `Tests/PlayMode/PlaythroughTests.cs` (giả lập) | — | 1–4 |
+| F-006 → F-007 | `Tests/PlayMode/PlaythroughTests.cs` (giả lập 3D) | 1–12 (giả lập) | cảm giác điều khiển |
 
 Tổng: 37 AC, trong đó 29 tự động và 8 kiểm tay. Sau ngày 7: 29/29 AC tự động xanh; 8 AC kiểm tay đã qua giả lập PlayMode (bấm nút trên cảnh thật) và chờ bạn chơi thử xác nhận.
 

@@ -69,9 +69,9 @@ a{color:#B4432F}
     <h1>Art Bible</h1>
     <div style="font:800 26px/1.2 var(--display);margin-top:6px">Quán ăn của Hope (tên tạm)</div>
     <p class="lead" style="margin-top:14px">Sổ tay hình ảnh cho mọi người vẽ, dựng, làm hiệu ứng và UI cho game. Mỗi quy tắc ở đây đều đo được: có mã màu, có kích thước, có ví dụ nên và không nên.</p>
-    <div class="meta">Phiên bản 1.0 · 14/11/2026 · Đi cùng <code>specs/constitution.md</code> v1.0</div>
+    <div class="meta">Phiên bản 1.1 · 14/11/2026 · Đi cùng <code>specs/constitution.md</code> v1.2 · Game 3D góc nhìn thứ nhất</div>
   </div>
-  <img src="images/12_bon_goc_phong.png" alt="Bốn góc phòng của quán">
+  <img src="images/14_3d_toan_canh.png" alt="Căn phòng 3D nhìn từ góc bếp">
 </div>
 
 <ol class="toc">
@@ -82,12 +82,12 @@ a{color:#B4432F}
   <li><a href="#s5">5. Hình khối</a></li>
   <li><a href="#s6">6. Nhân vật</a></li>
   <li><a href="#s7">7. Nguyên liệu và món ăn</a></li>
-  <li><a href="#s8">8. Môi trường: căn phòng 4 góc</a></li>
-  <li><a href="#s9">9. Camera và khung hình</a></li>
+  <li><a href="#s8">8. Môi trường: căn phòng 3D</a></li>
+  <li><a href="#s9">9. Camera, di chuyển, tương tác</a></li>
   <li><a href="#s10">10. Viền, ánh sáng, hậu kỳ</a></li>
   <li><a href="#s11">11. Hiệu ứng (VFX)</a></li>
   <li><a href="#s12">12. Animation</a></li>
-  <li><a href="#s13">13. Giao diện (UI)</a></li>
+  <li><a href="#s13">13. Giao diện: trên đồ vật và HUD</a></li>
   <li><a href="#s14">14. Quy cách kỹ thuật</a></li>
   <li><a href="#s15">15. Duyệt asset, lỗi thường gặp</a></li>
   <li><a href="#s16">16. Asset làm bằng AI hoặc thuê ngoài</a></li>
@@ -100,6 +100,7 @@ a{color:#B4432F}
   <div class="pill"><b>Tròn, phẳng, viền đậm</b>Nhân vật và đồ vật đơn giản, bo tròn, 2 tông màu, viền #2B2321; mắt vòng tròn rỗng.</div>
   <div class="pill"><b>Đọc được trong 1 giây</b>Bậc nguyên liệu, bậc món, tâm trạng khách phải nhìn là hiểu — không cần đọc số.</div>
 </div>
+<div class="callout"><b>Từ bản 1.1:</b> đây là game <b>3D góc nhìn thứ nhất</b>. Người chơi tự đi lại trong phòng, nhìn vào đồ vật và bấm. Thông tin nằm <b>trên chính đồ vật</b> (thùng, bảng trên bếp, trang sách, bong bóng trên đầu khách); HUD chỉ có con số và thông tin ngắn. Đọc mục 8, 9, 10, 13.</div>
 <div class="rule"><b>Quy tắc phân xử</b> khi hai quy tắc mâu thuẫn: <b>Đọc được lối chơi</b> &gt; <b>Dễ thương</b> &gt; <b>Đúng chất cổ điển</b>. Ví dụ: hạt phim làm mờ con số trên bảng tỉ lệ → giảm hạt phim ở vùng UI, không làm mờ số.</div>
 <p>Trụ cột thứ ba đến thẳng từ constitution (Điều 1): người chơi không đọc chỉ số vẫn phải đi được 60% chặng đường, nên hình ảnh phải tự nói lên "cái này tốt hơn cái kia".</p>
 
@@ -199,6 +200,15 @@ a{color:#B4432F}
 <tr><td>Nguyên liệu chính (thịt, cá, tôm)</td><td>Thùng gỗ cao hơn, đai sắt</td><td>Gỗ đậm #B97F52</td></tr>
 <tr><td>Đột phá (sơn hào hải vị)</td><td>Rương có nắp vòm, phát sáng</td><td>Tím #C9B3F0 + viền vàng</td></tr>
 </table></div>
+<h3>Nguyên liệu trong thùng (từ bản 1.1)</h3>
+<figure><img src="images/15_3d_thung.png" alt="Thùng nguyên liệu 3D trên bàn nhận hàng"><figcaption>Thùng cà chua, hành tây (đồ phụ, gỗ nhạt) ở hàng trước; thùng đậu phụ (chính, gỗ đậm) ở bậc cao phía sau. Mỗi món đứng trên một đế bậc.</figcaption></figure>
+<ul>
+  <li><strong>Đế bậc:</strong> mỗi món nguyên liệu đứng trên một đĩa tròn dẹt đường kính khoảng 1,4 lần thân món, tô đúng màu bậc (mục 4). Đây là "màu khung" của bậc trong không gian 3D; người chơi đọc bậc bằng màu, không cần chữ.</li>
+  <li><strong>Thùng mở, thành thấp:</strong> thành trước cao 7 cm, thành sau 12 cm để luôn thấy đế bậc khi đứng giữa phòng nhìn tới.</li>
+  <li><strong>Một thùng một loại:</strong> mọi món cùng loại trong ngày nằm chung thùng; xếp 4 cột × 3 hàng, nhiều hơn thì chất lên lớp trên. Tên loại ghi trên tấm nhãn ở mặt trước thùng.</li>
+  <li><strong>Đã sơ chế:</strong> thân món dẹt xuống (thái lát), đế bậc giữ nguyên.</li>
+  <li><strong>Đĩa món:</strong> viền đĩa tô màu bậc món (bảng dưới); tên món ghi trên nhãn ở mép quầy chờ ngay trước đĩa.</li>
+</ul>
 <h3>Món ăn theo bậc</h3>
 <div class="tbl"><table>
 <tr><th>Bậc món</th><th>Viền đĩa</th><th>Hơi bốc lên</th><th>Mặt của món</th></tr>
@@ -210,30 +220,34 @@ a{color:#B4432F}
 <tr><td>Huyền thoại (Món Hy Vọng)</td><td>#F2C14E + hào quang</td><td>Trái tim vàng</td><td>Kính đen + vương miện</td></tr>
 </table></div>
 
-<h2 id="s8"><span class="n">8</span>Môi trường: căn phòng 4 góc</h2>
-<figure><img src="images/12_bon_goc_phong.png" alt="Bốn góc phòng"><figcaption>Bản dựng tham chiếu (khối cơ bản). Bản cuối thay khối bằng model Blender nhưng giữ bố cục.</figcaption></figure>
+<h2 id="s8"><span class="n">8</span>Môi trường: căn phòng 3D</h2>
+<figure><img src="images/14_3d_toan_canh.png" alt="Căn phòng 3D"><figcaption>Bản dựng tham chiếu 3D (khối cơ bản), nhìn từ góc giữa Góc 3 và Góc 4. Bản cuối thay khối bằng model Blender nhưng giữ bố cục và vị trí đồ tương tác.</figcaption></figure>
 <ul>
   <li><strong>Kích thước:</strong> phòng 8 × 8 m, cao 5 m. Bốn tường dùng chung giấy dán tường, sàn gỗ, nẹp gỗ chân tường và cột góc. Đây là thứ cho người chơi biết mình đang ở một nhà hàng — không đổi giấy dán tường theo góc.</li>
   <li><strong>Màu nhấn theo góc</strong> (chỉ ở đồ vật, không ở tường): Góc 1 Giao món — san hô (rèm vải, đèn lồng); Góc 2 Gacha — xanh trời và tím (máy, cổng dịch chuyển); Góc 3 Sách & Relic — tím và vàng (bệ relic); Góc 4 Bếp — đỏ và kem (nồi, bếp).</li>
   <li><strong>Ngoài cửa (Góc 1):</strong> cảnh phố vẽ 2D kiểu hoạt hình 1930s, giảm bão hòa, có hạt phim; cửa vòm có rèm vải nhiều tà bo tròn — không có chữ trên rèm, chỉ có hình trái tim và bát.</li>
   <li><strong>Ngưỡng chi tiết:</strong> vật nhỏ hơn 10 cm (đồng xu, nhãn gia vị, vân gỗ, chữ trên bảng) vẽ vào texture hoặc decal, không dựng hình.</li>
+  <li><strong>Lối đi:</strong> giữa phòng để trống khoảng 4,2 × 3,4 m (x từ −2,2 đến 2,0; z từ −2,1 đến 1,35, đơn vị mét, gốc ở tâm sàn, +z hướng về cửa Góc 1). Không đặt đồ đứng trên sàn vào vùng này.</li>
+  <li><strong>Mọi đồ tương tác nằm trong tầm với 3 m</strong> tính từ mắt người chơi đứng ở mép lối đi, cao 0,6–2,6 m.</li>
+  <li><strong>Đồ tương tác theo góc:</strong> Góc 1 — biển Mở quán (đứng cạnh cửa), chuông trên quầy, khách sau quầy. Góc 2 — máy nhét vé, bàn nhận hàng với kệ bậc thang cho thùng, bảng tỉ lệ treo tường. Góc 3 — quyển sách nấu ăn trên giá, ba bệ relic, giá relic 8 ô. Góc 4 — thớt (quầy trái), kệ gia vị 9 lọ trên tường trái, bếp + núm bếp + thùng rác ở giữa, giá dụng cụ (chảo, nồi, vỉ nướng), chồng đĩa và quầy chờ 3 ô ở quầy phải.</li>
   <li><strong>Ngân sách texture theo mức người chơi nhìn thấy:</strong> vật ở giữa khung hình và hay tương tác (máy gacha, nồi, quầy) 1024 px; vật nhỏ 512 px; tường, sàn, cảnh ngoài cửa 2048 px (lặp lại được).</li>
 </ul>
 
-<h2 id="s9"><span class="n">9</span>Camera và khung hình</h2>
-<figure><img src="images/11_vung_an_toan_camera.png" alt="Vùng an toàn"></figure>
+<h2 id="s9"><span class="n">9</span>Camera, di chuyển, tương tác</h2>
+<p>Thay cho bản 1.0 (camera đứng yên, xoay 90° giữa các tường bằng nút). Hình <code>images/11_vung_an_toan_camera.png</code> chỉ còn giá trị lịch sử.</p>
 <div class="tbl"><table>
 <tr><th>Thông số</th><th>Giá trị</th></tr>
-<tr><td>Góc nhìn</td><td>Người thứ nhất (mắt của Hope)</td></tr>
+<tr><td>Góc nhìn</td><td>Người thứ nhất (mắt của Hope), tự đi lại trong phòng</td></tr>
 <tr><td>Chiều cao mắt</td><td>1,75 m</td></tr>
-<tr><td>Vị trí</td><td>Lùi 1,4 m từ tâm phòng, quay mặt vào tường đang xem</td></tr>
-<tr><td>FOV dọc</td><td>55° (khung 16:9)</td></tr>
-<tr><td>Nghiêng xuống</td><td>4,6°</td></tr>
-<tr><td>Xoay giữa góc</td><td>90°, 0,35 giây, ease-in-out</td></tr>
-<tr><td>Vùng lối chơi</td><td>80% giữa chiều ngang; mọi vật bấm được phải nằm trong đó</td></tr>
-<tr><td>Vùng UI</td><td>Trên 12% (HUD), dưới 14% (nút), hai bên 7% (mũi tên xoay)</td></tr>
+<tr><td>Thân người chơi</td><td>Hình trụ cao 1,8 m, bán kính 0,3 m; va chạm với tường và đồ đứng trên sàn</td></tr>
+<tr><td>FOV dọc</td><td>60° (khung 16:9)</td></tr>
+<tr><td>Điều khiển</td><td>W A S D hoặc phím mũi tên: đi · chuột: nhìn · chuột trái: bấm / giữ · chuột phải: đặt lại đồ đang cầm · Esc: nhả chuột</td></tr>
+<tr><td>Tốc độ đi</td><td>2,6 m/giây</td></tr>
+<tr><td>Độ nhạy chuột</td><td>0,1° mỗi điểm ảnh; ngẩng / cúi tối đa 80°</td></tr>
+<tr><td>Tương tác</td><td>Tia nhìn từ tâm màn hình, tầm với 3 m. Đồ đang nhìn: tâm ngắm đổi sang vàng #F2C14E, gợi ý hiện ngay dưới tâm ngắm</td></tr>
+<tr><td>Đồ đang cầm</td><td>Hiện trước mặt, góc dưới bên phải khung hình (cách mắt 0,55 m)</td></tr>
+<tr><td>Vùng UI</td><td>Trên 12% (số liệu), giữa (tâm ngắm + gợi ý), dưới 8% (đồ đang cầm, dòng điều khiển)</td></tr>
 </table></div>
-<p>Đồ của góc bên cạnh được phép lọt vào hai mép khung (là căn phòng thật), nhưng không được có vật tương tác ở đó.</p>
 
 <h2 id="s10"><span class="n">10</span>Viền, ánh sáng, hậu kỳ</h2>
 <figure><img src="images/09_vien_va_bong.png" alt="Viền và bóng"></figure>
@@ -241,10 +255,10 @@ a{color:#B4432F}
 <tr><th>Hạng mục</th><th>Quy định</th></tr>
 <tr><td>Viền</td><td>Màu #2B2321. Nhân vật và máy lớn 0,028 m (≈ 5 px ở 1280×720); đạo cụ nhỏ 0,018 m (≈ 3 px); tường, sàn, trần không viền 3D (nét đã vẽ trong texture). Làm bằng inverted hull trong shader.</td></tr>
 <tr><td>Tô bóng</td><td>2 tông: sáng và bóng (màu gốc × #CCB8B3), ranh giới sắc, không gradient.</td></tr>
-<tr><td>Hướng sáng</td><td>Cố định theo camera: từ trên xuống, hơi chếch sang phải và về phía người nhìn. Vector trong shader: (0,2; 1; −0,15).</td></tr>
-<tr><td>Bóng đổ</td><td>Không dùng bóng đổ thời gian thực. Dưới nhân vật và máy có bóng tròn #2B2321 độ đục 20%.</td></tr>
+<tr><td>Hướng sáng</td><td><strong>Cố định trong không gian phòng</strong> (không theo camera, vì người chơi đi lại): một đèn chính Directional màu #FFF6E6 chiếu từ phía cửa Góc 1 và từ trên xuống, hướng tới đèn (0,35; 1; 0,55). Shader ToonFlat đọc hướng và màu đèn qua component <code>ToonLight</code> trên đèn. Đổi giờ, mưa, mất điện = đổi màu / cường độ của đèn này (mục 4).</td></tr>
+<tr><td>Bóng đổ</td><td>Không dùng bóng đổ thời gian thực. Dưới nhân vật, máy, biển, giá sách, bệ relic, thùng rác có bóng tròn #2B2321 độ đục 20%, đường kính bằng chân đế.</td></tr>
 <tr><td>Hậu kỳ (URP Volume)</td><td>Vignette 0,35 (màu #2B1A10); Film Grain 0,25 (loại Medium); Color Adjustments: Saturation −5, Color Filter #FFF1DE. Không Bloom, trừ hào quang bậc 5.</td></tr>
-<tr><td>Vùng UI</td><td>Hạt phim không phủ lên chữ và số (đặt lớp UI trên lớp hậu kỳ).</td></tr>
+<tr><td>Vùng UI</td><td>Hạt phim không phủ lên HUD (đặt HUD trên lớp hậu kỳ). Bảng chữ gắn trên đồ vật là một phần của cảnh nên có hạt phim; vì vậy chữ trên đồ vật phải đủ to (mục 13).</td></tr>
 </table></div>
 
 <h2 id="s11"><span class="n">11</span>Hiệu ứng (VFX)</h2>
@@ -274,16 +288,28 @@ a{color:#B4432F}
 </table></div>
 <p>Danh sách động tác tối thiểu cho mỗi khách: chờ, vẫy chào, ăn, vui, giận, bỏ đi. Mọi khách dùng chung một rig để dùng lại animation.</p>
 
-<h2 id="s13"><span class="n">13</span>Giao diện (UI)</h2>
-<figure><img src="images/10_ui_kit.png" alt="UI kit"></figure>
+<h2 id="s13"><span class="n">13</span>Giao diện: trên đồ vật và HUD</h2>
+<p>Constitution v1.2 Điều 9: thông tin của một thứ nằm <strong>trên chính thứ đó</strong>. Màn hình phẳng chỉ còn HUD số liệu và màn kết thúc ngày.</p>
+<h3>Bảng chữ trên đồ vật (diegetic)</h3>
+<figure><img src="images/16_3d_sach.png" alt="Trang sách nấu ăn 3D"><figcaption>Sách nấu ăn ở Góc 3: trang trái tên món, dụng cụ, đế món, thời gian; trang phải thứ tự cho vào, mỗi bước một số trong ô bo góc tô màu nguyên liệu. Bấm trang phải để lật tới.</figcaption></figure>
 <div class="tbl"><table>
 <tr><th>Thành phần</th><th>Quy định</th></tr>
-<tr><td>Khung</td><td>Bo góc 18–22 px, viền 4 px #2B2321, bóng đặc lệch xuống 5 px (không làm mờ). Thế giới game không có kiểu bóng này — đó là cách UI tách khỏi cảnh.</td></tr>
-<tr><td>Chữ</td><td>Baloo 2, đậm 700/800 (hỗ trợ tiếng Việt). Tối thiểu 14 px ở 1280×720; con số quan trọng (tiền, vé, giá, %) tối thiểu 26 px.</td></tr>
-<tr><td>Nút</td><td>Cao tối thiểu 52 px. Màu theo vai trò: hành động chính san hô #E8604F; xác nhận/dừng bạc hà #8CC9AE; trung tính kem #FFF3DC; vé/gacha vàng #F2C14E; relic tím #C9B3F0.</td></tr>
+<tr><td>Kiểu</td><td>Tấm bảng phẳng gắn lên đồ vật, cùng kiểu khung với UI (bo góc, viền #2B2321). Bảng treo tường đặt sát tường; nhãn đặt ở mặt trước đồ vật; bảng phía trên mắt nghiêng 15° về phía người nhìn.</td></tr>
+<tr><td>Cỡ chữ</td><td>Chiều cao chữ tối thiểu <strong>4 cm</strong> cho nhãn đọc ở 1,5 m; con số quan trọng (tỉ lệ %, độ dễ tính) tối thiểu <strong>9 cm</strong>; bảng tỉ lệ treo tường tối thiểu 12 cm.</td></tr>
+<tr><td>Vị trí thông tin</td><td>Tỉ lệ gacha: bảng ngang trên tường Góc 2. Khoảng bậc món, thứ tự đã cho vào, tiến độ nấu: bảng nhỏ trên bếp. Tiến độ sơ chế: thanh ngay trên thớt. Độ dễ tính: bong bóng cạnh đầu khách. Mở / đóng quán: chữ trên biển đứng. Tên loại nguyên liệu: nhãn trước thùng. Tên đồ kho: nhãn ở mép kệ dưới mỗi lọ.</td></tr>
 <tr><td>Bảng tỉ lệ</td><td>Luôn nằm ngang, từ kém nhất (trái) đến xịn nhất (phải), mỗi ô dùng màu bậc.</td></tr>
+<tr><td>Bậc</td><td>Đọc bằng màu (đế bậc dưới nguyên liệu, viền đĩa món, ô trên bảng tỉ lệ), không viết tên bậc lên đồ vật.</td></tr>
+</table></div>
+<h3>HUD</h3>
+<figure><img src="images/17_3d_bep.png" alt="Bếp 3D với HUD"><figcaption>HUD: ngày, ví, nợ (trên trái), số vé (trên phải), thông báo một dòng (trên giữa), tâm ngắm và gợi ý (giữa), dòng điều khiển (dưới trái).</figcaption></figure>
+<div class="tbl"><table>
+<tr><th>Thành phần</th><th>Quy định</th></tr>
+<tr><td>Được hiện</td><td>Ngày, tiền, nợ sắp tới, vé; tâm ngắm; gợi ý của đồ đang nhìn; đồ đang cầm; thông báo một dòng; dòng điều khiển. <strong>Không</strong> có nút, danh sách nguyên liệu, công thức hay bảng tỉ lệ trên HUD.</td></tr>
+<tr><td>Khung</td><td>Bo góc 18–22 px, viền 4 px #2B2321, bóng đặc lệch xuống 5 px (không làm mờ).</td></tr>
+<tr><td>Chữ</td><td>Baloo 2, đậm 700/800 (hỗ trợ tiếng Việt). Tối thiểu 14 px ở 1280×720; con số quan trọng (tiền, nợ, vé) tối thiểu 26 px.</td></tr>
+<tr><td>Màn ngoài phòng</td><td>Kết thúc ngày, qua vòng, thua: thẻ kem giữa màn, nền tối 72%, một nút. Nút cao tối thiểu 52 px. Màu theo vai trò: hành động chính san hô #E8604F; xác nhận/dừng bạc hà #8CC9AE; trung tính kem #FFF3DC; vé/gacha vàng #F2C14E; relic tím #C9B3F0.</td></tr>
 <tr><td>Biểu tượng</td><td>Vẽ nét, cùng độ dày viền; không dùng emoji.</td></tr>
-<tr><td>Thực hiện</td><td>Unity UGUI + TextMeshPro; ảnh trong gói hiện tại là ảnh tạm.</td></tr>
+<tr><td>Thực hiện</td><td>Unity UGUI + TextMeshPro; bảng trên đồ vật là Canvas World Space (1 đơn vị = 1 mm).</td></tr>
 </table></div>
 
 <h2 id="s14"><span class="n">14</span>Quy cách kỹ thuật</h2>
@@ -310,7 +336,7 @@ a{color:#B4432F}
 <p>Thư mục trong Unity: <code>Assets/Art/{Models, Textures, Materials, Animations, VFX, UI}</code>; file gốc <code>.blend</code>, <code>.kra</code> để ở <code>SourceArt/</code> ngoài <code>Assets/</code>, dùng Git LFS.</p>
 
 <h2 id="s15"><span class="n">15</span>Duyệt asset và lỗi thường gặp</h2>
-<p>Mỗi asset đi qua 3 lần duyệt: (1) hình bóng đen ở 64 px, (2) màu phẳng chưa bóng, (3) ảnh chụp trong Unity ở 1280×720, đặt trong góc phòng của nó.</p>
+<p>Mỗi asset đi qua 3 lần duyệt: (1) hình bóng đen ở 64 px, (2) màu phẳng chưa bóng, (3) ảnh chụp trong Unity ở 1280×720 từ mắt người chơi đứng ở mép lối đi gần nó và từ một góc chéo của phòng. Ảnh chụp tự động: test PlayMode <code>PlaythroughTests</code> lưu vào <code>docs/sprint-1/ui/</code>.</p>
 <figure><img src="images/13_nen_va_khong_nen.png" alt="Nên và không nên"></figure>
 <h3>Lỗi thường gặp</h3>
 <ol>
@@ -319,7 +345,8 @@ a{color:#B4432F}
   <li>Mắt vẽ chấm đen có đốm sáng (sai phong cách đã chốt).</li>
   <li>Dùng màu bậc (đặc biệt tím và vàng) để trang trí.</li>
   <li>Máy móc cạnh vuông sắc, mất cảm giác thân thiện.</li>
-  <li>Vật tương tác nằm ngoài vùng 80% giữa khung hình.</li>
+  <li>Vật tương tác ngoài tầm với 3 m từ lối đi, hoặc bị đồ khác che khi nhìn từ lối đi.</li>
+  <li>Đưa thông tin của đồ vật lên HUD thay vì đặt trên đồ vật (trái constitution Điều 9).</li>
   <li>Chữ nằm trong ảnh texture thay vì TextMeshPro.</li>
   <li>Nền bão hòa ngang nhân vật, làm khách "chìm" vào tường.</li>
   <li>Dựng hình cho vật nhỏ hơn 10 cm.</li>
@@ -340,6 +367,7 @@ a{color:#B4432F}
 
 <h2 id="s17"><span class="n">17</span>Phiên bản và tham khảo</h2>
 <p><strong>1.0 (14/11/2026):</strong> bản đầu, dựa trên các bản phác 2D/3D và gói Unity 4 góc đã làm; khớp constitution v1.0. Thay đổi quy tắc nào thì tăng phiên bản và ghi ở đây.</p>
+<p><strong>1.1 (14/11/2026):</strong> theo nghiệm thu sprint 1 và constitution v1.2: chuyển sang 3D góc nhìn thứ nhất. Viết lại mục 9 (camera, di chuyển, tương tác) và mục 13 (bảng trên đồ vật, HUD chỉ số liệu); mục 8 thêm lối đi, tầm với và vị trí đồ tương tác; mục 7 thêm đế bậc, thùng thành thấp, đĩa món; mục 10 đổi hướng sáng từ "theo camera" sang đèn chính cố định trong phòng; mục 15 thêm lỗi thường gặp cho 3D. Ảnh 14–17 là ảnh chụp từ bản chạy thật.</p>
 <ul>
   <li><a href="https://laiapachon.github.io/Art-Bible/">Laia Pachon — Art Bible (khung tham khảo)</a></li>
   <li><a href="https://blog.makko.ai/what-public-game-art-bibles-say/">What Four Public Game Art Bibles Actually Say (0 A.D., Liberated Pixel Cup, Battle for Wesnoth, Riot VFX)</a></li>

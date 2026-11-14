@@ -1,6 +1,6 @@
 # Constitution — Quán ăn của Hope (tên tạm)
 
-Phiên bản 1.1 · 14/11/2026 · Trạng thái: thêm nguyên liệu, món ăn, công thức, thời gian nấu; số cân bằng giữ nguyên từ 1.0
+Phiên bản 1.2 · 14/11/2026 · Trạng thái: chuyển sang game 3D góc nhìn thứ nhất, thông tin nằm trên đồ vật; số cân bằng giữ nguyên từ 1.0
 
 Đây là nguồn sự thật cao nhất của dự án. Mọi spec, plan, task và dòng code phải tuân theo file này. Khi một spec mâu thuẫn với constitution, constitution thắng; muốn đổi thì sửa constitution trước (tăng số phiên bản, ghi lý do ở mục 9).
 
@@ -30,8 +30,12 @@ Mỗi bảng xác suất có một test thống kê (EditMode): quay 100.000 l�
 - **Giấu tỉ lệ:** máy gacha đồ ăn (để người chơi cảm thấy "thuần may rủi").
 - Ngày mất điện (ngày 8) tạm giấu khoảng bậc món và bậc nguyên liệu — đây là thử thách, không phải lỗi.
 
-### Điều 5 — Một căn phòng, bốn bức tường
-Người chơi chỉ ở trong một căn phòng. Mỗi tường là một khu chức năng; camera xoay 90° giữa các tường. Không có màn hình chơi nào nằm ngoài căn phòng (trừ menu, kết thúc ngày, cốt truyện).
+### Điều 5 — Một căn phòng 3D, tự đi lại
+Người chơi chỉ ở trong một căn phòng 3D và nhìn bằng mắt Hope (góc nhìn thứ nhất). Mỗi tường là một khu chức năng.
+- **Di chuyển:** tự đi bằng bàn phím (W A S D hoặc phím mũi tên), nhìn bằng chuột. **Không có nút chuyển góc.**
+- **Tương tác:** nhìn vào đồ vật (tâm ngắm giữa màn hình) và bấm chuột trái; việc cần giữ (sơ chế) thì giữ chuột trái. Chuột phải: đặt lại thứ đang cầm.
+- **Cầm đồ:** mỗi lúc cầm tối đa **một** thứ: một nguyên liệu, một đĩa trống hoặc một đĩa món.
+- Không có màn hình chơi nào nằm ngoài căn phòng (trừ menu, kết thúc ngày, cốt truyện).
 
 ### Điều 6 — Công nghệ
 Unity 6 LTS, URP, C#. Unity Test Framework cho test. Git + Git LFS (`.fbx`, `.png`, `.blend`, `.wav`). Model và animation nhân vật làm bằng Blender, xuất `.fbx`. Chữ trong UI dùng TextMeshPro, không dùng ảnh chữ.
@@ -41,6 +45,14 @@ Màu ấm kiểu hoạt hình cổ (Cuphead) cho nền; nhân vật và đồ v�
 
 ### Điều 8 — Quy trình SDD
 Mỗi tính năng: `spec.md` (luật + tiêu chí chấp nhận Given/When/Then) → `plan.md` → `tasks.md` → code + test → chơi thử. Sai thì sửa spec trước, code sau. Spec không được đặt con số mới; con số mới phải vào constitution/dữ liệu trước.
+
+### Điều 9 — Thông tin nằm trên đồ vật
+Thông tin của một thứ hiện **trên chính thứ đó trong phòng**, không hiện thành bảng phẳng trên màn hình:
+- Nguyên liệu nằm trong thùng; **bậc đọc bằng màu** (đế bậc dưới mỗi món, Art Bible §7), không cần chữ.
+- Tỉ lệ gacha: bảng treo trên tường Góc 2. Khoảng bậc món, thứ tự đã cho vào, tiến độ nấu: bảng nhỏ ngay trên bếp. Tiến độ sơ chế: thanh ngay trên thớt.
+- Công thức: trang của quyển sách ở Góc 3. Độ dễ tính: bong bóng trên đầu khách. Đĩa món: nằm trên quầy chờ, viền đĩa theo màu bậc.
+- **HUD chỉ hiện con số và thông tin ngắn:** ngày, tiền, nợ, vé, tâm ngắm, gợi ý tương tác của đồ đang nhìn, thứ đang cầm, thông báo một dòng. HUD không có nút bấm.
+- Màn kết thúc ngày, qua vòng, thua là màn ngoài phòng (Điều 5) nên được dùng nút.
 
 ---
 
@@ -93,7 +105,7 @@ Khởi đầu: **100G** và **2 vé thưởng** (ngày 1 có 5 vé). Cửa hàng
 - **Nguyên liệu đột phá** (sơn hào hải vị: thịt cá mập, tôm hùm…): mặc định **0%**, chỉ relic mới mở; luôn ở bậc 4–5; dùng như nguyên liệu chính.
 
 ### 4.2 Một lượt gacha (1 vé trắng)
-Máy thả xuống **1 thùng đồ phụ (5 món) + 1 thùng nguyên liệu chính (3 món)**; nếu trúng thì thêm **1 thùng đột phá (2 món)**. **Mỗi thùng chỉ có một loại nguyên liệu** (ví dụ thùng 5 quả cà chua, thùng 3 miếng thịt bò); loại được chọn ngẫu nhiên đều trong các loại đã mở khóa ở vòng hiện tại (mục 4.5). Mỗi món tự quay bậc độc lập theo bảng của vòng hiện tại. Nguyên liệu không dùng hết bị bỏ cuối ngày (tủ lạnh chỉ giữ món đã nấu).
+Bấm máy nhét vé ở Góc 2, máy thả xuống **1 thùng đồ phụ (5 món) + 1 thùng nguyên liệu chính (3 món)** lên bàn nhận hàng; nếu trúng thì thêm **1 thùng đột phá (2 món)**. **Mỗi thùng chỉ có một loại nguyên liệu** (ví dụ thùng 5 quả cà chua, thùng 3 miếng thịt bò); loại được chọn ngẫu nhiên đều trong các loại đã mở khóa ở vòng hiện tại (mục 4.5). Mỗi món tự quay bậc độc lập theo bảng của vòng hiện tại. Nguyên liệu không dùng hết bị bỏ cuối ngày (tủ lạnh chỉ giữ món đã nấu). Trên bàn, nguyên liệu cùng loại nằm chung một thùng (ví dụ mọi quả cà chua của ngày nằm trong thùng cà chua); người chơi lấy từng món ra bằng tay.
 
 ### 4.3 Tỉ lệ bậc theo vòng (%)
 
@@ -166,11 +178,14 @@ Bạn đề xuất "thịt cá mập"; mình thay bằng **cá ngừ vây xanh**
 ## 5. Nấu ăn và món ăn
 
 ### 5.1 Khu bếp (Góc 4)
-- **Trái — thớt:** giữ chuột/phím để sơ chế (thời gian theo mục 4.5). Không có hoạt ảnh phức tạp, chỉ thanh tiến độ.
-- **Giữa — bếp:** chọn dụng cụ theo công thức (**Chảo**, **Nồi** hoặc **Vỉ nướng**), cho từng thứ vào **đúng thứ tự**, rồi chờ.
-- **Phải — đĩa:** lấy đĩa (đã có sẵn đế món: cơm, mì Ý, bún hoặc bánh mì), bấm vào bếp để múc món ra.
+Một món đi qua các bước sau; mọi bước là đồ vật thật trong phòng.
+1. **Lấy nguyên liệu:** cầm một món từ thùng ở Góc 2.
+2. **Trái — thớt:** đặt nguyên liệu lên thớt, giữ chuột để sơ chế (thời gian theo mục 4.5); thanh tiến độ nằm ngay trên thớt. Xong thì cầm lên.
+3. **Giữa — bếp:** chọn dụng cụ trên giá treo (**Chảo**, **Nồi** hoặc **Vỉ nướng**); dụng cụ hiện lên bếp. Cho từng thứ vào **đúng thứ tự**: nguyên liệu đang cầm thì bấm vào bếp, đồ kho thì bấm lọ trên kệ gia vị. Vặn **núm bếp** để nấu, rồi chờ.
+4. **Phải — đĩa:** lấy một đĩa trống ở chồng đĩa (đĩa có sẵn đế món: cơm, mì Ý, bún hoặc bánh mì theo công thức), bấm vào bếp để múc món ra; đĩa đặt lên quầy chờ.
+5. **Thùng rác:** đổ bỏ những gì đang ở trên bếp.
 - **Quầy chờ:** giữ tối đa **3 đĩa** đã nấu trong ngày, không giảm bậc. Cuối ngày đĩa còn lại vào tủ lạnh (nếu còn ô) hoặc bị bỏ.
-- **Phục vụ:** đưa đĩa ra quầy, **bấm chuông**.
+- **Phục vụ:** cầm đĩa từ quầy chờ ra quầy Góc 1, **bấm chuông**.
 
 Mỗi món = **1 nguyên liệu chính (hoặc đột phá) + 1 đồ phụ + đồ kho**. Cho sai thứ tự → món ra **Lạc vị**. Đồ kho không ảnh hưởng bậc món; chúng tạo ra thứ tự cần nhớ.
 
@@ -276,7 +291,7 @@ Ngoại lệ tên: Thịt bò + Cà chua = **Mì Ý bò sốt cà chua** (món x
 
 \*Tổng = sơ chế 2 nguyên liệu + 0,5 giây mỗi lần cho vào + thời gian nấu + 1 giây múc + 1,5 giây mang ra và bấm chuông.
 
-Sách nấu ăn (Góc 3) tự mở trang khi nguyên liệu tương ứng mở khóa, ghi kỷ lục bậc cao nhất từng nấu cho mỗi món. Mọi món dùng chung giá gốc của vòng (mục 5.2), nên công thức chỉ thay đổi trải nghiệm, không làm lệch cân bằng.
+Sách nấu ăn (Góc 3) là quyển sách đặt trên giá: mỗi trang đôi là một món như bản phác — trang trái tên món, dụng cụ, đế món, thời gian nấu; trang phải thứ tự cho vào, mỗi bước một số tròn. Bấm trang phải để lật tới, trang trái để lật lui. Sách tự mở trang khi nguyên liệu tương ứng mở khóa, ghi kỷ lục bậc cao nhất từng nấu cho mỗi món. Mọi món dùng chung giá gốc của vòng (mục 5.2), nên công thức chỉ thay đổi trải nghiệm, không làm lệch cân bằng.
 
 ### 5.9 Thời gian nấu và quá lửa
 
@@ -299,8 +314,10 @@ Về tra cứu: các wiki của Overcooked và PlateUp mô tả cấu trúc côn
 
 ## 6. Khách hàng
 
-### 6.1 Chỗ ngồi
-Phục vụ tối đa **3 khách cùng lúc**; khách có thể đến lần lượt hoặc 3 người liền nhau.
+### 6.1 Chỗ ngồi và mở quán
+Phục vụ tối đa **3 khách cùng lúc**; khách có thể đến lần lượt hoặc 3 người liền nhau. **Vòng 1: khách đến lần lượt**, người sau vào khi người trước đã được phục vụ.
+
+**Mở quán:** đầu ngày quán đóng, người chơi gacha và nấu trước. Bấm **biển Mở quán** ở Góc 1 thì khách mới bắt đầu đến. Khi quán đang mở, bấm biển lần nữa để **đóng quán sớm**: khách còn lại ra về, không trả tiền, không bị phạt, và hết ngày.
 
 ### 6.2 Số khách mỗi ngày
 
@@ -441,6 +458,7 @@ Mô phỏng: với giá nước sốt 450G, 10% người chơi may mắn mua đ�
 - Lịch sử phiên bản:
   - **1.0 (14/11/2026):** bản đầu từ ý tưởng của bạn; mọi con số đánh dấu "claude" đã được tính và kiểm bằng mô phỏng.
   - **1.1 (14/11/2026):** thêm danh sách nguyên liệu (mục 4.5), công thức và 120 món (5.8), thời gian nấu và quá lửa (5.9), quầy chờ 3 đĩa (5.1); mỗi thùng chỉ một loại nguyên liệu (4.2). Không đổi số cân bằng: mô phỏng vẫn tính mỗi món 1 chính + 1 phụ với giá gốc theo vòng. Quá lửa chưa có trong mô phỏng — nó chỉ phạt người chơi bỏ quên bếp.
+  - **1.2 (14/11/2026):** theo nghiệm thu sprint 1 của bạn ("game này là 3D nhưng hiện tại chơi như game 2D"): Điều 5 đổi từ xoay camera 90° sang tự đi lại góc nhìn thứ nhất; thêm Điều 9 (thông tin nằm trên đồ vật, HUD chỉ số liệu); mục 4.2, 5.1, 5.8 tả lại thao tác bằng đồ vật; mục 6.1 thêm nút Mở quán (bạn trả lời 14/11) và đóng quán sớm. Không đổi số cân bằng; mô phỏng không bị ảnh hưởng. Thời gian đi lại trong phòng chưa có trong ước tính "17–19 giây một món" ở mục 5.9 — cần đo lại khi playtest vòng 2 (có tính giờ chờ).
 
 ### Các điểm mình đã tự diễn giải (cần bạn xác nhận)
 1. "Hoàn hảo" = bậc Tuyệt hảo.
@@ -450,6 +468,13 @@ Mô phỏng: với giá nước sốt 450G, 10% người chơi may mắn mua đ�
 7. Quầy chờ 3 đĩa và quá lửa từ vòng 2 là luật mới mình thêm để thời gian nấu có ý nghĩa; bỏ được nếu bạn thấy thừa.
 4. Máy gacha đồ ăn không tốn vé, giới hạn 3 lần/ngày, mỗi món một lần.
 5. Thua khi không đủ tiền trả nợ đúng hạn (không có trả góp).
+
+### Mặc định đã qua nghiệm thu chức năng sprint 1 (14/11/2026)
+Constitution chưa nói những điểm này; sprint 1 dùng mặc định dưới đây và bạn đã nghiệm thu chức năng "đúng như impl". Muốn đổi thì sửa ở đây trước.
+8. Chọn sai dụng cụ (ví dụ nấu trứng chiên bằng nồi) bị coi như sai công thức → món ra Lạc vị.
+9. Tiền là số nguyên G; giá và tip làm tròn riêng tới 1G gần nhất (0,5 làm tròn lên).
+10. Tiền đền bù có thể làm ví xuống dưới 0.
+11. Người chơi tự vặn núm để bắt đầu nấu; bếp không tự nấu khi đủ đồ.
 
 ---
 

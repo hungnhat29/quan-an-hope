@@ -13,10 +13,12 @@
 - Q-7 | 2026-11-14 | Thứ tự công thức | trạng thái: CLOSED — constitution v1.1 §5.8
 - Q-8 | 2026-11-14 | chặn: sprint 5 | Lưu/tải game và hướng dẫn ngày 1 chưa có trong constitution — có thêm không? | trạng thái: OPEN
 - Q-9 | 2026-11-14 | chặn: sprint 2 (Góc 3) | Art Bible asset_list ghi "thanh 10 ô relic", constitution §7.1 ghi tối đa 8. Mặc định: constitution (8) | trạng thái: OPEN
-- Q-10 | 2026-11-14 | chặn: không | Nút Mở quán chưa có trong constitution; có thêm vào §6 (v1.2) không? Mặc định: ghi trong spec F-004, nguồn = tin nhắn 14/11 | trạng thái: OPEN
-- Q-11 | 2026-11-14 | chặn: không | Chọn sai dụng cụ thì sao? Constitution §5.1 chỉ nói sai thứ tự → Lạc vị. Mặc định đang code: sai dụng cụ → Lạc vị (StoveTests.AC4_SaiDungCu_RaLacVi) | trạng thái: OPEN
-- Q-12 | 2026-11-14 | chặn: không | Làm tròn tiền? Mặc định đang code: giá và tip làm tròn riêng tới 1G, 0,5 lên (Payment.RoundMoney) | trạng thái: OPEN
+- Q-10 | 2026-11-14 | Nút Mở quán vào constitution? | trạng thái: CLOSED — đã ghi vào constitution v1.2 §6.1 (người dùng yêu cầu cập nhật specs 14/11)
+- Q-11 | 2026-11-14 | chặn: không | Chọn sai dụng cụ thì sao? Constitution §5.1 chỉ nói sai thứ tự → Lạc vị. Mặc định đang code: sai dụng cụ → Lạc vị (StoveTests.AC4_SaiDungCu_RaLacVi) | trạng thái: CLOSED — constitution v1.2 §9 mục 8 (nghiệm thu chức năng sprint 1 ngày 14/11)
+- Q-12 | 2026-11-14 | chặn: không | Làm tròn tiền? Mặc định đang code: giá và tip làm tròn riêng tới 1G, 0,5 lên (Payment.RoundMoney) | trạng thái: CLOSED — constitution v1.2 §9 mục 9
 - Q-13 | 2026-11-14 | chặn: không | balance.json thêm storm_day, counter_slots, dish.max_tier, payment (số từ constitution). sim_balance.py vẫn viết sẵn các số này. Có cần ghi lịch sử constitution / sửa sim không? | trạng thái: OPEN
-- Q-14 | 2026-11-14 | chặn: không | Hết nguyên liệu và vé khi còn khách? Mặc định đang code: nút Đóng quán sớm, khách còn lại ra về, không trả không phạt (GameSession.CloseEarly) | trạng thái: OPEN
-- Q-15 | 2026-11-14 | chặn: không | Tiền đền bù làm ví âm được không? Mặc định đang code: được | trạng thái: OPEN
-- Q-16 | 2026-11-14 | chặn: không | Constitution §5.1: lấy đĩa rồi bấm vào bếp để múc (2 bước). Mặc định đang code: một nút Múc ra đĩa | trạng thái: OPEN
+- Q-14 | 2026-11-14 | chặn: không | Hết nguyên liệu và vé khi còn khách? Mặc định đang code: nút Đóng quán sớm, khách còn lại ra về, không trả không phạt (GameSession.CloseEarly) | trạng thái: CLOSED — constitution v1.2 §6.1
+- Q-15 | 2026-11-14 | chặn: không | Tiền đền bù làm ví âm được không? Mặc định đang code: được | trạng thái: CLOSED — constitution v1.2 §9 mục 10
+- Q-16 | 2026-11-14 | chặn: không | Constitution §5.1: lấy đĩa rồi bấm vào bếp để múc (2 bước). Mặc định đang code: một nút Múc ra đĩa | trạng thái: CLOSED — bản 3D làm đúng 2 bước như constitution §5.1 (lấy đĩa trống, bấm vào bếp)
+- Q-17 | 2026-11-14 | chặn: không | Tốc độ đi 2,6 m/s, độ nhạy chuột 0,1°/px, tầm với 3 m (Art Bible §9) có hợp tay không? | trạng thái: OPEN
+- Q-18 | 2026-11-14 | chặn: không | Thùng gộp theo loại (mọi cà chua của ngày chung một thùng) thay vì mỗi lượt gacha một cặp thùng riêng — đã ghi vào constitution v1.2 §4.2; đồng ý không? | trạng thái: OPEN
