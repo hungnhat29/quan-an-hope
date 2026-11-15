@@ -4,9 +4,40 @@ In ti le thang/tien do cho 3 kieu nguoi choi: naive (chon so to), nocombo (choi 
 Moi con so doc tu balance.json va relics.json (cung thu muc)."""
 import json, random, statistics, sys, os
 HERE=os.path.dirname(os.path.abspath(__file__))
-B=json.load(open(os.environ.get('BAL',os.path.join(HERE,'balance.json'))))
-RL=json.load(open(os.environ.get('RELICS',os.path.join(HERE,'relics.json'))))
-RC=json.load(open(os.path.join(HERE,'recipes.json'),encoding='utf-8'))
+# V=next: doc bo so constitution 1.4 o balance/next/ (sinh tu make_next.py). Mac dinh: bo so game dang chay.
+DATA=os.path.join(HERE,os.environ.get('V','')) if os.environ.get('V') else HERE
+B=json.load(open(os.environ.get('BAL',os.path.join(DATA,'balance.json')),encoding='utf-8'))
+RL=json.load(open(os.environ.get('RELICS',os.path.join(DATA,'relics.json')),encoding='utf-8'))
+RC=json.load(open(os.path.join(DATA,'recipes.json'),encoding='utf-8'))
+# DEBTS="550,2600,8800,27000": thu muc no khac ma khong sua file.
+if os.environ.get('DEBTS'):
+    B['debt_days']=dict(zip(sorted(B['debt_days'],key=int),[int(x) for x in os.environ['DEBTS'].split(',')]))
+if os.environ.get('TICKETS'): B['tickets_per_day']=int(os.environ['TICKETS'])
+if os.environ.get('HOUR_S') and 'day' in B: B['day']['seconds_per_hour']=int(os.environ['HOUR_S']); B['day_seconds']=(B['day']['close_hour']-B['day']['open_hour'])*B['day']['seconds_per_hour']
+# Constitution 1.4 muc 6.2: khong gioi han khach, ngay dai day_seconds giay thuc (9:00-21:00); so mon ban duoc
+# do thoi gian va nguyen lieu quyet dinh. Thoi gian mot mon = so che + cho vao + nau + muc (recipes.json)
+# + OVERHEAD (di lai trong phong, ngam, mang ra quay, bam chuong). OVERHEAD la GIA DINH cua mo phong,
+# can do lai bang choi thu: nguoi cham 30 giay / mon, nguoi nhanh 20 giay / mon (tranh thu so che luc bep dang nau).
+TIMED='day_seconds' in B
+OVERHEAD={'naive':float(os.environ.get('OVER_NAIVE','30'))}
+OVER_GOOD=float(os.environ.get('OVER_GOOD','20'))
+PULL_S=4.0     # di toi may, nhet ve, thung roi
+FRIDGE_S=6.0   # lay mon tu tu lanh mang ra
+RECIPE={x['id']:x for x in RC['recipes']}
+_WORK={}; _AVG={}
+def dish_seconds(style,recipe_id):
+    w=_WORK.get(recipe_id)
+    if w is None:
+        x=RECIPE.get(recipe_id); T=RC['timing']
+        w=60.0 if x is None else sum(v[1] for v in x['prep'].values())+T['step_s']*len(x['steps'])+x['cook_s']+T['plate_s']
+        _WORK[recipe_id]=w
+    return w+OVERHEAD.get(style,OVER_GOOD)
+def avg_dish_seconds(style,rd):
+    k=(style,rd)
+    if k not in _AVG:
+        xs=[dish_seconds(style,x['id']) for x in RC['recipes'] if x['group']=='chinh' and 1<=x['unlock_round']<=rd]
+        _AVG[k]=sum(xs)/len(xs)
+    return _AVG[k]
 # Constitution 1.3 muc 6.7: khach goi mot mon cu the (cong thuc = loai chinh + loai phu). ORDERS=0 de so voi luat cu.
 ORDERS=os.environ.get('ORDERS','1')!='0'
 BOSS_ANY=os.environ.get('BOSS_ANY','1')!='0'
@@ -102,8 +133,9 @@ def required(E):
     for th,rq in B['customers']['required_tier']:
         if E>=th: return rq
     return 4
-def customers(p,day):
-    C=B['customers']; rd=round_of(day); n=C['per_day']['d14'] if day==14 else C['per_day'][str(rd)]
+def customers(p,day,n=None):
+    C=B['customers']; rd=round_of(day)
+    if n is None: n=C['per_day']['d14'] if day==14 else C['per_day'][str(rd)]
     out=[]
     for _ in range(n):
         bands=C['easy_bands'][str(rd)]; x=p.r.random(); a=0
@@ -129,13 +161,21 @@ def run(style,seed,log=False):
         rd=round_of(day); f=p.fx()
         if str(day) in B['debt_days']:
             due=B['debt_days'][str(day)]
+            p.hist=getattr(p,'hist',{}); p.hist[day]=p.money
             if p.money<due: return dict(win=False,day=day,p=p)
             p.money-=due
         if day==22: return dict(win=True,day=22,p=p)
         p.tk+=B['tickets_per_day']+(1 if f.get('ticket_every3') and day%3==0 else 0)
-        cust=customers(p,day)
-        if day==21: cust=cust[:-1]+[B['customers']['boss_easy']]
-        need_pulls=-(-len(cust)//max(1,(B['crate_size']['chinh']+int(f.get('chinh_size',0)))))
+        if TIMED:
+            # Khach khong gioi han: nguoi choi tinh so thung theo so mon kip nau trong ngay.
+            cs=B['crate_size']; base=cs['chinh_storm'] if day==B.get('storm_day',3) else cs['chinh']
+            cap_est=int(B['day_seconds']//avg_dish_seconds(style,rd))
+            need_pulls=-(-cap_est//max(1,base+int(f.get('chinh_size',0))))
+            cust=None
+        else:
+            cust=customers(p,day)
+            if day==21: cust=cust[:-1]+[B['customers']['boss_easy']]
+            need_pulls=-(-len(cust)//max(1,(B['crate_size']['chinh']+int(f.get('chinh_size',0)))))
         # --- next debt reserve
         nxt=min([int(k) for k in B['debt_days'] if int(k)>=day] or [99]); reserve=B['debt_days'].get(str(nxt),0)
         # --- relics
@@ -188,6 +228,16 @@ def run(style,seed,log=False):
             if k>=len(phu): break
             take=phu[k:k+1]
             k+=1; dishes.append((cook(p,day,c[0],[take[0][0]]),c[1]+'__'+take[0][1]))
+        if TIMED:
+            # Chi nau kip mot so mon truoc 21:00; mon trong tu lanh chi ton cong mang ra.
+            budget=B['day_seconds']-PULL_S*(pulls+nb)-FRIDGE_S*len(p.fridge)
+            kept=[]; used=0.0
+            for d in dishes:
+                t=dish_seconds(style,d[1])
+                if used+t>budget: break
+                kept.append(d); used+=t
+            p.cooked=getattr(p,'cooked',0)+len(kept); p.unserved=getattr(p,'unserved',0)+len(dishes)-len(kept)
+            dishes=kept
         # sauce / machine
         if p.sauce:
             if style=='naive':
@@ -204,6 +254,10 @@ def run(style,seed,log=False):
                     v=machine_roll(p,dishes[i][0]); uses-=1; dishes[i]=(v,dishes[i][1])
             dishes=[d for d in dishes if d[0]>=0]
         dishes+= [d for d,_ in p.fridge]; p.fridge=[]
+        if TIMED:
+            # Moi mon co mot khach (khach vao lien tuc toi 21:00); ngay 21 chu no den luc 20:00, tinh la khach cuoi.
+            cust=customers(p,day,len(dishes))
+            if day==21 and cust: cust[-1]=B['customers']['boss_easy']
         # --- serve
         imp=0 if rd==1 else (8 if style=='naive' else 3)*(1-min(0.9,f.get('patience',0)))
         def serve(E,t):
@@ -281,7 +335,7 @@ def score(p,o,owned=False):
         if p.target is None and not owned: p.target=o['set']
         return 10+cnt.get(o['set'],0)*3 if o['set']==p.target else 1
     return {'F1':8,'F4':5,'F2':4,'F3':3,'F9':3,'F5':2,'F10':4}.get(o['id'],0)
-def stats(style,N=4000):
+def stats(style,N=int(os.environ.get('N','4000'))):
     res=[run(style,s) for s in range(N)]
     win=sum(x['win'] for x in res)/N
     prog=statistics.mean(min(x['day'],22)/22 for x in res)
@@ -290,8 +344,22 @@ def stats(style,N=4000):
     cw=sum(x['win'] for x in combo)/max(1,len(combo))
     nc=[x for x in res if max(list(x['p'].setcount().values())+[0])<2]
     global NOCOMBO; NOCOMBO=(len(nc)/N, sum(x['win'] for x in nc)/max(1,len(nc)))
+    global EXTRA
+    days=sum(min(x['day'],22)-1 for x in res)
+    sets={}
+    for st in ('vuon','cho','sonhao'):
+        g=[x for x in res if x['p'].setcount().get(st,0)>=3]
+        sets[st]=(len(g),round(sum(x['win'] for x in g)/max(1,len(g)),2))
+    def pct(day):
+        v=sorted(x['p'].hist[day] for x in res if day in getattr(x['p'],'hist',{}))
+        return None if not v else [int(v[int(len(v)*q)]) for q in (0.05,0.1,0.2,0.5,0.8)]+[len(v)]
+    MONEY={d:pct(int(d)) for d in sorted(B['debt_days'],key=int)}
+    EXTRA=dict(money_before_debt_p5_p10_p20_p50_p80_n=MONEY,dishes_per_day=round(sum(getattr(x['p'],'cooked',0) for x in res)/max(1,days),1),
+               not_cooked_per_day=round(sum(getattr(x['p'],'unserved',0) for x in res)/max(1,days),1),sets=sets)
     return win,prog,pass_d,len(combo)/N,cw
 if __name__=='__main__':
     for st in ('naive','nocombo','smart'):
         w,pr,pd,cf,cw=stats(st)
         print(f"{st:6s} win={w:.2f} progress={pr:.2f} pass(d4,d9,d15,d22)={[round(x,2) for x in pd]} combo3+={cf:.2f} win|combo={cw:.2f}")
+        if TIMED or os.environ.get('MORE'): print("       ",EXTRA)
+        elif st=='smart': print("       ",EXTRA['sets'])

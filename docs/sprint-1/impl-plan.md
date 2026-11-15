@@ -1,5 +1,7 @@
 # Impl plan — Sprint 1: Lát cắt dọc vòng 1
 
+> **Sprint đã đóng ngày 14/11/2026.** Phần phát sinh sau kế hoạch này: F-007 (3D), F-008 (mặt, hiệu ứng), F-009 (gọi món, giá). Tổng kết và bài học: `.dev-memory/RETRO-sprint-1.md`. Kế hoạch tiếp theo: [sprint-2](../sprint-2/impl-plan.md).
+
 Thời gian: Chủ nhật 15/11 → Thứ bảy 21/11/2026 (7 ngày)
 Nguồn luật: `specs/constitution.md` v1.2. Nguồn số: `balance/balance.json`, `balance/recipes.json`. Hình ảnh: `docs/art-bible/` v1.1. Không có Blender trong sprint này.
 

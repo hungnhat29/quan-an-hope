@@ -1,0 +1,4051 @@
+{
+ "_note": "Constitution 1.4: so che x3.0, nau x1.5 so voi 1.3. Sinh tu make_next.py.",
+ "pantry": [
+  "Dầu ăn",
+  "Bơ",
+  "Tỏi",
+  "Nước mắm",
+  "Nước tương",
+  "Muối",
+  "Mật ong",
+  "Nước dùng",
+  "Hành lá"
+ ],
+ "bases": [
+  "Cơm",
+  "Mì Ý",
+  "Bún",
+  "Bánh mì"
+ ],
+ "timing": {
+  "step_s": 0.5,
+  "plate_s": 1.0,
+  "serve_s": 1.5,
+  "burn_factor": 2.0,
+  "warn_factor": 1.5,
+  "burn_from_round": 2
+ },
+ "phu": [
+  {
+   "id": "ca_chua",
+   "name": "Cà chua",
+   "in_name": "cà chua",
+   "prep": "Thái múi",
+   "prep_s": 4.5,
+   "unlock_round": 1
+  },
+  {
+   "id": "hanh_tay",
+   "name": "Hành tây",
+   "in_name": "hành tây",
+   "prep": "Thái lát",
+   "prep_s": 4.5,
+   "unlock_round": 1
+  },
+  {
+   "id": "rau_muong",
+   "name": "Rau muống",
+   "in_name": "rau muống",
+   "prep": "Nhặt, rửa",
+   "prep_s": 3.0,
+   "unlock_round": 1
+  },
+  {
+   "id": "khoai_tay",
+   "name": "Khoai tây",
+   "in_name": "khoai tây",
+   "prep": "Gọt, thái",
+   "prep_s": 6.0,
+   "unlock_round": 2
+  },
+  {
+   "id": "nam_rom",
+   "name": "Nấm rơm",
+   "in_name": "nấm rơm",
+   "prep": "Rửa, bổ đôi",
+   "prep_s": 3.0,
+   "unlock_round": 2
+  },
+  {
+   "id": "bong_cai",
+   "name": "Bông cải xanh",
+   "in_name": "bông cải",
+   "prep": "Tách bông",
+   "prep_s": 4.5,
+   "unlock_round": 3
+  },
+  {
+   "id": "ot_chuong",
+   "name": "Ớt chuông",
+   "in_name": "ớt chuông",
+   "prep": "Bỏ hạt, thái",
+   "prep_s": 4.5,
+   "unlock_round": 3
+  },
+  {
+   "id": "bi_do",
+   "name": "Bí đỏ",
+   "in_name": "bí đỏ",
+   "prep": "Gọt, thái",
+   "prep_s": 6.0,
+   "unlock_round": 4
+  },
+  {
+   "id": "mang_tay",
+   "name": "Măng tây",
+   "in_name": "măng tây",
+   "prep": "Cắt khúc",
+   "prep_s": 3.0,
+   "unlock_round": 4
+  },
+  {
+   "id": "nam_dong_co",
+   "name": "Nấm đông cô",
+   "in_name": "nấm đông cô",
+   "prep": "Thái lát",
+   "prep_s": 3.0,
+   "unlock_round": 4
+  }
+ ],
+ "chinh": [
+  {
+   "id": "trung",
+   "name": "Trứng gà",
+   "template": "Trứng chiên {p}",
+   "base": "Cơm",
+   "tool": "Chảo",
+   "method": "chiên",
+   "prep": "Đập, đánh",
+   "prep_s": 1.5,
+   "steps": [
+    "Dầu ăn",
+    "P",
+    "Trứng gà",
+    "Nước mắm"
+   ],
+   "cook_s": 12,
+   "unlock_round": 1,
+   "group": "chinh"
+  },
+  {
+   "id": "heo",
+   "name": "Thịt heo",
+   "template": "Heo xào {p}",
+   "base": "Cơm",
+   "tool": "Chảo",
+   "method": "xào",
+   "prep": "Thái mỏng",
+   "prep_s": 4.5,
+   "steps": [
+    "Dầu ăn",
+    "Tỏi",
+    "Thịt heo",
+    "P"
+   ],
+   "cook_s": 15,
+   "unlock_round": 1,
+   "group": "chinh"
+  },
+  {
+   "id": "dau_phu",
+   "name": "Đậu phụ",
+   "template": "Đậu phụ sốt {p}",
+   "base": "Cơm",
+   "tool": "Nồi",
+   "method": "sốt",
+   "prep": "Cắt miếng",
+   "prep_s": 3.0,
+   "steps": [
+    "Dầu ăn",
+    "P",
+    "Đậu phụ",
+    "Nước mắm"
+   ],
+   "cook_s": 18,
+   "unlock_round": 1,
+   "group": "chinh"
+  },
+  {
+   "id": "bo",
+   "name": "Thịt bò",
+   "template": "Mì Ý bò xào {p}",
+   "base": "Mì Ý",
+   "tool": "Chảo",
+   "method": "xào",
+   "prep": "Thái mỏng",
+   "prep_s": 4.5,
+   "steps": [
+    "Bơ",
+    "Tỏi",
+    "Thịt bò",
+    "P"
+   ],
+   "cook_s": 15,
+   "unlock_round": 2,
+   "group": "chinh"
+  },
+  {
+   "id": "tom",
+   "name": "Tôm",
+   "template": "Bún xào tôm {p}",
+   "base": "Bún",
+   "tool": "Chảo",
+   "method": "xào",
+   "prep": "Bóc vỏ",
+   "prep_s": 6.0,
+   "steps": [
+    "Dầu ăn",
+    "Tôm",
+    "P",
+    "Nước mắm"
+   ],
+   "cook_s": 15,
+   "unlock_round": 2,
+   "group": "chinh"
+  },
+  {
+   "id": "ca_hoi",
+   "name": "Cá hồi",
+   "template": "Cá hồi áp chảo {p}",
+   "base": "Cơm",
+   "tool": "Chảo",
+   "method": "áp chảo",
+   "prep": "Lọc xương",
+   "prep_s": 7.5,
+   "steps": [
+    "Bơ",
+    "Cá hồi",
+    "P",
+    "Muối"
+   ],
+   "cook_s": 21,
+   "unlock_round": 3,
+   "group": "chinh"
+  },
+  {
+   "id": "muc",
+   "name": "Mực",
+   "template": "Mực xào {p}",
+   "base": "Cơm",
+   "tool": "Chảo",
+   "method": "xào",
+   "prep": "Làm sạch, khứa",
+   "prep_s": 7.5,
+   "steps": [
+    "Dầu ăn",
+    "Tỏi",
+    "Mực",
+    "P"
+   ],
+   "cook_s": 12,
+   "unlock_round": 3,
+   "group": "chinh"
+  },
+  {
+   "id": "ga",
+   "name": "Gà ta",
+   "template": "Gà nướng mật ong {p}",
+   "base": "Bánh mì",
+   "tool": "Vỉ nướng",
+   "method": "nướng",
+   "prep": "Chặt miếng",
+   "prep_s": 6.0,
+   "steps": [
+    "Mật ong",
+    "Gà ta",
+    "P"
+   ],
+   "cook_s": 27,
+   "unlock_round": 4,
+   "group": "chinh"
+  },
+  {
+   "id": "tom_hum",
+   "name": "Tôm hùm",
+   "template": "Tôm hùm nướng bơ tỏi {p}",
+   "base": "Bánh mì",
+   "tool": "Vỉ nướng",
+   "method": "nướng",
+   "prep": "Bổ đôi",
+   "prep_s": 9.0,
+   "steps": [
+    "Bơ",
+    "Tỏi",
+    "Tôm hùm",
+    "P"
+   ],
+   "cook_s": 30,
+   "unlock_round": 0,
+   "group": "dotpha"
+  },
+  {
+   "id": "wagyu",
+   "name": "Bò Wagyu",
+   "template": "Bò Wagyu áp chảo {p}",
+   "base": "Cơm",
+   "tool": "Chảo",
+   "method": "áp chảo",
+   "prep": "Cắt miếng dày",
+   "prep_s": 6.0,
+   "steps": [
+    "Muối",
+    "Bò Wagyu",
+    "Bơ",
+    "P"
+   ],
+   "cook_s": 21,
+   "unlock_round": 0,
+   "group": "dotpha"
+  },
+  {
+   "id": "ca_ngu",
+   "name": "Cá ngừ vây xanh",
+   "template": "Cá ngừ vây xanh tataki {p}",
+   "base": "Cơm",
+   "tool": "Chảo",
+   "method": "áp chảo nhanh",
+   "prep": "Lọc thăn",
+   "prep_s": 7.5,
+   "steps": [
+    "Dầu ăn",
+    "Cá ngừ vây xanh",
+    "P",
+    "Nước tương"
+   ],
+   "cook_s": 12,
+   "unlock_round": 0,
+   "group": "dotpha"
+  },
+  {
+   "id": "cua",
+   "name": "Cua hoàng đế",
+   "template": "Cua hoàng đế hấp {p}",
+   "base": "Bún",
+   "tool": "Nồi",
+   "method": "hấp",
+   "prep": "Tách mai",
+   "prep_s": 9.0,
+   "steps": [
+    "Nước dùng",
+    "Cua hoàng đế",
+    "P",
+    "Hành lá"
+   ],
+   "cook_s": 30,
+   "unlock_round": 0,
+   "group": "dotpha"
+  }
+ ],
+ "recipes": [
+  {
+   "id": "trung__ca_chua",
+   "name": "Trứng chiên cà chua",
+   "group": "chinh",
+   "main": "Trứng gà",
+   "side": "Cà chua",
+   "tool": "Chảo",
+   "method": "chiên",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Cà chua",
+    "Trứng gà",
+    "Nước mắm"
+   ],
+   "prep": {
+    "Trứng gà": [
+     "Đập, đánh",
+     1.5
+    ],
+    "Cà chua": [
+     "Thái múi",
+     4.5
+    ]
+   },
+   "cook_s": 12,
+   "burn_s": 24.0,
+   "warn_s": 18.0,
+   "unlock_round": 1,
+   "total_s": 22.5
+  },
+  {
+   "id": "trung__hanh_tay",
+   "name": "Trứng chiên hành tây",
+   "group": "chinh",
+   "main": "Trứng gà",
+   "side": "Hành tây",
+   "tool": "Chảo",
+   "method": "chiên",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Hành tây",
+    "Trứng gà",
+    "Nước mắm"
+   ],
+   "prep": {
+    "Trứng gà": [
+     "Đập, đánh",
+     1.5
+    ],
+    "Hành tây": [
+     "Thái lát",
+     4.5
+    ]
+   },
+   "cook_s": 12,
+   "burn_s": 24.0,
+   "warn_s": 18.0,
+   "unlock_round": 1,
+   "total_s": 22.5
+  },
+  {
+   "id": "trung__rau_muong",
+   "name": "Trứng chiên rau muống",
+   "group": "chinh",
+   "main": "Trứng gà",
+   "side": "Rau muống",
+   "tool": "Chảo",
+   "method": "chiên",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Rau muống",
+    "Trứng gà",
+    "Nước mắm"
+   ],
+   "prep": {
+    "Trứng gà": [
+     "Đập, đánh",
+     1.5
+    ],
+    "Rau muống": [
+     "Nhặt, rửa",
+     3.0
+    ]
+   },
+   "cook_s": 12,
+   "burn_s": 24.0,
+   "warn_s": 18.0,
+   "unlock_round": 1,
+   "total_s": 21.0
+  },
+  {
+   "id": "trung__khoai_tay",
+   "name": "Trứng chiên khoai tây",
+   "group": "chinh",
+   "main": "Trứng gà",
+   "side": "Khoai tây",
+   "tool": "Chảo",
+   "method": "chiên",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Khoai tây",
+    "Trứng gà",
+    "Nước mắm"
+   ],
+   "prep": {
+    "Trứng gà": [
+     "Đập, đánh",
+     1.5
+    ],
+    "Khoai tây": [
+     "Gọt, thái",
+     6.0
+    ]
+   },
+   "cook_s": 12,
+   "burn_s": 24.0,
+   "warn_s": 18.0,
+   "unlock_round": 2,
+   "total_s": 24.0
+  },
+  {
+   "id": "trung__nam_rom",
+   "name": "Trứng chiên nấm rơm",
+   "group": "chinh",
+   "main": "Trứng gà",
+   "side": "Nấm rơm",
+   "tool": "Chảo",
+   "method": "chiên",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Nấm rơm",
+    "Trứng gà",
+    "Nước mắm"
+   ],
+   "prep": {
+    "Trứng gà": [
+     "Đập, đánh",
+     1.5
+    ],
+    "Nấm rơm": [
+     "Rửa, bổ đôi",
+     3.0
+    ]
+   },
+   "cook_s": 12,
+   "burn_s": 24.0,
+   "warn_s": 18.0,
+   "unlock_round": 2,
+   "total_s": 21.0
+  },
+  {
+   "id": "trung__bong_cai",
+   "name": "Trứng chiên bông cải",
+   "group": "chinh",
+   "main": "Trứng gà",
+   "side": "Bông cải xanh",
+   "tool": "Chảo",
+   "method": "chiên",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Bông cải xanh",
+    "Trứng gà",
+    "Nước mắm"
+   ],
+   "prep": {
+    "Trứng gà": [
+     "Đập, đánh",
+     1.5
+    ],
+    "Bông cải xanh": [
+     "Tách bông",
+     4.5
+    ]
+   },
+   "cook_s": 12,
+   "burn_s": 24.0,
+   "warn_s": 18.0,
+   "unlock_round": 3,
+   "total_s": 22.5
+  },
+  {
+   "id": "trung__ot_chuong",
+   "name": "Trứng chiên ớt chuông",
+   "group": "chinh",
+   "main": "Trứng gà",
+   "side": "Ớt chuông",
+   "tool": "Chảo",
+   "method": "chiên",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Ớt chuông",
+    "Trứng gà",
+    "Nước mắm"
+   ],
+   "prep": {
+    "Trứng gà": [
+     "Đập, đánh",
+     1.5
+    ],
+    "Ớt chuông": [
+     "Bỏ hạt, thái",
+     4.5
+    ]
+   },
+   "cook_s": 12,
+   "burn_s": 24.0,
+   "warn_s": 18.0,
+   "unlock_round": 3,
+   "total_s": 22.5
+  },
+  {
+   "id": "trung__bi_do",
+   "name": "Trứng chiên bí đỏ",
+   "group": "chinh",
+   "main": "Trứng gà",
+   "side": "Bí đỏ",
+   "tool": "Chảo",
+   "method": "chiên",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Bí đỏ",
+    "Trứng gà",
+    "Nước mắm"
+   ],
+   "prep": {
+    "Trứng gà": [
+     "Đập, đánh",
+     1.5
+    ],
+    "Bí đỏ": [
+     "Gọt, thái",
+     6.0
+    ]
+   },
+   "cook_s": 12,
+   "burn_s": 24.0,
+   "warn_s": 18.0,
+   "unlock_round": 4,
+   "total_s": 24.0
+  },
+  {
+   "id": "trung__mang_tay",
+   "name": "Trứng chiên măng tây",
+   "group": "chinh",
+   "main": "Trứng gà",
+   "side": "Măng tây",
+   "tool": "Chảo",
+   "method": "chiên",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Măng tây",
+    "Trứng gà",
+    "Nước mắm"
+   ],
+   "prep": {
+    "Trứng gà": [
+     "Đập, đánh",
+     1.5
+    ],
+    "Măng tây": [
+     "Cắt khúc",
+     3.0
+    ]
+   },
+   "cook_s": 12,
+   "burn_s": 24.0,
+   "warn_s": 18.0,
+   "unlock_round": 4,
+   "total_s": 21.0
+  },
+  {
+   "id": "trung__nam_dong_co",
+   "name": "Trứng chiên nấm đông cô",
+   "group": "chinh",
+   "main": "Trứng gà",
+   "side": "Nấm đông cô",
+   "tool": "Chảo",
+   "method": "chiên",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Nấm đông cô",
+    "Trứng gà",
+    "Nước mắm"
+   ],
+   "prep": {
+    "Trứng gà": [
+     "Đập, đánh",
+     1.5
+    ],
+    "Nấm đông cô": [
+     "Thái lát",
+     3.0
+    ]
+   },
+   "cook_s": 12,
+   "burn_s": 24.0,
+   "warn_s": 18.0,
+   "unlock_round": 4,
+   "total_s": 21.0
+  },
+  {
+   "id": "heo__ca_chua",
+   "name": "Heo xào cà chua",
+   "group": "chinh",
+   "main": "Thịt heo",
+   "side": "Cà chua",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Tỏi",
+    "Thịt heo",
+    "Cà chua"
+   ],
+   "prep": {
+    "Thịt heo": [
+     "Thái mỏng",
+     4.5
+    ],
+    "Cà chua": [
+     "Thái múi",
+     4.5
+    ]
+   },
+   "cook_s": 15,
+   "burn_s": 30.0,
+   "warn_s": 22.5,
+   "unlock_round": 1,
+   "total_s": 28.5
+  },
+  {
+   "id": "heo__hanh_tay",
+   "name": "Heo xào hành tây",
+   "group": "chinh",
+   "main": "Thịt heo",
+   "side": "Hành tây",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Tỏi",
+    "Thịt heo",
+    "Hành tây"
+   ],
+   "prep": {
+    "Thịt heo": [
+     "Thái mỏng",
+     4.5
+    ],
+    "Hành tây": [
+     "Thái lát",
+     4.5
+    ]
+   },
+   "cook_s": 15,
+   "burn_s": 30.0,
+   "warn_s": 22.5,
+   "unlock_round": 1,
+   "total_s": 28.5
+  },
+  {
+   "id": "heo__rau_muong",
+   "name": "Heo xào rau muống",
+   "group": "chinh",
+   "main": "Thịt heo",
+   "side": "Rau muống",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Tỏi",
+    "Thịt heo",
+    "Rau muống"
+   ],
+   "prep": {
+    "Thịt heo": [
+     "Thái mỏng",
+     4.5
+    ],
+    "Rau muống": [
+     "Nhặt, rửa",
+     3.0
+    ]
+   },
+   "cook_s": 15,
+   "burn_s": 30.0,
+   "warn_s": 22.5,
+   "unlock_round": 1,
+   "total_s": 27.0
+  },
+  {
+   "id": "heo__khoai_tay",
+   "name": "Heo xào khoai tây",
+   "group": "chinh",
+   "main": "Thịt heo",
+   "side": "Khoai tây",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Tỏi",
+    "Thịt heo",
+    "Khoai tây"
+   ],
+   "prep": {
+    "Thịt heo": [
+     "Thái mỏng",
+     4.5
+    ],
+    "Khoai tây": [
+     "Gọt, thái",
+     6.0
+    ]
+   },
+   "cook_s": 15,
+   "burn_s": 30.0,
+   "warn_s": 22.5,
+   "unlock_round": 2,
+   "total_s": 30.0
+  },
+  {
+   "id": "heo__nam_rom",
+   "name": "Heo xào nấm rơm",
+   "group": "chinh",
+   "main": "Thịt heo",
+   "side": "Nấm rơm",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Tỏi",
+    "Thịt heo",
+    "Nấm rơm"
+   ],
+   "prep": {
+    "Thịt heo": [
+     "Thái mỏng",
+     4.5
+    ],
+    "Nấm rơm": [
+     "Rửa, bổ đôi",
+     3.0
+    ]
+   },
+   "cook_s": 15,
+   "burn_s": 30.0,
+   "warn_s": 22.5,
+   "unlock_round": 2,
+   "total_s": 27.0
+  },
+  {
+   "id": "heo__bong_cai",
+   "name": "Heo xào bông cải",
+   "group": "chinh",
+   "main": "Thịt heo",
+   "side": "Bông cải xanh",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Tỏi",
+    "Thịt heo",
+    "Bông cải xanh"
+   ],
+   "prep": {
+    "Thịt heo": [
+     "Thái mỏng",
+     4.5
+    ],
+    "Bông cải xanh": [
+     "Tách bông",
+     4.5
+    ]
+   },
+   "cook_s": 15,
+   "burn_s": 30.0,
+   "warn_s": 22.5,
+   "unlock_round": 3,
+   "total_s": 28.5
+  },
+  {
+   "id": "heo__ot_chuong",
+   "name": "Heo xào ớt chuông",
+   "group": "chinh",
+   "main": "Thịt heo",
+   "side": "Ớt chuông",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Tỏi",
+    "Thịt heo",
+    "Ớt chuông"
+   ],
+   "prep": {
+    "Thịt heo": [
+     "Thái mỏng",
+     4.5
+    ],
+    "Ớt chuông": [
+     "Bỏ hạt, thái",
+     4.5
+    ]
+   },
+   "cook_s": 15,
+   "burn_s": 30.0,
+   "warn_s": 22.5,
+   "unlock_round": 3,
+   "total_s": 28.5
+  },
+  {
+   "id": "heo__bi_do",
+   "name": "Heo xào bí đỏ",
+   "group": "chinh",
+   "main": "Thịt heo",
+   "side": "Bí đỏ",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Tỏi",
+    "Thịt heo",
+    "Bí đỏ"
+   ],
+   "prep": {
+    "Thịt heo": [
+     "Thái mỏng",
+     4.5
+    ],
+    "Bí đỏ": [
+     "Gọt, thái",
+     6.0
+    ]
+   },
+   "cook_s": 15,
+   "burn_s": 30.0,
+   "warn_s": 22.5,
+   "unlock_round": 4,
+   "total_s": 30.0
+  },
+  {
+   "id": "heo__mang_tay",
+   "name": "Heo xào măng tây",
+   "group": "chinh",
+   "main": "Thịt heo",
+   "side": "Măng tây",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Tỏi",
+    "Thịt heo",
+    "Măng tây"
+   ],
+   "prep": {
+    "Thịt heo": [
+     "Thái mỏng",
+     4.5
+    ],
+    "Măng tây": [
+     "Cắt khúc",
+     3.0
+    ]
+   },
+   "cook_s": 15,
+   "burn_s": 30.0,
+   "warn_s": 22.5,
+   "unlock_round": 4,
+   "total_s": 27.0
+  },
+  {
+   "id": "heo__nam_dong_co",
+   "name": "Heo xào nấm đông cô",
+   "group": "chinh",
+   "main": "Thịt heo",
+   "side": "Nấm đông cô",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Tỏi",
+    "Thịt heo",
+    "Nấm đông cô"
+   ],
+   "prep": {
+    "Thịt heo": [
+     "Thái mỏng",
+     4.5
+    ],
+    "Nấm đông cô": [
+     "Thái lát",
+     3.0
+    ]
+   },
+   "cook_s": 15,
+   "burn_s": 30.0,
+   "warn_s": 22.5,
+   "unlock_round": 4,
+   "total_s": 27.0
+  },
+  {
+   "id": "dau_phu__ca_chua",
+   "name": "Đậu phụ sốt cà chua",
+   "group": "chinh",
+   "main": "Đậu phụ",
+   "side": "Cà chua",
+   "tool": "Nồi",
+   "method": "sốt",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Cà chua",
+    "Đậu phụ",
+    "Nước mắm"
+   ],
+   "prep": {
+    "Đậu phụ": [
+     "Cắt miếng",
+     3.0
+    ],
+    "Cà chua": [
+     "Thái múi",
+     4.5
+    ]
+   },
+   "cook_s": 18,
+   "burn_s": 36.0,
+   "warn_s": 27.0,
+   "unlock_round": 1,
+   "total_s": 30.0
+  },
+  {
+   "id": "dau_phu__hanh_tay",
+   "name": "Đậu phụ sốt hành tây",
+   "group": "chinh",
+   "main": "Đậu phụ",
+   "side": "Hành tây",
+   "tool": "Nồi",
+   "method": "sốt",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Hành tây",
+    "Đậu phụ",
+    "Nước mắm"
+   ],
+   "prep": {
+    "Đậu phụ": [
+     "Cắt miếng",
+     3.0
+    ],
+    "Hành tây": [
+     "Thái lát",
+     4.5
+    ]
+   },
+   "cook_s": 18,
+   "burn_s": 36.0,
+   "warn_s": 27.0,
+   "unlock_round": 1,
+   "total_s": 30.0
+  },
+  {
+   "id": "dau_phu__rau_muong",
+   "name": "Đậu phụ sốt rau muống",
+   "group": "chinh",
+   "main": "Đậu phụ",
+   "side": "Rau muống",
+   "tool": "Nồi",
+   "method": "sốt",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Rau muống",
+    "Đậu phụ",
+    "Nước mắm"
+   ],
+   "prep": {
+    "Đậu phụ": [
+     "Cắt miếng",
+     3.0
+    ],
+    "Rau muống": [
+     "Nhặt, rửa",
+     3.0
+    ]
+   },
+   "cook_s": 18,
+   "burn_s": 36.0,
+   "warn_s": 27.0,
+   "unlock_round": 1,
+   "total_s": 28.5
+  },
+  {
+   "id": "dau_phu__khoai_tay",
+   "name": "Đậu phụ sốt khoai tây",
+   "group": "chinh",
+   "main": "Đậu phụ",
+   "side": "Khoai tây",
+   "tool": "Nồi",
+   "method": "sốt",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Khoai tây",
+    "Đậu phụ",
+    "Nước mắm"
+   ],
+   "prep": {
+    "Đậu phụ": [
+     "Cắt miếng",
+     3.0
+    ],
+    "Khoai tây": [
+     "Gọt, thái",
+     6.0
+    ]
+   },
+   "cook_s": 18,
+   "burn_s": 36.0,
+   "warn_s": 27.0,
+   "unlock_round": 2,
+   "total_s": 31.5
+  },
+  {
+   "id": "dau_phu__nam_rom",
+   "name": "Đậu phụ sốt nấm rơm",
+   "group": "chinh",
+   "main": "Đậu phụ",
+   "side": "Nấm rơm",
+   "tool": "Nồi",
+   "method": "sốt",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Nấm rơm",
+    "Đậu phụ",
+    "Nước mắm"
+   ],
+   "prep": {
+    "Đậu phụ": [
+     "Cắt miếng",
+     3.0
+    ],
+    "Nấm rơm": [
+     "Rửa, bổ đôi",
+     3.0
+    ]
+   },
+   "cook_s": 18,
+   "burn_s": 36.0,
+   "warn_s": 27.0,
+   "unlock_round": 2,
+   "total_s": 28.5
+  },
+  {
+   "id": "dau_phu__bong_cai",
+   "name": "Đậu phụ sốt bông cải",
+   "group": "chinh",
+   "main": "Đậu phụ",
+   "side": "Bông cải xanh",
+   "tool": "Nồi",
+   "method": "sốt",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Bông cải xanh",
+    "Đậu phụ",
+    "Nước mắm"
+   ],
+   "prep": {
+    "Đậu phụ": [
+     "Cắt miếng",
+     3.0
+    ],
+    "Bông cải xanh": [
+     "Tách bông",
+     4.5
+    ]
+   },
+   "cook_s": 18,
+   "burn_s": 36.0,
+   "warn_s": 27.0,
+   "unlock_round": 3,
+   "total_s": 30.0
+  },
+  {
+   "id": "dau_phu__ot_chuong",
+   "name": "Đậu phụ sốt ớt chuông",
+   "group": "chinh",
+   "main": "Đậu phụ",
+   "side": "Ớt chuông",
+   "tool": "Nồi",
+   "method": "sốt",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Ớt chuông",
+    "Đậu phụ",
+    "Nước mắm"
+   ],
+   "prep": {
+    "Đậu phụ": [
+     "Cắt miếng",
+     3.0
+    ],
+    "Ớt chuông": [
+     "Bỏ hạt, thái",
+     4.5
+    ]
+   },
+   "cook_s": 18,
+   "burn_s": 36.0,
+   "warn_s": 27.0,
+   "unlock_round": 3,
+   "total_s": 30.0
+  },
+  {
+   "id": "dau_phu__bi_do",
+   "name": "Đậu phụ sốt bí đỏ",
+   "group": "chinh",
+   "main": "Đậu phụ",
+   "side": "Bí đỏ",
+   "tool": "Nồi",
+   "method": "sốt",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Bí đỏ",
+    "Đậu phụ",
+    "Nước mắm"
+   ],
+   "prep": {
+    "Đậu phụ": [
+     "Cắt miếng",
+     3.0
+    ],
+    "Bí đỏ": [
+     "Gọt, thái",
+     6.0
+    ]
+   },
+   "cook_s": 18,
+   "burn_s": 36.0,
+   "warn_s": 27.0,
+   "unlock_round": 4,
+   "total_s": 31.5
+  },
+  {
+   "id": "dau_phu__mang_tay",
+   "name": "Đậu phụ sốt măng tây",
+   "group": "chinh",
+   "main": "Đậu phụ",
+   "side": "Măng tây",
+   "tool": "Nồi",
+   "method": "sốt",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Măng tây",
+    "Đậu phụ",
+    "Nước mắm"
+   ],
+   "prep": {
+    "Đậu phụ": [
+     "Cắt miếng",
+     3.0
+    ],
+    "Măng tây": [
+     "Cắt khúc",
+     3.0
+    ]
+   },
+   "cook_s": 18,
+   "burn_s": 36.0,
+   "warn_s": 27.0,
+   "unlock_round": 4,
+   "total_s": 28.5
+  },
+  {
+   "id": "dau_phu__nam_dong_co",
+   "name": "Đậu phụ sốt nấm đông cô",
+   "group": "chinh",
+   "main": "Đậu phụ",
+   "side": "Nấm đông cô",
+   "tool": "Nồi",
+   "method": "sốt",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Nấm đông cô",
+    "Đậu phụ",
+    "Nước mắm"
+   ],
+   "prep": {
+    "Đậu phụ": [
+     "Cắt miếng",
+     3.0
+    ],
+    "Nấm đông cô": [
+     "Thái lát",
+     3.0
+    ]
+   },
+   "cook_s": 18,
+   "burn_s": 36.0,
+   "warn_s": 27.0,
+   "unlock_round": 4,
+   "total_s": 28.5
+  },
+  {
+   "id": "bo__ca_chua",
+   "name": "Mì Ý bò sốt cà chua",
+   "group": "chinh",
+   "main": "Thịt bò",
+   "side": "Cà chua",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Mì Ý",
+   "steps": [
+    "Bơ",
+    "Tỏi",
+    "Thịt bò",
+    "Cà chua"
+   ],
+   "prep": {
+    "Thịt bò": [
+     "Thái mỏng",
+     4.5
+    ],
+    "Cà chua": [
+     "Thái múi",
+     4.5
+    ]
+   },
+   "cook_s": 15,
+   "burn_s": 30.0,
+   "warn_s": 22.5,
+   "unlock_round": 2,
+   "total_s": 28.5
+  },
+  {
+   "id": "bo__hanh_tay",
+   "name": "Mì Ý bò xào hành tây",
+   "group": "chinh",
+   "main": "Thịt bò",
+   "side": "Hành tây",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Mì Ý",
+   "steps": [
+    "Bơ",
+    "Tỏi",
+    "Thịt bò",
+    "Hành tây"
+   ],
+   "prep": {
+    "Thịt bò": [
+     "Thái mỏng",
+     4.5
+    ],
+    "Hành tây": [
+     "Thái lát",
+     4.5
+    ]
+   },
+   "cook_s": 15,
+   "burn_s": 30.0,
+   "warn_s": 22.5,
+   "unlock_round": 2,
+   "total_s": 28.5
+  },
+  {
+   "id": "bo__rau_muong",
+   "name": "Mì Ý bò xào rau muống",
+   "group": "chinh",
+   "main": "Thịt bò",
+   "side": "Rau muống",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Mì Ý",
+   "steps": [
+    "Bơ",
+    "Tỏi",
+    "Thịt bò",
+    "Rau muống"
+   ],
+   "prep": {
+    "Thịt bò": [
+     "Thái mỏng",
+     4.5
+    ],
+    "Rau muống": [
+     "Nhặt, rửa",
+     3.0
+    ]
+   },
+   "cook_s": 15,
+   "burn_s": 30.0,
+   "warn_s": 22.5,
+   "unlock_round": 2,
+   "total_s": 27.0
+  },
+  {
+   "id": "bo__khoai_tay",
+   "name": "Mì Ý bò xào khoai tây",
+   "group": "chinh",
+   "main": "Thịt bò",
+   "side": "Khoai tây",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Mì Ý",
+   "steps": [
+    "Bơ",
+    "Tỏi",
+    "Thịt bò",
+    "Khoai tây"
+   ],
+   "prep": {
+    "Thịt bò": [
+     "Thái mỏng",
+     4.5
+    ],
+    "Khoai tây": [
+     "Gọt, thái",
+     6.0
+    ]
+   },
+   "cook_s": 15,
+   "burn_s": 30.0,
+   "warn_s": 22.5,
+   "unlock_round": 2,
+   "total_s": 30.0
+  },
+  {
+   "id": "bo__nam_rom",
+   "name": "Mì Ý bò xào nấm rơm",
+   "group": "chinh",
+   "main": "Thịt bò",
+   "side": "Nấm rơm",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Mì Ý",
+   "steps": [
+    "Bơ",
+    "Tỏi",
+    "Thịt bò",
+    "Nấm rơm"
+   ],
+   "prep": {
+    "Thịt bò": [
+     "Thái mỏng",
+     4.5
+    ],
+    "Nấm rơm": [
+     "Rửa, bổ đôi",
+     3.0
+    ]
+   },
+   "cook_s": 15,
+   "burn_s": 30.0,
+   "warn_s": 22.5,
+   "unlock_round": 2,
+   "total_s": 27.0
+  },
+  {
+   "id": "bo__bong_cai",
+   "name": "Mì Ý bò xào bông cải",
+   "group": "chinh",
+   "main": "Thịt bò",
+   "side": "Bông cải xanh",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Mì Ý",
+   "steps": [
+    "Bơ",
+    "Tỏi",
+    "Thịt bò",
+    "Bông cải xanh"
+   ],
+   "prep": {
+    "Thịt bò": [
+     "Thái mỏng",
+     4.5
+    ],
+    "Bông cải xanh": [
+     "Tách bông",
+     4.5
+    ]
+   },
+   "cook_s": 15,
+   "burn_s": 30.0,
+   "warn_s": 22.5,
+   "unlock_round": 3,
+   "total_s": 28.5
+  },
+  {
+   "id": "bo__ot_chuong",
+   "name": "Mì Ý bò xào ớt chuông",
+   "group": "chinh",
+   "main": "Thịt bò",
+   "side": "Ớt chuông",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Mì Ý",
+   "steps": [
+    "Bơ",
+    "Tỏi",
+    "Thịt bò",
+    "Ớt chuông"
+   ],
+   "prep": {
+    "Thịt bò": [
+     "Thái mỏng",
+     4.5
+    ],
+    "Ớt chuông": [
+     "Bỏ hạt, thái",
+     4.5
+    ]
+   },
+   "cook_s": 15,
+   "burn_s": 30.0,
+   "warn_s": 22.5,
+   "unlock_round": 3,
+   "total_s": 28.5
+  },
+  {
+   "id": "bo__bi_do",
+   "name": "Mì Ý bò xào bí đỏ",
+   "group": "chinh",
+   "main": "Thịt bò",
+   "side": "Bí đỏ",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Mì Ý",
+   "steps": [
+    "Bơ",
+    "Tỏi",
+    "Thịt bò",
+    "Bí đỏ"
+   ],
+   "prep": {
+    "Thịt bò": [
+     "Thái mỏng",
+     4.5
+    ],
+    "Bí đỏ": [
+     "Gọt, thái",
+     6.0
+    ]
+   },
+   "cook_s": 15,
+   "burn_s": 30.0,
+   "warn_s": 22.5,
+   "unlock_round": 4,
+   "total_s": 30.0
+  },
+  {
+   "id": "bo__mang_tay",
+   "name": "Mì Ý bò xào măng tây",
+   "group": "chinh",
+   "main": "Thịt bò",
+   "side": "Măng tây",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Mì Ý",
+   "steps": [
+    "Bơ",
+    "Tỏi",
+    "Thịt bò",
+    "Măng tây"
+   ],
+   "prep": {
+    "Thịt bò": [
+     "Thái mỏng",
+     4.5
+    ],
+    "Măng tây": [
+     "Cắt khúc",
+     3.0
+    ]
+   },
+   "cook_s": 15,
+   "burn_s": 30.0,
+   "warn_s": 22.5,
+   "unlock_round": 4,
+   "total_s": 27.0
+  },
+  {
+   "id": "bo__nam_dong_co",
+   "name": "Mì Ý bò xào nấm đông cô",
+   "group": "chinh",
+   "main": "Thịt bò",
+   "side": "Nấm đông cô",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Mì Ý",
+   "steps": [
+    "Bơ",
+    "Tỏi",
+    "Thịt bò",
+    "Nấm đông cô"
+   ],
+   "prep": {
+    "Thịt bò": [
+     "Thái mỏng",
+     4.5
+    ],
+    "Nấm đông cô": [
+     "Thái lát",
+     3.0
+    ]
+   },
+   "cook_s": 15,
+   "burn_s": 30.0,
+   "warn_s": 22.5,
+   "unlock_round": 4,
+   "total_s": 27.0
+  },
+  {
+   "id": "tom__ca_chua",
+   "name": "Bún xào tôm cà chua",
+   "group": "chinh",
+   "main": "Tôm",
+   "side": "Cà chua",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Bún",
+   "steps": [
+    "Dầu ăn",
+    "Tôm",
+    "Cà chua",
+    "Nước mắm"
+   ],
+   "prep": {
+    "Tôm": [
+     "Bóc vỏ",
+     6.0
+    ],
+    "Cà chua": [
+     "Thái múi",
+     4.5
+    ]
+   },
+   "cook_s": 15,
+   "burn_s": 30.0,
+   "warn_s": 22.5,
+   "unlock_round": 2,
+   "total_s": 30.0
+  },
+  {
+   "id": "tom__hanh_tay",
+   "name": "Bún xào tôm hành tây",
+   "group": "chinh",
+   "main": "Tôm",
+   "side": "Hành tây",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Bún",
+   "steps": [
+    "Dầu ăn",
+    "Tôm",
+    "Hành tây",
+    "Nước mắm"
+   ],
+   "prep": {
+    "Tôm": [
+     "Bóc vỏ",
+     6.0
+    ],
+    "Hành tây": [
+     "Thái lát",
+     4.5
+    ]
+   },
+   "cook_s": 15,
+   "burn_s": 30.0,
+   "warn_s": 22.5,
+   "unlock_round": 2,
+   "total_s": 30.0
+  },
+  {
+   "id": "tom__rau_muong",
+   "name": "Bún xào tôm rau muống",
+   "group": "chinh",
+   "main": "Tôm",
+   "side": "Rau muống",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Bún",
+   "steps": [
+    "Dầu ăn",
+    "Tôm",
+    "Rau muống",
+    "Nước mắm"
+   ],
+   "prep": {
+    "Tôm": [
+     "Bóc vỏ",
+     6.0
+    ],
+    "Rau muống": [
+     "Nhặt, rửa",
+     3.0
+    ]
+   },
+   "cook_s": 15,
+   "burn_s": 30.0,
+   "warn_s": 22.5,
+   "unlock_round": 2,
+   "total_s": 28.5
+  },
+  {
+   "id": "tom__khoai_tay",
+   "name": "Bún xào tôm khoai tây",
+   "group": "chinh",
+   "main": "Tôm",
+   "side": "Khoai tây",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Bún",
+   "steps": [
+    "Dầu ăn",
+    "Tôm",
+    "Khoai tây",
+    "Nước mắm"
+   ],
+   "prep": {
+    "Tôm": [
+     "Bóc vỏ",
+     6.0
+    ],
+    "Khoai tây": [
+     "Gọt, thái",
+     6.0
+    ]
+   },
+   "cook_s": 15,
+   "burn_s": 30.0,
+   "warn_s": 22.5,
+   "unlock_round": 2,
+   "total_s": 31.5
+  },
+  {
+   "id": "tom__nam_rom",
+   "name": "Bún xào tôm nấm rơm",
+   "group": "chinh",
+   "main": "Tôm",
+   "side": "Nấm rơm",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Bún",
+   "steps": [
+    "Dầu ăn",
+    "Tôm",
+    "Nấm rơm",
+    "Nước mắm"
+   ],
+   "prep": {
+    "Tôm": [
+     "Bóc vỏ",
+     6.0
+    ],
+    "Nấm rơm": [
+     "Rửa, bổ đôi",
+     3.0
+    ]
+   },
+   "cook_s": 15,
+   "burn_s": 30.0,
+   "warn_s": 22.5,
+   "unlock_round": 2,
+   "total_s": 28.5
+  },
+  {
+   "id": "tom__bong_cai",
+   "name": "Bún xào tôm bông cải",
+   "group": "chinh",
+   "main": "Tôm",
+   "side": "Bông cải xanh",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Bún",
+   "steps": [
+    "Dầu ăn",
+    "Tôm",
+    "Bông cải xanh",
+    "Nước mắm"
+   ],
+   "prep": {
+    "Tôm": [
+     "Bóc vỏ",
+     6.0
+    ],
+    "Bông cải xanh": [
+     "Tách bông",
+     4.5
+    ]
+   },
+   "cook_s": 15,
+   "burn_s": 30.0,
+   "warn_s": 22.5,
+   "unlock_round": 3,
+   "total_s": 30.0
+  },
+  {
+   "id": "tom__ot_chuong",
+   "name": "Bún xào tôm ớt chuông",
+   "group": "chinh",
+   "main": "Tôm",
+   "side": "Ớt chuông",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Bún",
+   "steps": [
+    "Dầu ăn",
+    "Tôm",
+    "Ớt chuông",
+    "Nước mắm"
+   ],
+   "prep": {
+    "Tôm": [
+     "Bóc vỏ",
+     6.0
+    ],
+    "Ớt chuông": [
+     "Bỏ hạt, thái",
+     4.5
+    ]
+   },
+   "cook_s": 15,
+   "burn_s": 30.0,
+   "warn_s": 22.5,
+   "unlock_round": 3,
+   "total_s": 30.0
+  },
+  {
+   "id": "tom__bi_do",
+   "name": "Bún xào tôm bí đỏ",
+   "group": "chinh",
+   "main": "Tôm",
+   "side": "Bí đỏ",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Bún",
+   "steps": [
+    "Dầu ăn",
+    "Tôm",
+    "Bí đỏ",
+    "Nước mắm"
+   ],
+   "prep": {
+    "Tôm": [
+     "Bóc vỏ",
+     6.0
+    ],
+    "Bí đỏ": [
+     "Gọt, thái",
+     6.0
+    ]
+   },
+   "cook_s": 15,
+   "burn_s": 30.0,
+   "warn_s": 22.5,
+   "unlock_round": 4,
+   "total_s": 31.5
+  },
+  {
+   "id": "tom__mang_tay",
+   "name": "Bún xào tôm măng tây",
+   "group": "chinh",
+   "main": "Tôm",
+   "side": "Măng tây",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Bún",
+   "steps": [
+    "Dầu ăn",
+    "Tôm",
+    "Măng tây",
+    "Nước mắm"
+   ],
+   "prep": {
+    "Tôm": [
+     "Bóc vỏ",
+     6.0
+    ],
+    "Măng tây": [
+     "Cắt khúc",
+     3.0
+    ]
+   },
+   "cook_s": 15,
+   "burn_s": 30.0,
+   "warn_s": 22.5,
+   "unlock_round": 4,
+   "total_s": 28.5
+  },
+  {
+   "id": "tom__nam_dong_co",
+   "name": "Bún xào tôm nấm đông cô",
+   "group": "chinh",
+   "main": "Tôm",
+   "side": "Nấm đông cô",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Bún",
+   "steps": [
+    "Dầu ăn",
+    "Tôm",
+    "Nấm đông cô",
+    "Nước mắm"
+   ],
+   "prep": {
+    "Tôm": [
+     "Bóc vỏ",
+     6.0
+    ],
+    "Nấm đông cô": [
+     "Thái lát",
+     3.0
+    ]
+   },
+   "cook_s": 15,
+   "burn_s": 30.0,
+   "warn_s": 22.5,
+   "unlock_round": 4,
+   "total_s": 28.5
+  },
+  {
+   "id": "ca_hoi__ca_chua",
+   "name": "Cá hồi áp chảo cà chua",
+   "group": "chinh",
+   "main": "Cá hồi",
+   "side": "Cà chua",
+   "tool": "Chảo",
+   "method": "áp chảo",
+   "base": "Cơm",
+   "steps": [
+    "Bơ",
+    "Cá hồi",
+    "Cà chua",
+    "Muối"
+   ],
+   "prep": {
+    "Cá hồi": [
+     "Lọc xương",
+     7.5
+    ],
+    "Cà chua": [
+     "Thái múi",
+     4.5
+    ]
+   },
+   "cook_s": 21,
+   "burn_s": 42.0,
+   "warn_s": 31.5,
+   "unlock_round": 3,
+   "total_s": 37.5
+  },
+  {
+   "id": "ca_hoi__hanh_tay",
+   "name": "Cá hồi áp chảo hành tây",
+   "group": "chinh",
+   "main": "Cá hồi",
+   "side": "Hành tây",
+   "tool": "Chảo",
+   "method": "áp chảo",
+   "base": "Cơm",
+   "steps": [
+    "Bơ",
+    "Cá hồi",
+    "Hành tây",
+    "Muối"
+   ],
+   "prep": {
+    "Cá hồi": [
+     "Lọc xương",
+     7.5
+    ],
+    "Hành tây": [
+     "Thái lát",
+     4.5
+    ]
+   },
+   "cook_s": 21,
+   "burn_s": 42.0,
+   "warn_s": 31.5,
+   "unlock_round": 3,
+   "total_s": 37.5
+  },
+  {
+   "id": "ca_hoi__rau_muong",
+   "name": "Cá hồi áp chảo rau muống",
+   "group": "chinh",
+   "main": "Cá hồi",
+   "side": "Rau muống",
+   "tool": "Chảo",
+   "method": "áp chảo",
+   "base": "Cơm",
+   "steps": [
+    "Bơ",
+    "Cá hồi",
+    "Rau muống",
+    "Muối"
+   ],
+   "prep": {
+    "Cá hồi": [
+     "Lọc xương",
+     7.5
+    ],
+    "Rau muống": [
+     "Nhặt, rửa",
+     3.0
+    ]
+   },
+   "cook_s": 21,
+   "burn_s": 42.0,
+   "warn_s": 31.5,
+   "unlock_round": 3,
+   "total_s": 36.0
+  },
+  {
+   "id": "ca_hoi__khoai_tay",
+   "name": "Cá hồi áp chảo khoai tây",
+   "group": "chinh",
+   "main": "Cá hồi",
+   "side": "Khoai tây",
+   "tool": "Chảo",
+   "method": "áp chảo",
+   "base": "Cơm",
+   "steps": [
+    "Bơ",
+    "Cá hồi",
+    "Khoai tây",
+    "Muối"
+   ],
+   "prep": {
+    "Cá hồi": [
+     "Lọc xương",
+     7.5
+    ],
+    "Khoai tây": [
+     "Gọt, thái",
+     6.0
+    ]
+   },
+   "cook_s": 21,
+   "burn_s": 42.0,
+   "warn_s": 31.5,
+   "unlock_round": 3,
+   "total_s": 39.0
+  },
+  {
+   "id": "ca_hoi__nam_rom",
+   "name": "Cá hồi áp chảo nấm rơm",
+   "group": "chinh",
+   "main": "Cá hồi",
+   "side": "Nấm rơm",
+   "tool": "Chảo",
+   "method": "áp chảo",
+   "base": "Cơm",
+   "steps": [
+    "Bơ",
+    "Cá hồi",
+    "Nấm rơm",
+    "Muối"
+   ],
+   "prep": {
+    "Cá hồi": [
+     "Lọc xương",
+     7.5
+    ],
+    "Nấm rơm": [
+     "Rửa, bổ đôi",
+     3.0
+    ]
+   },
+   "cook_s": 21,
+   "burn_s": 42.0,
+   "warn_s": 31.5,
+   "unlock_round": 3,
+   "total_s": 36.0
+  },
+  {
+   "id": "ca_hoi__bong_cai",
+   "name": "Cá hồi áp chảo bông cải",
+   "group": "chinh",
+   "main": "Cá hồi",
+   "side": "Bông cải xanh",
+   "tool": "Chảo",
+   "method": "áp chảo",
+   "base": "Cơm",
+   "steps": [
+    "Bơ",
+    "Cá hồi",
+    "Bông cải xanh",
+    "Muối"
+   ],
+   "prep": {
+    "Cá hồi": [
+     "Lọc xương",
+     7.5
+    ],
+    "Bông cải xanh": [
+     "Tách bông",
+     4.5
+    ]
+   },
+   "cook_s": 21,
+   "burn_s": 42.0,
+   "warn_s": 31.5,
+   "unlock_round": 3,
+   "total_s": 37.5
+  },
+  {
+   "id": "ca_hoi__ot_chuong",
+   "name": "Cá hồi áp chảo ớt chuông",
+   "group": "chinh",
+   "main": "Cá hồi",
+   "side": "Ớt chuông",
+   "tool": "Chảo",
+   "method": "áp chảo",
+   "base": "Cơm",
+   "steps": [
+    "Bơ",
+    "Cá hồi",
+    "Ớt chuông",
+    "Muối"
+   ],
+   "prep": {
+    "Cá hồi": [
+     "Lọc xương",
+     7.5
+    ],
+    "Ớt chuông": [
+     "Bỏ hạt, thái",
+     4.5
+    ]
+   },
+   "cook_s": 21,
+   "burn_s": 42.0,
+   "warn_s": 31.5,
+   "unlock_round": 3,
+   "total_s": 37.5
+  },
+  {
+   "id": "ca_hoi__bi_do",
+   "name": "Cá hồi áp chảo bí đỏ",
+   "group": "chinh",
+   "main": "Cá hồi",
+   "side": "Bí đỏ",
+   "tool": "Chảo",
+   "method": "áp chảo",
+   "base": "Cơm",
+   "steps": [
+    "Bơ",
+    "Cá hồi",
+    "Bí đỏ",
+    "Muối"
+   ],
+   "prep": {
+    "Cá hồi": [
+     "Lọc xương",
+     7.5
+    ],
+    "Bí đỏ": [
+     "Gọt, thái",
+     6.0
+    ]
+   },
+   "cook_s": 21,
+   "burn_s": 42.0,
+   "warn_s": 31.5,
+   "unlock_round": 4,
+   "total_s": 39.0
+  },
+  {
+   "id": "ca_hoi__mang_tay",
+   "name": "Cá hồi áp chảo măng tây",
+   "group": "chinh",
+   "main": "Cá hồi",
+   "side": "Măng tây",
+   "tool": "Chảo",
+   "method": "áp chảo",
+   "base": "Cơm",
+   "steps": [
+    "Bơ",
+    "Cá hồi",
+    "Măng tây",
+    "Muối"
+   ],
+   "prep": {
+    "Cá hồi": [
+     "Lọc xương",
+     7.5
+    ],
+    "Măng tây": [
+     "Cắt khúc",
+     3.0
+    ]
+   },
+   "cook_s": 21,
+   "burn_s": 42.0,
+   "warn_s": 31.5,
+   "unlock_round": 4,
+   "total_s": 36.0
+  },
+  {
+   "id": "ca_hoi__nam_dong_co",
+   "name": "Cá hồi áp chảo nấm đông cô",
+   "group": "chinh",
+   "main": "Cá hồi",
+   "side": "Nấm đông cô",
+   "tool": "Chảo",
+   "method": "áp chảo",
+   "base": "Cơm",
+   "steps": [
+    "Bơ",
+    "Cá hồi",
+    "Nấm đông cô",
+    "Muối"
+   ],
+   "prep": {
+    "Cá hồi": [
+     "Lọc xương",
+     7.5
+    ],
+    "Nấm đông cô": [
+     "Thái lát",
+     3.0
+    ]
+   },
+   "cook_s": 21,
+   "burn_s": 42.0,
+   "warn_s": 31.5,
+   "unlock_round": 4,
+   "total_s": 36.0
+  },
+  {
+   "id": "muc__ca_chua",
+   "name": "Mực xào cà chua",
+   "group": "chinh",
+   "main": "Mực",
+   "side": "Cà chua",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Tỏi",
+    "Mực",
+    "Cà chua"
+   ],
+   "prep": {
+    "Mực": [
+     "Làm sạch, khứa",
+     7.5
+    ],
+    "Cà chua": [
+     "Thái múi",
+     4.5
+    ]
+   },
+   "cook_s": 12,
+   "burn_s": 24.0,
+   "warn_s": 18.0,
+   "unlock_round": 3,
+   "total_s": 28.5
+  },
+  {
+   "id": "muc__hanh_tay",
+   "name": "Mực xào hành tây",
+   "group": "chinh",
+   "main": "Mực",
+   "side": "Hành tây",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Tỏi",
+    "Mực",
+    "Hành tây"
+   ],
+   "prep": {
+    "Mực": [
+     "Làm sạch, khứa",
+     7.5
+    ],
+    "Hành tây": [
+     "Thái lát",
+     4.5
+    ]
+   },
+   "cook_s": 12,
+   "burn_s": 24.0,
+   "warn_s": 18.0,
+   "unlock_round": 3,
+   "total_s": 28.5
+  },
+  {
+   "id": "muc__rau_muong",
+   "name": "Mực xào rau muống",
+   "group": "chinh",
+   "main": "Mực",
+   "side": "Rau muống",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Tỏi",
+    "Mực",
+    "Rau muống"
+   ],
+   "prep": {
+    "Mực": [
+     "Làm sạch, khứa",
+     7.5
+    ],
+    "Rau muống": [
+     "Nhặt, rửa",
+     3.0
+    ]
+   },
+   "cook_s": 12,
+   "burn_s": 24.0,
+   "warn_s": 18.0,
+   "unlock_round": 3,
+   "total_s": 27.0
+  },
+  {
+   "id": "muc__khoai_tay",
+   "name": "Mực xào khoai tây",
+   "group": "chinh",
+   "main": "Mực",
+   "side": "Khoai tây",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Tỏi",
+    "Mực",
+    "Khoai tây"
+   ],
+   "prep": {
+    "Mực": [
+     "Làm sạch, khứa",
+     7.5
+    ],
+    "Khoai tây": [
+     "Gọt, thái",
+     6.0
+    ]
+   },
+   "cook_s": 12,
+   "burn_s": 24.0,
+   "warn_s": 18.0,
+   "unlock_round": 3,
+   "total_s": 30.0
+  },
+  {
+   "id": "muc__nam_rom",
+   "name": "Mực xào nấm rơm",
+   "group": "chinh",
+   "main": "Mực",
+   "side": "Nấm rơm",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Tỏi",
+    "Mực",
+    "Nấm rơm"
+   ],
+   "prep": {
+    "Mực": [
+     "Làm sạch, khứa",
+     7.5
+    ],
+    "Nấm rơm": [
+     "Rửa, bổ đôi",
+     3.0
+    ]
+   },
+   "cook_s": 12,
+   "burn_s": 24.0,
+   "warn_s": 18.0,
+   "unlock_round": 3,
+   "total_s": 27.0
+  },
+  {
+   "id": "muc__bong_cai",
+   "name": "Mực xào bông cải",
+   "group": "chinh",
+   "main": "Mực",
+   "side": "Bông cải xanh",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Tỏi",
+    "Mực",
+    "Bông cải xanh"
+   ],
+   "prep": {
+    "Mực": [
+     "Làm sạch, khứa",
+     7.5
+    ],
+    "Bông cải xanh": [
+     "Tách bông",
+     4.5
+    ]
+   },
+   "cook_s": 12,
+   "burn_s": 24.0,
+   "warn_s": 18.0,
+   "unlock_round": 3,
+   "total_s": 28.5
+  },
+  {
+   "id": "muc__ot_chuong",
+   "name": "Mực xào ớt chuông",
+   "group": "chinh",
+   "main": "Mực",
+   "side": "Ớt chuông",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Tỏi",
+    "Mực",
+    "Ớt chuông"
+   ],
+   "prep": {
+    "Mực": [
+     "Làm sạch, khứa",
+     7.5
+    ],
+    "Ớt chuông": [
+     "Bỏ hạt, thái",
+     4.5
+    ]
+   },
+   "cook_s": 12,
+   "burn_s": 24.0,
+   "warn_s": 18.0,
+   "unlock_round": 3,
+   "total_s": 28.5
+  },
+  {
+   "id": "muc__bi_do",
+   "name": "Mực xào bí đỏ",
+   "group": "chinh",
+   "main": "Mực",
+   "side": "Bí đỏ",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Tỏi",
+    "Mực",
+    "Bí đỏ"
+   ],
+   "prep": {
+    "Mực": [
+     "Làm sạch, khứa",
+     7.5
+    ],
+    "Bí đỏ": [
+     "Gọt, thái",
+     6.0
+    ]
+   },
+   "cook_s": 12,
+   "burn_s": 24.0,
+   "warn_s": 18.0,
+   "unlock_round": 4,
+   "total_s": 30.0
+  },
+  {
+   "id": "muc__mang_tay",
+   "name": "Mực xào măng tây",
+   "group": "chinh",
+   "main": "Mực",
+   "side": "Măng tây",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Tỏi",
+    "Mực",
+    "Măng tây"
+   ],
+   "prep": {
+    "Mực": [
+     "Làm sạch, khứa",
+     7.5
+    ],
+    "Măng tây": [
+     "Cắt khúc",
+     3.0
+    ]
+   },
+   "cook_s": 12,
+   "burn_s": 24.0,
+   "warn_s": 18.0,
+   "unlock_round": 4,
+   "total_s": 27.0
+  },
+  {
+   "id": "muc__nam_dong_co",
+   "name": "Mực xào nấm đông cô",
+   "group": "chinh",
+   "main": "Mực",
+   "side": "Nấm đông cô",
+   "tool": "Chảo",
+   "method": "xào",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Tỏi",
+    "Mực",
+    "Nấm đông cô"
+   ],
+   "prep": {
+    "Mực": [
+     "Làm sạch, khứa",
+     7.5
+    ],
+    "Nấm đông cô": [
+     "Thái lát",
+     3.0
+    ]
+   },
+   "cook_s": 12,
+   "burn_s": 24.0,
+   "warn_s": 18.0,
+   "unlock_round": 4,
+   "total_s": 27.0
+  },
+  {
+   "id": "ga__ca_chua",
+   "name": "Gà nướng mật ong cà chua",
+   "group": "chinh",
+   "main": "Gà ta",
+   "side": "Cà chua",
+   "tool": "Vỉ nướng",
+   "method": "nướng",
+   "base": "Bánh mì",
+   "steps": [
+    "Mật ong",
+    "Gà ta",
+    "Cà chua"
+   ],
+   "prep": {
+    "Gà ta": [
+     "Chặt miếng",
+     6.0
+    ],
+    "Cà chua": [
+     "Thái múi",
+     4.5
+    ]
+   },
+   "cook_s": 27,
+   "burn_s": 54.0,
+   "warn_s": 40.5,
+   "unlock_round": 4,
+   "total_s": 41.5
+  },
+  {
+   "id": "ga__hanh_tay",
+   "name": "Gà nướng mật ong hành tây",
+   "group": "chinh",
+   "main": "Gà ta",
+   "side": "Hành tây",
+   "tool": "Vỉ nướng",
+   "method": "nướng",
+   "base": "Bánh mì",
+   "steps": [
+    "Mật ong",
+    "Gà ta",
+    "Hành tây"
+   ],
+   "prep": {
+    "Gà ta": [
+     "Chặt miếng",
+     6.0
+    ],
+    "Hành tây": [
+     "Thái lát",
+     4.5
+    ]
+   },
+   "cook_s": 27,
+   "burn_s": 54.0,
+   "warn_s": 40.5,
+   "unlock_round": 4,
+   "total_s": 41.5
+  },
+  {
+   "id": "ga__rau_muong",
+   "name": "Gà nướng mật ong rau muống",
+   "group": "chinh",
+   "main": "Gà ta",
+   "side": "Rau muống",
+   "tool": "Vỉ nướng",
+   "method": "nướng",
+   "base": "Bánh mì",
+   "steps": [
+    "Mật ong",
+    "Gà ta",
+    "Rau muống"
+   ],
+   "prep": {
+    "Gà ta": [
+     "Chặt miếng",
+     6.0
+    ],
+    "Rau muống": [
+     "Nhặt, rửa",
+     3.0
+    ]
+   },
+   "cook_s": 27,
+   "burn_s": 54.0,
+   "warn_s": 40.5,
+   "unlock_round": 4,
+   "total_s": 40.0
+  },
+  {
+   "id": "ga__khoai_tay",
+   "name": "Gà nướng mật ong khoai tây",
+   "group": "chinh",
+   "main": "Gà ta",
+   "side": "Khoai tây",
+   "tool": "Vỉ nướng",
+   "method": "nướng",
+   "base": "Bánh mì",
+   "steps": [
+    "Mật ong",
+    "Gà ta",
+    "Khoai tây"
+   ],
+   "prep": {
+    "Gà ta": [
+     "Chặt miếng",
+     6.0
+    ],
+    "Khoai tây": [
+     "Gọt, thái",
+     6.0
+    ]
+   },
+   "cook_s": 27,
+   "burn_s": 54.0,
+   "warn_s": 40.5,
+   "unlock_round": 4,
+   "total_s": 43.0
+  },
+  {
+   "id": "ga__nam_rom",
+   "name": "Gà nướng mật ong nấm rơm",
+   "group": "chinh",
+   "main": "Gà ta",
+   "side": "Nấm rơm",
+   "tool": "Vỉ nướng",
+   "method": "nướng",
+   "base": "Bánh mì",
+   "steps": [
+    "Mật ong",
+    "Gà ta",
+    "Nấm rơm"
+   ],
+   "prep": {
+    "Gà ta": [
+     "Chặt miếng",
+     6.0
+    ],
+    "Nấm rơm": [
+     "Rửa, bổ đôi",
+     3.0
+    ]
+   },
+   "cook_s": 27,
+   "burn_s": 54.0,
+   "warn_s": 40.5,
+   "unlock_round": 4,
+   "total_s": 40.0
+  },
+  {
+   "id": "ga__bong_cai",
+   "name": "Gà nướng mật ong bông cải",
+   "group": "chinh",
+   "main": "Gà ta",
+   "side": "Bông cải xanh",
+   "tool": "Vỉ nướng",
+   "method": "nướng",
+   "base": "Bánh mì",
+   "steps": [
+    "Mật ong",
+    "Gà ta",
+    "Bông cải xanh"
+   ],
+   "prep": {
+    "Gà ta": [
+     "Chặt miếng",
+     6.0
+    ],
+    "Bông cải xanh": [
+     "Tách bông",
+     4.5
+    ]
+   },
+   "cook_s": 27,
+   "burn_s": 54.0,
+   "warn_s": 40.5,
+   "unlock_round": 4,
+   "total_s": 41.5
+  },
+  {
+   "id": "ga__ot_chuong",
+   "name": "Gà nướng mật ong ớt chuông",
+   "group": "chinh",
+   "main": "Gà ta",
+   "side": "Ớt chuông",
+   "tool": "Vỉ nướng",
+   "method": "nướng",
+   "base": "Bánh mì",
+   "steps": [
+    "Mật ong",
+    "Gà ta",
+    "Ớt chuông"
+   ],
+   "prep": {
+    "Gà ta": [
+     "Chặt miếng",
+     6.0
+    ],
+    "Ớt chuông": [
+     "Bỏ hạt, thái",
+     4.5
+    ]
+   },
+   "cook_s": 27,
+   "burn_s": 54.0,
+   "warn_s": 40.5,
+   "unlock_round": 4,
+   "total_s": 41.5
+  },
+  {
+   "id": "ga__bi_do",
+   "name": "Gà nướng mật ong bí đỏ",
+   "group": "chinh",
+   "main": "Gà ta",
+   "side": "Bí đỏ",
+   "tool": "Vỉ nướng",
+   "method": "nướng",
+   "base": "Bánh mì",
+   "steps": [
+    "Mật ong",
+    "Gà ta",
+    "Bí đỏ"
+   ],
+   "prep": {
+    "Gà ta": [
+     "Chặt miếng",
+     6.0
+    ],
+    "Bí đỏ": [
+     "Gọt, thái",
+     6.0
+    ]
+   },
+   "cook_s": 27,
+   "burn_s": 54.0,
+   "warn_s": 40.5,
+   "unlock_round": 4,
+   "total_s": 43.0
+  },
+  {
+   "id": "ga__mang_tay",
+   "name": "Gà nướng mật ong măng tây",
+   "group": "chinh",
+   "main": "Gà ta",
+   "side": "Măng tây",
+   "tool": "Vỉ nướng",
+   "method": "nướng",
+   "base": "Bánh mì",
+   "steps": [
+    "Mật ong",
+    "Gà ta",
+    "Măng tây"
+   ],
+   "prep": {
+    "Gà ta": [
+     "Chặt miếng",
+     6.0
+    ],
+    "Măng tây": [
+     "Cắt khúc",
+     3.0
+    ]
+   },
+   "cook_s": 27,
+   "burn_s": 54.0,
+   "warn_s": 40.5,
+   "unlock_round": 4,
+   "total_s": 40.0
+  },
+  {
+   "id": "ga__nam_dong_co",
+   "name": "Gà nướng mật ong nấm đông cô",
+   "group": "chinh",
+   "main": "Gà ta",
+   "side": "Nấm đông cô",
+   "tool": "Vỉ nướng",
+   "method": "nướng",
+   "base": "Bánh mì",
+   "steps": [
+    "Mật ong",
+    "Gà ta",
+    "Nấm đông cô"
+   ],
+   "prep": {
+    "Gà ta": [
+     "Chặt miếng",
+     6.0
+    ],
+    "Nấm đông cô": [
+     "Thái lát",
+     3.0
+    ]
+   },
+   "cook_s": 27,
+   "burn_s": 54.0,
+   "warn_s": 40.5,
+   "unlock_round": 4,
+   "total_s": 40.0
+  },
+  {
+   "id": "tom_hum__ca_chua",
+   "name": "Tôm hùm nướng bơ tỏi cà chua",
+   "group": "dotpha",
+   "main": "Tôm hùm",
+   "side": "Cà chua",
+   "tool": "Vỉ nướng",
+   "method": "nướng",
+   "base": "Bánh mì",
+   "steps": [
+    "Bơ",
+    "Tỏi",
+    "Tôm hùm",
+    "Cà chua"
+   ],
+   "prep": {
+    "Tôm hùm": [
+     "Bổ đôi",
+     9.0
+    ],
+    "Cà chua": [
+     "Thái múi",
+     4.5
+    ]
+   },
+   "cook_s": 30,
+   "burn_s": 60.0,
+   "warn_s": 45.0,
+   "unlock_round": 1,
+   "total_s": 48.0
+  },
+  {
+   "id": "tom_hum__hanh_tay",
+   "name": "Tôm hùm nướng bơ tỏi hành tây",
+   "group": "dotpha",
+   "main": "Tôm hùm",
+   "side": "Hành tây",
+   "tool": "Vỉ nướng",
+   "method": "nướng",
+   "base": "Bánh mì",
+   "steps": [
+    "Bơ",
+    "Tỏi",
+    "Tôm hùm",
+    "Hành tây"
+   ],
+   "prep": {
+    "Tôm hùm": [
+     "Bổ đôi",
+     9.0
+    ],
+    "Hành tây": [
+     "Thái lát",
+     4.5
+    ]
+   },
+   "cook_s": 30,
+   "burn_s": 60.0,
+   "warn_s": 45.0,
+   "unlock_round": 1,
+   "total_s": 48.0
+  },
+  {
+   "id": "tom_hum__rau_muong",
+   "name": "Tôm hùm nướng bơ tỏi rau muống",
+   "group": "dotpha",
+   "main": "Tôm hùm",
+   "side": "Rau muống",
+   "tool": "Vỉ nướng",
+   "method": "nướng",
+   "base": "Bánh mì",
+   "steps": [
+    "Bơ",
+    "Tỏi",
+    "Tôm hùm",
+    "Rau muống"
+   ],
+   "prep": {
+    "Tôm hùm": [
+     "Bổ đôi",
+     9.0
+    ],
+    "Rau muống": [
+     "Nhặt, rửa",
+     3.0
+    ]
+   },
+   "cook_s": 30,
+   "burn_s": 60.0,
+   "warn_s": 45.0,
+   "unlock_round": 1,
+   "total_s": 46.5
+  },
+  {
+   "id": "tom_hum__khoai_tay",
+   "name": "Tôm hùm nướng bơ tỏi khoai tây",
+   "group": "dotpha",
+   "main": "Tôm hùm",
+   "side": "Khoai tây",
+   "tool": "Vỉ nướng",
+   "method": "nướng",
+   "base": "Bánh mì",
+   "steps": [
+    "Bơ",
+    "Tỏi",
+    "Tôm hùm",
+    "Khoai tây"
+   ],
+   "prep": {
+    "Tôm hùm": [
+     "Bổ đôi",
+     9.0
+    ],
+    "Khoai tây": [
+     "Gọt, thái",
+     6.0
+    ]
+   },
+   "cook_s": 30,
+   "burn_s": 60.0,
+   "warn_s": 45.0,
+   "unlock_round": 2,
+   "total_s": 49.5
+  },
+  {
+   "id": "tom_hum__nam_rom",
+   "name": "Tôm hùm nướng bơ tỏi nấm rơm",
+   "group": "dotpha",
+   "main": "Tôm hùm",
+   "side": "Nấm rơm",
+   "tool": "Vỉ nướng",
+   "method": "nướng",
+   "base": "Bánh mì",
+   "steps": [
+    "Bơ",
+    "Tỏi",
+    "Tôm hùm",
+    "Nấm rơm"
+   ],
+   "prep": {
+    "Tôm hùm": [
+     "Bổ đôi",
+     9.0
+    ],
+    "Nấm rơm": [
+     "Rửa, bổ đôi",
+     3.0
+    ]
+   },
+   "cook_s": 30,
+   "burn_s": 60.0,
+   "warn_s": 45.0,
+   "unlock_round": 2,
+   "total_s": 46.5
+  },
+  {
+   "id": "tom_hum__bong_cai",
+   "name": "Tôm hùm nướng bơ tỏi bông cải",
+   "group": "dotpha",
+   "main": "Tôm hùm",
+   "side": "Bông cải xanh",
+   "tool": "Vỉ nướng",
+   "method": "nướng",
+   "base": "Bánh mì",
+   "steps": [
+    "Bơ",
+    "Tỏi",
+    "Tôm hùm",
+    "Bông cải xanh"
+   ],
+   "prep": {
+    "Tôm hùm": [
+     "Bổ đôi",
+     9.0
+    ],
+    "Bông cải xanh": [
+     "Tách bông",
+     4.5
+    ]
+   },
+   "cook_s": 30,
+   "burn_s": 60.0,
+   "warn_s": 45.0,
+   "unlock_round": 3,
+   "total_s": 48.0
+  },
+  {
+   "id": "tom_hum__ot_chuong",
+   "name": "Tôm hùm nướng bơ tỏi ớt chuông",
+   "group": "dotpha",
+   "main": "Tôm hùm",
+   "side": "Ớt chuông",
+   "tool": "Vỉ nướng",
+   "method": "nướng",
+   "base": "Bánh mì",
+   "steps": [
+    "Bơ",
+    "Tỏi",
+    "Tôm hùm",
+    "Ớt chuông"
+   ],
+   "prep": {
+    "Tôm hùm": [
+     "Bổ đôi",
+     9.0
+    ],
+    "Ớt chuông": [
+     "Bỏ hạt, thái",
+     4.5
+    ]
+   },
+   "cook_s": 30,
+   "burn_s": 60.0,
+   "warn_s": 45.0,
+   "unlock_round": 3,
+   "total_s": 48.0
+  },
+  {
+   "id": "tom_hum__bi_do",
+   "name": "Tôm hùm nướng bơ tỏi bí đỏ",
+   "group": "dotpha",
+   "main": "Tôm hùm",
+   "side": "Bí đỏ",
+   "tool": "Vỉ nướng",
+   "method": "nướng",
+   "base": "Bánh mì",
+   "steps": [
+    "Bơ",
+    "Tỏi",
+    "Tôm hùm",
+    "Bí đỏ"
+   ],
+   "prep": {
+    "Tôm hùm": [
+     "Bổ đôi",
+     9.0
+    ],
+    "Bí đỏ": [
+     "Gọt, thái",
+     6.0
+    ]
+   },
+   "cook_s": 30,
+   "burn_s": 60.0,
+   "warn_s": 45.0,
+   "unlock_round": 4,
+   "total_s": 49.5
+  },
+  {
+   "id": "tom_hum__mang_tay",
+   "name": "Tôm hùm nướng bơ tỏi măng tây",
+   "group": "dotpha",
+   "main": "Tôm hùm",
+   "side": "Măng tây",
+   "tool": "Vỉ nướng",
+   "method": "nướng",
+   "base": "Bánh mì",
+   "steps": [
+    "Bơ",
+    "Tỏi",
+    "Tôm hùm",
+    "Măng tây"
+   ],
+   "prep": {
+    "Tôm hùm": [
+     "Bổ đôi",
+     9.0
+    ],
+    "Măng tây": [
+     "Cắt khúc",
+     3.0
+    ]
+   },
+   "cook_s": 30,
+   "burn_s": 60.0,
+   "warn_s": 45.0,
+   "unlock_round": 4,
+   "total_s": 46.5
+  },
+  {
+   "id": "tom_hum__nam_dong_co",
+   "name": "Tôm hùm nướng bơ tỏi nấm đông cô",
+   "group": "dotpha",
+   "main": "Tôm hùm",
+   "side": "Nấm đông cô",
+   "tool": "Vỉ nướng",
+   "method": "nướng",
+   "base": "Bánh mì",
+   "steps": [
+    "Bơ",
+    "Tỏi",
+    "Tôm hùm",
+    "Nấm đông cô"
+   ],
+   "prep": {
+    "Tôm hùm": [
+     "Bổ đôi",
+     9.0
+    ],
+    "Nấm đông cô": [
+     "Thái lát",
+     3.0
+    ]
+   },
+   "cook_s": 30,
+   "burn_s": 60.0,
+   "warn_s": 45.0,
+   "unlock_round": 4,
+   "total_s": 46.5
+  },
+  {
+   "id": "wagyu__ca_chua",
+   "name": "Bò Wagyu áp chảo cà chua",
+   "group": "dotpha",
+   "main": "Bò Wagyu",
+   "side": "Cà chua",
+   "tool": "Chảo",
+   "method": "áp chảo",
+   "base": "Cơm",
+   "steps": [
+    "Muối",
+    "Bò Wagyu",
+    "Bơ",
+    "Cà chua"
+   ],
+   "prep": {
+    "Bò Wagyu": [
+     "Cắt miếng dày",
+     6.0
+    ],
+    "Cà chua": [
+     "Thái múi",
+     4.5
+    ]
+   },
+   "cook_s": 21,
+   "burn_s": 42.0,
+   "warn_s": 31.5,
+   "unlock_round": 1,
+   "total_s": 36.0
+  },
+  {
+   "id": "wagyu__hanh_tay",
+   "name": "Bò Wagyu áp chảo hành tây",
+   "group": "dotpha",
+   "main": "Bò Wagyu",
+   "side": "Hành tây",
+   "tool": "Chảo",
+   "method": "áp chảo",
+   "base": "Cơm",
+   "steps": [
+    "Muối",
+    "Bò Wagyu",
+    "Bơ",
+    "Hành tây"
+   ],
+   "prep": {
+    "Bò Wagyu": [
+     "Cắt miếng dày",
+     6.0
+    ],
+    "Hành tây": [
+     "Thái lát",
+     4.5
+    ]
+   },
+   "cook_s": 21,
+   "burn_s": 42.0,
+   "warn_s": 31.5,
+   "unlock_round": 1,
+   "total_s": 36.0
+  },
+  {
+   "id": "wagyu__rau_muong",
+   "name": "Bò Wagyu áp chảo rau muống",
+   "group": "dotpha",
+   "main": "Bò Wagyu",
+   "side": "Rau muống",
+   "tool": "Chảo",
+   "method": "áp chảo",
+   "base": "Cơm",
+   "steps": [
+    "Muối",
+    "Bò Wagyu",
+    "Bơ",
+    "Rau muống"
+   ],
+   "prep": {
+    "Bò Wagyu": [
+     "Cắt miếng dày",
+     6.0
+    ],
+    "Rau muống": [
+     "Nhặt, rửa",
+     3.0
+    ]
+   },
+   "cook_s": 21,
+   "burn_s": 42.0,
+   "warn_s": 31.5,
+   "unlock_round": 1,
+   "total_s": 34.5
+  },
+  {
+   "id": "wagyu__khoai_tay",
+   "name": "Bò Wagyu áp chảo khoai tây",
+   "group": "dotpha",
+   "main": "Bò Wagyu",
+   "side": "Khoai tây",
+   "tool": "Chảo",
+   "method": "áp chảo",
+   "base": "Cơm",
+   "steps": [
+    "Muối",
+    "Bò Wagyu",
+    "Bơ",
+    "Khoai tây"
+   ],
+   "prep": {
+    "Bò Wagyu": [
+     "Cắt miếng dày",
+     6.0
+    ],
+    "Khoai tây": [
+     "Gọt, thái",
+     6.0
+    ]
+   },
+   "cook_s": 21,
+   "burn_s": 42.0,
+   "warn_s": 31.5,
+   "unlock_round": 2,
+   "total_s": 37.5
+  },
+  {
+   "id": "wagyu__nam_rom",
+   "name": "Bò Wagyu áp chảo nấm rơm",
+   "group": "dotpha",
+   "main": "Bò Wagyu",
+   "side": "Nấm rơm",
+   "tool": "Chảo",
+   "method": "áp chảo",
+   "base": "Cơm",
+   "steps": [
+    "Muối",
+    "Bò Wagyu",
+    "Bơ",
+    "Nấm rơm"
+   ],
+   "prep": {
+    "Bò Wagyu": [
+     "Cắt miếng dày",
+     6.0
+    ],
+    "Nấm rơm": [
+     "Rửa, bổ đôi",
+     3.0
+    ]
+   },
+   "cook_s": 21,
+   "burn_s": 42.0,
+   "warn_s": 31.5,
+   "unlock_round": 2,
+   "total_s": 34.5
+  },
+  {
+   "id": "wagyu__bong_cai",
+   "name": "Bò Wagyu áp chảo bông cải",
+   "group": "dotpha",
+   "main": "Bò Wagyu",
+   "side": "Bông cải xanh",
+   "tool": "Chảo",
+   "method": "áp chảo",
+   "base": "Cơm",
+   "steps": [
+    "Muối",
+    "Bò Wagyu",
+    "Bơ",
+    "Bông cải xanh"
+   ],
+   "prep": {
+    "Bò Wagyu": [
+     "Cắt miếng dày",
+     6.0
+    ],
+    "Bông cải xanh": [
+     "Tách bông",
+     4.5
+    ]
+   },
+   "cook_s": 21,
+   "burn_s": 42.0,
+   "warn_s": 31.5,
+   "unlock_round": 3,
+   "total_s": 36.0
+  },
+  {
+   "id": "wagyu__ot_chuong",
+   "name": "Bò Wagyu áp chảo ớt chuông",
+   "group": "dotpha",
+   "main": "Bò Wagyu",
+   "side": "Ớt chuông",
+   "tool": "Chảo",
+   "method": "áp chảo",
+   "base": "Cơm",
+   "steps": [
+    "Muối",
+    "Bò Wagyu",
+    "Bơ",
+    "Ớt chuông"
+   ],
+   "prep": {
+    "Bò Wagyu": [
+     "Cắt miếng dày",
+     6.0
+    ],
+    "Ớt chuông": [
+     "Bỏ hạt, thái",
+     4.5
+    ]
+   },
+   "cook_s": 21,
+   "burn_s": 42.0,
+   "warn_s": 31.5,
+   "unlock_round": 3,
+   "total_s": 36.0
+  },
+  {
+   "id": "wagyu__bi_do",
+   "name": "Bò Wagyu áp chảo bí đỏ",
+   "group": "dotpha",
+   "main": "Bò Wagyu",
+   "side": "Bí đỏ",
+   "tool": "Chảo",
+   "method": "áp chảo",
+   "base": "Cơm",
+   "steps": [
+    "Muối",
+    "Bò Wagyu",
+    "Bơ",
+    "Bí đỏ"
+   ],
+   "prep": {
+    "Bò Wagyu": [
+     "Cắt miếng dày",
+     6.0
+    ],
+    "Bí đỏ": [
+     "Gọt, thái",
+     6.0
+    ]
+   },
+   "cook_s": 21,
+   "burn_s": 42.0,
+   "warn_s": 31.5,
+   "unlock_round": 4,
+   "total_s": 37.5
+  },
+  {
+   "id": "wagyu__mang_tay",
+   "name": "Bò Wagyu áp chảo măng tây",
+   "group": "dotpha",
+   "main": "Bò Wagyu",
+   "side": "Măng tây",
+   "tool": "Chảo",
+   "method": "áp chảo",
+   "base": "Cơm",
+   "steps": [
+    "Muối",
+    "Bò Wagyu",
+    "Bơ",
+    "Măng tây"
+   ],
+   "prep": {
+    "Bò Wagyu": [
+     "Cắt miếng dày",
+     6.0
+    ],
+    "Măng tây": [
+     "Cắt khúc",
+     3.0
+    ]
+   },
+   "cook_s": 21,
+   "burn_s": 42.0,
+   "warn_s": 31.5,
+   "unlock_round": 4,
+   "total_s": 34.5
+  },
+  {
+   "id": "wagyu__nam_dong_co",
+   "name": "Bò Wagyu áp chảo nấm đông cô",
+   "group": "dotpha",
+   "main": "Bò Wagyu",
+   "side": "Nấm đông cô",
+   "tool": "Chảo",
+   "method": "áp chảo",
+   "base": "Cơm",
+   "steps": [
+    "Muối",
+    "Bò Wagyu",
+    "Bơ",
+    "Nấm đông cô"
+   ],
+   "prep": {
+    "Bò Wagyu": [
+     "Cắt miếng dày",
+     6.0
+    ],
+    "Nấm đông cô": [
+     "Thái lát",
+     3.0
+    ]
+   },
+   "cook_s": 21,
+   "burn_s": 42.0,
+   "warn_s": 31.5,
+   "unlock_round": 4,
+   "total_s": 34.5
+  },
+  {
+   "id": "ca_ngu__ca_chua",
+   "name": "Cá ngừ vây xanh tataki cà chua",
+   "group": "dotpha",
+   "main": "Cá ngừ vây xanh",
+   "side": "Cà chua",
+   "tool": "Chảo",
+   "method": "áp chảo nhanh",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Cá ngừ vây xanh",
+    "Cà chua",
+    "Nước tương"
+   ],
+   "prep": {
+    "Cá ngừ vây xanh": [
+     "Lọc thăn",
+     7.5
+    ],
+    "Cà chua": [
+     "Thái múi",
+     4.5
+    ]
+   },
+   "cook_s": 12,
+   "burn_s": 24.0,
+   "warn_s": 18.0,
+   "unlock_round": 1,
+   "total_s": 28.5
+  },
+  {
+   "id": "ca_ngu__hanh_tay",
+   "name": "Cá ngừ vây xanh tataki hành tây",
+   "group": "dotpha",
+   "main": "Cá ngừ vây xanh",
+   "side": "Hành tây",
+   "tool": "Chảo",
+   "method": "áp chảo nhanh",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Cá ngừ vây xanh",
+    "Hành tây",
+    "Nước tương"
+   ],
+   "prep": {
+    "Cá ngừ vây xanh": [
+     "Lọc thăn",
+     7.5
+    ],
+    "Hành tây": [
+     "Thái lát",
+     4.5
+    ]
+   },
+   "cook_s": 12,
+   "burn_s": 24.0,
+   "warn_s": 18.0,
+   "unlock_round": 1,
+   "total_s": 28.5
+  },
+  {
+   "id": "ca_ngu__rau_muong",
+   "name": "Cá ngừ vây xanh tataki rau muống",
+   "group": "dotpha",
+   "main": "Cá ngừ vây xanh",
+   "side": "Rau muống",
+   "tool": "Chảo",
+   "method": "áp chảo nhanh",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Cá ngừ vây xanh",
+    "Rau muống",
+    "Nước tương"
+   ],
+   "prep": {
+    "Cá ngừ vây xanh": [
+     "Lọc thăn",
+     7.5
+    ],
+    "Rau muống": [
+     "Nhặt, rửa",
+     3.0
+    ]
+   },
+   "cook_s": 12,
+   "burn_s": 24.0,
+   "warn_s": 18.0,
+   "unlock_round": 1,
+   "total_s": 27.0
+  },
+  {
+   "id": "ca_ngu__khoai_tay",
+   "name": "Cá ngừ vây xanh tataki khoai tây",
+   "group": "dotpha",
+   "main": "Cá ngừ vây xanh",
+   "side": "Khoai tây",
+   "tool": "Chảo",
+   "method": "áp chảo nhanh",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Cá ngừ vây xanh",
+    "Khoai tây",
+    "Nước tương"
+   ],
+   "prep": {
+    "Cá ngừ vây xanh": [
+     "Lọc thăn",
+     7.5
+    ],
+    "Khoai tây": [
+     "Gọt, thái",
+     6.0
+    ]
+   },
+   "cook_s": 12,
+   "burn_s": 24.0,
+   "warn_s": 18.0,
+   "unlock_round": 2,
+   "total_s": 30.0
+  },
+  {
+   "id": "ca_ngu__nam_rom",
+   "name": "Cá ngừ vây xanh tataki nấm rơm",
+   "group": "dotpha",
+   "main": "Cá ngừ vây xanh",
+   "side": "Nấm rơm",
+   "tool": "Chảo",
+   "method": "áp chảo nhanh",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Cá ngừ vây xanh",
+    "Nấm rơm",
+    "Nước tương"
+   ],
+   "prep": {
+    "Cá ngừ vây xanh": [
+     "Lọc thăn",
+     7.5
+    ],
+    "Nấm rơm": [
+     "Rửa, bổ đôi",
+     3.0
+    ]
+   },
+   "cook_s": 12,
+   "burn_s": 24.0,
+   "warn_s": 18.0,
+   "unlock_round": 2,
+   "total_s": 27.0
+  },
+  {
+   "id": "ca_ngu__bong_cai",
+   "name": "Cá ngừ vây xanh tataki bông cải",
+   "group": "dotpha",
+   "main": "Cá ngừ vây xanh",
+   "side": "Bông cải xanh",
+   "tool": "Chảo",
+   "method": "áp chảo nhanh",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Cá ngừ vây xanh",
+    "Bông cải xanh",
+    "Nước tương"
+   ],
+   "prep": {
+    "Cá ngừ vây xanh": [
+     "Lọc thăn",
+     7.5
+    ],
+    "Bông cải xanh": [
+     "Tách bông",
+     4.5
+    ]
+   },
+   "cook_s": 12,
+   "burn_s": 24.0,
+   "warn_s": 18.0,
+   "unlock_round": 3,
+   "total_s": 28.5
+  },
+  {
+   "id": "ca_ngu__ot_chuong",
+   "name": "Cá ngừ vây xanh tataki ớt chuông",
+   "group": "dotpha",
+   "main": "Cá ngừ vây xanh",
+   "side": "Ớt chuông",
+   "tool": "Chảo",
+   "method": "áp chảo nhanh",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Cá ngừ vây xanh",
+    "Ớt chuông",
+    "Nước tương"
+   ],
+   "prep": {
+    "Cá ngừ vây xanh": [
+     "Lọc thăn",
+     7.5
+    ],
+    "Ớt chuông": [
+     "Bỏ hạt, thái",
+     4.5
+    ]
+   },
+   "cook_s": 12,
+   "burn_s": 24.0,
+   "warn_s": 18.0,
+   "unlock_round": 3,
+   "total_s": 28.5
+  },
+  {
+   "id": "ca_ngu__bi_do",
+   "name": "Cá ngừ vây xanh tataki bí đỏ",
+   "group": "dotpha",
+   "main": "Cá ngừ vây xanh",
+   "side": "Bí đỏ",
+   "tool": "Chảo",
+   "method": "áp chảo nhanh",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Cá ngừ vây xanh",
+    "Bí đỏ",
+    "Nước tương"
+   ],
+   "prep": {
+    "Cá ngừ vây xanh": [
+     "Lọc thăn",
+     7.5
+    ],
+    "Bí đỏ": [
+     "Gọt, thái",
+     6.0
+    ]
+   },
+   "cook_s": 12,
+   "burn_s": 24.0,
+   "warn_s": 18.0,
+   "unlock_round": 4,
+   "total_s": 30.0
+  },
+  {
+   "id": "ca_ngu__mang_tay",
+   "name": "Cá ngừ vây xanh tataki măng tây",
+   "group": "dotpha",
+   "main": "Cá ngừ vây xanh",
+   "side": "Măng tây",
+   "tool": "Chảo",
+   "method": "áp chảo nhanh",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Cá ngừ vây xanh",
+    "Măng tây",
+    "Nước tương"
+   ],
+   "prep": {
+    "Cá ngừ vây xanh": [
+     "Lọc thăn",
+     7.5
+    ],
+    "Măng tây": [
+     "Cắt khúc",
+     3.0
+    ]
+   },
+   "cook_s": 12,
+   "burn_s": 24.0,
+   "warn_s": 18.0,
+   "unlock_round": 4,
+   "total_s": 27.0
+  },
+  {
+   "id": "ca_ngu__nam_dong_co",
+   "name": "Cá ngừ vây xanh tataki nấm đông cô",
+   "group": "dotpha",
+   "main": "Cá ngừ vây xanh",
+   "side": "Nấm đông cô",
+   "tool": "Chảo",
+   "method": "áp chảo nhanh",
+   "base": "Cơm",
+   "steps": [
+    "Dầu ăn",
+    "Cá ngừ vây xanh",
+    "Nấm đông cô",
+    "Nước tương"
+   ],
+   "prep": {
+    "Cá ngừ vây xanh": [
+     "Lọc thăn",
+     7.5
+    ],
+    "Nấm đông cô": [
+     "Thái lát",
+     3.0
+    ]
+   },
+   "cook_s": 12,
+   "burn_s": 24.0,
+   "warn_s": 18.0,
+   "unlock_round": 4,
+   "total_s": 27.0
+  },
+  {
+   "id": "cua__ca_chua",
+   "name": "Cua hoàng đế hấp cà chua",
+   "group": "dotpha",
+   "main": "Cua hoàng đế",
+   "side": "Cà chua",
+   "tool": "Nồi",
+   "method": "hấp",
+   "base": "Bún",
+   "steps": [
+    "Nước dùng",
+    "Cua hoàng đế",
+    "Cà chua",
+    "Hành lá"
+   ],
+   "prep": {
+    "Cua hoàng đế": [
+     "Tách mai",
+     9.0
+    ],
+    "Cà chua": [
+     "Thái múi",
+     4.5
+    ]
+   },
+   "cook_s": 30,
+   "burn_s": 60.0,
+   "warn_s": 45.0,
+   "unlock_round": 1,
+   "total_s": 48.0
+  },
+  {
+   "id": "cua__hanh_tay",
+   "name": "Cua hoàng đế hấp hành tây",
+   "group": "dotpha",
+   "main": "Cua hoàng đế",
+   "side": "Hành tây",
+   "tool": "Nồi",
+   "method": "hấp",
+   "base": "Bún",
+   "steps": [
+    "Nước dùng",
+    "Cua hoàng đế",
+    "Hành tây",
+    "Hành lá"
+   ],
+   "prep": {
+    "Cua hoàng đế": [
+     "Tách mai",
+     9.0
+    ],
+    "Hành tây": [
+     "Thái lát",
+     4.5
+    ]
+   },
+   "cook_s": 30,
+   "burn_s": 60.0,
+   "warn_s": 45.0,
+   "unlock_round": 1,
+   "total_s": 48.0
+  },
+  {
+   "id": "cua__rau_muong",
+   "name": "Cua hoàng đế hấp rau muống",
+   "group": "dotpha",
+   "main": "Cua hoàng đế",
+   "side": "Rau muống",
+   "tool": "Nồi",
+   "method": "hấp",
+   "base": "Bún",
+   "steps": [
+    "Nước dùng",
+    "Cua hoàng đế",
+    "Rau muống",
+    "Hành lá"
+   ],
+   "prep": {
+    "Cua hoàng đế": [
+     "Tách mai",
+     9.0
+    ],
+    "Rau muống": [
+     "Nhặt, rửa",
+     3.0
+    ]
+   },
+   "cook_s": 30,
+   "burn_s": 60.0,
+   "warn_s": 45.0,
+   "unlock_round": 1,
+   "total_s": 46.5
+  },
+  {
+   "id": "cua__khoai_tay",
+   "name": "Cua hoàng đế hấp khoai tây",
+   "group": "dotpha",
+   "main": "Cua hoàng đế",
+   "side": "Khoai tây",
+   "tool": "Nồi",
+   "method": "hấp",
+   "base": "Bún",
+   "steps": [
+    "Nước dùng",
+    "Cua hoàng đế",
+    "Khoai tây",
+    "Hành lá"
+   ],
+   "prep": {
+    "Cua hoàng đế": [
+     "Tách mai",
+     9.0
+    ],
+    "Khoai tây": [
+     "Gọt, thái",
+     6.0
+    ]
+   },
+   "cook_s": 30,
+   "burn_s": 60.0,
+   "warn_s": 45.0,
+   "unlock_round": 2,
+   "total_s": 49.5
+  },
+  {
+   "id": "cua__nam_rom",
+   "name": "Cua hoàng đế hấp nấm rơm",
+   "group": "dotpha",
+   "main": "Cua hoàng đế",
+   "side": "Nấm rơm",
+   "tool": "Nồi",
+   "method": "hấp",
+   "base": "Bún",
+   "steps": [
+    "Nước dùng",
+    "Cua hoàng đế",
+    "Nấm rơm",
+    "Hành lá"
+   ],
+   "prep": {
+    "Cua hoàng đế": [
+     "Tách mai",
+     9.0
+    ],
+    "Nấm rơm": [
+     "Rửa, bổ đôi",
+     3.0
+    ]
+   },
+   "cook_s": 30,
+   "burn_s": 60.0,
+   "warn_s": 45.0,
+   "unlock_round": 2,
+   "total_s": 46.5
+  },
+  {
+   "id": "cua__bong_cai",
+   "name": "Cua hoàng đế hấp bông cải",
+   "group": "dotpha",
+   "main": "Cua hoàng đế",
+   "side": "Bông cải xanh",
+   "tool": "Nồi",
+   "method": "hấp",
+   "base": "Bún",
+   "steps": [
+    "Nước dùng",
+    "Cua hoàng đế",
+    "Bông cải xanh",
+    "Hành lá"
+   ],
+   "prep": {
+    "Cua hoàng đế": [
+     "Tách mai",
+     9.0
+    ],
+    "Bông cải xanh": [
+     "Tách bông",
+     4.5
+    ]
+   },
+   "cook_s": 30,
+   "burn_s": 60.0,
+   "warn_s": 45.0,
+   "unlock_round": 3,
+   "total_s": 48.0
+  },
+  {
+   "id": "cua__ot_chuong",
+   "name": "Cua hoàng đế hấp ớt chuông",
+   "group": "dotpha",
+   "main": "Cua hoàng đế",
+   "side": "Ớt chuông",
+   "tool": "Nồi",
+   "method": "hấp",
+   "base": "Bún",
+   "steps": [
+    "Nước dùng",
+    "Cua hoàng đế",
+    "Ớt chuông",
+    "Hành lá"
+   ],
+   "prep": {
+    "Cua hoàng đế": [
+     "Tách mai",
+     9.0
+    ],
+    "Ớt chuông": [
+     "Bỏ hạt, thái",
+     4.5
+    ]
+   },
+   "cook_s": 30,
+   "burn_s": 60.0,
+   "warn_s": 45.0,
+   "unlock_round": 3,
+   "total_s": 48.0
+  },
+  {
+   "id": "cua__bi_do",
+   "name": "Cua hoàng đế hấp bí đỏ",
+   "group": "dotpha",
+   "main": "Cua hoàng đế",
+   "side": "Bí đỏ",
+   "tool": "Nồi",
+   "method": "hấp",
+   "base": "Bún",
+   "steps": [
+    "Nước dùng",
+    "Cua hoàng đế",
+    "Bí đỏ",
+    "Hành lá"
+   ],
+   "prep": {
+    "Cua hoàng đế": [
+     "Tách mai",
+     9.0
+    ],
+    "Bí đỏ": [
+     "Gọt, thái",
+     6.0
+    ]
+   },
+   "cook_s": 30,
+   "burn_s": 60.0,
+   "warn_s": 45.0,
+   "unlock_round": 4,
+   "total_s": 49.5
+  },
+  {
+   "id": "cua__mang_tay",
+   "name": "Cua hoàng đế hấp măng tây",
+   "group": "dotpha",
+   "main": "Cua hoàng đế",
+   "side": "Măng tây",
+   "tool": "Nồi",
+   "method": "hấp",
+   "base": "Bún",
+   "steps": [
+    "Nước dùng",
+    "Cua hoàng đế",
+    "Măng tây",
+    "Hành lá"
+   ],
+   "prep": {
+    "Cua hoàng đế": [
+     "Tách mai",
+     9.0
+    ],
+    "Măng tây": [
+     "Cắt khúc",
+     3.0
+    ]
+   },
+   "cook_s": 30,
+   "burn_s": 60.0,
+   "warn_s": 45.0,
+   "unlock_round": 4,
+   "total_s": 46.5
+  },
+  {
+   "id": "cua__nam_dong_co",
+   "name": "Cua hoàng đế hấp nấm đông cô",
+   "group": "dotpha",
+   "main": "Cua hoàng đế",
+   "side": "Nấm đông cô",
+   "tool": "Nồi",
+   "method": "hấp",
+   "base": "Bún",
+   "steps": [
+    "Nước dùng",
+    "Cua hoàng đế",
+    "Nấm đông cô",
+    "Hành lá"
+   ],
+   "prep": {
+    "Cua hoàng đế": [
+     "Tách mai",
+     9.0
+    ],
+    "Nấm đông cô": [
+     "Thái lát",
+     3.0
+    ]
+   },
+   "cook_s": 30,
+   "burn_s": 60.0,
+   "warn_s": 45.0,
+   "unlock_round": 4,
+   "total_s": 46.5
+  }
+ ]
+}

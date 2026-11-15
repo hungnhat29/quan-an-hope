@@ -1,10 +1,12 @@
 # Constitution — Quán ăn của Hope (tên tạm)
 
-Phiên bản 1.3 · 14/11/2026 · Trạng thái: khách gọi một món cụ thể, sách ghi giá bán; game 3D góc nhìn thứ nhất; số cân bằng giữ nguyên từ 1.0
+Phiên bản 1.4 · 15/11/2026 · Trạng thái: **đổi số cân bằng** — ngày theo giờ, khách không giới hạn, thùng nhỏ, sơ chế và nấu lâu hơn, nợ cao hơn. Game sprint 1 còn chạy số 1.3; số 1.4 vào game ở sprint 2
 
 Đây là nguồn sự thật cao nhất của dự án. Mọi spec, plan, task và dòng code phải tuân theo file này. Khi một spec mâu thuẫn với constitution, constitution thắng; muốn đổi thì sửa constitution trước (tăng số phiên bản, ghi lý do ở mục 9).
 
-Các con số cân bằng nằm ở hai nơi phải luôn khớp nhau: bảng trong file này và `balance/balance.json` + `balance/relics.json` + `balance/recipes.json`. Code chỉ đọc số từ dữ liệu, không viết số trong code.
+Các con số cân bằng nằm ở hai nơi phải luôn khớp nhau: bảng trong file này và dữ liệu JSON. Code chỉ đọc số từ dữ liệu, không viết số trong code.
+
+**Chuyển tiếp 1.3 → 1.4:** bảng trong file này là số **1.4**, khớp với `balance/next/*.json` (sinh từ `balance/make_next.py`). `balance/*.json` còn là số 1.3 mà bản game sprint 1 và test đang đọc. Việc đầu tiên của sprint 2 là chép `balance/next/*` đè lên `balance/*`, nhập lại vào game và sửa test; từ đó chỉ còn một bộ số.
 
 ---
 
@@ -13,11 +15,13 @@ Các con số cân bằng nằm ở hai nơi phải luôn khớp nhau: bảng tr
 ### Điều 1 — Độ khó mục tiêu
 Game nằm trong khoảng **trung bình-dễ đến trung bình-khó**. Ba mốc dưới đây là cổng chấp nhận; mọi thay đổi số liệu phải chạy lại mô phỏng và vẫn đạt cả ba:
 
-| Kiểu người chơi | Cách chơi | Mục tiêu | Kết quả mô phỏng v1.0 | Mô phỏng v1.3 (khách gọi món) |
-| --- | --- | --- | --- | --- |
-| Không đọc chỉ số | Chọn món có giá to, tỉ lệ to; phục vụ theo thứ tự khách đến | Đi qua **≥ 60%** chặng đường | Đi được trung bình 66% (qua lần trả nợ 1: 100%, lần 2: 86%) | 67% (100%, 87%) |
-| Chơi tốt, có **≥ 3 món cùng một bộ relic** | Gom bộ, giữ món ngon cho khách khó tính và boss | Thắng **≥ 70%** (phần còn lại do may) | Bộ Chợ Sớm 82%, Sơn Hào 84%, Vườn Nhà 71%; đủ 4 món: 87–97% | 82% (gộp mọi bộ; chưa tách theo bộ) |
-| Chơi tốt nhưng không gom bộ | Như trên, chỉ mua relic lẻ | Thấp hơn rõ so với người gom bộ | 64% | 56% |
+| Kiểu người chơi | Cách chơi | Mục tiêu | Kết quả mô phỏng v1.0 | Mô phỏng v1.3 (khách gọi món) | **Mô phỏng v1.4** |
+| --- | --- | --- | --- | --- | --- |
+| Không đọc chỉ số | Chọn món có giá to, tỉ lệ to; phục vụ theo thứ tự khách đến | Đi qua **≥ 60%** chặng đường | Đi được trung bình 66% (qua lần trả nợ 1: 100%, lần 2: 86%) | 67% (100%, 87%) | **63%** (qua lần trả nợ 1: 96%, lần 2: 79%) |
+| Chơi tốt, có **≥ 3 món cùng một bộ relic** | Gom bộ, giữ món ngon cho khách khó tính và boss | Thắng **≥ 70%** (phần còn lại do may) | Bộ Chợ Sớm 82%, Sơn Hào 84%, Vườn Nhà 71%; đủ 4 món: 87–97% | 82% (Vườn Nhà 76%, Chợ Sớm 86%, Sơn Hào 85%) | **90%** (Vườn Nhà 98%, Chợ Sớm 85%, Sơn Hào 88%) |
+| Chơi tốt nhưng không gom bộ | Như trên, chỉ mua relic lẻ | Thấp hơn rõ so với người gom bộ | 64% | 56% | **46%** |
+
+Số v1.4 phụ thuộc mạnh vào một giả định chưa đo: thời gian đi lại và thao tác cho mỗi món (xem mục 9). Sprint 2 phải đo bằng người thật.
 
 ### Điều 2 — Dữ liệu tách khỏi code
 Mọi tỉ lệ, giá, nợ, hệ số, danh sách relic là dữ liệu (ScriptableObject sinh từ `balance.json` / `relics.json`). Chỉnh cân bằng không được phải sửa code.
@@ -60,19 +64,19 @@ Thông tin của một thứ hiện **trên chính thứ đó trong phòng**, kh
 
 - **Nhân vật chính:** Hope. Cùng một ngày, Hope bị đuổi việc và về nhà gặp chủ nợ. Hope van xin; chủ nợ giao cho Hope toàn quyền một quán ăn sắp đóng cửa của ông để bán và phát triển, và sẽ quay lại đòi nợ theo lịch.
 - **Không gian:** một quán ăn trong một căn phòng 4 tường; người chơi chỉ tương tác trong phòng.
-- **Giờ mở cửa:** 9:00 – 21:00 (trong game). Sau 21:00, khách còn ngồi vẫn được phục vụ đến người cuối cùng. Độ dài đề xuất: 1 giờ trong game = 30 giây thực, một ngày khoảng 6 phút.
+- **Giờ mở cửa:** 9:00 – 21:00 (trong game). **1 giờ trong game = 40 giây thực, một ngày 8 phút.** Đồng hồ chạy từ đầu ngày. Khách vào liên tục, không giới hạn số lượng, cho tới 21:00 (mục 6.2). Sau 21:00, khách còn ngồi vẫn được phục vụ đến người cuối cùng.
 - **Kết thúc:** trả hết nợ ngày 22; chủ nợ gả con gái cho Hope.
 
 ### Lịch 22 ngày
 
 | Vòng | Ngày | Sự kiện / "boss" | Trả nợ |
 | --- | --- | --- | --- |
-| 1 | 1–3 | Ngày 2 mưa lớn → ngày 3 nguyên liệu ít hơn và tệ hơn | Đầu ngày 4: **400G** |
-| 2 | 4–8 | Ngày 8 sét đánh cột điện → mất điện, nấu bằng nến, tầm nhìn giảm | Đầu ngày 9: **2.200G** |
-| 3 | 9–14 | Khách ít và khó tính hơn hẳn; ngày 14 mới biết có kẻ tung tin xấu về quán; ngày 14 là ngày "all-in" | Đầu ngày 15: **8.200G** |
-| 4 | 15–21 | Uy tín phục hồi, mọi thứ bình thường. Ngày 21, khách cuối cùng là **chủ nợ** (độ dễ tính 5%) | Đầu ngày 22: **26.200G** |
+| 1 | 1–3 | Ngày 2 mưa lớn → ngày 3 nguyên liệu ít hơn và tệ hơn | Đầu ngày 4: **750G** |
+| 2 | 4–8 | Ngày 8 sét đánh cột điện → mất điện, nấu bằng nến, tầm nhìn giảm | Đầu ngày 9: **2.900G** |
+| 3 | 9–14 | Khách khó tính hơn hẳn; ngày 14 mới biết có kẻ tung tin xấu về quán; ngày 14 là ngày "all-in" | Đầu ngày 15: **10.500G** |
+| 4 | 15–21 | Uy tín phục hồi, mọi thứ bình thường. Ngày 21, đúng **20:00** **chủ nợ** đến (độ dễ tính 5%) và ngồi tới khi được phục vụ | Đầu ngày 22: **32.000G** |
 
-Nợ thu vào **đầu** ngày đến hạn. Không đủ tiền = thua (kết thúc game).
+Nợ thu vào **đầu** ngày đến hạn. Không đủ tiền = thua (kết thúc game). Nợ bản 1.3 là 400 / 2.200 / 8.200 / 26.200G; bản 1.4 tăng cả bốn mốc theo yêu cầu của bạn, mức cụ thể chọn bằng mô phỏng (mục 9).
 
 ---
 
@@ -81,10 +85,12 @@ Nợ thu vào **đầu** ngày đến hạn. Không đủ tiền = thua (kết t
 | Loại | Dùng để | Nguồn |
 | --- | --- | --- |
 | Tiền (G) | Mua vật phẩm ở cửa hàng, trả nợ | Bán món ăn, tip, thưởng boss |
-| Vé trắng | Gacha nguyên liệu, mua relic | **3 vé mỗi ngày**, không dùng thì cộng dồn |
+| Vé trắng | Gacha nguyên liệu, mua relic | **6 vé mỗi ngày**, không dùng thì cộng dồn |
 | Vé đen | Gacha nguyên liệu cao cấp, hoặc mua relic tốt chắc chắn | Mua ở cửa hàng |
 
-Khởi đầu: **100G** và **2 vé thưởng** (ngày 1 có 5 vé). Cửa hàng relic mở từ **ngày 2** (ngày 1 là ngày làm quen).
+Khởi đầu: **100G** và **2 vé thưởng** (ngày 1 có 8 vé). Cửa hàng relic mở từ **ngày 2** (ngày 1 là ngày làm quen).
+
+Vé mỗi ngày tăng từ 3 lên 6 ở bản 1.4 vì thùng nhỏ lại (mục 4.2): một ngày kịp nấu khoảng 8 món, cần 4 vé nguyên liệu, còn lại để mua relic. Đây là số mình thêm để bù, cần bạn xác nhận (Q-22).
 
 ---
 
@@ -105,7 +111,7 @@ Khởi đầu: **100G** và **2 vé thưởng** (ngày 1 có 5 vé). Cửa hàng
 - **Nguyên liệu đột phá** (sơn hào hải vị: thịt cá mập, tôm hùm…): mặc định **0%**, chỉ relic mới mở; luôn ở bậc 4–5; dùng như nguyên liệu chính.
 
 ### 4.2 Một lượt gacha (1 vé trắng)
-Bấm máy nhét vé ở Góc 2, máy thả xuống **1 thùng đồ phụ (5 món) + 1 thùng nguyên liệu chính (3 món)** lên bàn nhận hàng; nếu trúng thì thêm **1 thùng đột phá (2 món)**. **Mỗi thùng chỉ có một loại nguyên liệu** (ví dụ thùng 5 quả cà chua, thùng 3 miếng thịt bò); loại được chọn ngẫu nhiên đều trong các loại đã mở khóa ở vòng hiện tại (mục 4.5). Mỗi món tự quay bậc độc lập theo bảng của vòng hiện tại. Nguyên liệu không dùng hết bị bỏ cuối ngày (tủ lạnh chỉ giữ món đã nấu). Trên bàn, nguyên liệu cùng loại nằm chung một thùng (ví dụ mọi quả cà chua của ngày nằm trong thùng cà chua); người chơi lấy từng món ra bằng tay.
+Bấm máy nhét vé ở Góc 2, máy thả xuống **1 thùng đồ phụ (3 món) + 1 thùng nguyên liệu chính (2 món)** lên bàn nhận hàng; nếu trúng thì thêm **1 thùng đột phá (1 món)**. **Mỗi thùng chỉ có một loại nguyên liệu** (ví dụ thùng 3 quả cà chua, thùng 2 miếng thịt bò); loại được chọn ngẫu nhiên đều trong các loại đã mở khóa ở vòng hiện tại (mục 4.5). Mỗi món tự quay bậc độc lập theo bảng của vòng hiện tại. Nguyên liệu không dùng hết bị bỏ cuối ngày (tủ lạnh chỉ giữ món đã nấu). Trên bàn, nguyên liệu cùng loại nằm chung một thùng (ví dụ mọi quả cà chua của ngày nằm trong thùng cà chua); người chơi lấy từng món ra bằng tay.
 
 ### 4.3 Tỉ lệ bậc theo vòng (%)
 
@@ -118,17 +124,21 @@ Bấm máy nhét vé ở Góc 2, máy thả xuống **1 thùng đồ phụ (5 m�
 | Vòng 4 (ngày 15–21) | 6 | 18 | 33 | 28 | 12 | 3 |
 | Vé đen (mọi vòng) | 0 | 0 | 0 | 62 | 30 | 8 |
 
-Ngày 3 (sau mưa) thùng cũng nhỏ lại: **3 đồ phụ + 2 nguyên liệu chính**.
+Ngày 3 (sau mưa) thùng cũng nhỏ lại: **2 đồ phụ + 1 nguyên liệu chính**.
+
+Bảng tỉ lệ bậc ở trên **giữ nguyên** ở bản 1.4: tỉ lệ tính cho từng món nên không phụ thuộc cỡ thùng. Một vé giờ cho 5 món thay vì 8, nhưng mỗi ngày có 6 vé thay vì 3 (30 món so với 24). Nếu bạn muốn đổi cả bảng tỉ lệ thì báo (Q-23).
 
 **Cách dựng bảng (theo gợi ý TFT):** mỗi vòng giống một cấp trong TFT — khối xác suất trượt dần lên bậc cao, bậc hiếm nhất chỉ xuất hiện muộn. Vòng 2 có 2% bậc 4 giống TFT cấp 5 có 2% tướng 4 vàng; vòng 3 có 1% bậc 5 giống TFT cấp 7 có 1% tướng 5 vàng; vòng 4 có 3% bậc 5 giống TFT cấp 8 có 3% tướng 5 vàng (số liệu TFT ở mục 10).
 
-**Vé đen:** bạn đề xuất 60/30/10; mình chỉnh thành **62/30/8** vì một vé đen cho 8 món, với 10% bậc 5 thì 57% số vé đen có ít nhất một món hiếm — quá dễ. Với 8% là khoảng 49%.
+**Vé đen:** bạn đề xuất 60/30/10; mình chỉnh thành **62/30/8** vì ở bản 1.0 một vé đen cho 8 món, với 10% bậc 5 thì 57% số vé đen có ít nhất một món hiếm — quá dễ. Ở bản 1.4 một vé đen cho 5 món; với 8% thì 34% số vé đen có ít nhất một món hiếm.
 
 ### 4.4 Thùng đột phá
 - Tỉ lệ xuất hiện mỗi lượt: **0% + tổng từ relic** (xem mục 7).
-- Mỗi thùng: **2 món**, **70% bậc 4 / 30% bậc 5** (relic có thể nâng tỉ lệ bậc 5).
+- Mỗi thùng: **1 món**, **70% bậc 4 / 30% bậc 5** (relic có thể nâng tỉ lệ bậc 5; thưởng bộ Sơn Hào 3 món thêm 1 món thành 2).
 
 ### 4.5 Danh sách nguyên liệu
+
+Thời gian giữ để sơ chế ở bản 1.4 gấp 3 bản 1.3 (yêu cầu "tăng thời gian chuẩn bị").
 
 Nguyên liệu mở dần theo vòng để người chơi học từng ít một: vòng 1 có 3 loại đồ phụ × 3 loại chính (9 món ăn), đến vòng 4 có 10 × 8 (80 món ăn).
 
@@ -136,38 +146,38 @@ Nguyên liệu mở dần theo vòng để người chơi học từng ít một
 
 | Nguyên liệu | Sơ chế (thớt) | Thời gian giữ | Mở khóa |
 | --- | --- | --- | --- |
-| Cà chua | Thái múi | 1,5 giây | Vòng 1 |
-| Hành tây | Thái lát | 1,5 giây | Vòng 1 |
-| Rau muống | Nhặt, rửa | 1,0 giây | Vòng 1 |
-| Khoai tây | Gọt, thái | 2,0 giây | Vòng 2 |
-| Nấm rơm | Rửa, bổ đôi | 1,0 giây | Vòng 2 |
-| Bông cải xanh | Tách bông | 1,5 giây | Vòng 3 |
-| Ớt chuông | Bỏ hạt, thái | 1,5 giây | Vòng 3 |
-| Bí đỏ | Gọt, thái | 2,0 giây | Vòng 4 |
-| Măng tây | Cắt khúc | 1,0 giây | Vòng 4 |
-| Nấm đông cô | Thái lát | 1,0 giây | Vòng 4 |
+| Cà chua | Thái múi | 4,5 giây | Vòng 1 |
+| Hành tây | Thái lát | 4,5 giây | Vòng 1 |
+| Rau muống | Nhặt, rửa | 3,0 giây | Vòng 1 |
+| Khoai tây | Gọt, thái | 6,0 giây | Vòng 2 |
+| Nấm rơm | Rửa, bổ đôi | 3,0 giây | Vòng 2 |
+| Bông cải xanh | Tách bông | 4,5 giây | Vòng 3 |
+| Ớt chuông | Bỏ hạt, thái | 4,5 giây | Vòng 3 |
+| Bí đỏ | Gọt, thái | 6,0 giây | Vòng 4 |
+| Măng tây | Cắt khúc | 3,0 giây | Vòng 4 |
+| Nấm đông cô | Thái lát | 3,0 giây | Vòng 4 |
 
 **Nguyên liệu chính** (thịt, cá, tôm, trứng, đậu)
 
 | Nguyên liệu | Sơ chế (thớt) | Thời gian giữ | Mở khóa |
 | --- | --- | --- | --- |
-| Trứng gà | Đập, đánh | 0,5 giây | Vòng 1 |
-| Thịt heo | Thái mỏng | 1,5 giây | Vòng 1 |
-| Đậu phụ | Cắt miếng | 1,0 giây | Vòng 1 |
-| Thịt bò | Thái mỏng | 1,5 giây | Vòng 2 |
-| Tôm | Bóc vỏ | 2,0 giây | Vòng 2 |
-| Cá hồi | Lọc xương | 2,5 giây | Vòng 3 |
-| Mực | Làm sạch, khứa | 2,5 giây | Vòng 3 |
-| Gà ta | Chặt miếng | 2,0 giây | Vòng 4 |
+| Trứng gà | Đập, đánh | 1,5 giây | Vòng 1 |
+| Thịt heo | Thái mỏng | 4,5 giây | Vòng 1 |
+| Đậu phụ | Cắt miếng | 3,0 giây | Vòng 1 |
+| Thịt bò | Thái mỏng | 4,5 giây | Vòng 2 |
+| Tôm | Bóc vỏ | 6,0 giây | Vòng 2 |
+| Cá hồi | Lọc xương | 7,5 giây | Vòng 3 |
+| Mực | Làm sạch, khứa | 7,5 giây | Vòng 3 |
+| Gà ta | Chặt miếng | 6,0 giây | Vòng 4 |
 
 **Nguyên liệu đột phá** (sơn hào hải vị — chỉ ra qua relic, luôn bậc 4–5, dùng thay nguyên liệu chính)
 
 | Nguyên liệu | Sơ chế (thớt) | Thời gian giữ |
 | --- | --- | --- |
-| Tôm hùm | Bổ đôi | 3,0 giây |
-| Bò Wagyu | Cắt miếng dày | 2,0 giây |
-| Cá ngừ vây xanh | Lọc thăn | 2,5 giây |
-| Cua hoàng đế | Tách mai | 3,0 giây |
+| Tôm hùm | Bổ đôi | 9,0 giây |
+| Bò Wagyu | Cắt miếng dày | 6,0 giây |
+| Cá ngừ vây xanh | Lọc thăn | 7,5 giây |
+| Cua hoàng đế | Tách mai | 9,0 giây |
 
 Bạn đề xuất "thịt cá mập"; mình thay bằng **cá ngừ vây xanh** vì sản phẩm từ cá mập (nhất là vi cá) bị cấm hoặc hạn chế buôn bán ở nhiều nơi như Mỹ và Canada, dễ gây phản ứng tiêu cực từ người chơi quốc tế. Đổi lại nếu bạn muốn giữ.
 
@@ -260,18 +270,18 @@ Tên và công thức của món được ghép từ **nguyên liệu chính** (
 
 | Món | Nguyên liệu chính | Dụng cụ | Thứ tự cho vào | Đế món | Thời gian nấu | Mở khóa |
 | --- | --- | --- | --- | --- | --- | --- |
-| Trứng chiên *‹đồ phụ›* | Trứng gà | Chảo | Dầu ăn → *(đồ phụ)* → Trứng gà → Nước mắm | Cơm | 8 giây | Vòng 1 |
-| Heo xào *‹đồ phụ›* | Thịt heo | Chảo | Dầu ăn → Tỏi → Thịt heo → *(đồ phụ)* | Cơm | 10 giây | Vòng 1 |
-| Đậu phụ sốt *‹đồ phụ›* | Đậu phụ | Nồi | Dầu ăn → *(đồ phụ)* → Đậu phụ → Nước mắm | Cơm | 12 giây | Vòng 1 |
-| Mì Ý bò xào *‹đồ phụ›* | Thịt bò | Chảo | Bơ → Tỏi → Thịt bò → *(đồ phụ)* | Mì Ý | 10 giây | Vòng 2 |
-| Bún xào tôm *‹đồ phụ›* | Tôm | Chảo | Dầu ăn → Tôm → *(đồ phụ)* → Nước mắm | Bún | 10 giây | Vòng 2 |
-| Cá hồi áp chảo *‹đồ phụ›* | Cá hồi | Chảo | Bơ → Cá hồi → *(đồ phụ)* → Muối | Cơm | 14 giây | Vòng 3 |
-| Mực xào *‹đồ phụ›* | Mực | Chảo | Dầu ăn → Tỏi → Mực → *(đồ phụ)* | Cơm | 8 giây | Vòng 3 |
-| Gà nướng mật ong *‹đồ phụ›* | Gà ta | Vỉ nướng | Mật ong → Gà ta → *(đồ phụ)* | Bánh mì | 18 giây | Vòng 4 |
-| Tôm hùm nướng bơ tỏi *‹đồ phụ›* | Tôm hùm | Vỉ nướng | Bơ → Tỏi → Tôm hùm → *(đồ phụ)* | Bánh mì | 20 giây | Relic |
-| Bò Wagyu áp chảo *‹đồ phụ›* | Bò Wagyu | Chảo | Muối → Bò Wagyu → Bơ → *(đồ phụ)* | Cơm | 14 giây | Relic |
-| Cá ngừ vây xanh tataki *‹đồ phụ›* | Cá ngừ vây xanh | Chảo | Dầu ăn → Cá ngừ vây xanh → *(đồ phụ)* → Nước tương | Cơm | 8 giây | Relic |
-| Cua hoàng đế hấp *‹đồ phụ›* | Cua hoàng đế | Nồi | Nước dùng → Cua hoàng đế → *(đồ phụ)* → Hành lá | Bún | 20 giây | Relic |
+| Trứng chiên *‹đồ phụ›* | Trứng gà | Chảo | Dầu ăn → *(đồ phụ)* → Trứng gà → Nước mắm | Cơm | 12 giây | Vòng 1 |
+| Heo xào *‹đồ phụ›* | Thịt heo | Chảo | Dầu ăn → Tỏi → Thịt heo → *(đồ phụ)* | Cơm | 15 giây | Vòng 1 |
+| Đậu phụ sốt *‹đồ phụ›* | Đậu phụ | Nồi | Dầu ăn → *(đồ phụ)* → Đậu phụ → Nước mắm | Cơm | 18 giây | Vòng 1 |
+| Mì Ý bò xào *‹đồ phụ›* | Thịt bò | Chảo | Bơ → Tỏi → Thịt bò → *(đồ phụ)* | Mì Ý | 15 giây | Vòng 2 |
+| Bún xào tôm *‹đồ phụ›* | Tôm | Chảo | Dầu ăn → Tôm → *(đồ phụ)* → Nước mắm | Bún | 15 giây | Vòng 2 |
+| Cá hồi áp chảo *‹đồ phụ›* | Cá hồi | Chảo | Bơ → Cá hồi → *(đồ phụ)* → Muối | Cơm | 21 giây | Vòng 3 |
+| Mực xào *‹đồ phụ›* | Mực | Chảo | Dầu ăn → Tỏi → Mực → *(đồ phụ)* | Cơm | 12 giây | Vòng 3 |
+| Gà nướng mật ong *‹đồ phụ›* | Gà ta | Vỉ nướng | Mật ong → Gà ta → *(đồ phụ)* | Bánh mì | 27 giây | Vòng 4 |
+| Tôm hùm nướng bơ tỏi *‹đồ phụ›* | Tôm hùm | Vỉ nướng | Bơ → Tỏi → Tôm hùm → *(đồ phụ)* | Bánh mì | 30 giây | Relic |
+| Bò Wagyu áp chảo *‹đồ phụ›* | Bò Wagyu | Chảo | Muối → Bò Wagyu → Bơ → *(đồ phụ)* | Cơm | 21 giây | Relic |
+| Cá ngừ vây xanh tataki *‹đồ phụ›* | Cá ngừ vây xanh | Chảo | Dầu ăn → Cá ngừ vây xanh → *(đồ phụ)* → Nước tương | Cơm | 12 giây | Relic |
+| Cua hoàng đế hấp *‹đồ phụ›* | Cua hoàng đế | Nồi | Nước dùng → Cua hoàng đế → *(đồ phụ)* → Hành lá | Bún | 30 giây | Relic |
 
 Ngoại lệ tên: Thịt bò + Cà chua = **Mì Ý bò sốt cà chua** (món xuất hiện trong bản phác).
 
@@ -279,17 +289,17 @@ Ngoại lệ tên: Thịt bò + Cà chua = **Mì Ý bò sốt cà chua** (món x
 
 | Món | Thứ tự cho vào | Dụng cụ | Nấu | Tổng thời gian một món* |
 | --- | --- | --- | --- | --- |
-| Trứng chiên cà chua | Dầu ăn → Cà chua → Trứng gà → Nước mắm | Chảo | 8 giây | 14,5 giây |
-| Trứng chiên hành tây | Dầu ăn → Hành tây → Trứng gà → Nước mắm | Chảo | 8 giây | 14,5 giây |
-| Trứng chiên rau muống | Dầu ăn → Rau muống → Trứng gà → Nước mắm | Chảo | 8 giây | 14,0 giây |
-| Heo xào cà chua | Dầu ăn → Tỏi → Thịt heo → Cà chua | Chảo | 10 giây | 17,5 giây |
-| Heo xào hành tây | Dầu ăn → Tỏi → Thịt heo → Hành tây | Chảo | 10 giây | 17,5 giây |
-| Heo xào rau muống | Dầu ăn → Tỏi → Thịt heo → Rau muống | Chảo | 10 giây | 17,0 giây |
-| Đậu phụ sốt cà chua | Dầu ăn → Cà chua → Đậu phụ → Nước mắm | Nồi | 12 giây | 19,0 giây |
-| Đậu phụ sốt hành tây | Dầu ăn → Hành tây → Đậu phụ → Nước mắm | Nồi | 12 giây | 19,0 giây |
-| Đậu phụ sốt rau muống | Dầu ăn → Rau muống → Đậu phụ → Nước mắm | Nồi | 12 giây | 18,5 giây |
+| Trứng chiên cà chua | Dầu ăn → Cà chua → Trứng gà → Nước mắm | Chảo | 12 giây | 22,5 giây |
+| Trứng chiên hành tây | Dầu ăn → Hành tây → Trứng gà → Nước mắm | Chảo | 12 giây | 22,5 giây |
+| Trứng chiên rau muống | Dầu ăn → Rau muống → Trứng gà → Nước mắm | Chảo | 12 giây | 21,0 giây |
+| Heo xào cà chua | Dầu ăn → Tỏi → Thịt heo → Cà chua | Chảo | 15 giây | 28,5 giây |
+| Heo xào hành tây | Dầu ăn → Tỏi → Thịt heo → Hành tây | Chảo | 15 giây | 28,5 giây |
+| Heo xào rau muống | Dầu ăn → Tỏi → Thịt heo → Rau muống | Chảo | 15 giây | 27,0 giây |
+| Đậu phụ sốt cà chua | Dầu ăn → Cà chua → Đậu phụ → Nước mắm | Nồi | 18 giây | 30,0 giây |
+| Đậu phụ sốt hành tây | Dầu ăn → Hành tây → Đậu phụ → Nước mắm | Nồi | 18 giây | 30,0 giây |
+| Đậu phụ sốt rau muống | Dầu ăn → Rau muống → Đậu phụ → Nước mắm | Nồi | 18 giây | 28,5 giây |
 
-\*Tổng = sơ chế 2 nguyên liệu + 0,5 giây mỗi lần cho vào + thời gian nấu + 1 giây múc + 1,5 giây mang ra và bấm chuông.
+\*Tổng = sơ chế 2 nguyên liệu + 0,5 giây mỗi lần cho vào + thời gian nấu + 1 giây múc + 1,5 giây mang ra và bấm chuông. **Chưa tính thời gian đi lại trong phòng 3D** (mô phỏng giả định thêm 20–30 giây mỗi món, mục 9).
 
 Sách nấu ăn (Góc 3) là quyển sách đặt trên giá: mỗi trang đôi là một món như bản phác — trang trái tên món, dụng cụ, đế món, thời gian nấu; trang phải thứ tự cho vào, mỗi bước một số tròn. Bấm trang phải để lật tới, trang trái để lật lui. Sách tự mở trang khi nguyên liệu tương ứng mở khóa, ghi kỷ lục bậc cao nhất từng nấu cho mỗi món. Mọi món dùng chung giá gốc của vòng (mục 5.2), nên công thức chỉ thay đổi trải nghiệm, không làm lệch cân bằng.
 
@@ -299,14 +309,15 @@ Sách nấu ăn (Góc 3) là quyển sách đặt trên giá: mỗi trang đôi 
 
 | Cách nấu | Dụng cụ | Thời gian nấu |
 | --- | --- | --- |
-| Chiên (trứng), xào mực, tataki (cá ngừ) | Chảo | 8 giây |
-| Xào (heo, bò, tôm) | Chảo | 10 giây |
-| Sốt (đậu phụ) | Nồi | 12 giây |
-| Áp chảo (cá hồi, bò Wagyu) | Chảo | 14 giây |
-| Nướng (gà) | Vỉ nướng | 18 giây |
-| Nướng (tôm hùm), hấp (cua) | Vỉ nướng, Nồi | 20 giây |
+| Chiên (trứng), xào mực, tataki (cá ngừ) | Chảo | 12 giây |
+| Xào (heo, bò, tôm) | Chảo | 15 giây |
+| Sốt (đậu phụ) | Nồi | 18 giây |
+| Áp chảo (cá hồi, bò Wagyu) | Chảo | 21 giây |
+| Nướng (gà) | Vỉ nướng | 27 giây |
+| Nướng (tôm hùm), hấp (cua) | Vỉ nướng, Nồi | 30 giây |
 
-- **Một món mất trung bình 17–19 giây** từ lúc sơ chế đến lúc bấm chuông (nhanh nhất 14 giây, chậm nhất 26 giây; món đột phá 22–30 giây). Phục vụ 3 khách liền nhau mất khoảng 55 giây.
+- Thời gian nấu ở bản 1.4 gấp 1,5 bản 1.3 (yêu cầu "tăng thời gian nấu").
+- **Một món mất trung bình 27–31 giây thao tác** từ lúc sơ chế đến lúc bấm chuông (nhanh nhất 21 giây, chậm nhất 43 giây; món đột phá 27–50 giây), **cộng thời gian đi lại** trong phòng. Mô phỏng giả định cả đi lại là 47–61 giây một món, tức một ngày 8 phút kịp khoảng 8 món với người nhanh, 6–7 món với người chậm.
 - **Quá lửa (từ vòng 2):** món để trên bếp quá **1,5 lần** thời gian nấu thì hiện cảnh báo; quá **2 lần** thì **−1 bậc**. Vòng 1 không có quá lửa.
 - **Ngày 8 (mất điện):** nấu bằng nến, mọi thời gian nấu **+25%**.
 
@@ -321,17 +332,18 @@ Phục vụ tối đa **3 khách cùng lúc**; khách có thể đến lần lư
 
 **Mở quán:** đầu ngày quán đóng, người chơi gacha và nấu trước. Bấm **biển Mở quán** ở Góc 1 thì khách mới bắt đầu đến. Khi quán đang mở, bấm biển lần nữa để **đóng quán sớm**: khách còn lại ra về, không trả tiền, không bị phạt, và hết ngày.
 
-### 6.2 Số khách mỗi ngày
+### 6.2 Khách không giới hạn, tới 21:00 (từ 1.4)
 
-| Vòng | Khách/ngày |
-| --- | --- |
-| 1 | 6 |
-| 2 | 8 |
-| 3 (ngày 9–13) | 5 |
-| Ngày 14 | 8 |
-| 4 | 9 (ngày 21 khách cuối là chủ nợ) |
+Không còn số khách cố định mỗi ngày (bản 1.3: 6 / 8 / 5 / 9). Số khách phục vụ được do **thời gian** và **nguyên liệu** quyết định.
 
-Ngày 14 (cách hiểu của mình về "all-in"): khách quay lại đủ số lượng nhưng độ khó tính vẫn như vòng 3, để người chơi dốc hết món trong tủ lạnh, nước sốt và vé đen.
+- **Đồng hồ:** mỗi ngày bắt đầu lúc 9:00 và chạy liên tục tới 21:00 (8 phút thực), kể cả khi quán chưa mở. HUD hiện giờ. *(Q-21: hay chỉ chạy từ lúc bấm Mở quán?)*
+- **Khách chỉ đến khi quán mở** (biển Mở quán, mục 6.1). Mở sớm thì có nhiều giờ bán hơn; mở muộn để gacha và nấu sẵn thì mất giờ bán.
+- **Vòng 1 — lần lượt:** mỗi lúc một khách; khách kế tiếp vào **3 giây** sau khi khách trước được phục vụ. Cứ thế tới 21:00.
+- **Từ vòng 2 — nhiều khách:** tối đa 3 khách cùng ngồi; ghế nào trống thì 3 giây sau có khách mới ngồi vào. Cứ thế tới 21:00.
+- **21:00:** không nhận khách mới. Khách đang ngồi vẫn được phục vụ; phục vụ xong người cuối (hoặc không còn ai ngồi) thì hết ngày.
+- **Hết nguyên liệu và hết vé** khi còn khách: bấm biển để đóng quán sớm (mục 6.1).
+- **Ngày 21:** đúng 20:00 chủ nợ đến, chiếm một ghế và ngồi tới khi được phục vụ.
+- **Ngày 14 "all-in":** không còn khác các ngày vòng 3 về số khách; "all-in" nghĩa là ngày cuối trước hạn nợ 10.500G, nên dốc món trong tủ lạnh, nước sốt, vé đen. *(cần bạn xác nhận)*
 
 ### 6.3 Độ dễ tính (%)
 Hiển thị bằng %, **càng cao càng dễ tính**, mốc trung bình 50%. Mỗi khách quay một giá trị trong khoảng:
@@ -372,12 +384,14 @@ Vòng 1 không tính giờ. Từ vòng 2, sau một **khoảng an toàn**, độ
 
 | Vòng | Khoảng an toàn |
 | --- | --- |
-| 2 | 60 giây |
-| 3 | 45 giây |
-| 4 | 50 giây |
-| Ngày 8 (mất điện) | +15 giây so với vòng 2 |
+| 2 | 90 giây |
+| 3 | 70 giây |
+| 4 | 75 giây |
+| Ngày 8 (mất điện) | +20 giây so với vòng 2 |
 
-Về tra cứu: mình không tìm được con số công bố chính thức về thời gian chờ của Overcooked, Cook Serve Delicious hay Papa's Pizzeria (các nguồn chỉ mô tả có thanh kiên nhẫn, không ghi giây). Các con số trên là mình tự đặt theo thời gian nấu của game này (trung bình 17–19 giây một món, mục 5.9): khoảng an toàn 60 giây đủ để nấu liền cho cả 3 khách ở vòng 2; vòng 3 (45 giây) thì khách thứ ba bắt đầu sốt ruột nếu không có món làm sẵn ở quầy chờ hoặc tủ lạnh — dễ hơn các game nấu ăn thông thường như bạn yêu cầu. Cần kiểm lại khi playtest.
+Khoảng an toàn ở bản 1.4 gấp 1,5 bản 1.3 (60 / 45 / 50 / +15 giây) vì thời gian nấu cũng gấp 1,5; chưa mô phỏng riêng, cần đo khi làm vòng 2 (sprint 4).
+
+Về tra cứu: mình không tìm được con số công bố chính thức về thời gian chờ của Overcooked, Cook Serve Delicious hay Papa's Pizzeria (các nguồn chỉ mô tả có thanh kiên nhẫn, không ghi giây). Lập luận của bản 1.0 (số cũ, giữ để tra): các con số được đặt theo thời gian nấu khi đó (trung bình 17–19 giây một món): khoảng an toàn 60 giây đủ để nấu liền cho cả 3 khách ở vòng 2; vòng 3 (45 giây) thì khách thứ ba bắt đầu sốt ruột nếu không có món làm sẵn ở quầy chờ hoặc tủ lạnh — dễ hơn các game nấu ăn thông thường như bạn yêu cầu. Cần kiểm lại khi playtest.
 
 ### 6.7 Khách gọi món (từ 1.3)
 Mỗi khách khi vào **gọi một món cụ thể** (một công thức ở mục 5.8), hiện trên bong bóng cạnh đầu khách cùng độ dễ tính.
@@ -387,7 +401,7 @@ Mỗi khách khi vào **gọi một món cụ thể** (một công thức ở m�
 - **Chủ nợ ngày 21** không gọi món cụ thể: ông gọi "món ngon nhất của quán" và nhận mọi món (vẫn cần Tuyệt hảo trở lên để được thưởng, mục 8). *(cần bạn xác nhận, Q-20)*
 - Từ vòng 2 có tối đa 3 khách cùng ngồi (mục 6.1), mỗi người một món gọi; người chơi chọn phục vụ ai trước.
 
-Mô phỏng (mục 9): người chơi không đọc chỉ số vẫn đi được 67%; người gom bộ thắng 82%. Nếu chủ nợ cũng gọi món ngẫu nhiên thì người gom bộ còn 73% — sát mốc 70% của Điều 1, nên chủ nợ là ngoại lệ.
+Mô phỏng (mục 9): người chơi không đọc chỉ số vẫn đi được 67%; người gom bộ thắng 82%. Nếu chủ nợ cũng gọi món ngẫu nhiên thì người gom bộ còn 73% — sát mốc 70% của Điều 1, nên chủ nợ là ngoại lệ. (Số của bản 1.3. Với số 1.4: 90% khi có ngoại lệ, 83% khi không.)
 
 ---
 
@@ -406,7 +420,7 @@ Mô phỏng (mục 9): người chơi không đọc chỉ số vẫn đi đượ
 | Relic | Giá | Độ hiếm | Hiệu ứng |
 | --- | --- | --- | --- |
 | Bình tưới gỉ | 1 vé | Thường | Đồ phụ: 15% nâng bậc |
-| Rổ tre bà ngoại | 2 vé | Thường | Thùng đồ phụ +2 món |
+| Rổ tre bà ngoại | 2 vé | Thường | Thùng đồ phụ +1 món (bản 1.3: +2, khi thùng còn 5 món) |
 | Phân bón bí truyền | 2 vé | Hiếm | Đồ phụ bậc 0 được quay lại 1 lần |
 | Hạt giống vàng | 3 vé | Hiếm | Đồ phụ: 6% nhảy thẳng lên bậc 4 |
 | **Thưởng bộ** | | | 2 món: +20% nâng bậc · 3 món: đồ phụ tối thiểu bậc 2 và +35% nâng bậc · 4 món: mọi đồ phụ +1 bậc |
@@ -417,7 +431,7 @@ Mô phỏng (mục 9): người chơi không đọc chỉ số vẫn đi đượ
 | --- | --- | --- | --- |
 | Dao phay cũ | 1 vé | Thường | Nguyên liệu chính: 15% nâng bậc |
 | Thùng đá | 2 vé | Thường | Nguyên liệu chính bậc 0 được quay lại 1 lần |
-| Mối quen chợ cá | 2 vé | Hiếm | Thùng chính +1 món |
+| Mối quen chợ cá | 2 vé | Hiếm | Thùng chính +1 món (2 → 3) |
 | Cân vàng | 4 vé | Hiếm | Nguyên liệu chính: 8% nhảy thẳng lên bậc 4 |
 | **Thưởng bộ** | | | 2 món: +20% nâng bậc · 3 món: chính tối thiểu bậc 2 và +25% nâng bậc · 4 món: mọi nguyên liệu chính +1 bậc |
 
@@ -427,9 +441,9 @@ Mô phỏng (mục 9): người chơi không đọc chỉ số vẫn đi đượ
 | --- | --- | --- | --- |
 | Bản đồ hải đảo | 1 vé | Thường | Thùng đột phá +10% |
 | Lưới thép | 2 vé | Hiếm | Thùng đột phá +8%; tỉ lệ bậc 5 trong thùng từ 30% lên 50% |
-| Thuyền thuê | 3 vé | Hiếm | Thùng đột phá +12%; **đổi lại** thùng đồ phụ −1 món |
+| Thuyền thuê | 3 vé | Hiếm | Thùng đột phá +12%; **đổi lại** thùng đồ phụ −1 món (3 → 2) |
 | La bàn rồng | 4 vé | Huyền thoại | Thùng đột phá +15% |
-| **Thưởng bộ** | | | 2 món: +15% · 3 món: thùng đột phá có thêm 1 món · 4 món: +20% và mọi món đột phá đều bậc 5 |
+| **Thưởng bộ** | | | 2 món: +15% · 3 món: thùng đột phá có thêm 1 món (1 → 2) · 4 món: +20% và mọi món đột phá đều bậc 5 |
 
 Mỗi bộ có một món **1 vé nhưng là mảnh quan trọng của combo** (Bình tưới gỉ, Dao phay cũ, Bản đồ hải đảo), đúng ý "relic rẻ nhưng giá trị cao trong combo".
 
@@ -467,10 +481,12 @@ Mô phỏng: với giá nước sốt 450G, 10% người chơi may mắn mua đ�
 ## 9. Kiểm tra và thay đổi
 
 - Mô phỏng: `balance/sim_balance.py` (4.000 ván mỗi kiểu người chơi). Mọi thay đổi số liệu phải chạy lại và đạt Điều 1.
+- **Giả định thời gian của mô phỏng 1.4 (chưa đo):** ngoài thời gian sơ chế + nấu trong dữ liệu, mỗi món tốn thêm thời gian đi lại, ngắm, mang ra quầy: **20 giây** với người chơi tốt (tranh thủ sơ chế lúc bếp đang nấu), **30 giây** với người không đọc chỉ số. Kết quả rất nhạy với số này: nếu là 26 / 38 giây thì người gom bộ chỉ còn thắng 33% và người không đọc chỉ số đi được 54%. Sprint 2 phải đo bằng người thật (F-014) rồi chỉnh nợ nếu lệch.
 - Mô phỏng đã đơn giản hóa: không mô hình hóa vé đen dùng để mua relic, việc bỏ relic khi đầy chỉ theo điểm ưu tiên, thời gian chờ được quy đổi thành mức giảm độ dễ tính trung bình (−3 điểm cho người nhanh, −8 cho người chậm). Kết quả là chỉ dấu, cần xác nhận bằng playtest.
 - Lịch sử phiên bản:
   - **1.0 (14/11/2026):** bản đầu từ ý tưởng của bạn; mọi con số đánh dấu "claude" đã được tính và kiểm bằng mô phỏng.
   - **1.1 (14/11/2026):** thêm danh sách nguyên liệu (mục 4.5), công thức và 120 món (5.8), thời gian nấu và quá lửa (5.9), quầy chờ 3 đĩa (5.1); mỗi thùng chỉ một loại nguyên liệu (4.2). Không đổi số cân bằng: mô phỏng vẫn tính mỗi món 1 chính + 1 phụ với giá gốc theo vòng. Quá lửa chưa có trong mô phỏng — nó chỉ phạt người chơi bỏ quên bếp.
+  - **1.4 (15/11/2026):** theo 6 ghi chú của bạn khi đóng sprint 1. (a) Khách không giới hạn tới 21:00, đồng hồ ngày (mục 2, 6.2). (b) Sơ chế ×3, nấu ×1,5 (mục 4.5, 5.8, 5.9); khoảng chờ an toàn ×1,5 (6.6). (c) Thùng 3 phụ + 2 chính, ngày 3 là 2 + 1, đột phá 1 món; Rổ tre +1 thay vì +2 (mục 4.2–4.4, 7.2). (d) Nợ 750 / 2.900 / 10.500 / 32.000G (mục 2). (e) Hai số mình thêm để hệ thống còn chạy được, cần bạn xác nhận: **6 vé mỗi ngày** (thùng nhỏ nên 3 vé chỉ đủ 6 món, không còn vé mua relic, không ai trả nổi nợ) và **1 giờ = 40 giây** (nấu lâu hơn mà ngày vẫn 6 phút thì số khách giảm chứ không tăng). (f) Bảng tỉ lệ bậc và giá món giữ nguyên. Mô phỏng: 63% / 90% / 46% (Điều 1). Số nằm ở `balance/next/`, chạy `V=next python balance/sim_balance.py`.
   - **1.3 (14/11/2026):** theo yêu cầu của bạn "khách hàng phải order 1 món ăn cụ thể và từng món phải hiển thị giá ở trên quyển sách công thức". Thêm mục 6.7 (gọi món), dòng "Sai món" ở 6.5, giá bán theo bậc trên trang sách (5.8), Điều 9 cập nhật vị trí thông tin. Ba lựa chọn do bạn trả lời 14/11: gọi món nấu được, sai món coi như khách giận, giá chung theo vòng ghi theo bậc. Không đổi số trong dữ liệu. Mô phỏng `sim_balance.py` thêm loại nguyên liệu cho từng thùng, công thức cho từng đĩa, khách gọi món, và 3 khách cùng ngồi từ vòng 2 (trước đây mô phỏng cho người chơi tự ghép món với khách bất kỳ); chạy `ORDERS=0` để ra lại số cũ.
   - **1.2 (14/11/2026):** theo nghiệm thu sprint 1 của bạn ("game này là 3D nhưng hiện tại chơi như game 2D"): Điều 5 đổi từ xoay camera 90° sang tự đi lại góc nhìn thứ nhất; thêm Điều 9 (thông tin nằm trên đồ vật, HUD chỉ số liệu); mục 4.2, 5.1, 5.8 tả lại thao tác bằng đồ vật; mục 6.1 thêm nút Mở quán (bạn trả lời 14/11) và đóng quán sớm. Không đổi số cân bằng; mô phỏng không bị ảnh hưởng. Thời gian đi lại trong phòng chưa có trong ước tính "17–19 giây một món" ở mục 5.9 — cần đo lại khi playtest vòng 2 (có tính giờ chờ).
 
