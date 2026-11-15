@@ -105,11 +105,8 @@ namespace QuanAnHope.EditorTools
             };
 
             JObject customers = Obj(root, "customers");
-            JObject perDay = Obj(customers, "per_day");
             b.customers = new CustomerRules
             {
-                perDayByRound = ByRound(perDay, b.rounds),
-                perDayDay14 = Int(perDay, "d14"),
                 easyBands = NumberedKeys(Obj(customers, "easy_bands"))
                     .Select(p => new RoundBands
                     {
@@ -131,6 +128,16 @@ namespace QuanAnHope.EditorTools
                 money = Int(start, "money"),
                 bonusTickets = Int(start, "bonus_tickets"),
                 relicShopFromDay = Int(start, "relic_shop_from_day"),
+            };
+
+            JObject day = Obj(root, "day");
+            b.day = new DayRules
+            {
+                openHour = Int(day, "open_hour"),
+                closeHour = Int(day, "close_hour"),
+                secondsPerHour = Float(day, "seconds_per_hour"),
+                bossHour = Int(day, "boss_hour"),
+                nextCustomerSeconds = Float(day, "next_customer_s"),
             };
 
             return b;
@@ -178,6 +185,7 @@ namespace QuanAnHope.EditorTools
                     baseName = Str(o, "base"),
                     cookSeconds = Float(o, "cook_s"),
                     unlockRound = Int(o, "unlock_round"),
+                    method = Str(o, "method"),
                 })
                 .ToArray();
 

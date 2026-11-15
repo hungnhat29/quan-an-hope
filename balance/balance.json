@@ -1,13 +1,13 @@
 {
  "days": 22,
  "debt_days": {
-  "4": 400,
-  "9": 2200,
-  "15": 8200,
-  "22": 26200
+  "4": 750,
+  "9": 2900,
+  "15": 10500,
+  "22": 32000
  },
  "boss_bonus": 11500,
- "tickets_per_day": 3,
+ "tickets_per_day": 6,
  "rounds": {
   "1": [
    1,
@@ -77,14 +77,14 @@
   ]
  },
  "crate_size": {
-  "phu": 5,
-  "chinh": 3,
-  "phu_storm": 3,
-  "chinh_storm": 2
+  "phu": 3,
+  "chinh": 2,
+  "phu_storm": 2,
+  "chinh_storm": 1
  },
  "breakthrough": {
   "base_chance": 0,
-  "items": 2,
+  "items": 1,
   "tier5_share": 0.3
  },
  "dish": {
@@ -109,13 +109,6 @@
   "max_tier": 4
  },
  "customers": {
-  "per_day": {
-   "1": 6,
-   "2": 8,
-   "3": 5,
-   "4": 9,
-   "d14": 8
-  },
   "easy_bands": {
    "1": [
     [
@@ -300,5 +293,13 @@
   "under_pay_share": 0.5,
   "penalty_base_share": 0.3
  },
- "_note": "Nguon so lieu duy nhat cho can bang. Sua o day roi chay: python3 sim_balance.py"
+ "_note": "Constitution 1.4. Sinh tu make_next.py; sua o make_next.py roi chay lai, sau do: V=next python sim_balance.py",
+ "day": {
+  "open_hour": 9,
+  "close_hour": 21,
+  "seconds_per_hour": 40,
+  "boss_hour": 20,
+  "next_customer_s": 3
+ },
+ "day_seconds": 480
 }

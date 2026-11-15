@@ -6,16 +6,7 @@ namespace QuanAnHope.Tests
     /// <summary>F-004 AC-1, 2, 3. Nguon: constitution muc 6.2, 6.3, 6.4.</summary>
     public class CustomerTests
     {
-        // ---------- AC-1 ----------
-
-        [TestCase(1, 6)]
-        [TestCase(2, 6)]
-        [TestCase(3, 6)]
-        [TestCase(4, 8)]
-        public void AC1_SoKhachMoiNgay(int day, int expected)
-        {
-            Assert.AreEqual(expected, TestData.Balance.CustomersPerDay(day));
-        }
+        // AC-1 (so khach co dinh moi ngay) da bo o constitution 1.4 muc 6.2: khach khong gioi han, xem DayClockTests.
 
         // ---------- AC-2 ----------
 

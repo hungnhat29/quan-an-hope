@@ -19,7 +19,7 @@ namespace QuanAnHope.Tests
         // ---------- AC-2 ----------
 
         [Test]
-        public void AC2_MotLuot_Ton1Ve_Cho5DoPhu_3Chinh()
+        public void AC2_MotLuot_Ton1Ve_Cho3DoPhu_2Chinh() // constitution 1.4 muc 4.2
         {
             var wallet = new TicketWallet(TestData.Balance);
             wallet.BeginDay(1);
@@ -28,9 +28,9 @@ namespace QuanAnHope.Tests
             bool ok = Gacha(1).TryPull(wallet, 1, out pull);
 
             Assert.IsTrue(ok);
-            Assert.AreEqual(4, wallet.Count);
-            Assert.AreEqual(5, pull.side.items.Count);
-            Assert.AreEqual(3, pull.main.items.Count);
+            Assert.AreEqual(7, wallet.Count, "ngay 1 co 8 ve, tieu 1");
+            Assert.AreEqual(3, pull.side.items.Count);
+            Assert.AreEqual(2, pull.main.items.Count);
             Assert.IsTrue(pull.side.items.All(i => i.kind == IngredientKind.Side));
             Assert.IsTrue(pull.main.items.All(i => i.kind == IngredientKind.Main));
         }
@@ -42,7 +42,7 @@ namespace QuanAnHope.Tests
             wallet.BeginDay(1);
             IngredientGacha gacha = Gacha(2);
             PullResult pull;
-            for (int i = 0; i < 5; i++) Assert.IsTrue(gacha.TryPull(wallet, 1, out pull));
+            for (int i = 0; i < 8; i++) Assert.IsTrue(gacha.TryPull(wallet, 1, out pull));
 
             bool ok = gacha.TryPull(wallet, 1, out pull);
 
@@ -54,19 +54,19 @@ namespace QuanAnHope.Tests
         // ---------- AC-3 ----------
 
         [Test]
-        public void AC3_Ngay3_Cho3DoPhu_2Chinh()
+        public void AC3_Ngay3_Cho2DoPhu_1Chinh() // constitution 1.4 muc 4.3
         {
             PullResult pull = Gacha(3).Pull(3);
-            Assert.AreEqual(3, pull.side.items.Count);
-            Assert.AreEqual(2, pull.main.items.Count);
+            Assert.AreEqual(2, pull.side.items.Count);
+            Assert.AreEqual(1, pull.main.items.Count);
         }
 
         [Test]
         public void AC3_Ngay2_VanLaThungThuong()
         {
             PullResult pull = Gacha(4).Pull(2);
-            Assert.AreEqual(5, pull.side.items.Count);
-            Assert.AreEqual(3, pull.main.items.Count);
+            Assert.AreEqual(3, pull.side.items.Count);
+            Assert.AreEqual(2, pull.main.items.Count);
         }
 
         // ---------- AC-4 ----------
@@ -84,17 +84,17 @@ namespace QuanAnHope.Tests
         [Test]
         public void AC4_MoiMonQuayBacDocLap()
         {
-            // 1 gia tri chon loai + 5 gia tri bac cho thung phu, roi tuong tu cho thung chinh.
+            // 1 gia tri chon loai + 3 gia tri bac cho thung phu, roi 1 + 2 cho thung chinh (constitution 1.4 muc 4.2).
             // Bang vong 1: 25 / 57 / 15 / 3 -> nguong tich luy 0,25 / 0,82 / 0,97 / 1.
             var rng = new FixedRandom(
-                0.0, 0.10, 0.50, 0.90, 0.98, 0.30,
-                0.0, 0.24, 0.26, 0.99);
+                0.0, 0.10, 0.50, 0.90,
+                0.0, 0.98, 0.26);
             var gacha = new IngredientGacha(TestData.Balance, TestData.Recipes, rng);
 
             PullResult pull = gacha.Pull(1);
 
-            CollectionAssert.AreEqual(new[] { 0, 1, 2, 3, 1 }, pull.side.items.Select(i => i.tier).ToArray());
-            CollectionAssert.AreEqual(new[] { 0, 1, 3 }, pull.main.items.Select(i => i.tier).ToArray());
+            CollectionAssert.AreEqual(new[] { 0, 1, 2 }, pull.side.items.Select(i => i.tier).ToArray());
+            CollectionAssert.AreEqual(new[] { 3, 1 }, pull.main.items.Select(i => i.tier).ToArray());
         }
 
         // ---------- AC-6 ----------
@@ -106,10 +106,10 @@ namespace QuanAnHope.Tests
             PullResult pull = Gacha(5).Pull(1);
             stock.AddCrate(pull.side);
             stock.AddCrate(pull.main);
-            Assert.AreEqual(8, stock.Count);
+            Assert.AreEqual(5, stock.Count, "3 do phu + 2 chinh");
 
             Assert.IsTrue(stock.Remove(pull.side.items[0]));
-            Assert.AreEqual(7, stock.Count);
+            Assert.AreEqual(4, stock.Count);
 
             stock.Clear();
             Assert.AreEqual(0, stock.Count);
@@ -172,16 +172,16 @@ namespace QuanAnHope.Tests
         [Test]
         public void AC8_NguyenLieuMangTenVaThoiGianSoCheTuDuLieu()
         {
-            var rng = new FixedRandom(0.0, 0.5, 0.5, 0.5, 0.5, 0.5, 0.0, 0.5, 0.5, 0.5);
+            var rng = new FixedRandom(0.0, 0.5, 0.5, 0.5, 0.0, 0.5, 0.5);
             PullResult pull = new IngredientGacha(TestData.Balance, TestData.Recipes, rng).Pull(1);
 
             Assert.AreEqual("ca_chua", pull.side.typeId);
             Assert.AreEqual("Cà chua", pull.side.items[0].name);
-            Assert.AreEqual(1.5f, pull.side.items[0].prepSeconds, 1e-6f);
+            Assert.AreEqual(4.5f, pull.side.items[0].prepSeconds, 1e-6f);
             Assert.IsFalse(pull.side.items[0].prepared);
             Assert.AreEqual("trung", pull.main.typeId);
             Assert.AreEqual("Trứng gà", pull.main.items[0].name);
-            Assert.AreEqual(0.5f, pull.main.items[0].prepSeconds, 1e-6f);
+            Assert.AreEqual(1.5f, pull.main.items[0].prepSeconds, 1e-6f);
         }
 
         static void Count(Dictionary<string, int> d, string key)

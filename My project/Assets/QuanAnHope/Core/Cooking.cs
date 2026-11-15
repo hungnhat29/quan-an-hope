@@ -206,6 +206,9 @@ namespace QuanAnHope.Core
         /// <summary>Ten nhung thu da cho vao, theo thu tu.</summary>
         public IReadOnlyList<string> Added { get { return added; } }
 
+        /// <summary>Tu luc vat num: dung dung cu va dung thu tu cong thuc (sai thi mon ra Lac vi, constitution muc 5.1).</summary>
+        public bool FollowsRecipe { get { return followsRecipe; } }
+
         public Stove(RecipeLookup lookup, DishFormula formula)
         {
             this.lookup = lookup;

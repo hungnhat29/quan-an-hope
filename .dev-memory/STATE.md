@@ -1,15 +1,16 @@
 # STATE
-Cập nhật: 2026-11-14
-Ngày làm việc: 2026-11-14
-Pha: SPRINT 1 ĐÃ ĐÓNG (14/11/2026, người dùng yêu cầu đóng). Tổng kết: .dev-memory/RETRO-sprint-1.md
-Task hôm nay: T-001 DONE (git/GitHub), T-002 DONE (F-001), T-003 DONE (cảnh theo Art Bible), T-004 DONE (F-002 logic), T-005 DONE (F-003 logic), T-006 DONE (F-004 AC1-7), T-007 DONE (F-005 + nút Mở quán), T-008..T-010 DONE (UI 4 góc, màn kết thúc, build Windows). 120 test EditMode + 3 PlayMode xanh
-Bước tiếp theo: xử lý phản hồi chơi thử bản 3D; sau đó Sprint 2 = Relic (docs/ROADMAP.md), làm theo constitution v1.2 + Art Bible v1.3 (đồ vật 3D, thông tin trên đồ vật, mặt theo bậc). Chưa có impl plan sprint 2.
-Kế hoạch: docs/ROADMAP.md, docs/sprint-1/impl-plan.md
-Nguồn luật: specs/constitution.md v1.3 (§6.7 gọi món); số: balance/balance.json + recipes.json; hình: docs/art-bible/ v1.3
-Chờ người dùng: Q-9, Q-13, Q-17, Q-18, Q-19, Q-20 (mang sang sprint 2). F-007, F-008, F-009 đóng cùng sprint 1; điều chưa hài lòng nằm ở INBOX.md
+Cập nhật: 2026-11-16
+Ngày làm việc: 2026-11-15
+Pha: SPRINT 2 ĐÃ ĐÓNG (16/11/2026), đẩy GitHub với thẻ sprint-2. Tổng kết: .dev-memory/RETRO-sprint-2.md
+Task: F-010 DONE, F-011 DONE, F-012 DONE (chờ duyệt ảnh), F-013 DONE (chờ duyệt ảnh), F-014 AC1 DONE / AC2 chờ buổi chơi thật
+Kiểm: EditMode 142/142, PlayMode 5/5, mô phỏng balance/ = V=next (63/46/89%, naive qua nợ 1 96%), bot C# 99,85%, build Windows chạy 15 giây không lỗi
+Báo cáo: .dev-memory/acceptance/2026-11-15-sprint-2.md · Spec: specs/sprint-2/F-01x-*/spec.md
+Bước tiếp theo: người dùng duyệt ảnh docs/sprint-2/ui/ + chơi thử bản build → chạy balance/playtest_overhead.py; trả lời Q-21, Q-22 (đã làm theo mặc định), Q-25, Q-26, Q-27; rồi sprint 3 (docs/sprint-3/impl-plan.md)
+Chờ người dùng: duyệt ảnh + chơi thử (chuyển sang sprint 3)
 Repo: https://github.com/hungnhat29/quan-an-hope (private), nhánh main
 Lệnh test (đóng Unity Editor trước): "D:\Unity\6000.6.9f1\Editor\Unity.exe" -batchmode -projectPath "My project" -runTests -testPlatform EditMode -testResults "<abs>\TestResults.xml" -logFile "<abs>\test.log"  → đọc TestResults.xml
-Dựng lại cảnh + nhập dữ liệu + chụp ảnh: ... -executeMethod BepNhanPham.PreviewCapture.RebuildAll -quit
-Mô phỏng: PYTHONUTF8=1 python balance/sim_balance.py (ORDERS=0: luật cũ không gọi món; BOSS_ANY=0: chủ nợ cũng gọi món)
-Giả lập người chơi: ... -runTests -testPlatform PlayMode -testResults "<abs>\PlayResults.xml" (ảnh chụp ra docs/sprint-1/ui/)
+Nhập dữ liệu: ... -executeMethod QuanAnHope.EditorTools.BalanceImporter.Import -quit
+Mô phỏng: PYTHONUTF8=1 python balance/sim_balance.py (số game đang chạy = 1.4) · sinh lại số: python balance/make_next.py rồi chép balance/next/*.json đè balance/ · thử nhanh: DEBTS="a,b,c,d" TICKETS=n HOUR_S=n OVER_GOOD=n OVER_NAIVE=n N=1500 MORE=1
+Giả lập người chơi: ... -runTests -testPlatform PlayMode (ảnh chụp ra docs/sprint-2/ui/)
 Build Windows: ... -executeMethod QuanAnHope.EditorTools.ProjectSetup.BuildWindows → My project/Builds/Windows/QuanAnHope.exe
+Log chơi thử: %USERPROFILE%\AppData\LocalLow\DefaultCompany\My project\playtest-log.csv

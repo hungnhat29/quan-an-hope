@@ -13,14 +13,14 @@ namespace QuanAnHope.Tests
         public void AC6_Thot_GiuDuThoiGian_MoiSoCheXong()
         {
             var board = new PrepStation();
-            Ingredient tomato = TestData.Side("ca_chua", 1, prepared: false); // 1,5 giay
+            Ingredient tomato = TestData.Side("ca_chua", 1, prepared: false); // 4,5 giay (constitution 1.4 muc 4.5)
 
             Assert.IsTrue(board.Begin(tomato));
-            Assert.IsFalse(board.Hold(1.0f));
+            Assert.IsFalse(board.Hold(3.0f));
             Assert.IsFalse(tomato.prepared);
-            Assert.AreEqual(1.0 / 1.5, board.Progress, 1e-4);
+            Assert.AreEqual(3.0 / 4.5, board.Progress, 1e-4);
 
-            Assert.IsTrue(board.Hold(0.5f));
+            Assert.IsTrue(board.Hold(1.5f));
             Assert.IsTrue(tomato.prepared);
             Assert.IsNull(board.Current);
         }
@@ -29,9 +29,10 @@ namespace QuanAnHope.Tests
         public void AC6_Thot_MoiNguyenLieuCoThoiGianRieng()
         {
             var board = new PrepStation();
-            Ingredient egg = TestData.Main("trung", 1, prepared: false); // 0,5 giay
+            Ingredient egg = TestData.Main("trung", 1, prepared: false); // 1,5 giay
             board.Begin(egg);
-            Assert.IsTrue(board.Hold(0.5f));
+            Assert.IsFalse(board.Hold(1.4f));
+            Assert.IsTrue(board.Hold(0.1f));
             Assert.IsTrue(egg.prepared);
         }
 
@@ -86,15 +87,15 @@ namespace QuanAnHope.Tests
 
         // ---------- AC-8: tra cong thuc ----------
 
-        [TestCase("trung", "ca_chua", "Trứng chiên cà chua", "Chảo", 8f)]
-        [TestCase("trung", "hanh_tay", "Trứng chiên hành tây", "Chảo", 8f)]
-        [TestCase("trung", "rau_muong", "Trứng chiên rau muống", "Chảo", 8f)]
-        [TestCase("heo", "ca_chua", "Heo xào cà chua", "Chảo", 10f)]
-        [TestCase("heo", "hanh_tay", "Heo xào hành tây", "Chảo", 10f)]
-        [TestCase("heo", "rau_muong", "Heo xào rau muống", "Chảo", 10f)]
-        [TestCase("dau_phu", "ca_chua", "Đậu phụ sốt cà chua", "Nồi", 12f)]
-        [TestCase("dau_phu", "hanh_tay", "Đậu phụ sốt hành tây", "Nồi", 12f)]
-        [TestCase("dau_phu", "rau_muong", "Đậu phụ sốt rau muống", "Nồi", 12f)]
+        [TestCase("trung", "ca_chua", "Trứng chiên cà chua", "Chảo", 12f)]
+        [TestCase("trung", "hanh_tay", "Trứng chiên hành tây", "Chảo", 12f)]
+        [TestCase("trung", "rau_muong", "Trứng chiên rau muống", "Chảo", 12f)]
+        [TestCase("heo", "ca_chua", "Heo xào cà chua", "Chảo", 15f)]
+        [TestCase("heo", "hanh_tay", "Heo xào hành tây", "Chảo", 15f)]
+        [TestCase("heo", "rau_muong", "Heo xào rau muống", "Chảo", 15f)]
+        [TestCase("dau_phu", "ca_chua", "Đậu phụ sốt cà chua", "Nồi", 18f)]
+        [TestCase("dau_phu", "hanh_tay", "Đậu phụ sốt hành tây", "Nồi", 18f)]
+        [TestCase("dau_phu", "rau_muong", "Đậu phụ sốt rau muống", "Nồi", 18f)]
         public void AC8_ChinMonVong1(string mainId, string sideId, string name, string tool, float cookSeconds)
         {
             Recipe r = new RecipeLookup(TestData.Recipes).Find(mainId, sideId);

@@ -28,6 +28,24 @@ namespace QuanAnHope.Core
         public DishRules dish = new DishRules();
         public CustomerRules customers = new CustomerRules();
         public StartRules start = new StartRules();
+        public DayRules day = new DayRules();
+    }
+
+    /// <summary>Gio mo cua va nhip khach (constitution 1.4 muc 2, 6.2).</summary>
+    [Serializable]
+    public class DayRules
+    {
+        public int openHour;
+        public int closeHour;
+
+        /// <summary>So giay thuc cua mot gio trong game.</summary>
+        public float secondsPerHour;
+
+        /// <summary>Gio chu no den ngay 21 (sprint 4).</summary>
+        public int bossHour;
+
+        /// <summary>Vong 1: khach ke tiep vao sau bay nhieu giay tu luc khach truoc duoc phuc vu.</summary>
+        public float nextCustomerSeconds;
     }
 
     /// <summary>No phai tra vao dau ngay <see cref="day"/>.</summary>
@@ -81,12 +99,10 @@ namespace QuanAnHope.Core
         public int[] basePriceByRound = new int[0];
     }
 
+    /// <summary>Tu 1.4 khong con so khach moi ngay: khach vao lien tuc toi gio dong cua (muc 6.2).</summary>
     [Serializable]
     public class CustomerRules
     {
-        /// <summary>So khach moi ngay theo vong; chi so 0 = vong 1.</summary>
-        public int[] perDayByRound = new int[0];
-        public int perDayDay14;
         public RoundBands[] easyBands = new RoundBands[0];
         public RequiredTier[] requiredTier = new RequiredTier[0];
         public int bossEasy;

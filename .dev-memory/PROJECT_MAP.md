@@ -1,5 +1,5 @@
 # PROJECT MAP
-Cập nhật: 2026-11-14
+Cập nhật: 2026-11-15
 ## Stack
 - Unity 6000.6.9f1 (D:\Unity\6000.6.9f1), URP 17.6.0, Input System 1.20.1, uGUI 2.6.0 [nguồn: My project/Packages/manifest.json]
 - Test: com.unity.test-framework 1.8.0 (builtin), Newtonsoft 3.2.1. Git + LFS, remote github.com/hungnhat29/quan-an-hope. Chưa có: Blender, gh CLI
@@ -20,3 +20,10 @@ Cập nhật: 2026-11-14
 ## Điểm nhạy cảm
 - Cảnh hiện tại trái constitution ở: bảng tỉ lệ máy gacha đồ ăn công khai, "3 vé/thùng", "relic tối đa 10", công thức 3 nguyên liệu, chữ UI là PNG
 - Không sửa trực tiếp trong cảnh sinh ra; chạy lại menu dựng sẽ ghi đè
+- balance/make_next.py (nguồn balance/v1.3/) → balance/next/*.json → chép đè balance/*.json (game đọc, từ 15/11). balance/playtest_overhead.py: phân tích playtest-log.csv (F-014). sim_balance.py: V=next đọc bộ này; có mô hình ngày theo giờ (day_seconds), gọi món, 3 ghế từ vòng 2.
+- docs/ROADMAP.md (bản 2), docs/sprint-2..11/impl-plan.md: kế hoạch các sprint còn lại.
+## Sprint 2 (15/11)
+- Core/DayClock.cs; GameSession.Tick (đồng hồ, khách sau 3 giây, 21:00), ClosedAt; NaiveBot + BotTiming (giả định của mô phỏng); Stove.FollowsRecipe; MainIngredient.method
+- Game/IngredientModels.cs (hình 22 nguyên liệu nguyên + sơ chế, Piece cho chảo); Game/PanView.cs (PanView: lớp dầu, miếng, lửa, đảo, màu, hơi, món chín; DishFood: món hoàn chỉnh dùng chung chảo + đĩa); Game/PlaytestLog.cs (playtest-log.csv)
+- GameController.ClockScale (chỉ test tua đồng hồ); ảnh chụp: docs/sprint-2/ui/ (nguyen_lieu/, nau_*, 3d_*)
+- Tests: EditMode 142 (DayClockTests mới); PlayMode 5 (thêm F012_HinhNguyenLieu_AnhCan, Gio21_BienTuDong_*)

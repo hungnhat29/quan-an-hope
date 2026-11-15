@@ -481,43 +481,38 @@ namespace QuanAnHope.Game
         {
             switch (tool)
             {
-                // Mieng noi (1,74 m) ngang tam mat nguoi choi: do noi tren mat canh o nua sau, nho len khoi mieng noi de nhin thay.
-                case "Nồi": center = new Vector3(0f, 1.83f, 3.3f); radius = 0.3f; scale = 2.4f; return;
-                case "Vỉ nướng": center = new Vector3(0f, 1.2f, 3.3f); radius = 0.16f; scale = 2f; return;
-                default: center = new Vector3(0f, 1.215f, 3.3f); radius = 0.17f; scale = 2f; return;
+                // F-013: theo hinh dung cu that (BuildTool x 1,6). Noi: vanh o 1,51 m, mat canh ngay duoi vanh;
+                // chao: long 0,36 m x 1,6 -> ban kinh trong ~0,25 m; vi: khung 0,42 x 0,3 m x 1,6.
+                case "Nồi": center = new Vector3(0f, 1.47f, 3.3f); radius = 0.22f; scale = 2.2f; return;
+                case "Vỉ nướng": center = new Vector3(0f, 1.2f, 3.3f); radius = 0.22f; scale = 2f; return;
+                default: center = new Vector3(0f, 1.215f, 3.3f); radius = 0.25f; scale = 2f; return;
             }
         }
 
-        /// <summary>
-        /// Cho thu index trong dung cu. Chao / vi: vong tron, bat dau o phia nguoi choi.
-        /// Noi: vong cung o nua sau (z duong, xa nguoi choi) de mep noi phia truoc khong che.
-        /// </summary>
-        static Vector3 PanSlot(int index, float radius, bool deep)
-        {
-            float a, r;
-            if (deep)
-            {
-                a = Mathf.Deg2Rad * (90f + (index % 2 == 0 ? 1f : -1f) * 30f * ((index + 1) / 2));
-                r = radius * (index < 7 ? 0.72f : 0.25f);
-            }
-            else
-            {
-                a = Mathf.Deg2Rad * (-90f + 62f * index);
-                r = radius * (index < 6 ? 0.72f : 0.35f);
-            }
-            return new Vector3(Mathf.Cos(a) * r, 0.006f * (index / 6), Mathf.Sin(a) * r);
-        }
+        /// <summary>Do cao mat bep (noi dat dung cu, Goc 4) de ve lua ben duoi.</summary>
+        const float BurnerY = 1.12f;
 
         void PlacePanRoot(string tool)
         {
             Vector3 center;
             float radius, scale;
             PanSpec(tool, out center, out radius, out scale);
-            if (panRoot == null) panRoot = Toon.Empty(goc4, "DoTrongBep", center).transform;
+            if (panRoot == null)
+            {
+                panRoot = Toon.Empty(goc4, "DoTrongBep", center).transform;
+                panView = panRoot.gameObject.AddComponent<PanView>();
+            }
             panRoot.localPosition = center;
+            panView.Setup(tool, radius, scale, BurnerY - center.y);
+            // F-013: moi lan cho vao la mot nhom (lop day / cac mieng rai deu) nam o tam dung cu.
             for (int i = 0; i < panItems.Count; i++)
-                if (panItems[i] != null) panItems[i].Retarget(PanSlot(i, radius, tool == "Nồi"));
+                if (panItems[i] != null) panItems[i].Retarget(Vector3.zero);
         }
+
+        PanView panView;
+
+        /// <summary>Hinh do trong dung cu (F-013).</summary>
+        public PanView Pan { get { return panView; } }
 
         /// <summary>
         /// Goi ngay khi bep nhan them mot thu (truoc khi ve lai tay): nguyen lieu bay tu tay vao dung cu,
@@ -530,24 +525,22 @@ namespace QuanAnHope.Game
             Vector3 center;
             float radius, scale;
             PanSpec(stove.Tool, out center, out radius, out scale);
-            Vector3 slot = PanSlot(panItems.Count, radius, stove.Tool == "Nồi");
+            Vector3 slot = Vector3.zero;
 
             GameObject go;
             Vector3 from;
             if (ingredient != null)
             {
-                ItemView v = ItemView.Create(panRoot, ingredient, scale, false);
-                v.SetPrepared(true);
-                go = v.gameObject;
+                // F-013 AC-2: roi vao thanh cac mieng da cat rai deu trong long dung cu
+                go = panView.AddIngredient(ingredient);
                 from = handModel != null ? handModel.transform.position : handAnchor.position;
             }
             else
             {
-                go = Toon.Empty(panRoot, "GiaVi_" + pantryItem, Vector3.zero);
+                // F-013 AC-1: dau / bo / nuoc dung loang thanh lop o day dung cu
                 Color c;
                 if (!jarColors.TryGetValue(pantryItem, out c)) c = UiKit.Cream;
-                Toon.Prim(PrimitiveType.Sphere, go.transform, "Giot", new Vector3(0f, 0.012f, 0f), new Vector3(0.075f, 0.026f, 0.075f), c, 0.006f);
-                go.transform.localScale = Vector3.one * scale;
+                go = panView.AddPantry(pantryItem, c);
                 GameObject jar = Jar(pantryItem);
                 from = jar != null ? jar.transform.position + Vector3.down * 0.05f : panRoot.position + Vector3.up * 0.5f;
                 if (jar != null) jar.GetComponent<Wobble>().Play();
@@ -561,6 +554,7 @@ namespace QuanAnHope.Game
             {
                 foreach (PanItem p in panItems) if (p != null) Object.Destroy(p.gameObject);
                 panItems.Clear();
+                if (panView != null) panView.Clear();
             }
             if (stove.Tool != null && panRoot != null) PlacePanRoot(stove.Tool);
         }
@@ -714,14 +708,19 @@ namespace QuanAnHope.Game
             switch (s.Phase)
             {
                 case GamePhase.Prep: signText.text = "MỞ QUÁN\n<size=60>bấm để đón khách</size>"; break;
-                case GamePhase.Open: signText.text = "ĐANG MỞ\n<size=60>bấm để đóng sớm</size>"; break;
+                case GamePhase.Open:
+                    // 21:00: bien tu lat sang DA DONG, khach dang ngoi van cho mon (constitution 1.4 muc 6.2)
+                    signText.text = s.IsClosedForNewCustomers
+                        ? "ĐÃ ĐÓNG\n<size=60>phục vụ nốt khách</size>"
+                        : "ĐANG MỞ\n<size=60>bấm để đóng sớm</size>";
+                    break;
                 default: signText.text = "ĐÃ ĐÓNG"; break;
             }
 
             bool waiting = s.Phase == GamePhase.Open && s.CurrentCustomer != null;
             bubble.SetActive(waiting);
             if (waiting)
-                bubbleText.text = "<size=78>Khách " + (s.ServedToday + 1) + "/" + s.CustomersToday + " · Dễ tính " + s.CurrentCustomer.easiness + "%</size>\n"
+                bubbleText.text = "<size=78>Khách " + s.CustomersToday + " · Dễ tính " + s.CurrentCustomer.easiness + "%</size>\n"
                     + "Gọi: " + s.CurrentCustomer.orderName;
 
             if (servedDish != null) Object.Destroy(servedDish);
@@ -933,20 +932,21 @@ namespace QuanAnHope.Game
             if (knob != null) knob.localEulerAngles = new Vector3(-90f, stove.State == StoveState.Cooking ? 90f : 0f, 0f);
             bool cooking = stove.State == StoveState.Cooking;
             foreach (PanItem p in panItems) if (p != null) p.Sizzle = cooking;
+            if (panView != null) panView.Tick(stove, stove.Recipe, dt);
             foreach (CrateView c in crates.Values) c.Tick(dt);
             foreach (ItemView i in items.Values) if (i != null) i.Tick(dt);
         }
     }
 
-    /// <summary>Mau va hinh dang cua tung loai nguyen lieu (Art Bible muc 7: moi loai mot hinh dang cho moi bac).</summary>
+    /// <summary>Mau chinh cua tung loai nguyen lieu (sach nau an, giot trong bep, mon tren dia). Hinh 3D: IngredientModels.</summary>
     public static class IngredientArt
     {
         static readonly Dictionary<string, string> Colors = new Dictionary<string, string>
         {
-            { "ca_chua", "#E8604F" }, { "hanh_tay", "#F2A0A6" }, { "rau_muong", "#7DB87A" }, { "khoai_tay", "#D69B68" },
+            { "ca_chua", "#E8604F" }, { "hanh_tay", "#D98FB0" }, { "rau_muong", "#7DB87A" }, { "khoai_tay", "#D69B68" },
             { "nam_rom", "#C9C1B6" }, { "bong_cai", "#7DB87A" }, { "ot_chuong", "#D9382C" }, { "bi_do", "#F08A6A" },
             { "mang_tay", "#7DB87A" }, { "nam_dong_co", "#A5644A" },
-            { "trung", "#FFF3DC" }, { "heo", "#F2A0A6" }, { "dau_phu", "#EFE7DA" }, { "bo", "#A5644A" }, { "tom", "#F08A6A" },
+            { "trung", "#F6C445" }, { "heo", "#F2A0A6" }, { "dau_phu", "#EFE7DA" }, { "bo", "#A5644A" }, { "tom", "#F08A6A" },
             { "ca_hoi", "#F08A6A" }, { "muc", "#EFE7DA" }, { "ga", "#F6D06A" },
             { "tom_hum", "#D9382C" }, { "wagyu", "#E9A0A0" }, { "ca_ngu", "#C94A3B" }, { "cua", "#E8604F" },
         };
@@ -956,39 +956,43 @@ namespace QuanAnHope.Game
             string hex;
             return Colors.TryGetValue(id, out hex) ? UiKit.Hex(hex) : UiKit.Hex("#E9CE9E");
         }
-
-        /// <summary>Hinh khoi va ti le cua nguyen lieu (than, cao ~7 cm).</summary>
-        public static void Shape(string id, out PrimitiveType type, out Vector3 size)
-        {
-            switch (id)
-            {
-                case "rau_muong": case "mang_tay": type = PrimitiveType.Capsule; size = new Vector3(0.035f, 0.05f, 0.035f); return;
-                case "trung": type = PrimitiveType.Sphere; size = new Vector3(0.055f, 0.07f, 0.055f); return;
-                case "heo": case "bo": case "ca_hoi": type = PrimitiveType.Cube; size = new Vector3(0.07f, 0.035f, 0.055f); return;
-                case "dau_phu": type = PrimitiveType.Cube; size = new Vector3(0.055f, 0.045f, 0.055f); return;
-                case "tom": type = PrimitiveType.Capsule; size = new Vector3(0.03f, 0.035f, 0.03f); return;
-                case "nam_rom": case "nam_dong_co": type = PrimitiveType.Cylinder; size = new Vector3(0.065f, 0.04f, 0.065f); return;
-                case "hanh_tay": type = PrimitiveType.Sphere; size = new Vector3(0.065f, 0.055f, 0.065f); return;
-                default: type = PrimitiveType.Sphere; size = new Vector3(0.065f, 0.065f, 0.065f); return;
-            }
-        }
     }
 
     /// <summary>
-    /// Mot mon nguyen lieu 3D: than theo loai + de bac to mau bac (Art Bible muc 7: "mau khung"; constitution Dieu 9).
-    /// Da so che thi than det xuong (thai lat).
+    /// Mot mon nguyen lieu 3D: hinh theo loai (IngredientModels) + de bac to mau bac (Art Bible muc 7: "mau khung";
+    /// constitution Dieu 9) + mat theo bac. Da so che thi doi sang hinh theo kieu so che (F-012 AC-2).
     /// </summary>
     public class ItemView : MonoBehaviour
     {
         const float DiscDiameter = 0.092f;
-        Transform body;
-        Vector3 bodyScale;
+        const float DiscHeight = 0.012f;
+        static readonly Color SpoiledBody = UiKit.Hex("#8F7F5A");
+
+        Transform shape;
         float appear = 1f;
         float baseScale = 1f;
+        string typeId;
+        bool prepared;
 
         public int Tier { get; private set; }
         public Color DiscColor { get; private set; }
         public GameObject Disc { get; private set; }
+
+        /// <summary>Mat cua mon (anh theo bac).</summary>
+        public FaceBillboard Face { get; private set; }
+
+        /// <summary>Dang hien hinh da so che.</summary>
+        public bool ShowsPrepared { get { return prepared; } }
+
+        /// <summary>So khoi ghep thanh hinh hien tai (F-012 AC-1, AC-3).</summary>
+        public int PartCount { get { return shape == null ? 0 : shape.GetComponentsInChildren<MeshRenderer>().Length - CountOutlines(); } }
+
+        int CountOutlines()
+        {
+            int n = 0;
+            foreach (MeshRenderer r in shape.GetComponentsInChildren<MeshRenderer>()) if (r.name == "Outline") n++;
+            return n;
+        }
 
         public static ItemView Create(Transform parent, Ingredient ing, float scale, bool animate)
         {
@@ -999,43 +1003,38 @@ namespace QuanAnHope.Game
             v.appear = animate ? 0f : 1f;
             go.transform.localScale = Vector3.one * (animate ? 0.01f : scale);
             v.Tier = ing.tier;
+            v.typeId = ing.typeId;
             v.DiscColor = UiKit.IngredientTier[Mathf.Clamp(ing.tier, 0, UiKit.IngredientTier.Length - 1)];
-            v.Disc = Toon.Prim(PrimitiveType.Cylinder, go.transform, "DeBac", new Vector3(0f, 0.006f, 0f), new Vector3(DiscDiameter, 0.012f, DiscDiameter),
+            v.Disc = Toon.Prim(PrimitiveType.Cylinder, go.transform, "DeBac", new Vector3(0f, DiscHeight * 0.5f, 0f), new Vector3(DiscDiameter, DiscHeight, DiscDiameter),
                 v.DiscColor, 0.006f);
-            PrimitiveType type;
-            Vector3 size;
-            IngredientArt.Shape(ing.typeId, out type, out size);
-            float h = type == PrimitiveType.Capsule ? size.y * 2f : size.y;
-            Color bodyColor = IngredientArt.ColorOf(ing.typeId);
-            if (ing.tier == 0) bodyColor = Color.Lerp(bodyColor, SpoiledBody, 0.6f); // anh 08: bac 0 than xin mau
-            GameObject b = Toon.Prim(type, go.transform, "Than", new Vector3(0f, 0.012f + h * 0.5f, 0f), size, bodyColor, 0.006f,
-                type == PrimitiveType.Capsule ? new Vector3(0f, 0f, 90f) : Vector3.zero);
-            if (type == PrimitiveType.Capsule) b.transform.localPosition = new Vector3(0f, 0.012f + size.x * 0.5f, 0f);
-            v.body = b.transform;
-            v.bodyScale = b.transform.localScale;
-
-            // Mat theo bac (Art Bible muc 7: bac doc bang mau khung + bieu cam + phu kien), luon quay ve nguoi choi.
-            float wide = type == PrimitiveType.Capsule ? size.y * 2f : size.x;
-            float tall = type == PrimitiveType.Capsule ? size.x : size.y;
-            float faceSize = 2.1f * Mathf.Max(Mathf.Min(wide, tall), 0.6f * Mathf.Max(wide, tall));
-            // Day mat ra bang ban kinh bao cua than (ke ca khi thai lat rong ra 1,2 lan) de mat khong lot vao trong khoi
-            // khi nhin xeo (khoi vuong tren tay, tren thot). Mat nam tren tia tu tam than toi mat nguoi nen khong lech.
-            Vector3 extent = type == PrimitiveType.Capsule ? new Vector3(size.y * 2f, size.x, size.x) : size;
-            float depth = 0.5f * 1.2f * extent.magnitude;
-            v.Face = FaceBillboard.Create(go.transform, b.transform, FaceArt.Ingredient(ing.tier), faceSize, depth);
+            v.BuildShape(false);
             return v;
         }
 
-        static readonly Color SpoiledBody = UiKit.Hex("#8F7F5A");
-
-        /// <summary>Mat cua mon (anh theo bac).</summary>
-        public FaceBillboard Face { get; private set; }
-
-        public void SetPrepared(bool prepared)
+        void BuildShape(bool asPrepared)
         {
-            if (body == null) return;
-            body.localScale = prepared ? new Vector3(bodyScale.x * 1.2f, bodyScale.y * 0.45f, bodyScale.z * 1.2f) : bodyScale;
-            if (Face != null) Face.SetSizeFactor(prepared ? 0.8f : 1f);
+            if (shape != null) { shape.gameObject.SetActive(false); Destroy(shape.gameObject); }
+            if (Face != null) { Face.gameObject.SetActive(false); Destroy(Face.gameObject); }
+            prepared = asPrepared;
+
+            var holder = Toon.Empty(transform, "GiuHinh", new Vector3(0f, DiscHeight, 0f)).transform;
+            float radius;
+            // anh 08: bac 0 than xin mau
+            Transform root = IngredientModels.Build(holder, typeId, asPrepared, Tier == 0 ? SpoiledBody : (Color?)null, 0.6f, out radius);
+            shape = holder;
+            Transform center = root.Find("TamHinh");
+
+            // Mat theo bac (Art Bible muc 7: bac doc bang mau khung + bieu cam + phu kien), luon quay ve nguoi choi.
+            // Day mat ra bang ban kinh bao cua ca hinh de mat khong lot vao khoi nao khi nhin xeo.
+            float faceSize = Mathf.Clamp(radius * 2.2f, 0.09f, 0.14f);
+            Face = FaceBillboard.Create(transform, center, FaceArt.Ingredient(Tier), faceSize, radius);
+            Face.SetSizeFactor(asPrepared ? 0.8f : 1f);
+        }
+
+        public void SetPrepared(bool isPrepared)
+        {
+            if (isPrepared == prepared && shape != null) return;
+            BuildShape(isPrepared);
         }
 
         /// <summary>Lo bac: hien dan trong 0,4 giay (Art Bible muc 11); bac 4-5 lau hon.</summary>
@@ -1043,8 +1042,8 @@ namespace QuanAnHope.Game
         {
             if (appear >= 1f) return;
             appear = Mathf.Min(1f, appear + dt / (Tier >= 4 ? 1.5f : 0.4f));
-            float s = appear < 1f ? Mathf.Sin(appear * Mathf.PI * 0.5f) * (1f + 0.12f * Mathf.Sin(appear * Mathf.PI)) : 1f;
-            transform.localScale = Vector3.one * Mathf.Max(0.01f, s) * baseScale;
+            float sc = appear < 1f ? Mathf.Sin(appear * Mathf.PI * 0.5f) * (1f + 0.12f * Mathf.Sin(appear * Mathf.PI)) : 1f;
+            transform.localScale = Vector3.one * Mathf.Max(0.01f, sc) * baseScale;
         }
     }
 
@@ -1125,6 +1124,32 @@ namespace QuanAnHope.Game
     /// <summary>Dia mon an: vien dia mau bac (Art Bible muc 7), de mon va mon theo nguyen lieu chinh.</summary>
     public static class DishModel
     {
+        /// <summary>De mon (constitution muc 4.5): com, mi Y, bun, banh mi o nua sau dia.</summary>
+        static void BuildBase(Transform plate, string baseName)
+        {
+            Vector3 at = new Vector3(-0.075f, 0.03f, 0.06f);
+            switch (baseName)
+            {
+                case "Mì Ý":
+                    Toon.Prim(PrimitiveType.Cylinder, plate, "DeMon", at + new Vector3(0f, 0.012f, 0f), new Vector3(0.13f, 0.03f, 0.11f), UiKit.Hex("#F2D27A"), 0.006f);
+                    for (int i = 0; i < 3; i++)
+                        Toon.Prim(PrimitiveType.Cylinder, plate, "SoiMi_" + i, at + new Vector3(-0.03f + 0.03f * i, 0.03f, 0f), new Vector3(0.006f, 0.1f, 0.006f), UiKit.Hex("#E9BE5C"), 0f, new Vector3(90f, 20f * i, 0f));
+                    break;
+                case "Bún":
+                    Toon.Prim(PrimitiveType.Cylinder, plate, "DeMon", at + new Vector3(0f, 0.012f, 0f), new Vector3(0.13f, 0.03f, 0.11f), UiKit.Hex("#FBF7EE"), 0.006f);
+                    for (int i = 0; i < 3; i++)
+                        Toon.Prim(PrimitiveType.Cylinder, plate, "SoiBun_" + i, at + new Vector3(-0.03f + 0.03f * i, 0.03f, 0f), new Vector3(0.005f, 0.1f, 0.005f), UiKit.Hex("#EDE6D8"), 0f, new Vector3(90f, -15f * i, 0f));
+                    break;
+                case "Bánh mì":
+                    Toon.Prim(PrimitiveType.Capsule, plate, "DeMon", at + new Vector3(0f, 0.025f, 0f), new Vector3(0.05f, 0.07f, 0.05f), UiKit.Hex("#D9963A"), 0.006f, new Vector3(0f, 30f, 90f));
+                    break;
+                default: // Com: bat com up
+                    Toon.Prim(PrimitiveType.Sphere, plate, "DeMon", at + new Vector3(0f, 0.02f, 0f), new Vector3(0.13f, 0.07f, 0.11f), UiKit.Hex("#FFFDF6"), 0.006f);
+                    Toon.Prim(PrimitiveType.Sphere, plate, "Hat", at + new Vector3(0.02f, 0.052f, -0.01f), new Vector3(0.012f, 0.006f, 0.008f), UiKit.Hex("#F3EEDF"), 0f);
+                    break;
+            }
+        }
+
         public static GameObject EmptyPlate(Transform parent)
         {
             GameObject go = Toon.Empty(parent, "DiaTrong", Vector3.zero);
@@ -1143,14 +1168,15 @@ namespace QuanAnHope.Game
             Color rim = UiKit.DishTier[tier];
             Toon.Prim(PrimitiveType.Cylinder, go.transform, "VienDia", new Vector3(0f, 0.012f, 0f), new Vector3(0.38f, 0.024f, 0.38f), rim, Toon.OutlineSmall);
             Toon.Prim(PrimitiveType.Cylinder, go.transform, "LongDia", new Vector3(0f, 0.02f, 0f), new Vector3(0.28f, 0.024f, 0.28f), UiKit.Hex("#FFFFFF"), 0f);
-            Toon.Prim(PrimitiveType.Sphere, go.transform, "DeMon", new Vector3(-0.06f, 0.05f, 0.05f), new Vector3(0.15f, 0.07f, 0.12f), UiKit.Hex("#FFF3DC"), 0.008f);
             string mainId = dish.recipeId != null && dish.recipeId.Contains("__") ? dish.recipeId.Substring(0, dish.recipeId.IndexOf("__")) : "";
             string sideId = dish.recipeId != null && dish.recipeId.Contains("__") ? dish.recipeId.Substring(dish.recipeId.IndexOf("__") + 2) : "";
-            GameObject food = Toon.Prim(PrimitiveType.Sphere, go.transform, "Mon", new Vector3(0.01f, 0.07f, -0.01f), new Vector3(0.17f, 0.1f, 0.15f),
-                tier == 0 ? UiKit.Hex("#A39064") : IngredientArt.ColorOf(mainId), 0.008f);
-            Toon.Prim(PrimitiveType.Sphere, go.transform, "Rau", new Vector3(0.09f, 0.07f, 0.06f), new Vector3(0.06f, 0.04f, 0.06f),
-                IngredientArt.ColorOf(sideId), 0.006f);
-            FaceBillboard.Create(go.transform, food.transform, FaceArt.Dish(tier), 0.17f, 0.08f, "MatMon");
+            BuildBase(go.transform, dish.baseName);
+            // F-013 AC-5: dia co dung hinh mon vua thay trong dung cu (cung DishFood) + de mon; Lac vi = chay xem (AC-6)
+            string method = null;
+            if (book != null) foreach (MainIngredient m in book.mains) if (m.id == mainId) method = m.method;
+            GameObject food = DishFood.Build(go.transform, mainId, sideId, method, tier == 0, 0.1f, 1.1f, new Vector3(0.04f, 0.03f, -0.035f));
+            Transform center = food.transform.Find("TamMon");
+            FaceBillboard.Create(go.transform, center != null ? center : food.transform, FaceArt.Dish(tier), 0.17f, 0.1f, "MatMon");
             if (fx) DishFx.Create(go.transform, tier, null);
             return go;
         }

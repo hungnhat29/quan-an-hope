@@ -51,10 +51,10 @@ namespace QuanAnHope.Core
             return ByRound(b.dish.basePriceByRound, round, "gia goc");
         }
 
-        /// <summary>So khach cua ngay theo vong. Ngoai le ngay 14 se them khi lam vong 3 (sprint 4).</summary>
-        public static int CustomersPerDay(this Balance b, int day)
+        /// <summary>Do dai mot ngay mo cua tinh bang giay thuc (9:00-21:00, constitution 1.4 muc 2).</summary>
+        public static float DaySeconds(this Balance b)
         {
-            return ByRound(b.customers.perDayByRound, b.RoundOfDay(day), "so khach");
+            return (b.day.closeHour - b.day.openHour) * b.day.secondsPerHour;
         }
 
         /// <summary>Bac mon toi thieu ma khach co do de tinh nay chap nhan (constitution muc 6.4).</summary>

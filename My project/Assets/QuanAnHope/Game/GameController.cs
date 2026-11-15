@@ -97,10 +97,15 @@ namespace QuanAnHope.Game
         }
 
         /// <summary>Bat dau van moi. Phan choi duoc cua ban nay la vong dau tien trong du lieu.</summary>
+        /// <summary>F-014: ghi thoi gian moi mon vao playtest-log.csv (Application.persistentDataPath).</summary>
+        public PlaytestLog Log { get; private set; }
+
         public void NewGame(int seed)
         {
+            if (Log == null) Log = new PlaytestLog(Application.persistentDataPath);
             int lastDay = data.balance.rounds[0].lastDay;
             Session = new GameSession(data.balance, data.recipes, new SeededRandom(seed), lastDay);
+            DishFood.Book = data.recipes;
             ClearHands();
             LastPull = null;
             LastServed = null;
@@ -119,15 +124,32 @@ namespace QuanAnHope.Game
             OnBoard = null;
         }
 
+        // F-011: theo doi thay doi do dong ho gay ra (khach moi vao, 21:00, het ngay).
+        Customer seenCustomer;
+        GamePhase seenPhase;
+        bool seenClosed;
+
+        /// <summary>Tua nhanh dong ho ngay (chi cho test PlayMode, constitution 1.4 muc 2: 1 gio = 40 giay).</summary>
+        public float ClockScale = 1f;
+
         void Update()
         {
             if (Session == null) return;
             float dt = Time.deltaTime;
 
+            // Dong ho ngay chay tu dau ngay ke ca khi quan chua mo (constitution 1.4 muc 2, 6.2).
+            Session.Tick(dt * ClockScale);
+            if (Session.Phase != seenPhase || Session.CurrentCustomer != seenCustomer || Session.IsClosedForNewCustomers != seenClosed)
+                OnClockEvent();
+
             if (Session.Stove.State == StoveState.Cooking)
             {
                 Session.Stove.Tick(dt);
-                if (Session.Stove.State == StoveState.Ready) Say("Món đã chín. Lấy đĩa trống rồi bấm vào bếp để múc.");
+                if (Session.Stove.State == StoveState.Ready)
+                {
+                    Log.OnReady(Time.time);
+                    Say("Món đã chín. Lấy đĩa trống rồi bấm vào bếp để múc.");
+                }
             }
 
             if (reactionLeft > 0f)
@@ -157,6 +179,10 @@ namespace QuanAnHope.Game
 
         void Changed()
         {
+            // Moi thay doi do nguoi choi gay ra da duoc hien; Update chi bat thay doi do dong ho.
+            seenPhase = Session.Phase;
+            seenCustomer = Session.CurrentCustomer;
+            seenClosed = Session.IsClosedForNewCustomers;
             if (Room != null) Room.Refresh();
             if (Hud != null) Hud.Refresh();
         }
@@ -214,6 +240,7 @@ namespace QuanAnHope.Game
             if (!InStock(ingredient) || ReferenceEquals(ingredient, OnBoard)) return false;
             Hand = HandKind.Ingredient;
             HeldIngredient = ingredient;
+            Log.OnTakeIngredient(Time.time);
             Say("Đang cầm " + HeldName + ".");
             return true;
         }
@@ -324,6 +351,7 @@ namespace QuanAnHope.Game
                     return false;
                 }
                 Hand = HandKind.Empty;
+                Log.OnPlated(dish);
                 if (dish.tier == 0) Player.Shake(0.15f); // Lac vi: rung camera 0,15 giay (Art Bible muc 11)
                 Say(dish.name + ": " + UiKit.DishTierName[dish.tier] + ". Đĩa đã lên quầy chờ.");
                 return true;
@@ -339,6 +367,7 @@ namespace QuanAnHope.Game
         {
             if (!DayRunning) return false;
             if (!Session.Stove.Start()) { Say("Cần 1 nguyên liệu chính và 1 đồ phụ đã sơ chế trong bếp."); return false; }
+            Log.OnKnob(Time.time, Session.Stove.Recipe, Session.Recipes, Session.Stove);
             Say("Đang nấu " + Session.Stove.Recipe.name + "…");
             return true;
         }
@@ -356,6 +385,7 @@ namespace QuanAnHope.Game
             if (!DayRunning) return;
             if (Session.Stove.State == StoveState.Empty && Session.Stove.Tool == null) { Say("Bếp đang trống."); return; }
             Session.Stove.Reset();
+            Log.OnDiscard();
             Say("Đã đổ bỏ đồ trên bếp.");
         }
 
@@ -413,6 +443,7 @@ namespace QuanAnHope.Game
             string ordered = Session.CurrentCustomer.orderName;
             PaymentResult paid = Session.Serve(index);
             if (paid == null) return false;
+            Log.OnServed(Time.time, Session, dish);
 
             Hand = HandKind.Empty;
             HeldDish = null;
@@ -446,6 +477,24 @@ namespace QuanAnHope.Game
         // =====================================================================
         // sang ngay, choi lai
         // =====================================================================
+
+        /// <summary>Dong ho vua lam doi trang thai: khach moi vao, 21:00 dong bien, hoac het ngay.</summary>
+        void OnClockEvent()
+        {
+            bool newCustomer = Session.CurrentCustomer != null && Session.CurrentCustomer != seenCustomer;
+            bool justClosed = Session.IsClosedForNewCustomers && !seenClosed;
+            bool dayEnded = seenPhase != Session.Phase && !DayRunning;
+            seenPhase = Session.Phase;
+            seenCustomer = Session.CurrentCustomer;
+            seenClosed = Session.IsClosedForNewCustomers;
+
+            if (dayEnded) ClearHands();
+            if (justClosed && Session.Phase == GamePhase.Open) Toast = "21:00 · Quán đóng cửa, phục vụ nốt khách đang ngồi.";
+            else if (newCustomer && reactionLeft <= 0f) Toast = "Khách mới vào: gọi " + Session.CurrentCustomer.orderName + ".";
+            // Dang hien mat vui / gian cua khach vua phuc vu thi doi het roi moi doi hinh khach.
+            if (reactionLeft <= 0f) SyncCustomerModel();
+            else Changed();
+        }
 
         public bool NextDay()
         {

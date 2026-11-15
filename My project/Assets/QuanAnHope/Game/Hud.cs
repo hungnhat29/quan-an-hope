@@ -58,8 +58,9 @@ namespace QuanAnHope.Game
             // So lieu: goc tren trai va tren phai.
             Image left = UiKit.Panel(Canvas, "HUD_Trai", TopLeft, new Vector2(24f, -14f), new Vector2(400f, 72f), UiKit.Cream);
             left.raycastTarget = false;
-            day = UiKit.Label(left.transform, "Ngay", TopLeft, new Vector2(14f, -4f), new Vector2(120f, 64f), "", 30f, TextAlignmentOptions.Left);
-            money = UiKit.Label(left.transform, "Tien", TopRight, new Vector2(-12f, -4f), new Vector2(262f, 64f), "", 16f, TextAlignmentOptions.Right);
+            // "Ngay 1 · 13:20" (F-011 AC-1): rong hon de co gio, o tien hep lai.
+            day = UiKit.Label(left.transform, "Ngay", TopLeft, new Vector2(12f, -4f), new Vector2(160f, 64f), "", 24f, TextAlignmentOptions.Left);
+            money = UiKit.Label(left.transform, "Tien", TopRight, new Vector2(-12f, -4f), new Vector2(222f, 64f), "", 16f, TextAlignmentOptions.Right);
             money.lineSpacing = -38f;
 
             Image right = UiKit.Panel(Canvas, "HUD_Phai", TopRight, new Vector2(-24f, -14f), new Vector2(150f, 60f), UiKit.Mustard);
@@ -129,7 +130,7 @@ namespace QuanAnHope.Game
         {
             GameSession s = g.Session;
             DebtEntry debt = s.NextDebt();
-            day.text = "Ngày " + s.Day;
+            RefreshClock();
             money.text = "Ví <size=26>" + s.Money + "G</size>\n"
                 + (debt != null ? "Nợ <size=26>" + debt.amount + "G</size> đầu ngày " + debt.day : "Hết nợ");
             tickets.text = s.Wallet.Count + " vé";
@@ -145,9 +146,24 @@ namespace QuanAnHope.Game
             RefreshOverlay();
         }
 
-        /// <summary>Moi khung hinh: goi y cua do dang nhin, con tro chuot.</summary>
+        string shownClock;
+
+        /// <summary>Ngay va gio; tu 20:00 (mot gio truoc dong cua) gio doi mau cam (kich ban F-011).</summary>
+        void RefreshClock()
+        {
+            GameSession s = g.Session;
+            string text = s.Clock.Text;
+            bool late = s.Clock.Hour >= s.Balance.day.closeHour - 1;
+            string shown = s.Day + text + late;
+            if (shown == shownClock) return;
+            shownClock = shown;
+            day.text = "Ngày " + s.Day + " · " + (late ? "<color=#" + ColorUtility.ToHtmlStringRGB(UiKit.Coral) + ">" + text + "</color>" : text);
+        }
+
+        /// <summary>Moi khung hinh: dong ho, goi y cua do dang nhin, con tro chuot.</summary>
         public void Tick()
         {
+            RefreshClock();
             Interactable focus = g.Player.Focus;
             bool show = focus != null && !overlayShown;
             promptBox.SetActive(show);
@@ -173,7 +189,7 @@ namespace QuanAnHope.Game
                 DebtEntry debt = s.NextDebt();
                 overlayTitle.text = "Hết ngày " + s.Day;
                 var sb = new StringBuilder();
-                sb.Append("Đã phục vụ ").Append(s.ServedToday).Append('/').Append(s.CustomersToday).Append(" khách\n");
+                sb.Append("Đã phục vụ ").Append(s.ServedToday).Append(" khách · đóng quán lúc ").Append(s.ClosedAt).Append('\n');
                 sb.Append("Thu trong ngày: ").Append(s.IncomeToday >= 0 ? "+" : "").Append(s.IncomeToday).Append("G\n");
                 sb.Append("Tiền hiện có: ").Append(s.Money).Append("G\n");
                 if (debt != null)

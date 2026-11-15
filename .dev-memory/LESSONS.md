@@ -10,12 +10,13 @@
 - [L-010] Doc ket qua test Unity: grep result="[A-Za-z()]*" vi that bai ghi "Failed(Child)"; khong in dong ket qua = coi la DO (P6)
 - [L-007] Nguoi dung muon game 3D that: moi thong tin dat tren do vat, HUD chi so lieu, khong nut chuyen goc (constitution v1.2 Dieu 5, 9). Tinh nang moi phai co do vat 3D de bam (P2/P3)
 - [L-008] Do vat tao luc chay (BoxCollider) phai goi Physics.SyncTransforms; san canh khong co collider; test PlayMode tua nhanh can chia buoc di (P4)
-- [L-005] UI moi phai chup anh tu PlayMode (docs/sprint-1/ui) va tu xem truoc khi bao xong: 3 loi hien thi chi lo ra tren anh (P6)
+- [L-005] UI moi phai chup anh tu PlayMode (docs/sprint-N/ui) va tu xem truoc khi bao xong: loi hien thi chi lo ra tren anh (P6) [count 2: sprint 2 do trong chao nho, lua khuat duoi day chao du test xanh]
 - [L-006] Test PlayMode bam nut qua ten GameObject; doi ten nut trong GameView thi sua PlaythroughTests cung luc (P4)
-- [L-002] Trong Bash tool cua may nay, heredoc nhieu dong co dau nhay don bi loi cu phap; ghi file bang Write roi chay (moi pha)
+- [L-002] Trong Bash tool cua may nay, heredoc nhieu dong co dau nhay don bi loi cu phap; ghi script .py bang Write vao scratchpad roi chay (moi pha) [count 2]
 - [L-003] Bat/sua hau ky URP phai chup anh so voi ban khong hau ky (PreviewCapture) truoc khi bao xong (P6)
 - [L-004] Chay Unity batchmode: dong Editor truoc; -testResults va -logFile dung duong dan tuyet doi kieu Windows (P4)
 - [L-001] Chạy sim_balance.py phải đặt PYTHONUTF8=1 (Windows mặc định cp1258, lỗi đọc JSON tiếng Việt) (P4/P6)
+- [L-016] Hinh dat trong/tren do vat 3D: lay kich thuoc tu hinh that (BuildTool x scale), khong tu so cu; test hinh hoc phai do theo hinh that (P4) [sprint 2: PanSpec 0,17 m trong chao 0,29 m]
 <!-- max 15 lines: [L-id] rule (phase) -->
 
 ## Nhat ky
@@ -31,3 +32,9 @@
 ### 2026-11-14 Dong sprint 1
 - Tong ket day du: .dev-memory/RETRO-sprint-1.md (10 loi, 6 dieu nguoi dung chua hai long, cau hoi con mo)
 - L-013, L-014, L-015 dua len quy tac dang ap dung (nguon: nguoi dung tu choi nghiem thu 2 lan + yeu cau dong sprint)
+
+### 2026-11-15 Sprint 2 (F-010..F-014)
+- L-002 | trigger: heredoc python sua GameSessionTests loi "unexpected EOF" | sua: ghi script vao scratchpad bang Write roi chay | count 2
+- L-005 | trigger: PlayMode F-013 xanh nhung anh nau_4/nau_5 cho thay do don giua chao, khong thay lua | goc: test chi kiem "nam trong ban kinh", khong kiem "phu du long chao"; lua o ban kinh 0,1 m duoi day chao | sua: PanSpec theo hinh that, vong lua 1,2 R, test lop dau >= 80% long chao | count 2
+- L-016 | trigger: nhu tren | goc: PanSpec (sprint 1) dat ban kinh 0,17 m va noi 1,83 m tu uoc luong, khong lay tu BuildTool | quy tac: suy kich thuoc tu hinh that | count 1
+- L-017 | trigger: gia lap PlayMode fail "Dish_2 bi Dish_1 che" va "khong thu duoc sai mon" | goc: luat moi (thung 3+2, khach vao sau 3 giay) doi trang thai ma kich ban gia lap gia dinh | quy tac: doi so lieu thi chay lai PlayMode ngay, kich ban gia lap tu xoay xo (quay them thung, ngam cho khac) nhu nguoi that | count 1

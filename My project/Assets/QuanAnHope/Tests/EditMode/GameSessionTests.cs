@@ -1,10 +1,12 @@
+using System.Linq;
 using NUnit.Framework;
 using QuanAnHope.Core;
 
 namespace QuanAnHope.Tests
 {
     /// <summary>
-    /// F-005 AC-1..5 va F-004 AC-9. Nguon: constitution muc 2, 3, 4.2, 5.1; tin nhan nguoi dung 14/11 (nut Mo quan).
+    /// F-005 AC-1..5, F-004 AC-9; sprint 2: F-010 AC-2, AC-5 va F-011 AC-8.
+    /// Nguon: constitution 1.4 muc 2, 3, 4.2, 5.1, 6.2; tin nhan nguoi dung 14/11 (nut Mo quan).
     /// </summary>
     public class GameSessionTests
     {
@@ -15,25 +17,25 @@ namespace QuanAnHope.Tests
             return new GameSession(TestData.Balance, TestData.Recipes, new SeededRandom(seed), LastDayOfRound1);
         }
 
-        /// <summary>Nau va phuc vu het khach cua ngay hien tai theo kieu bot; tra ve pha sau do.</summary>
+        /// <summary>Choi tron ngay hien tai theo kieu bot co tinh gio (F-011 AC-8).</summary>
         static void PlayOneDay(GameSession s)
         {
-            NaiveBot.PlayDay(s);
+            NaiveBot.PlayDay(s, BotTiming.Naive);
             Assert.AreEqual(GamePhase.DayEnd, s.Phase);
         }
 
         // ---------- F-005 AC-1 ----------
 
         [Test]
-        public void F005_AC1_BatDau_100G_Ngay1_5Ve()
+        public void F010_AC2_AC5_BatDau_100G_Ngay1_8Ve_No750G()
         {
             GameSession s = NewSession();
             Assert.AreEqual(1, s.Day);
             Assert.AreEqual(100, s.Money);
-            Assert.AreEqual(5, s.Wallet.Count);
+            Assert.AreEqual(8, s.Wallet.Count);
             Assert.AreEqual(GamePhase.Prep, s.Phase);
             Assert.AreEqual(4, s.NextDebt().day);
-            Assert.AreEqual(400, s.NextDebt().amount);
+            Assert.AreEqual(750, s.NextDebt().amount);
         }
 
         // ---------- F-004 AC-9: nut Mo quan ----------
@@ -59,7 +61,7 @@ namespace QuanAnHope.Tests
 
             Assert.IsTrue(s.OpenShop());
             Assert.AreEqual(GamePhase.Open, s.Phase);
-            Assert.AreEqual(6, s.CustomersToday);
+            Assert.AreEqual(1, s.CustomersToday);
             Customer first = s.CurrentCustomer;
             Assert.IsNotNull(first);
             Assert.IsFalse(s.OpenShop(), "da mo roi thi khong mo lai");
@@ -67,6 +69,7 @@ namespace QuanAnHope.Tests
             Assert.AreSame(first, s.CurrentCustomer, "khach sau chi vao khi khach truoc da duoc phuc vu");
             Assert.IsNotNull(s.Serve(0));
             Assert.AreEqual(1, s.ServedToday);
+            s.Tick(TestData.Balance.day.nextCustomerSeconds);
             Assert.IsNotNull(s.CurrentCustomer);
             Assert.AreNotSame(first, s.CurrentCustomer);
         }
@@ -92,18 +95,23 @@ namespace QuanAnHope.Tests
         // ---------- F-005 AC-2 ----------
 
         [Test]
-        public void F005_AC2_PhucVuXongKhachCuoi_KetThucNgay_BoNguyenLieuVaDia()
+        public void F005_AC2_PhucVuXongKhachCuoiSau21Gio_KetThucNgay_BoNguyenLieuVaDia()
         {
             GameSession s = NewSession(2);
             PullResult pull;
-            while (s.PullCrates(out pull)) { }           // dung het 5 ve: 25 do phu + 15 chinh
+            while (s.PullCrates(out pull)) { }           // dung het 8 ve: 24 do phu + 16 chinh
             s.OpenShop();
             for (int i = 0; i < 6; i++)
             {
                 Assert.AreEqual(GamePhase.Open, s.Phase);
-                Assert.IsTrue(NaiveBot.CookOne(s));
-                if (i == 5) Assert.IsTrue(NaiveBot.CookOne(s)); // nau du 1 dia de kiem viec bo dia cuoi ngay
-                Assert.IsNotNull(s.Serve(0));
+                Assert.IsTrue(NaiveBot.CookFor(s, s.CurrentCustomer.orderId));
+                if (i == 5)
+                {
+                    Assert.IsTrue(NaiveBot.CookOne(s)); // nau du 1 dia de kiem viec bo dia cuoi ngay
+                    s.Tick(TestData.Balance.DaySeconds());
+                }
+                Assert.IsNotNull(s.Serve(s.Counter.Dishes.ToList().FindIndex(d => d.recipeId == s.CurrentCustomer.orderId)));
+                s.Tick(TestData.Balance.day.nextCustomerSeconds);
             }
 
             Assert.AreEqual(GamePhase.DayEnd, s.Phase);
@@ -119,7 +127,7 @@ namespace QuanAnHope.Tests
             GameSession s = NewSession(3);
             PullResult pull;
             s.PullCrates(out pull);
-            s.PullCrates(out pull);                       // con 3 ve
+            s.PullCrates(out pull);                       // con 6 ve
             s.OpenShop();
             s.CloseEarly();
 
@@ -127,7 +135,7 @@ namespace QuanAnHope.Tests
 
             Assert.AreEqual(2, s.Day);
             Assert.AreEqual(GamePhase.Prep, s.Phase);
-            Assert.AreEqual(6, s.Wallet.Count);
+            Assert.AreEqual(12, s.Wallet.Count, "6 ve thua + 6 ve moi");
             Assert.AreEqual(0, s.ServedToday);
             Assert.AreEqual(0, s.IncomeToday);
             Assert.IsNull(s.CurrentCustomer);
@@ -152,13 +160,13 @@ namespace QuanAnHope.Tests
             s.CloseEarly();
             PullResult pull;
             Assert.IsFalse(s.PullCrates(out pull));
-            Assert.AreEqual(5, s.Wallet.Count);
+            Assert.AreEqual(8, s.Wallet.Count);
         }
 
         // ---------- F-005 AC-3 ----------
 
         [Test]
-        public void F005_AC3_DauNgay4_KhongDu400G_Thua()
+        public void F010_AC5_DauNgay4_KhongDu750G_Thua()
         {
             GameSession s = NewSession(6);
             for (int day = 1; day <= 3; day++)
@@ -175,7 +183,7 @@ namespace QuanAnHope.Tests
         }
 
         [Test]
-        public void F005_AC3_AC4_DauNgay4_Du400G_TruNo_QuaVong1()
+        public void F010_AC5_DauNgay4_Du750G_TruNo_QuaVong1()
         {
             GameSession s = NewSession(7);
             for (int day = 1; day <= 3; day++)
@@ -184,14 +192,14 @@ namespace QuanAnHope.Tests
                 if (day < 3) Assert.IsTrue(s.StartNextDay());
             }
             int before = s.Money;
-            Assert.GreaterOrEqual(before, 400, "seed nay bot phai kiem du tien");
+            Assert.GreaterOrEqual(before, 750, "seed nay bot phai kiem du tien");
 
             Assert.IsTrue(s.StartNextDay());
 
             Assert.AreEqual(GamePhase.Cleared, s.Phase);
             Assert.AreEqual(4, s.Day);
-            Assert.AreEqual(400, s.LastDebtPaid);
-            Assert.AreEqual(before - 400, s.Money);
+            Assert.AreEqual(750, s.LastDebtPaid);
+            Assert.AreEqual(before - 750, s.Money);
         }
 
         [Test]
@@ -208,23 +216,27 @@ namespace QuanAnHope.Tests
         // ---------- F-005 AC-5: bot "khong doc chi so" ----------
 
         [Test]
-        public void F005_AC5_BotKhongDocChiSo_2000Van_QuaLanTraNo1()
+        public void F011_AC8_BotKhongDocChiSo_CoTinhGio_2000Van_QuaLanTraNo1()
         {
             const int Games = 2000;
             int cleared = 0;
             long moneyAtDebt = 0;
+            long served = 0;
             for (int g = 0; g < Games; g++)
             {
                 GameSession s = NewSession(10000 + g);
-                GamePhase end = NaiveBot.PlayToEnd(s);
+                GamePhase end = NaiveBot.PlayToEnd(s, BotTiming.Naive);
+                served += NaiveBot.LastRunServed;
                 if (end == GamePhase.Cleared) { cleared++; moneyAtDebt += s.Money + s.LastDebtPaid; }
             }
 
             double passRate = 100.0 * cleared / Games;
             UnityEngine.Debug.Log("NaiveBot: qua lan tra no 1 = " + passRate.ToString("0.00") + "% (" + cleared + "/" + Games
-                + "), tien trung binh truoc khi tra no = " + (cleared > 0 ? moneyAtDebt / cleared : 0) + "G");
-            // Mo phong (constitution Dieu 1): 100%. Cho phep lech 1 diem nhu Dieu 3.
-            Assert.GreaterOrEqual(passRate, 99.0);
+                + "), tien trung binh truoc khi tra no = " + (cleared > 0 ? moneyAtDebt / cleared : 0) + "G"
+                + ", khach moi ngay = " + (served / (3.0 * Games)).ToString("0.0"));
+            // Mo phong 1.4 (V=next python balance/sim_balance.py, 15/11/2026): naive qua lan tra no 1 = 96%.
+            // docs/sprint-2/impl-plan.md F-011 AC-8: lech toi da 5 diem.
+            Assert.That(passRate, Is.InRange(91.0, 100.0));
         }
     }
 }

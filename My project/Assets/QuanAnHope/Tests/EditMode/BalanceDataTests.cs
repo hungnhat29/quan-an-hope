@@ -10,7 +10,7 @@ using UnityEngine;
 namespace QuanAnHope.Tests
 {
     /// <summary>
-    /// F-001 Du lieu can bang. Cac con so mong doi trong file nay chep tu specs/constitution.md v1.1.
+    /// F-001 Du lieu can bang. Cac con so mong doi trong file nay chep tu specs/constitution.md v1.4 (F-010).
     /// </summary>
     public class BalanceDataTests
     {
@@ -55,13 +55,13 @@ namespace QuanAnHope.Tests
         public void AC1_TienTe_VaLichNo() // constitution muc 2, 3
         {
             Assert.AreEqual(22, balance.days);
-            Assert.AreEqual(3, balance.ticketsPerDay);
+            Assert.AreEqual(6, balance.ticketsPerDay);
             Assert.AreEqual(100, balance.start.money);
             Assert.AreEqual(2, balance.start.bonusTickets);
             Assert.AreEqual(2, balance.start.relicShopFromDay);
             Assert.AreEqual(11500, balance.bossBonus);
             CollectionAssert.AreEqual(new[] { 4, 9, 15, 22 }, balance.debts.Select(d => d.day).ToArray());
-            CollectionAssert.AreEqual(new[] { 400, 2200, 8200, 26200 }, balance.debts.Select(d => d.amount).ToArray());
+            CollectionAssert.AreEqual(new[] { 750, 2900, 10500, 32000 }, balance.debts.Select(d => d.amount).ToArray());
         }
 
         [Test]
@@ -81,10 +81,10 @@ namespace QuanAnHope.Tests
             CollectionAssert.AreEqual(new[] { 10, 28, 35, 20, 6, 1 }, Odds(balance, "r3").percents);
             CollectionAssert.AreEqual(new[] { 6, 18, 33, 28, 12, 3 }, Odds(balance, "r4").percents);
             CollectionAssert.AreEqual(new[] { 0, 0, 0, 62, 30, 8 }, Odds(balance, "black").percents);
-            Assert.AreEqual(5, balance.crateSize.phu);
-            Assert.AreEqual(3, balance.crateSize.chinh);
-            Assert.AreEqual(3, balance.crateSize.phuStorm);
-            Assert.AreEqual(2, balance.crateSize.chinhStorm);
+            Assert.AreEqual(3, balance.crateSize.phu);
+            Assert.AreEqual(2, balance.crateSize.chinh);
+            Assert.AreEqual(2, balance.crateSize.phuStorm);
+            Assert.AreEqual(1, balance.crateSize.chinhStorm);
         }
 
         [Test]
@@ -111,10 +111,8 @@ namespace QuanAnHope.Tests
         }
 
         [Test]
-        public void AC1_Khach() // constitution muc 6.2, 6.3, 6.4
+        public void AC1_Khach() // constitution muc 6.3, 6.4 (1.4: khong con so khach moi ngay)
         {
-            CollectionAssert.AreEqual(new[] { 6, 8, 5, 9 }, balance.customers.perDayByRound);
-            Assert.AreEqual(8, balance.customers.perDayDay14);
             Assert.AreEqual(5, balance.customers.bossEasy);
 
             EasyBand[] round1 = balance.customers.easyBands.Single(b => b.round == 1).bands;
@@ -140,8 +138,12 @@ namespace QuanAnHope.Tests
                 new[] { "Trứng gà", "Thịt heo", "Đậu phụ" },
                 recipes.mains.Where(m => m.group == "chinh" && m.unlockRound == 1).Select(m => m.name).ToArray());
 
-            Assert.AreEqual(1.5f, recipes.sides.Single(s => s.id == "ca_chua").prepSeconds, 1e-6f);
-            Assert.AreEqual(0.5f, recipes.mains.Single(m => m.id == "trung").prepSeconds, 1e-6f);
+            Assert.AreEqual(4.5f, recipes.sides.Single(s => s.id == "ca_chua").prepSeconds, 1e-6f);
+            Assert.AreEqual(4.5f, recipes.sides.Single(s => s.id == "hanh_tay").prepSeconds, 1e-6f);
+            Assert.AreEqual(3.0f, recipes.sides.Single(s => s.id == "rau_muong").prepSeconds, 1e-6f);
+            Assert.AreEqual(1.5f, recipes.mains.Single(m => m.id == "trung").prepSeconds, 1e-6f);
+            Assert.AreEqual(4.5f, recipes.mains.Single(m => m.id == "heo").prepSeconds, 1e-6f);
+            Assert.AreEqual(3.0f, recipes.mains.Single(m => m.id == "dau_phu").prepSeconds, 1e-6f);
         }
 
         [Test]
@@ -158,17 +160,22 @@ namespace QuanAnHope.Tests
             Assert.AreEqual("Chảo", trung.tool);
             Assert.AreEqual("Cơm", trung.baseName);
             CollectionAssert.AreEqual(new[] { "Dầu ăn", "Cà chua", "Trứng gà", "Nước mắm" }, trung.steps);
-            Assert.AreEqual(8f, trung.cookSeconds, 1e-6f);
+            Assert.AreEqual(12f, trung.cookSeconds, 1e-6f);
 
             Recipe heo = recipes.recipes.Single(r => r.id == "heo__rau_muong");
             CollectionAssert.AreEqual(new[] { "Dầu ăn", "Tỏi", "Thịt heo", "Rau muống" }, heo.steps);
-            Assert.AreEqual(10f, heo.cookSeconds, 1e-6f);
+            Assert.AreEqual(15f, heo.cookSeconds, 1e-6f);
 
             Recipe dau = recipes.recipes.Single(r => r.id == "dau_phu__hanh_tay");
             Assert.AreEqual("Nồi", dau.tool);
-            Assert.AreEqual(12f, dau.cookSeconds, 1e-6f);
+            Assert.AreEqual(18f, dau.cookSeconds, 1e-6f);
 
             Assert.AreEqual("Mì Ý bò sốt cà chua", recipes.recipes.Single(r => r.id == "bo__ca_chua").name);
+
+            // F-013: cach nau quyet dinh hinh mon trong dung cu (constitution 1.4 muc 5.8, 5.9)
+            Assert.AreEqual("chiên", recipes.mains.Single(m => m.id == "trung").method);
+            Assert.AreEqual("xào", recipes.mains.Single(m => m.id == "heo").method);
+            Assert.AreEqual("sốt", recipes.mains.Single(m => m.id == "dau_phu").method);
         }
 
         [Test]
@@ -182,6 +189,17 @@ namespace QuanAnHope.Tests
             Assert.AreEqual(2, recipes.timing.burnFromRound);
             Assert.AreEqual(9, recipes.pantry.Length);
             CollectionAssert.AreEqual(new[] { "Cơm", "Mì Ý", "Bún", "Bánh mì" }, recipes.bases);
+        }
+
+        [Test]
+        public void F010_NgayTheoGio() // constitution 1.4 muc 2, 6.2
+        {
+            Assert.AreEqual(9, balance.day.openHour);
+            Assert.AreEqual(21, balance.day.closeHour);
+            Assert.AreEqual(40f, balance.day.secondsPerHour, 1e-6f);
+            Assert.AreEqual(20, balance.day.bossHour);
+            Assert.AreEqual(3f, balance.day.nextCustomerSeconds, 1e-6f);
+            Assert.AreEqual(480f, balance.DaySeconds(), 1e-6f, "9:00-21:00 = 12 gio x 40 giay = 8 phut");
         }
 
         // ---------- AC-2: gia tri trong asset bang gia tri trong JSON ----------

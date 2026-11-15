@@ -141,7 +141,9 @@ namespace QuanAnHope.Tests
             Assert.AreEqual(money - 18, s.Money);
             Assert.AreEqual(0, s.Counter.Dishes.Count, "khach nhan dia");
             Assert.AreEqual(1, s.ServedToday);
-            Assert.AreNotSame(first, s.CurrentCustomer, "khach sau vao");
+            s.Tick(TestData.Balance.day.nextCustomerSeconds);
+            Assert.IsNotNull(s.CurrentCustomer, "khach sau vao sau 3 giay (constitution 1.4 muc 6.2)");
+            Assert.AreNotSame(first, s.CurrentCustomer);
         }
 
         // ---------- AC-6: khach moi goi lai theo kho luc vao ----------
@@ -160,6 +162,7 @@ namespace QuanAnHope.Tests
                 Assert.IsTrue(NaiveBot.CookFor(s, s.CurrentCustomer.orderId), "bot nau duoc mon khach goi");
                 int index = s.Counter.Dishes.ToList().FindIndex(d => d.recipeId == s.CurrentCustomer.orderId);
                 Assert.IsFalse(s.Serve(index).wrongOrder);
+                s.Tick(TestData.Balance.day.nextCustomerSeconds);
             }
         }
     }

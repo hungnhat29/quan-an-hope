@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: QuanAnHope.Data::QuanAnHope.Data.BalanceData
   balance:
     days: 22
-    ticketsPerDay: 3
+    ticketsPerDay: 6
     bossBonus: 11500
     stormDay: 3
     counterSlots: 3
@@ -25,13 +25,13 @@ MonoBehaviour:
       penaltyBaseShare: 0.3
     debts:
     - day: 4
-      amount: 400
+      amount: 750
     - day: 9
-      amount: 2200
+      amount: 2900
     - day: 15
-      amount: 8200
+      amount: 10500
     - day: 22
-      amount: 26200
+      amount: 32000
     rounds:
     - round: 1
       firstDay: 1
@@ -59,10 +59,10 @@ MonoBehaviour:
     - id: black
       percents: 0000000000000000000000003e0000001e00000008000000i
     crateSize:
-      phu: 5
-      chinh: 3
-      phuStorm: 3
-      chinhStorm: 2
+      phu: 3
+      chinh: 2
+      phuStorm: 2
+      chinhStorm: 1
     dish:
       weightChinh: 0.6
       weightPhu: 0.4
@@ -78,8 +78,6 @@ MonoBehaviour:
       - 6
       basePriceByRound: 3c000000460000005500000064000000i
     customers:
-      perDayByRound: 06000000080000000500000009000000i
-      perDayDay14: 8
       easyBands:
       - round: 1
         bands:
@@ -139,6 +137,12 @@ MonoBehaviour:
       money: 100
       bonusTickets: 2
       relicShopFromDay: 2
+    day:
+      openHour: 9
+      closeHour: 21
+      secondsPerHour: 40
+      bossHour: 20
+      nextCustomerSeconds: 3
   recipes:
     timing:
       stepSeconds: 0.5
@@ -166,162 +170,174 @@ MonoBehaviour:
     - id: ca_chua
       name: "C\xE0 chua"
       prep: "Th\xE1i m\xFAi"
-      prepSeconds: 1.5
+      prepSeconds: 4.5
       unlockRound: 1
     - id: hanh_tay
       name: "H\xE0nh t\xE2y"
       prep: "Th\xE1i l\xE1t"
-      prepSeconds: 1.5
+      prepSeconds: 4.5
       unlockRound: 1
     - id: rau_muong
       name: "Rau mu\u1ED1ng"
       prep: "Nh\u1EB7t, r\u1EEDa"
-      prepSeconds: 1
+      prepSeconds: 3
       unlockRound: 1
     - id: khoai_tay
       name: "Khoai t\xE2y"
       prep: "G\u1ECDt, th\xE1i"
-      prepSeconds: 2
+      prepSeconds: 6
       unlockRound: 2
     - id: nam_rom
       name: "N\u1EA5m r\u01A1m"
       prep: "R\u1EEDa, b\u1ED5 \u0111\xF4i"
-      prepSeconds: 1
+      prepSeconds: 3
       unlockRound: 2
     - id: bong_cai
       name: "B\xF4ng c\u1EA3i xanh"
       prep: "T\xE1ch b\xF4ng"
-      prepSeconds: 1.5
+      prepSeconds: 4.5
       unlockRound: 3
     - id: ot_chuong
       name: "\u1EDAt chu\xF4ng"
       prep: "B\u1ECF h\u1EA1t, th\xE1i"
-      prepSeconds: 1.5
+      prepSeconds: 4.5
       unlockRound: 3
     - id: bi_do
       name: "B\xED \u0111\u1ECF"
       prep: "G\u1ECDt, th\xE1i"
-      prepSeconds: 2
+      prepSeconds: 6
       unlockRound: 4
     - id: mang_tay
       name: "M\u0103ng t\xE2y"
       prep: "C\u1EAFt kh\xFAc"
-      prepSeconds: 1
+      prepSeconds: 3
       unlockRound: 4
     - id: nam_dong_co
       name: "N\u1EA5m \u0111\xF4ng c\xF4"
       prep: "Th\xE1i l\xE1t"
-      prepSeconds: 1
+      prepSeconds: 3
       unlockRound: 4
     mains:
     - id: trung
       name: "Tr\u1EE9ng g\xE0"
       group: chinh
       prep: "\u0110\u1EADp, \u0111\xE1nh"
-      prepSeconds: 0.5
+      prepSeconds: 1.5
       tool: "Ch\u1EA3o"
       baseName: "C\u01A1m"
-      cookSeconds: 8
+      cookSeconds: 12
       unlockRound: 1
+      method: "chi\xEAn"
     - id: heo
       name: "Th\u1ECBt heo"
       group: chinh
       prep: "Th\xE1i m\u1ECFng"
-      prepSeconds: 1.5
+      prepSeconds: 4.5
       tool: "Ch\u1EA3o"
       baseName: "C\u01A1m"
-      cookSeconds: 10
+      cookSeconds: 15
       unlockRound: 1
+      method: "x\xE0o"
     - id: dau_phu
       name: "\u0110\u1EADu ph\u1EE5"
       group: chinh
       prep: "C\u1EAFt mi\u1EBFng"
-      prepSeconds: 1
+      prepSeconds: 3
       tool: "N\u1ED3i"
       baseName: "C\u01A1m"
-      cookSeconds: 12
+      cookSeconds: 18
       unlockRound: 1
+      method: "s\u1ED1t"
     - id: bo
       name: "Th\u1ECBt b\xF2"
       group: chinh
       prep: "Th\xE1i m\u1ECFng"
-      prepSeconds: 1.5
+      prepSeconds: 4.5
       tool: "Ch\u1EA3o"
       baseName: "M\xEC \xDD"
-      cookSeconds: 10
+      cookSeconds: 15
       unlockRound: 2
+      method: "x\xE0o"
     - id: tom
       name: "T\xF4m"
       group: chinh
       prep: "B\xF3c v\u1ECF"
-      prepSeconds: 2
+      prepSeconds: 6
       tool: "Ch\u1EA3o"
       baseName: "B\xFAn"
-      cookSeconds: 10
+      cookSeconds: 15
       unlockRound: 2
+      method: "x\xE0o"
     - id: ca_hoi
       name: "C\xE1 h\u1ED3i"
       group: chinh
       prep: "L\u1ECDc x\u01B0\u01A1ng"
-      prepSeconds: 2.5
+      prepSeconds: 7.5
       tool: "Ch\u1EA3o"
       baseName: "C\u01A1m"
-      cookSeconds: 14
+      cookSeconds: 21
       unlockRound: 3
+      method: "\xE1p ch\u1EA3o"
     - id: muc
       name: "M\u1EF1c"
       group: chinh
       prep: "L\xE0m s\u1EA1ch, kh\u1EE9a"
-      prepSeconds: 2.5
+      prepSeconds: 7.5
       tool: "Ch\u1EA3o"
       baseName: "C\u01A1m"
-      cookSeconds: 8
+      cookSeconds: 12
       unlockRound: 3
+      method: "x\xE0o"
     - id: ga
       name: "G\xE0 ta"
       group: chinh
       prep: "Ch\u1EB7t mi\u1EBFng"
-      prepSeconds: 2
+      prepSeconds: 6
       tool: "V\u1EC9 n\u01B0\u1EDBng"
       baseName: "B\xE1nh m\xEC"
-      cookSeconds: 18
+      cookSeconds: 27
       unlockRound: 4
+      method: "n\u01B0\u1EDBng"
     - id: tom_hum
       name: "T\xF4m h\xF9m"
       group: dotpha
       prep: "B\u1ED5 \u0111\xF4i"
-      prepSeconds: 3
+      prepSeconds: 9
       tool: "V\u1EC9 n\u01B0\u1EDBng"
       baseName: "B\xE1nh m\xEC"
-      cookSeconds: 20
+      cookSeconds: 30
       unlockRound: 0
+      method: "n\u01B0\u1EDBng"
     - id: wagyu
       name: "B\xF2 Wagyu"
       group: dotpha
       prep: "C\u1EAFt mi\u1EBFng d\xE0y"
-      prepSeconds: 2
+      prepSeconds: 6
       tool: "Ch\u1EA3o"
       baseName: "C\u01A1m"
-      cookSeconds: 14
+      cookSeconds: 21
       unlockRound: 0
+      method: "\xE1p ch\u1EA3o"
     - id: ca_ngu
       name: "C\xE1 ng\u1EEB v\xE2y xanh"
       group: dotpha
       prep: "L\u1ECDc th\u0103n"
-      prepSeconds: 2.5
+      prepSeconds: 7.5
       tool: "Ch\u1EA3o"
       baseName: "C\u01A1m"
-      cookSeconds: 8
+      cookSeconds: 12
       unlockRound: 0
+      method: "\xE1p ch\u1EA3o nhanh"
     - id: cua
       name: "Cua ho\xE0ng \u0111\u1EBF"
       group: dotpha
       prep: "T\xE1ch mai"
-      prepSeconds: 3
+      prepSeconds: 9
       tool: "N\u1ED3i"
       baseName: "B\xFAn"
-      cookSeconds: 20
+      cookSeconds: 30
       unlockRound: 0
+      method: "h\u1EA5p"
     recipes:
     - id: trung__ca_chua
       name: "Tr\u1EE9ng chi\xEAn c\xE0 chua"
@@ -335,9 +351,9 @@ MonoBehaviour:
       - "C\xE0 chua"
       - "Tr\u1EE9ng g\xE0"
       - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 8
-      warnSeconds: 12
-      burnSeconds: 16
+      cookSeconds: 12
+      warnSeconds: 18
+      burnSeconds: 24
       unlockRound: 1
     - id: trung__hanh_tay
       name: "Tr\u1EE9ng chi\xEAn h\xE0nh t\xE2y"
@@ -351,9 +367,9 @@ MonoBehaviour:
       - "H\xE0nh t\xE2y"
       - "Tr\u1EE9ng g\xE0"
       - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 8
-      warnSeconds: 12
-      burnSeconds: 16
+      cookSeconds: 12
+      warnSeconds: 18
+      burnSeconds: 24
       unlockRound: 1
     - id: trung__rau_muong
       name: "Tr\u1EE9ng chi\xEAn rau mu\u1ED1ng"
@@ -367,9 +383,9 @@ MonoBehaviour:
       - "Rau mu\u1ED1ng"
       - "Tr\u1EE9ng g\xE0"
       - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 8
-      warnSeconds: 12
-      burnSeconds: 16
+      cookSeconds: 12
+      warnSeconds: 18
+      burnSeconds: 24
       unlockRound: 1
     - id: trung__khoai_tay
       name: "Tr\u1EE9ng chi\xEAn khoai t\xE2y"
@@ -383,9 +399,9 @@ MonoBehaviour:
       - "Khoai t\xE2y"
       - "Tr\u1EE9ng g\xE0"
       - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 8
-      warnSeconds: 12
-      burnSeconds: 16
+      cookSeconds: 12
+      warnSeconds: 18
+      burnSeconds: 24
       unlockRound: 2
     - id: trung__nam_rom
       name: "Tr\u1EE9ng chi\xEAn n\u1EA5m r\u01A1m"
@@ -399,9 +415,9 @@ MonoBehaviour:
       - "N\u1EA5m r\u01A1m"
       - "Tr\u1EE9ng g\xE0"
       - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 8
-      warnSeconds: 12
-      burnSeconds: 16
+      cookSeconds: 12
+      warnSeconds: 18
+      burnSeconds: 24
       unlockRound: 2
     - id: trung__bong_cai
       name: "Tr\u1EE9ng chi\xEAn b\xF4ng c\u1EA3i"
@@ -415,9 +431,9 @@ MonoBehaviour:
       - "B\xF4ng c\u1EA3i xanh"
       - "Tr\u1EE9ng g\xE0"
       - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 8
-      warnSeconds: 12
-      burnSeconds: 16
+      cookSeconds: 12
+      warnSeconds: 18
+      burnSeconds: 24
       unlockRound: 3
     - id: trung__ot_chuong
       name: "Tr\u1EE9ng chi\xEAn \u1EDBt chu\xF4ng"
@@ -431,9 +447,9 @@ MonoBehaviour:
       - "\u1EDAt chu\xF4ng"
       - "Tr\u1EE9ng g\xE0"
       - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 8
-      warnSeconds: 12
-      burnSeconds: 16
+      cookSeconds: 12
+      warnSeconds: 18
+      burnSeconds: 24
       unlockRound: 3
     - id: trung__bi_do
       name: "Tr\u1EE9ng chi\xEAn b\xED \u0111\u1ECF"
@@ -447,9 +463,9 @@ MonoBehaviour:
       - "B\xED \u0111\u1ECF"
       - "Tr\u1EE9ng g\xE0"
       - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 8
-      warnSeconds: 12
-      burnSeconds: 16
+      cookSeconds: 12
+      warnSeconds: 18
+      burnSeconds: 24
       unlockRound: 4
     - id: trung__mang_tay
       name: "Tr\u1EE9ng chi\xEAn m\u0103ng t\xE2y"
@@ -463,9 +479,9 @@ MonoBehaviour:
       - "M\u0103ng t\xE2y"
       - "Tr\u1EE9ng g\xE0"
       - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 8
-      warnSeconds: 12
-      burnSeconds: 16
+      cookSeconds: 12
+      warnSeconds: 18
+      burnSeconds: 24
       unlockRound: 4
     - id: trung__nam_dong_co
       name: "Tr\u1EE9ng chi\xEAn n\u1EA5m \u0111\xF4ng c\xF4"
@@ -479,9 +495,9 @@ MonoBehaviour:
       - "N\u1EA5m \u0111\xF4ng c\xF4"
       - "Tr\u1EE9ng g\xE0"
       - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 8
-      warnSeconds: 12
-      burnSeconds: 16
+      cookSeconds: 12
+      warnSeconds: 18
+      burnSeconds: 24
       unlockRound: 4
     - id: heo__ca_chua
       name: "Heo x\xE0o c\xE0 chua"
@@ -495,9 +511,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "Th\u1ECBt heo"
       - "C\xE0 chua"
-      cookSeconds: 10
-      warnSeconds: 15
-      burnSeconds: 20
+      cookSeconds: 15
+      warnSeconds: 22.5
+      burnSeconds: 30
       unlockRound: 1
     - id: heo__hanh_tay
       name: "Heo x\xE0o h\xE0nh t\xE2y"
@@ -511,9 +527,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "Th\u1ECBt heo"
       - "H\xE0nh t\xE2y"
-      cookSeconds: 10
-      warnSeconds: 15
-      burnSeconds: 20
+      cookSeconds: 15
+      warnSeconds: 22.5
+      burnSeconds: 30
       unlockRound: 1
     - id: heo__rau_muong
       name: "Heo x\xE0o rau mu\u1ED1ng"
@@ -527,9 +543,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "Th\u1ECBt heo"
       - "Rau mu\u1ED1ng"
-      cookSeconds: 10
-      warnSeconds: 15
-      burnSeconds: 20
+      cookSeconds: 15
+      warnSeconds: 22.5
+      burnSeconds: 30
       unlockRound: 1
     - id: heo__khoai_tay
       name: "Heo x\xE0o khoai t\xE2y"
@@ -543,9 +559,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "Th\u1ECBt heo"
       - "Khoai t\xE2y"
-      cookSeconds: 10
-      warnSeconds: 15
-      burnSeconds: 20
+      cookSeconds: 15
+      warnSeconds: 22.5
+      burnSeconds: 30
       unlockRound: 2
     - id: heo__nam_rom
       name: "Heo x\xE0o n\u1EA5m r\u01A1m"
@@ -559,9 +575,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "Th\u1ECBt heo"
       - "N\u1EA5m r\u01A1m"
-      cookSeconds: 10
-      warnSeconds: 15
-      burnSeconds: 20
+      cookSeconds: 15
+      warnSeconds: 22.5
+      burnSeconds: 30
       unlockRound: 2
     - id: heo__bong_cai
       name: "Heo x\xE0o b\xF4ng c\u1EA3i"
@@ -575,9 +591,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "Th\u1ECBt heo"
       - "B\xF4ng c\u1EA3i xanh"
-      cookSeconds: 10
-      warnSeconds: 15
-      burnSeconds: 20
+      cookSeconds: 15
+      warnSeconds: 22.5
+      burnSeconds: 30
       unlockRound: 3
     - id: heo__ot_chuong
       name: "Heo x\xE0o \u1EDBt chu\xF4ng"
@@ -591,9 +607,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "Th\u1ECBt heo"
       - "\u1EDAt chu\xF4ng"
-      cookSeconds: 10
-      warnSeconds: 15
-      burnSeconds: 20
+      cookSeconds: 15
+      warnSeconds: 22.5
+      burnSeconds: 30
       unlockRound: 3
     - id: heo__bi_do
       name: "Heo x\xE0o b\xED \u0111\u1ECF"
@@ -607,9 +623,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "Th\u1ECBt heo"
       - "B\xED \u0111\u1ECF"
-      cookSeconds: 10
-      warnSeconds: 15
-      burnSeconds: 20
+      cookSeconds: 15
+      warnSeconds: 22.5
+      burnSeconds: 30
       unlockRound: 4
     - id: heo__mang_tay
       name: "Heo x\xE0o m\u0103ng t\xE2y"
@@ -623,9 +639,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "Th\u1ECBt heo"
       - "M\u0103ng t\xE2y"
-      cookSeconds: 10
-      warnSeconds: 15
-      burnSeconds: 20
+      cookSeconds: 15
+      warnSeconds: 22.5
+      burnSeconds: 30
       unlockRound: 4
     - id: heo__nam_dong_co
       name: "Heo x\xE0o n\u1EA5m \u0111\xF4ng c\xF4"
@@ -639,9 +655,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "Th\u1ECBt heo"
       - "N\u1EA5m \u0111\xF4ng c\xF4"
-      cookSeconds: 10
-      warnSeconds: 15
-      burnSeconds: 20
+      cookSeconds: 15
+      warnSeconds: 22.5
+      burnSeconds: 30
       unlockRound: 4
     - id: dau_phu__ca_chua
       name: "\u0110\u1EADu ph\u1EE5 s\u1ED1t c\xE0 chua"
@@ -655,9 +671,9 @@ MonoBehaviour:
       - "C\xE0 chua"
       - "\u0110\u1EADu ph\u1EE5"
       - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 12
-      warnSeconds: 18
-      burnSeconds: 24
+      cookSeconds: 18
+      warnSeconds: 27
+      burnSeconds: 36
       unlockRound: 1
     - id: dau_phu__hanh_tay
       name: "\u0110\u1EADu ph\u1EE5 s\u1ED1t h\xE0nh t\xE2y"
@@ -671,9 +687,9 @@ MonoBehaviour:
       - "H\xE0nh t\xE2y"
       - "\u0110\u1EADu ph\u1EE5"
       - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 12
-      warnSeconds: 18
-      burnSeconds: 24
+      cookSeconds: 18
+      warnSeconds: 27
+      burnSeconds: 36
       unlockRound: 1
     - id: dau_phu__rau_muong
       name: "\u0110\u1EADu ph\u1EE5 s\u1ED1t rau mu\u1ED1ng"
@@ -687,9 +703,9 @@ MonoBehaviour:
       - "Rau mu\u1ED1ng"
       - "\u0110\u1EADu ph\u1EE5"
       - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 12
-      warnSeconds: 18
-      burnSeconds: 24
+      cookSeconds: 18
+      warnSeconds: 27
+      burnSeconds: 36
       unlockRound: 1
     - id: dau_phu__khoai_tay
       name: "\u0110\u1EADu ph\u1EE5 s\u1ED1t khoai t\xE2y"
@@ -703,9 +719,9 @@ MonoBehaviour:
       - "Khoai t\xE2y"
       - "\u0110\u1EADu ph\u1EE5"
       - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 12
-      warnSeconds: 18
-      burnSeconds: 24
+      cookSeconds: 18
+      warnSeconds: 27
+      burnSeconds: 36
       unlockRound: 2
     - id: dau_phu__nam_rom
       name: "\u0110\u1EADu ph\u1EE5 s\u1ED1t n\u1EA5m r\u01A1m"
@@ -719,9 +735,9 @@ MonoBehaviour:
       - "N\u1EA5m r\u01A1m"
       - "\u0110\u1EADu ph\u1EE5"
       - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 12
-      warnSeconds: 18
-      burnSeconds: 24
+      cookSeconds: 18
+      warnSeconds: 27
+      burnSeconds: 36
       unlockRound: 2
     - id: dau_phu__bong_cai
       name: "\u0110\u1EADu ph\u1EE5 s\u1ED1t b\xF4ng c\u1EA3i"
@@ -735,9 +751,9 @@ MonoBehaviour:
       - "B\xF4ng c\u1EA3i xanh"
       - "\u0110\u1EADu ph\u1EE5"
       - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 12
-      warnSeconds: 18
-      burnSeconds: 24
+      cookSeconds: 18
+      warnSeconds: 27
+      burnSeconds: 36
       unlockRound: 3
     - id: dau_phu__ot_chuong
       name: "\u0110\u1EADu ph\u1EE5 s\u1ED1t \u1EDBt chu\xF4ng"
@@ -751,9 +767,9 @@ MonoBehaviour:
       - "\u1EDAt chu\xF4ng"
       - "\u0110\u1EADu ph\u1EE5"
       - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 12
-      warnSeconds: 18
-      burnSeconds: 24
+      cookSeconds: 18
+      warnSeconds: 27
+      burnSeconds: 36
       unlockRound: 3
     - id: dau_phu__bi_do
       name: "\u0110\u1EADu ph\u1EE5 s\u1ED1t b\xED \u0111\u1ECF"
@@ -767,9 +783,9 @@ MonoBehaviour:
       - "B\xED \u0111\u1ECF"
       - "\u0110\u1EADu ph\u1EE5"
       - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 12
-      warnSeconds: 18
-      burnSeconds: 24
+      cookSeconds: 18
+      warnSeconds: 27
+      burnSeconds: 36
       unlockRound: 4
     - id: dau_phu__mang_tay
       name: "\u0110\u1EADu ph\u1EE5 s\u1ED1t m\u0103ng t\xE2y"
@@ -783,9 +799,9 @@ MonoBehaviour:
       - "M\u0103ng t\xE2y"
       - "\u0110\u1EADu ph\u1EE5"
       - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 12
-      warnSeconds: 18
-      burnSeconds: 24
+      cookSeconds: 18
+      warnSeconds: 27
+      burnSeconds: 36
       unlockRound: 4
     - id: dau_phu__nam_dong_co
       name: "\u0110\u1EADu ph\u1EE5 s\u1ED1t n\u1EA5m \u0111\xF4ng c\xF4"
@@ -799,9 +815,9 @@ MonoBehaviour:
       - "N\u1EA5m \u0111\xF4ng c\xF4"
       - "\u0110\u1EADu ph\u1EE5"
       - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 12
-      warnSeconds: 18
-      burnSeconds: 24
+      cookSeconds: 18
+      warnSeconds: 27
+      burnSeconds: 36
       unlockRound: 4
     - id: bo__ca_chua
       name: "M\xEC \xDD b\xF2 s\u1ED1t c\xE0 chua"
@@ -815,9 +831,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "Th\u1ECBt b\xF2"
       - "C\xE0 chua"
-      cookSeconds: 10
-      warnSeconds: 15
-      burnSeconds: 20
+      cookSeconds: 15
+      warnSeconds: 22.5
+      burnSeconds: 30
       unlockRound: 2
     - id: bo__hanh_tay
       name: "M\xEC \xDD b\xF2 x\xE0o h\xE0nh t\xE2y"
@@ -831,9 +847,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "Th\u1ECBt b\xF2"
       - "H\xE0nh t\xE2y"
-      cookSeconds: 10
-      warnSeconds: 15
-      burnSeconds: 20
+      cookSeconds: 15
+      warnSeconds: 22.5
+      burnSeconds: 30
       unlockRound: 2
     - id: bo__rau_muong
       name: "M\xEC \xDD b\xF2 x\xE0o rau mu\u1ED1ng"
@@ -847,9 +863,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "Th\u1ECBt b\xF2"
       - "Rau mu\u1ED1ng"
-      cookSeconds: 10
-      warnSeconds: 15
-      burnSeconds: 20
+      cookSeconds: 15
+      warnSeconds: 22.5
+      burnSeconds: 30
       unlockRound: 2
     - id: bo__khoai_tay
       name: "M\xEC \xDD b\xF2 x\xE0o khoai t\xE2y"
@@ -863,9 +879,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "Th\u1ECBt b\xF2"
       - "Khoai t\xE2y"
-      cookSeconds: 10
-      warnSeconds: 15
-      burnSeconds: 20
+      cookSeconds: 15
+      warnSeconds: 22.5
+      burnSeconds: 30
       unlockRound: 2
     - id: bo__nam_rom
       name: "M\xEC \xDD b\xF2 x\xE0o n\u1EA5m r\u01A1m"
@@ -879,9 +895,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "Th\u1ECBt b\xF2"
       - "N\u1EA5m r\u01A1m"
-      cookSeconds: 10
-      warnSeconds: 15
-      burnSeconds: 20
+      cookSeconds: 15
+      warnSeconds: 22.5
+      burnSeconds: 30
       unlockRound: 2
     - id: bo__bong_cai
       name: "M\xEC \xDD b\xF2 x\xE0o b\xF4ng c\u1EA3i"
@@ -895,9 +911,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "Th\u1ECBt b\xF2"
       - "B\xF4ng c\u1EA3i xanh"
-      cookSeconds: 10
-      warnSeconds: 15
-      burnSeconds: 20
+      cookSeconds: 15
+      warnSeconds: 22.5
+      burnSeconds: 30
       unlockRound: 3
     - id: bo__ot_chuong
       name: "M\xEC \xDD b\xF2 x\xE0o \u1EDBt chu\xF4ng"
@@ -911,9 +927,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "Th\u1ECBt b\xF2"
       - "\u1EDAt chu\xF4ng"
-      cookSeconds: 10
-      warnSeconds: 15
-      burnSeconds: 20
+      cookSeconds: 15
+      warnSeconds: 22.5
+      burnSeconds: 30
       unlockRound: 3
     - id: bo__bi_do
       name: "M\xEC \xDD b\xF2 x\xE0o b\xED \u0111\u1ECF"
@@ -927,9 +943,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "Th\u1ECBt b\xF2"
       - "B\xED \u0111\u1ECF"
-      cookSeconds: 10
-      warnSeconds: 15
-      burnSeconds: 20
+      cookSeconds: 15
+      warnSeconds: 22.5
+      burnSeconds: 30
       unlockRound: 4
     - id: bo__mang_tay
       name: "M\xEC \xDD b\xF2 x\xE0o m\u0103ng t\xE2y"
@@ -943,9 +959,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "Th\u1ECBt b\xF2"
       - "M\u0103ng t\xE2y"
-      cookSeconds: 10
-      warnSeconds: 15
-      burnSeconds: 20
+      cookSeconds: 15
+      warnSeconds: 22.5
+      burnSeconds: 30
       unlockRound: 4
     - id: bo__nam_dong_co
       name: "M\xEC \xDD b\xF2 x\xE0o n\u1EA5m \u0111\xF4ng c\xF4"
@@ -959,9 +975,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "Th\u1ECBt b\xF2"
       - "N\u1EA5m \u0111\xF4ng c\xF4"
-      cookSeconds: 10
-      warnSeconds: 15
-      burnSeconds: 20
+      cookSeconds: 15
+      warnSeconds: 22.5
+      burnSeconds: 30
       unlockRound: 4
     - id: tom__ca_chua
       name: "B\xFAn x\xE0o t\xF4m c\xE0 chua"
@@ -975,9 +991,9 @@ MonoBehaviour:
       - "T\xF4m"
       - "C\xE0 chua"
       - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 10
-      warnSeconds: 15
-      burnSeconds: 20
+      cookSeconds: 15
+      warnSeconds: 22.5
+      burnSeconds: 30
       unlockRound: 2
     - id: tom__hanh_tay
       name: "B\xFAn x\xE0o t\xF4m h\xE0nh t\xE2y"
@@ -991,9 +1007,9 @@ MonoBehaviour:
       - "T\xF4m"
       - "H\xE0nh t\xE2y"
       - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 10
-      warnSeconds: 15
-      burnSeconds: 20
+      cookSeconds: 15
+      warnSeconds: 22.5
+      burnSeconds: 30
       unlockRound: 2
     - id: tom__rau_muong
       name: "B\xFAn x\xE0o t\xF4m rau mu\u1ED1ng"
@@ -1007,9 +1023,9 @@ MonoBehaviour:
       - "T\xF4m"
       - "Rau mu\u1ED1ng"
       - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 10
-      warnSeconds: 15
-      burnSeconds: 20
+      cookSeconds: 15
+      warnSeconds: 22.5
+      burnSeconds: 30
       unlockRound: 2
     - id: tom__khoai_tay
       name: "B\xFAn x\xE0o t\xF4m khoai t\xE2y"
@@ -1023,9 +1039,9 @@ MonoBehaviour:
       - "T\xF4m"
       - "Khoai t\xE2y"
       - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 10
-      warnSeconds: 15
-      burnSeconds: 20
+      cookSeconds: 15
+      warnSeconds: 22.5
+      burnSeconds: 30
       unlockRound: 2
     - id: tom__nam_rom
       name: "B\xFAn x\xE0o t\xF4m n\u1EA5m r\u01A1m"
@@ -1039,9 +1055,9 @@ MonoBehaviour:
       - "T\xF4m"
       - "N\u1EA5m r\u01A1m"
       - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 10
-      warnSeconds: 15
-      burnSeconds: 20
+      cookSeconds: 15
+      warnSeconds: 22.5
+      burnSeconds: 30
       unlockRound: 2
     - id: tom__bong_cai
       name: "B\xFAn x\xE0o t\xF4m b\xF4ng c\u1EA3i"
@@ -1055,9 +1071,9 @@ MonoBehaviour:
       - "T\xF4m"
       - "B\xF4ng c\u1EA3i xanh"
       - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 10
-      warnSeconds: 15
-      burnSeconds: 20
+      cookSeconds: 15
+      warnSeconds: 22.5
+      burnSeconds: 30
       unlockRound: 3
     - id: tom__ot_chuong
       name: "B\xFAn x\xE0o t\xF4m \u1EDBt chu\xF4ng"
@@ -1071,9 +1087,9 @@ MonoBehaviour:
       - "T\xF4m"
       - "\u1EDAt chu\xF4ng"
       - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 10
-      warnSeconds: 15
-      burnSeconds: 20
+      cookSeconds: 15
+      warnSeconds: 22.5
+      burnSeconds: 30
       unlockRound: 3
     - id: tom__bi_do
       name: "B\xFAn x\xE0o t\xF4m b\xED \u0111\u1ECF"
@@ -1087,9 +1103,9 @@ MonoBehaviour:
       - "T\xF4m"
       - "B\xED \u0111\u1ECF"
       - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 10
-      warnSeconds: 15
-      burnSeconds: 20
+      cookSeconds: 15
+      warnSeconds: 22.5
+      burnSeconds: 30
       unlockRound: 4
     - id: tom__mang_tay
       name: "B\xFAn x\xE0o t\xF4m m\u0103ng t\xE2y"
@@ -1103,9 +1119,9 @@ MonoBehaviour:
       - "T\xF4m"
       - "M\u0103ng t\xE2y"
       - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 10
-      warnSeconds: 15
-      burnSeconds: 20
+      cookSeconds: 15
+      warnSeconds: 22.5
+      burnSeconds: 30
       unlockRound: 4
     - id: tom__nam_dong_co
       name: "B\xFAn x\xE0o t\xF4m n\u1EA5m \u0111\xF4ng c\xF4"
@@ -1119,9 +1135,9 @@ MonoBehaviour:
       - "T\xF4m"
       - "N\u1EA5m \u0111\xF4ng c\xF4"
       - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 10
-      warnSeconds: 15
-      burnSeconds: 20
+      cookSeconds: 15
+      warnSeconds: 22.5
+      burnSeconds: 30
       unlockRound: 4
     - id: ca_hoi__ca_chua
       name: "C\xE1 h\u1ED3i \xE1p ch\u1EA3o c\xE0 chua"
@@ -1135,9 +1151,9 @@ MonoBehaviour:
       - "C\xE1 h\u1ED3i"
       - "C\xE0 chua"
       - "Mu\u1ED1i"
-      cookSeconds: 14
-      warnSeconds: 21
-      burnSeconds: 28
+      cookSeconds: 21
+      warnSeconds: 31.5
+      burnSeconds: 42
       unlockRound: 3
     - id: ca_hoi__hanh_tay
       name: "C\xE1 h\u1ED3i \xE1p ch\u1EA3o h\xE0nh t\xE2y"
@@ -1151,9 +1167,9 @@ MonoBehaviour:
       - "C\xE1 h\u1ED3i"
       - "H\xE0nh t\xE2y"
       - "Mu\u1ED1i"
-      cookSeconds: 14
-      warnSeconds: 21
-      burnSeconds: 28
+      cookSeconds: 21
+      warnSeconds: 31.5
+      burnSeconds: 42
       unlockRound: 3
     - id: ca_hoi__rau_muong
       name: "C\xE1 h\u1ED3i \xE1p ch\u1EA3o rau mu\u1ED1ng"
@@ -1167,9 +1183,9 @@ MonoBehaviour:
       - "C\xE1 h\u1ED3i"
       - "Rau mu\u1ED1ng"
       - "Mu\u1ED1i"
-      cookSeconds: 14
-      warnSeconds: 21
-      burnSeconds: 28
+      cookSeconds: 21
+      warnSeconds: 31.5
+      burnSeconds: 42
       unlockRound: 3
     - id: ca_hoi__khoai_tay
       name: "C\xE1 h\u1ED3i \xE1p ch\u1EA3o khoai t\xE2y"
@@ -1183,9 +1199,9 @@ MonoBehaviour:
       - "C\xE1 h\u1ED3i"
       - "Khoai t\xE2y"
       - "Mu\u1ED1i"
-      cookSeconds: 14
-      warnSeconds: 21
-      burnSeconds: 28
+      cookSeconds: 21
+      warnSeconds: 31.5
+      burnSeconds: 42
       unlockRound: 3
     - id: ca_hoi__nam_rom
       name: "C\xE1 h\u1ED3i \xE1p ch\u1EA3o n\u1EA5m r\u01A1m"
@@ -1199,9 +1215,9 @@ MonoBehaviour:
       - "C\xE1 h\u1ED3i"
       - "N\u1EA5m r\u01A1m"
       - "Mu\u1ED1i"
-      cookSeconds: 14
-      warnSeconds: 21
-      burnSeconds: 28
+      cookSeconds: 21
+      warnSeconds: 31.5
+      burnSeconds: 42
       unlockRound: 3
     - id: ca_hoi__bong_cai
       name: "C\xE1 h\u1ED3i \xE1p ch\u1EA3o b\xF4ng c\u1EA3i"
@@ -1215,9 +1231,9 @@ MonoBehaviour:
       - "C\xE1 h\u1ED3i"
       - "B\xF4ng c\u1EA3i xanh"
       - "Mu\u1ED1i"
-      cookSeconds: 14
-      warnSeconds: 21
-      burnSeconds: 28
+      cookSeconds: 21
+      warnSeconds: 31.5
+      burnSeconds: 42
       unlockRound: 3
     - id: ca_hoi__ot_chuong
       name: "C\xE1 h\u1ED3i \xE1p ch\u1EA3o \u1EDBt chu\xF4ng"
@@ -1231,9 +1247,9 @@ MonoBehaviour:
       - "C\xE1 h\u1ED3i"
       - "\u1EDAt chu\xF4ng"
       - "Mu\u1ED1i"
-      cookSeconds: 14
-      warnSeconds: 21
-      burnSeconds: 28
+      cookSeconds: 21
+      warnSeconds: 31.5
+      burnSeconds: 42
       unlockRound: 3
     - id: ca_hoi__bi_do
       name: "C\xE1 h\u1ED3i \xE1p ch\u1EA3o b\xED \u0111\u1ECF"
@@ -1247,9 +1263,9 @@ MonoBehaviour:
       - "C\xE1 h\u1ED3i"
       - "B\xED \u0111\u1ECF"
       - "Mu\u1ED1i"
-      cookSeconds: 14
-      warnSeconds: 21
-      burnSeconds: 28
+      cookSeconds: 21
+      warnSeconds: 31.5
+      burnSeconds: 42
       unlockRound: 4
     - id: ca_hoi__mang_tay
       name: "C\xE1 h\u1ED3i \xE1p ch\u1EA3o m\u0103ng t\xE2y"
@@ -1263,9 +1279,9 @@ MonoBehaviour:
       - "C\xE1 h\u1ED3i"
       - "M\u0103ng t\xE2y"
       - "Mu\u1ED1i"
-      cookSeconds: 14
-      warnSeconds: 21
-      burnSeconds: 28
+      cookSeconds: 21
+      warnSeconds: 31.5
+      burnSeconds: 42
       unlockRound: 4
     - id: ca_hoi__nam_dong_co
       name: "C\xE1 h\u1ED3i \xE1p ch\u1EA3o n\u1EA5m \u0111\xF4ng c\xF4"
@@ -1279,9 +1295,9 @@ MonoBehaviour:
       - "C\xE1 h\u1ED3i"
       - "N\u1EA5m \u0111\xF4ng c\xF4"
       - "Mu\u1ED1i"
-      cookSeconds: 14
-      warnSeconds: 21
-      burnSeconds: 28
+      cookSeconds: 21
+      warnSeconds: 31.5
+      burnSeconds: 42
       unlockRound: 4
     - id: muc__ca_chua
       name: "M\u1EF1c x\xE0o c\xE0 chua"
@@ -1295,9 +1311,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "M\u1EF1c"
       - "C\xE0 chua"
-      cookSeconds: 8
-      warnSeconds: 12
-      burnSeconds: 16
+      cookSeconds: 12
+      warnSeconds: 18
+      burnSeconds: 24
       unlockRound: 3
     - id: muc__hanh_tay
       name: "M\u1EF1c x\xE0o h\xE0nh t\xE2y"
@@ -1311,9 +1327,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "M\u1EF1c"
       - "H\xE0nh t\xE2y"
-      cookSeconds: 8
-      warnSeconds: 12
-      burnSeconds: 16
+      cookSeconds: 12
+      warnSeconds: 18
+      burnSeconds: 24
       unlockRound: 3
     - id: muc__rau_muong
       name: "M\u1EF1c x\xE0o rau mu\u1ED1ng"
@@ -1327,9 +1343,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "M\u1EF1c"
       - "Rau mu\u1ED1ng"
-      cookSeconds: 8
-      warnSeconds: 12
-      burnSeconds: 16
+      cookSeconds: 12
+      warnSeconds: 18
+      burnSeconds: 24
       unlockRound: 3
     - id: muc__khoai_tay
       name: "M\u1EF1c x\xE0o khoai t\xE2y"
@@ -1343,9 +1359,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "M\u1EF1c"
       - "Khoai t\xE2y"
-      cookSeconds: 8
-      warnSeconds: 12
-      burnSeconds: 16
+      cookSeconds: 12
+      warnSeconds: 18
+      burnSeconds: 24
       unlockRound: 3
     - id: muc__nam_rom
       name: "M\u1EF1c x\xE0o n\u1EA5m r\u01A1m"
@@ -1359,9 +1375,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "M\u1EF1c"
       - "N\u1EA5m r\u01A1m"
-      cookSeconds: 8
-      warnSeconds: 12
-      burnSeconds: 16
+      cookSeconds: 12
+      warnSeconds: 18
+      burnSeconds: 24
       unlockRound: 3
     - id: muc__bong_cai
       name: "M\u1EF1c x\xE0o b\xF4ng c\u1EA3i"
@@ -1375,9 +1391,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "M\u1EF1c"
       - "B\xF4ng c\u1EA3i xanh"
-      cookSeconds: 8
-      warnSeconds: 12
-      burnSeconds: 16
+      cookSeconds: 12
+      warnSeconds: 18
+      burnSeconds: 24
       unlockRound: 3
     - id: muc__ot_chuong
       name: "M\u1EF1c x\xE0o \u1EDBt chu\xF4ng"
@@ -1391,9 +1407,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "M\u1EF1c"
       - "\u1EDAt chu\xF4ng"
-      cookSeconds: 8
-      warnSeconds: 12
-      burnSeconds: 16
+      cookSeconds: 12
+      warnSeconds: 18
+      burnSeconds: 24
       unlockRound: 3
     - id: muc__bi_do
       name: "M\u1EF1c x\xE0o b\xED \u0111\u1ECF"
@@ -1407,9 +1423,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "M\u1EF1c"
       - "B\xED \u0111\u1ECF"
-      cookSeconds: 8
-      warnSeconds: 12
-      burnSeconds: 16
+      cookSeconds: 12
+      warnSeconds: 18
+      burnSeconds: 24
       unlockRound: 4
     - id: muc__mang_tay
       name: "M\u1EF1c x\xE0o m\u0103ng t\xE2y"
@@ -1423,9 +1439,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "M\u1EF1c"
       - "M\u0103ng t\xE2y"
-      cookSeconds: 8
-      warnSeconds: 12
-      burnSeconds: 16
+      cookSeconds: 12
+      warnSeconds: 18
+      burnSeconds: 24
       unlockRound: 4
     - id: muc__nam_dong_co
       name: "M\u1EF1c x\xE0o n\u1EA5m \u0111\xF4ng c\xF4"
@@ -1439,9 +1455,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "M\u1EF1c"
       - "N\u1EA5m \u0111\xF4ng c\xF4"
-      cookSeconds: 8
-      warnSeconds: 12
-      burnSeconds: 16
+      cookSeconds: 12
+      warnSeconds: 18
+      burnSeconds: 24
       unlockRound: 4
     - id: ga__ca_chua
       name: "G\xE0 n\u01B0\u1EDBng m\u1EADt ong c\xE0 chua"
@@ -1454,9 +1470,9 @@ MonoBehaviour:
       - "M\u1EADt ong"
       - "G\xE0 ta"
       - "C\xE0 chua"
-      cookSeconds: 18
-      warnSeconds: 27
-      burnSeconds: 36
+      cookSeconds: 27
+      warnSeconds: 40.5
+      burnSeconds: 54
       unlockRound: 4
     - id: ga__hanh_tay
       name: "G\xE0 n\u01B0\u1EDBng m\u1EADt ong h\xE0nh t\xE2y"
@@ -1469,9 +1485,9 @@ MonoBehaviour:
       - "M\u1EADt ong"
       - "G\xE0 ta"
       - "H\xE0nh t\xE2y"
-      cookSeconds: 18
-      warnSeconds: 27
-      burnSeconds: 36
+      cookSeconds: 27
+      warnSeconds: 40.5
+      burnSeconds: 54
       unlockRound: 4
     - id: ga__rau_muong
       name: "G\xE0 n\u01B0\u1EDBng m\u1EADt ong rau mu\u1ED1ng"
@@ -1484,9 +1500,9 @@ MonoBehaviour:
       - "M\u1EADt ong"
       - "G\xE0 ta"
       - "Rau mu\u1ED1ng"
-      cookSeconds: 18
-      warnSeconds: 27
-      burnSeconds: 36
+      cookSeconds: 27
+      warnSeconds: 40.5
+      burnSeconds: 54
       unlockRound: 4
     - id: ga__khoai_tay
       name: "G\xE0 n\u01B0\u1EDBng m\u1EADt ong khoai t\xE2y"
@@ -1499,9 +1515,9 @@ MonoBehaviour:
       - "M\u1EADt ong"
       - "G\xE0 ta"
       - "Khoai t\xE2y"
-      cookSeconds: 18
-      warnSeconds: 27
-      burnSeconds: 36
+      cookSeconds: 27
+      warnSeconds: 40.5
+      burnSeconds: 54
       unlockRound: 4
     - id: ga__nam_rom
       name: "G\xE0 n\u01B0\u1EDBng m\u1EADt ong n\u1EA5m r\u01A1m"
@@ -1514,9 +1530,9 @@ MonoBehaviour:
       - "M\u1EADt ong"
       - "G\xE0 ta"
       - "N\u1EA5m r\u01A1m"
-      cookSeconds: 18
-      warnSeconds: 27
-      burnSeconds: 36
+      cookSeconds: 27
+      warnSeconds: 40.5
+      burnSeconds: 54
       unlockRound: 4
     - id: ga__bong_cai
       name: "G\xE0 n\u01B0\u1EDBng m\u1EADt ong b\xF4ng c\u1EA3i"
@@ -1529,9 +1545,9 @@ MonoBehaviour:
       - "M\u1EADt ong"
       - "G\xE0 ta"
       - "B\xF4ng c\u1EA3i xanh"
-      cookSeconds: 18
-      warnSeconds: 27
-      burnSeconds: 36
+      cookSeconds: 27
+      warnSeconds: 40.5
+      burnSeconds: 54
       unlockRound: 4
     - id: ga__ot_chuong
       name: "G\xE0 n\u01B0\u1EDBng m\u1EADt ong \u1EDBt chu\xF4ng"
@@ -1544,9 +1560,9 @@ MonoBehaviour:
       - "M\u1EADt ong"
       - "G\xE0 ta"
       - "\u1EDAt chu\xF4ng"
-      cookSeconds: 18
-      warnSeconds: 27
-      burnSeconds: 36
+      cookSeconds: 27
+      warnSeconds: 40.5
+      burnSeconds: 54
       unlockRound: 4
     - id: ga__bi_do
       name: "G\xE0 n\u01B0\u1EDBng m\u1EADt ong b\xED \u0111\u1ECF"
@@ -1559,9 +1575,9 @@ MonoBehaviour:
       - "M\u1EADt ong"
       - "G\xE0 ta"
       - "B\xED \u0111\u1ECF"
-      cookSeconds: 18
-      warnSeconds: 27
-      burnSeconds: 36
+      cookSeconds: 27
+      warnSeconds: 40.5
+      burnSeconds: 54
       unlockRound: 4
     - id: ga__mang_tay
       name: "G\xE0 n\u01B0\u1EDBng m\u1EADt ong m\u0103ng t\xE2y"
@@ -1574,9 +1590,9 @@ MonoBehaviour:
       - "M\u1EADt ong"
       - "G\xE0 ta"
       - "M\u0103ng t\xE2y"
-      cookSeconds: 18
-      warnSeconds: 27
-      burnSeconds: 36
+      cookSeconds: 27
+      warnSeconds: 40.5
+      burnSeconds: 54
       unlockRound: 4
     - id: ga__nam_dong_co
       name: "G\xE0 n\u01B0\u1EDBng m\u1EADt ong n\u1EA5m \u0111\xF4ng c\xF4"
@@ -1589,9 +1605,9 @@ MonoBehaviour:
       - "M\u1EADt ong"
       - "G\xE0 ta"
       - "N\u1EA5m \u0111\xF4ng c\xF4"
-      cookSeconds: 18
-      warnSeconds: 27
-      burnSeconds: 36
+      cookSeconds: 27
+      warnSeconds: 40.5
+      burnSeconds: 54
       unlockRound: 4
     - id: tom_hum__ca_chua
       name: "T\xF4m h\xF9m n\u01B0\u1EDBng b\u01A1 t\u1ECFi c\xE0 chua"
@@ -1605,9 +1621,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "T\xF4m h\xF9m"
       - "C\xE0 chua"
-      cookSeconds: 20
-      warnSeconds: 30
-      burnSeconds: 40
+      cookSeconds: 30
+      warnSeconds: 45
+      burnSeconds: 60
       unlockRound: 1
     - id: tom_hum__hanh_tay
       name: "T\xF4m h\xF9m n\u01B0\u1EDBng b\u01A1 t\u1ECFi h\xE0nh t\xE2y"
@@ -1621,9 +1637,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "T\xF4m h\xF9m"
       - "H\xE0nh t\xE2y"
-      cookSeconds: 20
-      warnSeconds: 30
-      burnSeconds: 40
+      cookSeconds: 30
+      warnSeconds: 45
+      burnSeconds: 60
       unlockRound: 1
     - id: tom_hum__rau_muong
       name: "T\xF4m h\xF9m n\u01B0\u1EDBng b\u01A1 t\u1ECFi rau mu\u1ED1ng"
@@ -1637,9 +1653,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "T\xF4m h\xF9m"
       - "Rau mu\u1ED1ng"
-      cookSeconds: 20
-      warnSeconds: 30
-      burnSeconds: 40
+      cookSeconds: 30
+      warnSeconds: 45
+      burnSeconds: 60
       unlockRound: 1
     - id: tom_hum__khoai_tay
       name: "T\xF4m h\xF9m n\u01B0\u1EDBng b\u01A1 t\u1ECFi khoai t\xE2y"
@@ -1653,9 +1669,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "T\xF4m h\xF9m"
       - "Khoai t\xE2y"
-      cookSeconds: 20
-      warnSeconds: 30
-      burnSeconds: 40
+      cookSeconds: 30
+      warnSeconds: 45
+      burnSeconds: 60
       unlockRound: 2
     - id: tom_hum__nam_rom
       name: "T\xF4m h\xF9m n\u01B0\u1EDBng b\u01A1 t\u1ECFi n\u1EA5m r\u01A1m"
@@ -1669,9 +1685,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "T\xF4m h\xF9m"
       - "N\u1EA5m r\u01A1m"
-      cookSeconds: 20
-      warnSeconds: 30
-      burnSeconds: 40
+      cookSeconds: 30
+      warnSeconds: 45
+      burnSeconds: 60
       unlockRound: 2
     - id: tom_hum__bong_cai
       name: "T\xF4m h\xF9m n\u01B0\u1EDBng b\u01A1 t\u1ECFi b\xF4ng c\u1EA3i"
@@ -1685,9 +1701,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "T\xF4m h\xF9m"
       - "B\xF4ng c\u1EA3i xanh"
-      cookSeconds: 20
-      warnSeconds: 30
-      burnSeconds: 40
+      cookSeconds: 30
+      warnSeconds: 45
+      burnSeconds: 60
       unlockRound: 3
     - id: tom_hum__ot_chuong
       name: "T\xF4m h\xF9m n\u01B0\u1EDBng b\u01A1 t\u1ECFi \u1EDBt chu\xF4ng"
@@ -1701,9 +1717,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "T\xF4m h\xF9m"
       - "\u1EDAt chu\xF4ng"
-      cookSeconds: 20
-      warnSeconds: 30
-      burnSeconds: 40
+      cookSeconds: 30
+      warnSeconds: 45
+      burnSeconds: 60
       unlockRound: 3
     - id: tom_hum__bi_do
       name: "T\xF4m h\xF9m n\u01B0\u1EDBng b\u01A1 t\u1ECFi b\xED \u0111\u1ECF"
@@ -1717,9 +1733,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "T\xF4m h\xF9m"
       - "B\xED \u0111\u1ECF"
-      cookSeconds: 20
-      warnSeconds: 30
-      burnSeconds: 40
+      cookSeconds: 30
+      warnSeconds: 45
+      burnSeconds: 60
       unlockRound: 4
     - id: tom_hum__mang_tay
       name: "T\xF4m h\xF9m n\u01B0\u1EDBng b\u01A1 t\u1ECFi m\u0103ng t\xE2y"
@@ -1733,9 +1749,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "T\xF4m h\xF9m"
       - "M\u0103ng t\xE2y"
-      cookSeconds: 20
-      warnSeconds: 30
-      burnSeconds: 40
+      cookSeconds: 30
+      warnSeconds: 45
+      burnSeconds: 60
       unlockRound: 4
     - id: tom_hum__nam_dong_co
       name: "T\xF4m h\xF9m n\u01B0\u1EDBng b\u01A1 t\u1ECFi n\u1EA5m \u0111\xF4ng c\xF4"
@@ -1749,9 +1765,9 @@ MonoBehaviour:
       - "T\u1ECFi"
       - "T\xF4m h\xF9m"
       - "N\u1EA5m \u0111\xF4ng c\xF4"
-      cookSeconds: 20
-      warnSeconds: 30
-      burnSeconds: 40
+      cookSeconds: 30
+      warnSeconds: 45
+      burnSeconds: 60
       unlockRound: 4
     - id: wagyu__ca_chua
       name: "B\xF2 Wagyu \xE1p ch\u1EA3o c\xE0 chua"
@@ -1765,9 +1781,9 @@ MonoBehaviour:
       - "B\xF2 Wagyu"
       - "B\u01A1"
       - "C\xE0 chua"
-      cookSeconds: 14
-      warnSeconds: 21
-      burnSeconds: 28
+      cookSeconds: 21
+      warnSeconds: 31.5
+      burnSeconds: 42
       unlockRound: 1
     - id: wagyu__hanh_tay
       name: "B\xF2 Wagyu \xE1p ch\u1EA3o h\xE0nh t\xE2y"
@@ -1781,9 +1797,9 @@ MonoBehaviour:
       - "B\xF2 Wagyu"
       - "B\u01A1"
       - "H\xE0nh t\xE2y"
-      cookSeconds: 14
-      warnSeconds: 21
-      burnSeconds: 28
+      cookSeconds: 21
+      warnSeconds: 31.5
+      burnSeconds: 42
       unlockRound: 1
     - id: wagyu__rau_muong
       name: "B\xF2 Wagyu \xE1p ch\u1EA3o rau mu\u1ED1ng"
@@ -1797,9 +1813,9 @@ MonoBehaviour:
       - "B\xF2 Wagyu"
       - "B\u01A1"
       - "Rau mu\u1ED1ng"
-      cookSeconds: 14
-      warnSeconds: 21
-      burnSeconds: 28
+      cookSeconds: 21
+      warnSeconds: 31.5
+      burnSeconds: 42
       unlockRound: 1
     - id: wagyu__khoai_tay
       name: "B\xF2 Wagyu \xE1p ch\u1EA3o khoai t\xE2y"
@@ -1813,9 +1829,9 @@ MonoBehaviour:
       - "B\xF2 Wagyu"
       - "B\u01A1"
       - "Khoai t\xE2y"
-      cookSeconds: 14
-      warnSeconds: 21
-      burnSeconds: 28
+      cookSeconds: 21
+      warnSeconds: 31.5
+      burnSeconds: 42
       unlockRound: 2
     - id: wagyu__nam_rom
       name: "B\xF2 Wagyu \xE1p ch\u1EA3o n\u1EA5m r\u01A1m"
@@ -1829,9 +1845,9 @@ MonoBehaviour:
       - "B\xF2 Wagyu"
       - "B\u01A1"
       - "N\u1EA5m r\u01A1m"
-      cookSeconds: 14
-      warnSeconds: 21
-      burnSeconds: 28
+      cookSeconds: 21
+      warnSeconds: 31.5
+      burnSeconds: 42
       unlockRound: 2
     - id: wagyu__bong_cai
       name: "B\xF2 Wagyu \xE1p ch\u1EA3o b\xF4ng c\u1EA3i"
@@ -1845,9 +1861,9 @@ MonoBehaviour:
       - "B\xF2 Wagyu"
       - "B\u01A1"
       - "B\xF4ng c\u1EA3i xanh"
-      cookSeconds: 14
-      warnSeconds: 21
-      burnSeconds: 28
+      cookSeconds: 21
+      warnSeconds: 31.5
+      burnSeconds: 42
       unlockRound: 3
     - id: wagyu__ot_chuong
       name: "B\xF2 Wagyu \xE1p ch\u1EA3o \u1EDBt chu\xF4ng"
@@ -1861,9 +1877,9 @@ MonoBehaviour:
       - "B\xF2 Wagyu"
       - "B\u01A1"
       - "\u1EDAt chu\xF4ng"
-      cookSeconds: 14
-      warnSeconds: 21
-      burnSeconds: 28
+      cookSeconds: 21
+      warnSeconds: 31.5
+      burnSeconds: 42
       unlockRound: 3
     - id: wagyu__bi_do
       name: "B\xF2 Wagyu \xE1p ch\u1EA3o b\xED \u0111\u1ECF"
@@ -1877,9 +1893,9 @@ MonoBehaviour:
       - "B\xF2 Wagyu"
       - "B\u01A1"
       - "B\xED \u0111\u1ECF"
-      cookSeconds: 14
-      warnSeconds: 21
-      burnSeconds: 28
+      cookSeconds: 21
+      warnSeconds: 31.5
+      burnSeconds: 42
       unlockRound: 4
     - id: wagyu__mang_tay
       name: "B\xF2 Wagyu \xE1p ch\u1EA3o m\u0103ng t\xE2y"
@@ -1893,9 +1909,9 @@ MonoBehaviour:
       - "B\xF2 Wagyu"
       - "B\u01A1"
       - "M\u0103ng t\xE2y"
-      cookSeconds: 14
-      warnSeconds: 21
-      burnSeconds: 28
+      cookSeconds: 21
+      warnSeconds: 31.5
+      burnSeconds: 42
       unlockRound: 4
     - id: wagyu__nam_dong_co
       name: "B\xF2 Wagyu \xE1p ch\u1EA3o n\u1EA5m \u0111\xF4ng c\xF4"
@@ -1909,9 +1925,9 @@ MonoBehaviour:
       - "B\xF2 Wagyu"
       - "B\u01A1"
       - "N\u1EA5m \u0111\xF4ng c\xF4"
-      cookSeconds: 14
-      warnSeconds: 21
-      burnSeconds: 28
+      cookSeconds: 21
+      warnSeconds: 31.5
+      burnSeconds: 42
       unlockRound: 4
     - id: ca_ngu__ca_chua
       name: "C\xE1 ng\u1EEB v\xE2y xanh tataki c\xE0 chua"
@@ -1925,9 +1941,9 @@ MonoBehaviour:
       - "C\xE1 ng\u1EEB v\xE2y xanh"
       - "C\xE0 chua"
       - "N\u01B0\u1EDBc t\u01B0\u01A1ng"
-      cookSeconds: 8
-      warnSeconds: 12
-      burnSeconds: 16
+      cookSeconds: 12
+      warnSeconds: 18
+      burnSeconds: 24
       unlockRound: 1
     - id: ca_ngu__hanh_tay
       name: "C\xE1 ng\u1EEB v\xE2y xanh tataki h\xE0nh t\xE2y"
@@ -1941,9 +1957,9 @@ MonoBehaviour:
       - "C\xE1 ng\u1EEB v\xE2y xanh"
       - "H\xE0nh t\xE2y"
       - "N\u01B0\u1EDBc t\u01B0\u01A1ng"
-      cookSeconds: 8
-      warnSeconds: 12
-      burnSeconds: 16
+      cookSeconds: 12
+      warnSeconds: 18
+      burnSeconds: 24
       unlockRound: 1
     - id: ca_ngu__rau_muong
       name: "C\xE1 ng\u1EEB v\xE2y xanh tataki rau mu\u1ED1ng"
@@ -1957,9 +1973,9 @@ MonoBehaviour:
       - "C\xE1 ng\u1EEB v\xE2y xanh"
       - "Rau mu\u1ED1ng"
       - "N\u01B0\u1EDBc t\u01B0\u01A1ng"
-      cookSeconds: 8
-      warnSeconds: 12
-      burnSeconds: 16
+      cookSeconds: 12
+      warnSeconds: 18
+      burnSeconds: 24
       unlockRound: 1
     - id: ca_ngu__khoai_tay
       name: "C\xE1 ng\u1EEB v\xE2y xanh tataki khoai t\xE2y"
@@ -1973,9 +1989,9 @@ MonoBehaviour:
       - "C\xE1 ng\u1EEB v\xE2y xanh"
       - "Khoai t\xE2y"
       - "N\u01B0\u1EDBc t\u01B0\u01A1ng"
-      cookSeconds: 8
-      warnSeconds: 12
-      burnSeconds: 16
+      cookSeconds: 12
+      warnSeconds: 18
+      burnSeconds: 24
       unlockRound: 2
     - id: ca_ngu__nam_rom
       name: "C\xE1 ng\u1EEB v\xE2y xanh tataki n\u1EA5m r\u01A1m"
@@ -1989,9 +2005,9 @@ MonoBehaviour:
       - "C\xE1 ng\u1EEB v\xE2y xanh"
       - "N\u1EA5m r\u01A1m"
       - "N\u01B0\u1EDBc t\u01B0\u01A1ng"
-      cookSeconds: 8
-      warnSeconds: 12
-      burnSeconds: 16
+      cookSeconds: 12
+      warnSeconds: 18
+      burnSeconds: 24
       unlockRound: 2
     - id: ca_ngu__bong_cai
       name: "C\xE1 ng\u1EEB v\xE2y xanh tataki b\xF4ng c\u1EA3i"
@@ -2005,9 +2021,9 @@ MonoBehaviour:
       - "C\xE1 ng\u1EEB v\xE2y xanh"
       - "B\xF4ng c\u1EA3i xanh"
       - "N\u01B0\u1EDBc t\u01B0\u01A1ng"
-      cookSeconds: 8
-      warnSeconds: 12
-      burnSeconds: 16
+      cookSeconds: 12
+      warnSeconds: 18
+      burnSeconds: 24
       unlockRound: 3
     - id: ca_ngu__ot_chuong
       name: "C\xE1 ng\u1EEB v\xE2y xanh tataki \u1EDBt chu\xF4ng"
@@ -2021,9 +2037,9 @@ MonoBehaviour:
       - "C\xE1 ng\u1EEB v\xE2y xanh"
       - "\u1EDAt chu\xF4ng"
       - "N\u01B0\u1EDBc t\u01B0\u01A1ng"
-      cookSeconds: 8
-      warnSeconds: 12
-      burnSeconds: 16
+      cookSeconds: 12
+      warnSeconds: 18
+      burnSeconds: 24
       unlockRound: 3
     - id: ca_ngu__bi_do
       name: "C\xE1 ng\u1EEB v\xE2y xanh tataki b\xED \u0111\u1ECF"
@@ -2037,9 +2053,9 @@ MonoBehaviour:
       - "C\xE1 ng\u1EEB v\xE2y xanh"
       - "B\xED \u0111\u1ECF"
       - "N\u01B0\u1EDBc t\u01B0\u01A1ng"
-      cookSeconds: 8
-      warnSeconds: 12
-      burnSeconds: 16
+      cookSeconds: 12
+      warnSeconds: 18
+      burnSeconds: 24
       unlockRound: 4
     - id: ca_ngu__mang_tay
       name: "C\xE1 ng\u1EEB v\xE2y xanh tataki m\u0103ng t\xE2y"
@@ -2053,9 +2069,9 @@ MonoBehaviour:
       - "C\xE1 ng\u1EEB v\xE2y xanh"
       - "M\u0103ng t\xE2y"
       - "N\u01B0\u1EDBc t\u01B0\u01A1ng"
-      cookSeconds: 8
-      warnSeconds: 12
-      burnSeconds: 16
+      cookSeconds: 12
+      warnSeconds: 18
+      burnSeconds: 24
       unlockRound: 4
     - id: ca_ngu__nam_dong_co
       name: "C\xE1 ng\u1EEB v\xE2y xanh tataki n\u1EA5m \u0111\xF4ng c\xF4"
@@ -2069,9 +2085,9 @@ MonoBehaviour:
       - "C\xE1 ng\u1EEB v\xE2y xanh"
       - "N\u1EA5m \u0111\xF4ng c\xF4"
       - "N\u01B0\u1EDBc t\u01B0\u01A1ng"
-      cookSeconds: 8
-      warnSeconds: 12
-      burnSeconds: 16
+      cookSeconds: 12
+      warnSeconds: 18
+      burnSeconds: 24
       unlockRound: 4
     - id: cua__ca_chua
       name: "Cua ho\xE0ng \u0111\u1EBF h\u1EA5p c\xE0 chua"
@@ -2085,9 +2101,9 @@ MonoBehaviour:
       - "Cua ho\xE0ng \u0111\u1EBF"
       - "C\xE0 chua"
       - "H\xE0nh l\xE1"
-      cookSeconds: 20
-      warnSeconds: 30
-      burnSeconds: 40
+      cookSeconds: 30
+      warnSeconds: 45
+      burnSeconds: 60
       unlockRound: 1
     - id: cua__hanh_tay
       name: "Cua ho\xE0ng \u0111\u1EBF h\u1EA5p h\xE0nh t\xE2y"
@@ -2101,9 +2117,9 @@ MonoBehaviour:
       - "Cua ho\xE0ng \u0111\u1EBF"
       - "H\xE0nh t\xE2y"
       - "H\xE0nh l\xE1"
-      cookSeconds: 20
-      warnSeconds: 30
-      burnSeconds: 40
+      cookSeconds: 30
+      warnSeconds: 45
+      burnSeconds: 60
       unlockRound: 1
     - id: cua__rau_muong
       name: "Cua ho\xE0ng \u0111\u1EBF h\u1EA5p rau mu\u1ED1ng"
@@ -2117,9 +2133,9 @@ MonoBehaviour:
       - "Cua ho\xE0ng \u0111\u1EBF"
       - "Rau mu\u1ED1ng"
       - "H\xE0nh l\xE1"
-      cookSeconds: 20
-      warnSeconds: 30
-      burnSeconds: 40
+      cookSeconds: 30
+      warnSeconds: 45
+      burnSeconds: 60
       unlockRound: 1
     - id: cua__khoai_tay
       name: "Cua ho\xE0ng \u0111\u1EBF h\u1EA5p khoai t\xE2y"
@@ -2133,9 +2149,9 @@ MonoBehaviour:
       - "Cua ho\xE0ng \u0111\u1EBF"
       - "Khoai t\xE2y"
       - "H\xE0nh l\xE1"
-      cookSeconds: 20
-      warnSeconds: 30
-      burnSeconds: 40
+      cookSeconds: 30
+      warnSeconds: 45
+      burnSeconds: 60
       unlockRound: 2
     - id: cua__nam_rom
       name: "Cua ho\xE0ng \u0111\u1EBF h\u1EA5p n\u1EA5m r\u01A1m"
@@ -2149,9 +2165,9 @@ MonoBehaviour:
       - "Cua ho\xE0ng \u0111\u1EBF"
       - "N\u1EA5m r\u01A1m"
       - "H\xE0nh l\xE1"
-      cookSeconds: 20
-      warnSeconds: 30
-      burnSeconds: 40
+      cookSeconds: 30
+      warnSeconds: 45
+      burnSeconds: 60
       unlockRound: 2
     - id: cua__bong_cai
       name: "Cua ho\xE0ng \u0111\u1EBF h\u1EA5p b\xF4ng c\u1EA3i"
@@ -2165,9 +2181,9 @@ MonoBehaviour:
       - "Cua ho\xE0ng \u0111\u1EBF"
       - "B\xF4ng c\u1EA3i xanh"
       - "H\xE0nh l\xE1"
-      cookSeconds: 20
-      warnSeconds: 30
-      burnSeconds: 40
+      cookSeconds: 30
+      warnSeconds: 45
+      burnSeconds: 60
       unlockRound: 3
     - id: cua__ot_chuong
       name: "Cua ho\xE0ng \u0111\u1EBF h\u1EA5p \u1EDBt chu\xF4ng"
@@ -2181,9 +2197,9 @@ MonoBehaviour:
       - "Cua ho\xE0ng \u0111\u1EBF"
       - "\u1EDAt chu\xF4ng"
       - "H\xE0nh l\xE1"
-      cookSeconds: 20
-      warnSeconds: 30
-      burnSeconds: 40
+      cookSeconds: 30
+      warnSeconds: 45
+      burnSeconds: 60
       unlockRound: 3
     - id: cua__bi_do
       name: "Cua ho\xE0ng \u0111\u1EBF h\u1EA5p b\xED \u0111\u1ECF"
@@ -2197,9 +2213,9 @@ MonoBehaviour:
       - "Cua ho\xE0ng \u0111\u1EBF"
       - "B\xED \u0111\u1ECF"
       - "H\xE0nh l\xE1"
-      cookSeconds: 20
-      warnSeconds: 30
-      burnSeconds: 40
+      cookSeconds: 30
+      warnSeconds: 45
+      burnSeconds: 60
       unlockRound: 4
     - id: cua__mang_tay
       name: "Cua ho\xE0ng \u0111\u1EBF h\u1EA5p m\u0103ng t\xE2y"
@@ -2213,9 +2229,9 @@ MonoBehaviour:
       - "Cua ho\xE0ng \u0111\u1EBF"
       - "M\u0103ng t\xE2y"
       - "H\xE0nh l\xE1"
-      cookSeconds: 20
-      warnSeconds: 30
-      burnSeconds: 40
+      cookSeconds: 30
+      warnSeconds: 45
+      burnSeconds: 60
       unlockRound: 4
     - id: cua__nam_dong_co
       name: "Cua ho\xE0ng \u0111\u1EBF h\u1EA5p n\u1EA5m \u0111\xF4ng c\xF4"
@@ -2229,7 +2245,7 @@ MonoBehaviour:
       - "Cua ho\xE0ng \u0111\u1EBF"
       - "N\u1EA5m \u0111\xF4ng c\xF4"
       - "H\xE0nh l\xE1"
-      cookSeconds: 20
-      warnSeconds: 30
-      burnSeconds: 40
+      cookSeconds: 30
+      warnSeconds: 45
+      burnSeconds: 60
       unlockRound: 4

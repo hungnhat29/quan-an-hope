@@ -1,0 +1,226 @@
+[
+ {
+  "id": "V1",
+  "name": "Bình tưới gỉ",
+  "set": "vuon",
+  "price": 1,
+  "rarity": "thuong",
+  "fx": {
+   "phu_up": 0.15
+  }
+ },
+ {
+  "id": "V2",
+  "name": "Rổ tre bà ngoại",
+  "set": "vuon",
+  "price": 2,
+  "rarity": "thuong",
+  "fx": {
+   "phu_size": 2
+  }
+ },
+ {
+  "id": "V3",
+  "name": "Phân bón bí truyền",
+  "set": "vuon",
+  "price": 2,
+  "rarity": "hiem",
+  "fx": {
+   "phu_reroll0": 1
+  }
+ },
+ {
+  "id": "V4",
+  "name": "Hạt giống vàng",
+  "set": "vuon",
+  "price": 3,
+  "rarity": "hiem",
+  "fx": {
+   "phu_jump4": 0.06
+  }
+ },
+ {
+  "id": "C1",
+  "name": "Dao phay cũ",
+  "set": "cho",
+  "price": 1,
+  "rarity": "thuong",
+  "fx": {
+   "chinh_up": 0.15
+  }
+ },
+ {
+  "id": "C2",
+  "name": "Thùng đá",
+  "set": "cho",
+  "price": 2,
+  "rarity": "thuong",
+  "fx": {
+   "chinh_reroll0": 1
+  }
+ },
+ {
+  "id": "C3",
+  "name": "Mối quen chợ cá",
+  "set": "cho",
+  "price": 2,
+  "rarity": "hiem",
+  "fx": {
+   "chinh_size": 1
+  }
+ },
+ {
+  "id": "C4",
+  "name": "Cân vàng",
+  "set": "cho",
+  "price": 4,
+  "rarity": "hiem",
+  "fx": {
+   "chinh_jump4": 0.08
+  }
+ },
+ {
+  "id": "S1",
+  "name": "Bản đồ hải đảo",
+  "set": "sonhao",
+  "price": 1,
+  "rarity": "thuong",
+  "fx": {
+   "bt_chance": 0.1
+  }
+ },
+ {
+  "id": "S2",
+  "name": "Lưới thép",
+  "set": "sonhao",
+  "price": 2,
+  "rarity": "hiem",
+  "fx": {
+   "bt_chance": 0.08,
+   "bt_t5": 0.2
+  }
+ },
+ {
+  "id": "S3",
+  "name": "Thuyền thuê",
+  "set": "sonhao",
+  "price": 3,
+  "rarity": "hiem",
+  "fx": {
+   "bt_chance": 0.12,
+   "phu_size": -1
+  }
+ },
+ {
+  "id": "S4",
+  "name": "La bàn rồng",
+  "set": "sonhao",
+  "price": 4,
+  "rarity": "huyenthoai",
+  "fx": {
+   "bt_chance": 0.15
+  }
+ },
+ {
+  "id": "F1",
+  "name": "Tủ lạnh 2 cửa",
+  "set": "",
+  "price": 2,
+  "rarity": "hiem",
+  "fx": {
+   "fridge": 2,
+   "no_decay": 1
+  }
+ },
+ {
+  "id": "F2",
+  "name": "Chuông vàng",
+  "set": "",
+  "price": 2,
+  "rarity": "thuong",
+  "fx": {
+   "tip": 0.15
+  }
+ },
+ {
+  "id": "F3",
+  "name": "Đồng hồ cát",
+  "set": "",
+  "price": 1,
+  "rarity": "thuong",
+  "fx": {
+   "patience": 0.4
+  }
+ },
+ {
+  "id": "F4",
+  "name": "Muối hồng",
+  "set": "",
+  "price": 1,
+  "rarity": "thuong",
+  "fx": {
+   "dish_center": 0.15
+  }
+ },
+ {
+  "id": "F5",
+  "name": "Chảo gang bà ngoại",
+  "set": "",
+  "price": 3,
+  "rarity": "hiem",
+  "fx": {
+   "dish_floor": 1
+  }
+ },
+ {
+  "id": "F6",
+  "name": "Tượng mèo vàng",
+  "set": "",
+  "price": 4,
+  "rarity": "thuong",
+  "fx": {
+   "income": 0.08
+  }
+ },
+ {
+  "id": "F7",
+  "name": "Máy pha cà phê xịn",
+  "set": "",
+  "price": 4,
+  "rarity": "thuong",
+  "fx": {
+   "patience": 0.6
+  }
+ },
+ {
+  "id": "F8",
+  "name": "Ớt ma",
+  "set": "",
+  "price": 2,
+  "rarity": "hiem",
+  "fx": {
+   "dish_center": 0.6,
+   "dish_ruin": 0.1
+  }
+ },
+ {
+  "id": "F9",
+  "name": "Hũ sốt cũ",
+  "set": "",
+  "price": 3,
+  "rarity": "hiem",
+  "fx": {
+   "sauce_safe": 0.08
+  }
+ },
+ {
+  "id": "F10",
+  "name": "Vé số cào",
+  "set": "",
+  "price": 1,
+  "rarity": "thuong",
+  "fx": {
+   "ticket_every3": 1
+  }
+ }
+]

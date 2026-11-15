@@ -52,6 +52,9 @@ namespace QuanAnHope.Core
         public string baseName;
         public float cookSeconds;
         public int unlockRound;
+
+        /// <summary>Cach nau (chien, xao, sot, ap chao, nuong, hap; constitution muc 5.9): quyet dinh hinh mon trong dung cu.</summary>
+        public string method;
     }
 
     [Serializable]

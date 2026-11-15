@@ -14,7 +14,7 @@ namespace QuanAnHope.Tests
             return new Stove(new RecipeLookup(TestData.Recipes), new DishFormula(TestData.Balance));
         }
 
-        /// <summary>Trung chien ca chua dung cong thuc: Dau an -> Ca chua -> Trung ga -> Nuoc mam, Chao, 8 giay.</summary>
+        /// <summary>Trung chien ca chua dung cong thuc: Dau an -> Ca chua -> Trung ga -> Nuoc mam, Chao, 12 giay.</summary>
         static void FillTrungChienCaChua(Stove stove)
         {
             Assert.IsTrue(stove.SelectTool("Chảo"));
@@ -49,6 +49,29 @@ namespace QuanAnHope.Tests
             Assert.AreEqual(2, dish.tier, "chinh 1 + phu 1, so ngau nhien 0,5 < 0,8 -> Binh thuong");
             Assert.AreEqual(1, counter.Dishes.Count);
             Assert.AreEqual(StoveState.Empty, stove.State);
+        }
+
+        /// <summary>F-013 AC-6: bep biet ngay tu luc vat num la mon se Lac vi, de hinh trong chao chay xem.</summary>
+        [Test]
+        public void F013_AC6_BietSaiThuTuTuLucBatDauNau()
+        {
+            Stove ok = NewStove();
+            FillTrungChienCaChua(ok);
+            Assert.IsFalse(ok.FollowsRecipe, "chua nau thi chua biet");
+            Assert.IsTrue(ok.Start());
+            Assert.IsTrue(ok.FollowsRecipe);
+
+            Stove wrong = NewStove();
+            wrong.SelectTool("Chảo");
+            wrong.AddIngredient(TestData.Side("ca_chua", 1));   // thieu dau an truoc
+            wrong.AddPantry("Dầu ăn");
+            wrong.AddIngredient(TestData.Main("trung", 1));
+            wrong.AddPantry("Nước mắm");
+            Assert.IsTrue(wrong.Start());
+            Assert.IsFalse(wrong.FollowsRecipe);
+            wrong.Tick(wrong.CookSeconds);
+            Assert.AreEqual(StoveState.Ready, wrong.State);
+            Assert.IsFalse(wrong.FollowsRecipe, "chin roi van biet de ve mon chay");
         }
 
         [Test]
@@ -201,10 +224,10 @@ namespace QuanAnHope.Tests
             Stove stove = NewStove();
             FillTrungChienCaChua(stove);
             Assert.IsTrue(stove.Start());
-            Assert.AreEqual(8f, stove.CookSeconds, 1e-6f);
+            Assert.AreEqual(12f, stove.CookSeconds, 1e-6f, "trung chien 12 giay (constitution 1.4 muc 5.9)");
             Assert.AreEqual(StoveState.Cooking, stove.State);
 
-            stove.Tick(7.9f);
+            stove.Tick(11.9f);
             Dish dish;
             Assert.AreEqual(StoveState.Cooking, stove.State);
             Assert.IsFalse(stove.TryPlate(counter, new FixedRandom(0.5), out dish));
