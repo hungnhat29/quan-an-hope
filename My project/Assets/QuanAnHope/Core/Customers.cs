@@ -85,8 +85,11 @@ namespace QuanAnHope.Core
             return RoundMoney(RawPrice(b, round, dishTier));
         }
 
-        public static PaymentResult Settle(Balance b, int round, int easiness, int dishTier)
+        /// <param name="fx">Relic (Chuong vang: tip x (1 + tip); Tuong meo: tien mon + tip x (1 + income), chi khi khach hai long,
+        /// nhu sim_balance.py pay()). Null = khong co relic.</param>
+        public static PaymentResult Settle(Balance b, int round, int easiness, int dishTier, RelicFx fx = null)
         {
+            if (fx == null) fx = RelicFx.None;
             int required = b.RequiredTierFor(easiness);
             // Huyen thoai tinh nhu Tuyet hao khi so voi yeu cau (muc 6.4: "Huyen thoai cung dat").
             int diff = Math.Min(dishTier, b.dish.maxTier) - required;
@@ -96,9 +99,12 @@ namespace QuanAnHope.Core
             if (diff >= 0)
             {
                 double strictness = 1.0 - easiness / 100.0;
-                double tip = price * strictness * (b.payment.tipBase + (double)b.payment.tipPerTier * diff);
+                double income = 1.0 + fx.Get(RelicKeys.Income);
+                double tip = price * strictness * (b.payment.tipBase + (double)b.payment.tipPerTier * diff)
+                    * (1.0 + fx.Get(RelicKeys.Tip));
                 result.outcome = PaymentOutcome.Satisfied;
-                result.tip = RoundMoney(tip);
+                result.price = RoundMoney(price * income);
+                result.tip = RoundMoney(tip * income);
                 result.amount = result.price + result.tip;
             }
             else if (diff == -1)

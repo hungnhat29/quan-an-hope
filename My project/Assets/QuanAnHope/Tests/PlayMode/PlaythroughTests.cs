@@ -592,7 +592,7 @@ namespace QuanAnHope.PlayTests
         }
 
         /// <summary>Chup man hinh nhu nguoi choi thay (ca HUD). lookAt = null thi giu huong dang nhin.</summary>
-        IEnumerator Shot(string fileName, Vector3? lookAt = null)
+        IEnumerator Shot(string fileName, Vector3? lookAt = null, string sprint = "sprint-2")
         {
             if (lookAt.HasValue) P.LookAt(lookAt.Value);
             yield return null;
@@ -615,7 +615,7 @@ namespace QuanAnHope.PlayTests
             RenderTexture.active = null;
             c.renderMode = RenderMode.ScreenSpaceOverlay;
 
-            string dir = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "docs", "sprint-2", "ui"));
+            string dir = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "docs", sprint, "ui"));
             string path = Path.Combine(dir, fileName);
             Directory.CreateDirectory(Path.GetDirectoryName(path));
             File.WriteAllBytes(path, tex.EncodeToPNG());
@@ -969,6 +969,181 @@ namespace QuanAnHope.PlayTests
             Assert.AreEqual(GamePhase.Lost, S.Phase);
             StringAssert.Contains("Thua rồi", HudText("ManPhu"));
             StringAssert.Contains("100G", HudText("ManPhu"));
+        }
+    
+        // =====================================================================
+        // Sprint 3: cua hang relic Goc 3 (F-020, F-021 AC-4, AC-5) va ruong dot pha (F-022 AC-3)
+        // =====================================================================
+
+        const string Sprint3 = "sprint-3";
+
+        /// <summary>Dung truoc be / gia relic o Goc 3 (truoc hang be, cach tuong 1,6 m), nhin vao, bam.</summary>
+        IEnumerator UseGoc3(string stationId)
+        {
+            Interactable target = g.Room.Station(stationId);
+            Assert.IsNotNull(target, "Khong co tram " + stationId);
+            Transform goc3 = GameObject.Find("NhaHang").transform.Find("Goc3");
+            Vector3 local = goc3.InverseTransformPoint(target.WorldCenter);
+            Vector3 stand = goc3.TransformPoint(new Vector3(Mathf.Clamp(local.x, -1.6f, 2.4f), 0f, 2.35f));
+            stand.y = 0f;
+            yield return WalkTo(stand);
+            P.LookAt(target.WorldCenter);
+            yield return null;
+            P.LookAt(target.WorldCenter);
+            Assert.AreSame(target, P.Focus, "Nhin vao " + target.Id + " nhung tam ngam trung " + (P.Focus != null ? P.Focus.Id : "khong gi"));
+            P.TapPrimary();
+            yield return null;
+        }
+
+        IEnumerator EndDayEarly()
+        {
+            yield return Use("ShopSign");
+            yield return Use("ShopSign");
+            Assert.AreEqual(GamePhase.DayEnd, S.Phase);
+            g.Hud.OverlayButton.onClick.Invoke();
+            yield return null;
+        }
+
+        Vector3 Goc3Point(float x, float z)
+        {
+            Vector3 w = GameObject.Find("NhaHang").transform.Find("Goc3").TransformPoint(new Vector3(x, 0f, z));
+            w.y = 0f;
+            return w;
+        }
+
+        Vector3 PedestalsView()
+        {
+            return g.Room.Station("Relic_1").WorldCenter + new Vector3(0f, -0.35f, 0f);
+        }
+
+        [UnityTest]
+        public IEnumerator F020_Goc3_MuaRelic_TheVaGia_DayThiChonRelicDeBo()
+        {
+            // AC-1: ngay 1 ba be trong, bien "mo tu ngay 2"
+            StringAssert.Contains("mở từ ngày 2", g.Room.ShopSignText);
+            Assert.IsTrue(g.Room.PedestalRelics.All(r => r == null));
+            yield return UseGoc3("Relic_0");
+            StringAssert.Contains("mở từ ngày 2", g.Room.Station("Relic_0").CurrentPrompt);
+            Assert.AreEqual(8, S.Wallet.Count, "ngay 1 khong mua duoc");
+            yield return Shot("goc3_ngay1_be_trong.png", PedestalsView(), Sprint3);
+
+            yield return EndDayEarly();
+            Assert.AreEqual(2, S.Day);
+
+            // AC-2, AC-6: 3 relic khac nhau tren be, the ghi ten / gia / do hiem / hieu ung
+            Assert.AreEqual(3, S.Shop.Offers.Select(o => o.id).Distinct().Count());
+            for (int i = 0; i < 3; i++)
+            {
+                RelicDef o = S.Shop.Offers[i];
+                Assert.IsNotNull(g.Room.PedestalRelics[i], "be " + i + " co relic 3D");
+                RelicCard card = g.Room.Cards[i];
+                Assert.AreEqual(o.name, card.Title);
+                StringAssert.Contains(o.price + " vé", card.Meta);
+                StringAssert.Contains(RelicKeys.RarityName(o.rarity), card.Meta);
+                StringAssert.Contains(RelicText.Effect(o), card.EffectText);
+                Assert.AreEqual(RelicArt.RarityColor(o.rarity), card.FrameColor, "vien the theo do hiem");
+            }
+            yield return WalkTo(Goc3Point(1.15f, 1.3f));
+            yield return Shot("goc3_ngay2_ba_be.png", PedestalsView(), Sprint3);
+
+            // AC-3: bam mua relic re nhat
+            int slot = Enumerable.Range(0, 3).OrderBy(i => S.Shop.Offers[i].price).First();
+            RelicDef buy = S.Shop.Offers[slot];
+            int tickets = S.Wallet.Count;
+            Interactable be = g.Room.Station("Relic_" + slot);
+            StringAssert.Contains("Mua · " + buy.price + " vé (còn " + tickets + ")", be.CurrentPrompt);
+            yield return UseGoc3("Relic_" + slot);
+            Assert.AreEqual(tickets - buy.price, S.Wallet.Count, "tru dung so ve");
+            Assert.IsTrue(S.Relics.Has(buy.id));
+            Assert.IsNull(g.Room.PedestalRelics[slot], "be trong toi het ngay");
+            StringAssert.Contains("đã bán", be.CurrentPrompt);
+            Assert.IsNotNull(g.Room.ShelfRelics[0], "relic len o dau cua gia");
+            for (float t = 0f; t < 1.2f; t += Time.deltaTime) yield return null; // bay tu be len gia 0,7 giay
+            Assert.IsNull(g.Room.ShelfRelics[0].GetComponent<RelicFly>(), "bay xong");
+            Assert.Less(g.Room.ShelfRelics[0].transform.localPosition.magnitude, 1e-4f, "nam dung o dau cua gia");
+            StringAssert.Contains("Giá relic 1/8", g.Room.ShelfHeaderText);
+            if (!string.IsNullOrEmpty(buy.set)) StringAssert.Contains(RelicKeys.SetName(buy.set) + " 1/4", g.Room.ShelfHeaderText);
+            yield return null;
+            yield return Shot("goc3_vua_mua.png", PedestalsView(), Sprint3);
+
+            // AC-4 (F-021): gia ghi tien do bo
+            foreach (string id in new[] { "C1", "C2" }) if (!S.Relics.Has(id)) g.DebugGiveRelic(id);
+            StringAssert.Contains("Chợ Sớm " + S.Relics.CountInSet("cho") + "/4", g.Room.ShelfHeaderText);
+            // F-021 AC-5: bang ti le Goc 2 hien tac dung relic (Dao phay + Thung da + thuong bo 2)
+            StringAssert.Contains("Có relic", g.Room.OddsHeaderText);
+            StringAssert.Contains("Chính", g.Room.OddsCellText(1));
+            yield return Use("Kiosk");
+            yield return Shot("goc2_bang_ti_le_co_relic.png", GameObject.Find("BangTiLe").transform.position, Sprint3);
+
+            // AC-4: thieu ve
+            while (S.Wallet.Count > 0) S.Wallet.TrySpend();
+            int other = Enumerable.Range(0, 3).First(i => S.Shop.Offers[i] != null);
+            yield return UseGoc3("Relic_" + other);
+            StringAssert.Contains("thiếu " + S.Shop.Offers[other].price + " vé", g.Room.Station("Relic_" + other).CurrentPrompt);
+            StringAssert.Contains("Thiếu", g.Toast);
+            Assert.IsFalse(S.Relics.Has(S.Shop.Offers[other].id));
+
+            // AC-5: day 8 -> bam be thi phai chon relic tren gia de bo; huy thi khong mua
+            foreach (RelicDef r in S.Balance.relics)
+            {
+                if (S.Relics.IsFull) break;
+                if (!S.Relics.Has(r.id) && !S.Shop.Offers.Contains(r)) g.DebugGiveRelic(r.id);
+            }
+            Assert.IsTrue(S.Relics.IsFull);
+            for (int i = 0; i < 20; i++) S.Wallet.BeginDay(2);
+            g.Room.Refresh();
+            tickets = S.Wallet.Count;
+            RelicDef want = S.Shop.Offers[other];
+            yield return UseGoc3("Relic_" + other);
+            Assert.AreEqual(other, g.PendingRelicSlot);
+            Assert.AreEqual(tickets, S.Wallet.Count, "chua mua khi chua chon relic bo");
+            yield return Shot("goc3_day_chon_bo.png", g.Room.Station("Shelf_3").WorldCenter + new Vector3(0f, -0.6f, 0f), Sprint3);
+            P.TapSecondary(); // huy
+            yield return null;
+            Assert.AreEqual(-1, g.PendingRelicSlot);
+            Assert.IsFalse(S.Relics.Has(want.id));
+            Assert.AreEqual(tickets, S.Wallet.Count);
+
+            yield return UseGoc3("Relic_" + other);
+            RelicDef dropped = S.Relics.Owned[2];
+            StringAssert.Contains("Bỏ " + dropped.name + " để lấy " + want.name, g.Room.Station("Shelf_2").CurrentPrompt);
+            yield return UseGoc3("Shelf_2");
+            Assert.IsTrue(S.Relics.Has(want.id));
+            Assert.IsFalse(S.Relics.Has(dropped.id));
+            Assert.AreEqual(8, S.Relics.Owned.Count);
+            Assert.AreEqual(tickets - want.price, S.Wallet.Count);
+            yield return null;
+            yield return Shot("goc3_gia_8_o.png", g.Room.Station("Shelf_3").WorldCenter + new Vector3(0f, -0.6f, 0f), Sprint3);
+        }
+
+        [UnityTest]
+        public IEnumerator F022_RuongDotPha_NapVomTim_NauRaMonDotPha()
+        {
+            foreach (string id in new[] { "S1", "S2", "S3", "S4" }) Assert.IsTrue(g.DebugGiveRelic(id));
+            for (int i = 0; i < 8 && S.Stock.Items.All(it => !IsBreakthrough(it)); i++) yield return Use("Kiosk");
+            Ingredient bt = S.Stock.Items.FirstOrDefault(IsBreakthrough);
+            Assert.IsNotNull(bt, "8 luot voi 80%/luot ma khong ra ruong dot pha");
+            yield return null;
+            CrateView chest = g.Room.Crates.Single(c => c.TypeId == bt.typeId);
+            Assert.IsTrue(chest.IsBreakthrough);
+            Assert.AreEqual(5, bt.tier, "thuong bo Son Hao 4: moi mon dot pha bac 5");
+            Assert.IsNotNull(chest.transform.Find("NapVom"), "ruong co nap vom");
+            for (float t = 0f; t < 1.5f; t += Time.deltaTime) yield return null; // thung roi xong (1,2 giay)
+            yield return Shot("goc2_ruong_dot_pha.png", chest.transform.position + new Vector3(0f, 0.15f, 0f), Sprint3);
+
+            Ingredient side = S.Stock.Items.First(i => i.kind == IngredientKind.Side);
+            Recipe r = S.Lookup.Find(bt.typeId, side.typeId);
+            Assert.AreEqual("dotpha", r.group);
+            yield return CookOne(true, r.id);
+            Dish dish = S.Counter.Dishes.Last();
+            Assert.AreEqual(r.id, dish.recipeId, "nau ra mon dot pha dung cong thuc 5.8");
+            yield return Approach(g.Room.Station("PlateStack"));
+            yield return Shot("goc4_mon_dot_pha.png", g.Room.ShelfDishes[S.Counter.Dishes.Count - 1].transform.position, Sprint3);
+        }
+
+        bool IsBreakthrough(Ingredient i)
+        {
+            return S.Recipes.mains.Any(m => m.id == i.typeId && m.group == "dotpha");
         }
     }
 }

@@ -35,6 +35,7 @@ B['day'] = {"open_hour": 9, "close_hour": 21, "seconds_per_hour": 40, "boss_hour
 B['day_seconds'] = (21 - 9) * 40
 # Thung nho lai (2 chinh) nen can nhieu ve hon de du nguyen lieu cho ca ngay va con ve mua relic: 3 -> 6 ve / ngay
 B["tickets_per_day"] = 6
+B["relic_shop_offers"] = 3  # constitution 7.1: moi ngay 3 relic khac nhau (sprint 3)
 save('balance.json', B)
 
 R = load('recipes.json')

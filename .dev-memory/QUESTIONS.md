@@ -31,3 +31,8 @@
 - Q-25 | 2026-11-15 | chặn: không | Art Bible §7 ghi "đã sơ chế: thân dẹt xuống"; F-012 đổi thành "đổi hình theo kiểu sơ chế" (impl plan). Văn bản Art Bible (html/pdf) chưa sửa. Ghi Art Bible 1.4 không? | trạng thái: OPEN
 - Q-26 | 2026-11-15 | chặn: không | Kịch bản F-011 "20:00 đồng hồ đổi màu cam": bảng màu Art Bible không có cam riêng, đang dùng Coral #E8604F (đỏ cam). Được không? | trạng thái: OPEN
 - Q-27 | 2026-11-15 | chặn: không | Sau 21:00 vẫn bấm được biển để đóng quán (khách đang ngồi ra về, không trả). Constitution §6.1 không cấm. Giữ không? | trạng thái: OPEN
+- Q-28 | 2026-11-16 | chặn: không (đã làm theo mặc định) | Thưởng bộ cộng dồn các ngưỡng? Constitution §7.2 ghi "2 món: +20% · 3 món: … +35%" nhưng không nói 3 món có còn +20% của ngưỡng 2. Mặc định đang code: **cộng dồn** như `sim_balance.py` (3 món Vườn Nhà = +20% + 35% = +55%, cộng relic riêng); `phu_min`, `chinh_min`, `bt_t5` lấy giá trị lớn nhất | trạng thái: OPEN
+- Q-29 | 2026-11-16 | chặn: không (đã làm theo mặc định) | Chảo gang bà ngoại "món không bao giờ dưới Dở": áp cả cho món nấu sai công thức (vốn ra Lạc vị)? Mặc định đang code: **có** (đọc đúng chữ). Mô phỏng không có món sai công thức nên không ảnh hưởng số | trạng thái: OPEN
+- Q-30 | 2026-11-16 | chặn: không | Art Bible không có màu độ hiếm relic. Đang dùng thang màu bậc §4: Thường bạc hà #8CC9AE, Hiếm tím #C9B3F0, Huyền thoại vàng #F2C14E (viền thẻ, đĩa trên giá). Được không? | trạng thái: OPEN
+- Q-31 | 2026-11-16 | chặn: không | Thêm `relic_shop_offers: 3` vào balance.json (số 3 có sẵn ở constitution §7.1, Điều 2: số nằm ở dữ liệu); `sim_balance.py` đọc số này thay vì viết sẵn 3. Kết quả mô phỏng không đổi (63/90/46%) | trạng thái: OPEN
+

@@ -3,7 +3,7 @@
 ## Quy tac dang ap dung
 - [L-014] Tinh nang co hien thi: viet "kich ban 10 giay" (dung dau, nhin gi, bam gi, thay gi) cho nguoi dung duyet TRUOC khi code; cho constitution im lang ve vong choi cot loi thi hoi, khong tu mac dinh (P2) [sprint 1: lam lai UI 2D->3D, them goi mon]
 - [L-013] Spec co hinh phai co bang "muc Art Bible -> lam o dau" va moi thao tac co AC "nguoi choi thay gi" (hinh + chuyen dong) (P2/P6) [sprint 1: thieu mat, thieu animation]
-- [L-015] Test moi phai chay thay DO mot lan truoc khi viet code, ke ca do vi chua bien dich (P4) [sprint 1: 8 test goi mon bo buoc nay]
+- [L-015] Test moi phai chay thay DO mot lan truoc khi viet code, ke ca do vi chua bien dich (P4) [count 2: sprint 1 bo 8 test goi mon; sprint 3 viet Core relic truoc test, chi do nho importer chua nhap]
 - [L-011] Khong chay thu ban build voi -screen-fullscreen 0 / -screen-width: Unity luu vao registry, lan sau nguoi dung mo len thanh cua so (nguoi dung bao 14/11). Chay thu khong co co man hinh (P6)
 - [L-012] Doi luat ghep mon / khach phai dua vao sim_balance.py va chay lai Dieu 1 truoc khi code; luat goi mon lam nguoi choi gioi tu 83% xuong 59% neu mo phong thieu 3 khach cung ngoi + ngoai le chu no (P2)
 - [L-009] Tam anh quay ve camera dat truoc vat 3D: day ra bang ban kinh bao cua than (khong phai nua be day), test bang ban kinh tu localBounds (AABB cua khoi xoay phinh to) (P4)
@@ -12,7 +12,7 @@
 - [L-008] Do vat tao luc chay (BoxCollider) phai goi Physics.SyncTransforms; san canh khong co collider; test PlayMode tua nhanh can chia buoc di (P4)
 - [L-005] UI moi phai chup anh tu PlayMode (docs/sprint-N/ui) va tu xem truoc khi bao xong: loi hien thi chi lo ra tren anh (P6) [count 2: sprint 2 do trong chao nho, lua khuat duoi day chao du test xanh]
 - [L-006] Test PlayMode bam nut qua ten GameObject; doi ten nut trong GameView thi sua PlaythroughTests cung luc (P4)
-- [L-002] Trong Bash tool cua may nay, heredoc nhieu dong co dau nhay don bi loi cu phap; ghi script .py bang Write vao scratchpad roi chay (moi pha) [count 2]
+- [L-002] Trong Bash tool cua may nay, heredoc nhieu dong co dau nhay don bi loi cu phap; ghi script .py bang Write vao scratchpad roi chay (moi pha) [count 3: sprint 3 heredoc chua ''' long nhau; them: khong de "cat > file" khong co heredoc, lenh treo cho stdin]
 - [L-003] Bat/sua hau ky URP phai chup anh so voi ban khong hau ky (PreviewCapture) truoc khi bao xong (P6)
 - [L-004] Chay Unity batchmode: dong Editor truoc; -testResults va -logFile dung duong dan tuyet doi kieu Windows (P4)
 - [L-001] Chạy sim_balance.py phải đặt PYTHONUTF8=1 (Windows mặc định cp1258, lỗi đọc JSON tiếng Việt) (P4/P6)
@@ -38,3 +38,11 @@
 - L-005 | trigger: PlayMode F-013 xanh nhung anh nau_4/nau_5 cho thay do don giua chao, khong thay lua | goc: test chi kiem "nam trong ban kinh", khong kiem "phu du long chao"; lua o ban kinh 0,1 m duoi day chao | sua: PanSpec theo hinh that, vong lua 1,2 R, test lop dau >= 80% long chao | count 2
 - L-016 | trigger: nhu tren | goc: PanSpec (sprint 1) dat ban kinh 0,17 m va noi 1,83 m tu uoc luong, khong lay tu BuildTool | quy tac: suy kich thuoc tu hinh that | count 1
 - L-017 | trigger: gia lap PlayMode fail "Dish_2 bi Dish_1 che" va "khong thu duoc sai mon" | goc: luat moi (thung 3+2, khach vao sau 3 giay) doi trang thai ma kich ban gia lap gia dinh | quy tac: doi so lieu thi chay lai PlayMode ngay, kich ban gia lap tu xoay xo (quay them thung, ngam cho khac) nhu nguoi that | count 1
+
+### 2026-11-16 Sprint 3 (F-020..F-022)
+- L-002 | trigger: (a) "cat > ../scratch_edit2.py" thua truoc heredoc lam lenh treo 120 giay, tao file rong o d:/duanlinhtinh (da xoa); (b) heredoc chua chuoi ''' long nhau loi "unexpected EOF" | sua: ghi script bang Write | count 3
+- L-015 | trigger: viet Relics.cs, gacha, DishFormula truoc khi viet RelicShopTests/RelicEffectTests | sai: chi thay do 35/36 vi importer chua nhap relics.json, khong phai do tung hieu ung | quy tac: viet test truoc, chay do, roi moi viet Core | count 2
+- L-018 | trigger: git status sau PlayMode co 57 anh docs/sprint-2/ui bi ghi de | goc: test PlayMode cu chup anh vao thu muc sprint cu; anh do dang cho nguoi dung duyet | sua: git checkout -- docs/sprint-2/ui | quy tac: sau moi lan chay PlayMode, kiem git status docs/sprint-*/ui cua sprint cu va khoi phuc neu khong co chu y doi | count 1
+- L-019 | trigger: AC5_TiLeHienTrenBang do vi 0,2125 vs 0,21249999851 | goc: so tu JSON la float (0,15f), test so double voi sai so 1e-9 | quy tac: so lieu tu Balance la float: test dung sai so 1e-6 | count 1
+- Anh chup (L-005) bat duoc 3 loi du test xanh: tieu de bang ti le bi thu chu khi them dong relic, vien vang ruong che nhan, chu the relic nho
+

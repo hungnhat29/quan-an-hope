@@ -29,6 +29,61 @@ namespace QuanAnHope.Core
         public CustomerRules customers = new CustomerRules();
         public StartRules start = new StartRules();
         public DayRules day = new DayRules();
+
+        /// <summary>So relic toi da tren gia (constitution muc 7.1).</summary>
+        public int relicCap;
+
+        /// <summary>So relic cua hang bay moi ngay (constitution muc 7.1).</summary>
+        public int relicShopOffers;
+
+        /// <summary>22 relic tu balance/relics.json (constitution muc 7.2, 7.3).</summary>
+        public RelicDef[] relics = new RelicDef[0];
+
+        /// <summary>Thuong bo theo nguong so mon cung bo (constitution muc 7.2).</summary>
+        public SetBonus[] setBonuses = new SetBonus[0];
+
+        public BreakthroughRules breakthrough = new BreakthroughRules();
+    }
+
+    /// <summary>Mot hieu ung relic: khoa (vd "phu_up") va gia tri, nhu trong relics.json.</summary>
+    [Serializable]
+    public class RelicEffect
+    {
+        public string key;
+        public float value;
+    }
+
+    [Serializable]
+    public class RelicDef
+    {
+        public string id;
+        public string name;
+
+        /// <summary>"vuon", "cho", "sonhao" hoac rong (relic le).</summary>
+        public string set;
+        public int price;
+
+        /// <summary>"thuong", "hiem", "huyenthoai".</summary>
+        public string rarity;
+        public RelicEffect[] effects = new RelicEffect[0];
+    }
+
+    /// <summary>Co du <see cref="count"/> relic cua bo <see cref="set"/> thi duoc them cac hieu ung nay.</summary>
+    [Serializable]
+    public class SetBonus
+    {
+        public string set;
+        public int count;
+        public RelicEffect[] effects = new RelicEffect[0];
+    }
+
+    /// <summary>Thung dot pha (constitution muc 4.4).</summary>
+    [Serializable]
+    public class BreakthroughRules
+    {
+        public float baseChance;
+        public int items;
+        public float tier5Share;
     }
 
     /// <summary>Gio mo cua va nhip khach (constitution 1.4 muc 2, 6.2).</summary>

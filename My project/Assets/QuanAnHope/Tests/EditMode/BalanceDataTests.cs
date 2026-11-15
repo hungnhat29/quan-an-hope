@@ -22,7 +22,7 @@ namespace QuanAnHope.Tests
         [OneTimeSetUp]
         public void ReadJson()
         {
-            balance = BalanceImporter.ParseBalance(File.ReadAllText(BalanceImporter.BalanceJsonPath));
+            balance = BalanceImporter.ParseBalance(File.ReadAllText(BalanceImporter.BalanceJsonPath), File.ReadAllText(BalanceImporter.RelicsJsonPath));
             recipes = BalanceImporter.ParseRecipes(File.ReadAllText(BalanceImporter.RecipesJsonPath));
         }
 

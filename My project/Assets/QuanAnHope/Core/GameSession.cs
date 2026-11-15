@@ -42,6 +42,13 @@ namespace QuanAnHope.Core
         public Stove Stove { get; private set; }
         public Counter Counter { get; private set; }
 
+        /// <summary>Gia relic 8 o va cua hang 3 be (constitution muc 7).</summary>
+        public RelicInventory Relics { get; private set; }
+        public RelicShop Shop { get; private set; }
+
+        /// <summary>Thung dot pha cua lan quay gan nhat (null neu khong trung).</summary>
+        public Crate LastBreakthrough { get; private set; }
+
         public int Day { get; private set; }
         public int Money { get; private set; }
         public GamePhase Phase { get; private set; }
@@ -74,6 +81,9 @@ namespace QuanAnHope.Core
 
         public int Round { get { return Balance.RoundOfDay(Day); } }
 
+        /// <summary>Nguon ngau nhien cua van (bot dung de quyet dinh giong mo phong).</summary>
+        public IRandom Rng { get { return rng; } }
+
         public GameSession(Balance balance, RecipeBook recipes, IRandom rng, int lastPlayableDay)
         {
             if (balance == null) throw new ArgumentNullException("balance");
@@ -87,6 +97,9 @@ namespace QuanAnHope.Core
 
             Lookup = new RecipeLookup(recipes);
             Formula = new DishFormula(balance);
+            Relics = new RelicInventory(balance);
+            Formula.Relics = Relics;
+            Shop = new RelicShop(balance, rng);
             gacha = new IngredientGacha(balance, recipes, rng);
             customers = new CustomerGenerator(balance, rng);
 
@@ -99,7 +112,8 @@ namespace QuanAnHope.Core
 
             Day = 1;
             Money = balance.start.money;
-            Wallet.BeginDay(Day);
+            Wallet.BeginDay(Day, Relics.Effects);
+            Shop.Restock(Day, Relics);
             Phase = GamePhase.Prep;
         }
 
@@ -117,10 +131,34 @@ namespace QuanAnHope.Core
         {
             result = null;
             if (!DayIsRunning) return false;
-            if (!gacha.TryPull(Wallet, Day, out result)) return false;
+            if (!gacha.TryPull(Wallet, Day, out result, Relics.Effects)) return false;
             Stock.AddCrate(result.side);
             Stock.AddCrate(result.main);
+            LastBreakthrough = result.breakthrough;
+            if (result.breakthrough != null) Stock.AddCrate(result.breakthrough);
             return true;
+        }
+
+        /// <summary>Ti le ra thung dot pha moi luot voi relic dang co (bang ti le Goc 2, Dieu 4).</summary>
+        public double BreakthroughChance { get { return gacha.BreakthroughChance(Relics.Effects); } }
+        public double BreakthroughTier5 { get { return gacha.BreakthroughTier5(Relics.Effects); } }
+        public int BreakthroughItems { get { return gacha.BreakthroughItems(Relics.Effects); } }
+
+        // ---------- Goc 3: cua hang relic (constitution muc 7.1) ----------
+
+        /// <summary>Mua relic o be <paramref name="slot"/> bang ve trang; gia day thi phai chi ra relic bo.</summary>
+        public RelicBuyResult BuyRelic(int slot, string discardId = null)
+        {
+            if (!DayIsRunning) return RelicBuyResult.Closed;
+            return Shop.Buy(slot, Wallet, Relics, discardId);
+        }
+
+        /// <summary>Lenh go loi "cho toi relic X" (impl plan sprint 3 muc 5; chi goi tu Editor).</summary>
+        public bool DebugGiveRelic(string id)
+        {
+            foreach (RelicDef r in Balance.relics)
+                if (r.id == id) return Relics.Add(r);
+            return false;
         }
 
         // ---------- Goc 4: bep ----------
@@ -262,7 +300,7 @@ namespace QuanAnHope.Core
             Dish dish = Counter.TakeAt(counterIndex);
             // Sai mon: khach nhan dia nhung gian (constitution muc 6.7).
             PaymentResult payment = dish.recipeId == CurrentCustomer.orderId
-                ? Payment.Settle(Balance, Round, CurrentCustomer.easiness, dish.tier)
+                ? Payment.Settle(Balance, Round, CurrentCustomer.easiness, dish.tier, Relics.Effects)
                 : Payment.WrongOrder(Balance, Round);
             Money += payment.amount;
             IncomeToday += payment.amount;
@@ -293,6 +331,7 @@ namespace QuanAnHope.Core
             Counter.Clear();
             Stove.Reset();
             Board.Cancel();
+            LastBreakthrough = null;
             Phase = GamePhase.DayEnd;
         }
 
@@ -331,7 +370,8 @@ namespace QuanAnHope.Core
                 return true;
             }
 
-            Wallet.BeginDay(Day);
+            Wallet.BeginDay(Day, Relics.Effects);
+            Shop.Restock(Day, Relics);
             Phase = GamePhase.Prep;
             return true;
         }
@@ -389,6 +429,7 @@ namespace QuanAnHope.Core
         {
             if (s.Phase != GamePhase.Prep) return;
 
+            BuyRelic(s);
             PullResult pull;
             while (s.PullCrates(out pull)) Spend(s, timing, timing == null ? 0f : timing.pullSeconds);
 
@@ -414,6 +455,34 @@ namespace QuanAnHope.Core
             }
             // Khong mo duoc quan (vd da qua 21:00): cho het gio.
             if (s.Phase == GamePhase.Prep) s.Tick(s.Clock.DaySeconds);
+        }
+
+        /// <summary>
+        /// Nguoi khong doc chi so mua relic nhu sim_balance.py run() (style naive): neu co relic mua noi thi
+        /// 50% mua cai dat nhat; gia day thi bo cai re nhat (score naive = gia). Ti le 50% la GIA DINH cua mo phong.
+        /// </summary>
+        public const double BuyChance = 0.5;
+
+        public static bool BuyRelic(GameSession s)
+        {
+            if (!s.Shop.IsOpen) return false;
+            int best = -1;
+            for (int i = 0; i < s.Shop.Offers.Count; i++)
+            {
+                RelicDef o = s.Shop.Offers[i];
+                if (o == null || o.price > s.Wallet.Count) continue;
+                if (best < 0 || o.price > s.Shop.Offers[best].price) best = i;
+            }
+            if (best < 0 || s.Rng.NextDouble() >= BuyChance) return false;
+
+            string discard = null;
+            if (s.Relics.IsFull)
+            {
+                RelicDef worst = null;
+                foreach (RelicDef r in s.Relics.Owned) if (worst == null || r.price < worst.price) worst = r;
+                discard = worst.id;
+            }
+            return s.BuyRelic(best, discard) == RelicBuyResult.Bought;
         }
 
         static void Spend(GameSession s, BotTiming timing, float seconds)

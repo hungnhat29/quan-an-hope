@@ -242,6 +242,7 @@
   "decay_days": 3
  },
  "relic_cap": 8,
+ "relic_shop_offers": 3,
  "start": {
   "money": 100,
   "bonus_tickets": 2,

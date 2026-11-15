@@ -24,18 +24,19 @@ namespace QuanAnHope.EditorTools
 
         public static string BalanceJsonPath { get { return Path.Combine(BalanceFolder, "balance.json"); } }
         public static string RecipesJsonPath { get { return Path.Combine(BalanceFolder, "recipes.json"); } }
+        public static string RelicsJsonPath { get { return Path.Combine(BalanceFolder, "relics.json"); } }
 
         [MenuItem("Quán Ăn Hope/Nhập balance.json")]
         public static void Import()
         {
             ImportTo(AssetPath);
-            Debug.Log("Quán Ăn Hope: đã nhập balance.json + recipes.json vào " + AssetPath);
+            Debug.Log("Quán Ăn Hope: đã nhập balance.json + recipes.json + relics.json vào " + AssetPath);
         }
 
         /// <summary>Doc hai file JSON va ghi (hoac ghi de) asset tai <paramref name="assetPath"/>.</summary>
         public static BalanceData ImportTo(string assetPath)
         {
-            Balance balance = ParseBalance(File.ReadAllText(BalanceJsonPath));
+            Balance balance = ParseBalance(File.ReadAllText(BalanceJsonPath), File.ReadAllText(RelicsJsonPath));
             RecipeBook recipes = ParseRecipes(File.ReadAllText(RecipesJsonPath));
 
             var asset = AssetDatabase.LoadAssetAtPath<BalanceData>(assetPath);
@@ -49,6 +50,29 @@ namespace QuanAnHope.EditorTools
             EditorUtility.SetDirty(asset);
             AssetDatabase.SaveAssets();
             return asset;
+        }
+
+        /// <summary>balance.json + relics.json (constitution muc 7). Khong co relics.json thi khong co relic nao.</summary>
+        public static Balance ParseBalance(string json, string relicsJson)
+        {
+            Balance b = ParseBalance(json);
+            b.relics = JArray.Parse(relicsJson).Cast<JObject>()
+                .Select(o => new RelicDef
+                {
+                    id = Str(o, "id"),
+                    name = Str(o, "name"),
+                    set = Str(o, "set"),
+                    price = Int(o, "price"),
+                    rarity = Str(o, "rarity"),
+                    effects = Effects(Obj(o, "fx")),
+                })
+                .ToArray();
+            return b;
+        }
+
+        static RelicEffect[] Effects(JObject fx)
+        {
+            return fx.Properties().Select(p => new RelicEffect { key = p.Name, value = (float)p.Value }).ToArray();
         }
 
         public static Balance ParseBalance(string json)
@@ -139,6 +163,21 @@ namespace QuanAnHope.EditorTools
                 bossHour = Int(day, "boss_hour"),
                 nextCustomerSeconds = Float(day, "next_customer_s"),
             };
+
+            b.relicCap = Int(root, "relic_cap");
+            b.relicShopOffers = Int(root, "relic_shop_offers");
+            JObject bt = Obj(root, "breakthrough");
+            b.breakthrough = new BreakthroughRules
+            {
+                baseChance = Float(bt, "base_chance"),
+                items = Int(bt, "items"),
+                tier5Share = Float(bt, "tier5_share"),
+            };
+            var bonuses = new List<SetBonus>();
+            foreach (JProperty set in Obj(root, "set_bonus").Properties())
+                foreach (KeyValuePair<int, JToken> th in NumberedKeys((JObject)set.Value))
+                    bonuses.Add(new SetBonus { set = set.Name, count = th.Key, effects = Effects((JObject)th.Value) });
+            b.setBonuses = bonuses.ToArray();
 
             return b;
         }

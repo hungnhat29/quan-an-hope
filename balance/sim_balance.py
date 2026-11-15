@@ -154,7 +154,7 @@ def pay(p,day,E,t,impatience):
     return -0.3*base,-1
 def offers(p):
     owned={x['id'] for x in p.relics}; pool=[x for x in RL if x['id'] not in owned]
-    return p.r.sample(pool,min(3,len(pool)))
+    return p.r.sample(pool,min(B.get('relic_shop_offers',3),len(pool)))
 def run(style,seed,log=False):
     p=P(style,seed); r=p.r; reached=0; p.money=B['start']['money']; p.tk=B['start']['bonus_tickets']
     for day in range(1,B['days']+1):

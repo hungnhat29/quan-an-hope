@@ -1,7 +1,7 @@
 {
   "name": "QuanAnHope.Editor",
   "rootNamespace": "QuanAnHope.EditorTools",
-  "references": ["QuanAnHope.Core", "QuanAnHope.Data"],
+  "references": ["QuanAnHope.Core", "QuanAnHope.Data", "QuanAnHope.Game"],
   "includePlatforms": ["Editor"],
   "excludePlatforms": [],
   "allowUnsafeCode": false,

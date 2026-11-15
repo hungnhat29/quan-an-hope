@@ -15,7 +15,7 @@ namespace QuanAnHope.Tests
 
         public static Balance Balance
         {
-            get { return balance ?? (balance = BalanceImporter.ParseBalance(File.ReadAllText(BalanceImporter.BalanceJsonPath))); }
+            get { return balance ?? (balance = BalanceImporter.ParseBalance(File.ReadAllText(BalanceImporter.BalanceJsonPath), File.ReadAllText(BalanceImporter.RelicsJsonPath))); }
         }
 
         public static RecipeBook Recipes

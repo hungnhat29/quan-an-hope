@@ -18,6 +18,7 @@ namespace QuanAnHope.Game
         // Dung cu co trong cong thuc (constitution muc 5.1).
         public static readonly string[] Tools = { "Chảo", "Nồi", "Vỉ nướng" };
         const string StandardGroup = "chinh";
+        const string BreakthroughGroup = "dotpha";
 
         // Mau go cua thung (Art Bible muc 7) va mot so mau do vat.
         static readonly Color SideCrateColor = UiKit.Hex("#D69B68");
@@ -35,7 +36,7 @@ namespace QuanAnHope.Game
         readonly Dictionary<string, Interactable> stations = new Dictionary<string, Interactable>();
 
         // Goc 2
-        TextMeshProUGUI oddsHeader;
+        TextMeshProUGUI oddsHeader, oddsRelic;
         readonly TextMeshProUGUI[] oddsCells = new TextMeshProUGUI[6];
         Transform crateRoot;
         readonly Dictionary<string, CrateView> crates = new Dictionary<string, CrateView>();
@@ -78,6 +79,33 @@ namespace QuanAnHope.Game
         // Gia theo 5 bac Lac vi -> Tuyet hao; Huyen thoai chi co mot mon rieng (constitution muc 5.4) nen khong ghi o day.
         readonly TextMeshProUGUI[] priceCells = new TextMeshProUGUI[5];
         int page;
+
+        // Goc 3 - cua hang relic (F-020): be, the dung, gia 8 o. Toa do lay tu canh (BuildNhaHang: Pedestal0..2, OwnedRack).
+        static readonly float[] PedestalX = { -0.1f, 1.15f, 2.4f };
+        const float PedestalTopY = 1.6f;
+        const float PedestalZ = 3.2f;
+        const float ShopRelicScale = 1.7f;
+        const float ShelfRelicScale = 1.0f;
+        TextMeshProUGUI shopSign;
+        readonly List<Transform> pedestalSpots = new List<Transform>();
+        readonly List<GameObject> pedestalRelics = new List<GameObject>();
+        readonly List<string> pedestalShown = new List<string>();
+        readonly List<RelicCard> cards = new List<RelicCard>();
+        readonly List<Transform> shelfSpots = new List<Transform>();
+        readonly List<GameObject> shelfRelics = new List<GameObject>();
+        readonly List<string> shelfShown = new List<string>();
+        readonly List<TextMeshProUGUI> shelfNames = new List<TextMeshProUGUI>();
+        readonly List<GameObject> shelfDiscs = new List<GameObject>();
+        TextMeshProUGUI shelfHeader;
+        RelicDef sparkledFor;
+
+        public IReadOnlyList<RelicCard> Cards { get { return cards; } }
+        public IReadOnlyList<GameObject> ShelfRelics { get { return shelfRelics; } }
+        public IReadOnlyList<GameObject> PedestalRelics { get { return pedestalRelics; } }
+        public string ShelfHeaderText { get { return shelfHeader != null ? shelfHeader.text : ""; } }
+        public string ShopSignText { get { return shopSign != null ? shopSign.text : ""; } }
+        public string OddsHeaderText { get { return oddsHeader != null ? oddsHeader.text + " " + oddsRelic.text : ""; } }
+        public string OddsCellText(int tier) { return oddsCells[tier].text; }
 
         // Tay
         Transform handAnchor;
@@ -183,6 +211,9 @@ namespace QuanAnHope.Game
             back.raycastTarget = false;
             oddsHeader = UiKit.Label(back.transform, "TieuDe", new Vector2(0.5f, 1f), new Vector2(0f, -30f), new Vector2(2560f, 150f), "", 90f);
             oddsHeader.color = UiKit.Cream;
+            // Dong rieng cho tac dung relic (F-021 AC-5) de tieu de khong bi thu nho chu.
+            oddsRelic = UiKit.Label(back.transform, "Relic", new Vector2(0.5f, 1f), new Vector2(0f, -170f), new Vector2(2560f, 100f), "", 64f);
+            oddsRelic.color = UiKit.Mustard;
             Transform cells = UiKit.Grid(back.transform, "O", new Vector2(0.5f, 0f), new Vector2(0f, 60f), new Vector2(2580f, 450f), 6,
                 new Vector2(410f, 450f), 24f).transform;
             for (int tier = 0; tier < 6; tier++)
@@ -266,7 +297,8 @@ namespace QuanAnHope.Game
                 CrateView crate;
                 if (!crates.TryGetValue(typeId, out crate))
                 {
-                    crate = CrateView.Create(crateRoot, list[0], kind == IngredientKind.Side ? SideCrateColor : MainCrateColor);
+                    crate = CrateView.Create(crateRoot, list[0], kind == IngredientKind.Side ? SideCrateColor : MainCrateColor,
+                        IsBreakthrough(list[0].typeId));
                     crates[typeId] = crate;
                 }
                 crate.MoveTo(CrateSlot(kind, slot));
@@ -294,17 +326,57 @@ namespace QuanAnHope.Game
             }
         }
 
+        bool IsBreakthrough(string typeId)
+        {
+            foreach (MainIngredient m in g.Session.Recipes.mains) if (m.id == typeId) return m.group == BreakthroughGroup;
+            return false;
+        }
+
         void RefreshOdds()
         {
             GameSession s = g.Session;
             TierTable table = s.Balance.OddsForDay(s.Day);
-            oddsHeader.text = "Tỉ lệ bậc nguyên liệu · " + (s.Balance.IsStormDay(s.Day) ? "Ngày " + s.Day + " (sau mưa)" : "Vòng " + s.Round)
-                + " · 1 vé: " + s.Balance.SideCrateSize(s.Day) + " đồ phụ + " + s.Balance.MainCrateSize(s.Day) + " nguyên liệu chính";
+            RelicFx fx = s.Relics.Effects;
+            int nSide = IngredientGacha.CrateCount(s.Balance.SideCrateSize(s.Day), fx, IngredientKind.Side);
+            int nMain = IngredientGacha.CrateCount(s.Balance.MainCrateSize(s.Day), fx, IngredientKind.Main);
+            var head = new StringBuilder("Tỉ lệ bậc nguyên liệu · " + (s.Balance.IsStormDay(s.Day) ? "Ngày " + s.Day + " (sau mưa)" : "Vòng " + s.Round)
+                + " · 1 vé: " + nSide + " đồ phụ + " + nMain + " nguyên liệu chính");
+
+            // Constitution Dieu 4: bang hien them tac dung relic len ti le (F-021 AC-5).
+            double[] side = IngredientGacha.EffectiveOdds(table.percents, fx, IngredientKind.Side);
+            double[] main = IngredientGacha.EffectiveOdds(table.percents, fx, IngredientKind.Main);
+            bool changed = false;
             for (int tier = 0; tier < oddsCells.Length; tier++)
             {
                 int pct = tier < table.percents.Length ? table.percents[tier] : 0;
-                oddsCells[tier].text = pct + "%\n<size=70>" + UiKit.IngredientTierName[tier] + "</size>";
+                if (Mathf.Abs((float)side[tier] * 100f - pct) > 0.05f || Mathf.Abs((float)main[tier] * 100f - pct) > 0.05f) changed = true;
             }
+            double bt = s.BreakthroughChance;
+            var relicLine = new StringBuilder();
+            if (bt > 0 || changed)
+            {
+                relicLine.Append("Có relic");
+                if (changed) relicLine.Append(": tỉ lệ đã tính tác dụng relic");
+                if (bt > 0)
+                    relicLine.Append(" · +" + Pct(bt) + " rương đột phá (" + s.BreakthroughItems + " món: "
+                        + Pct(1 - s.BreakthroughTier5) + " Xuất sắc, " + Pct(s.BreakthroughTier5) + " Hiếm)");
+            }
+            oddsHeader.text = head.ToString();
+            oddsRelic.text = relicLine.ToString();
+
+            for (int tier = 0; tier < oddsCells.Length; tier++)
+            {
+                int pct = tier < table.percents.Length ? table.percents[tier] : 0;
+                oddsCells[tier].text = changed
+                    ? "<size=78>Phụ " + Pct(side[tier]) + "\nChính " + Pct(main[tier]) + "</size>\n<size=60>" + UiKit.IngredientTierName[tier] + "</size>"
+                    : pct + "%\n<size=70>" + UiKit.IngredientTierName[tier] + "</size>";
+            }
+        }
+
+        static string Pct(double share)
+        {
+            double v = share * 100.0;
+            return (System.Math.Abs(v - System.Math.Round(v)) < 0.05 ? v.ToString("0") : v.ToString("0.#")) + "%";
         }
 
         // =====================================================================
@@ -787,14 +859,157 @@ namespace QuanAnHope.Game
             GameObject next = Toon.Empty(book.transform, "LatToi", new Vector3(445f, 0f, 0f));
             Register(Interactable.Add(next, "BookNext", Vector3.zero, new Vector3(880f, 1080f, 40f), () => "Lật trang sau", () => TurnPage(1)));
 
-            // Cua hang relic: lam o sprint 2. Gia relic de trong (constitution muc 7.1).
+            BuildRelicShop();
+        }
+
+        // ---------- cua hang relic (F-020; constitution muc 7.1, Dieu 4, Dieu 9; Art Bible muc 8, 13) ----------
+
+        void BuildRelicShop()
+        {
             Canvas shop = UiKit.WorldCanvas(goc3, "BienRelic", new Vector3(1.15f, 2.95f, 3.95f), Quaternion.identity, new Vector2(2200f, 420f));
             Image shb = UiKit.Panel(shop.transform, "Nen", new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(2200f, 420f), UiKit.Lilac);
-            UiKit.Text(shb.transform, "Cửa hàng relic\n<size=80>sắp mở</size>", 130f).lineSpacing = -30f;
+            shopSign = UiKit.Text(shb.transform, "", 130f);
+            shopSign.lineSpacing = -30f;
+
+            // Do vat mau cua canh dung tren be (lo muoi, chao, ot) duoc thay bang relic that cua ngay.
+            Transform shopRoot = goc3.Find("RelicShop");
+            if (shopRoot != null)
+                foreach (Transform t in shopRoot)
+                {
+                    if (!t.name.StartsWith("Pedestal")) t.gameObject.SetActive(false);
+                    else if (t.name.StartsWith("PedestalTop")) Toon.Recolor(t.gameObject, UiKit.Cream);
+                }
+
+            for (int i = 0; i < PedestalX.Length; i++)
+            {
+                int slot = i;
+                GameObject spot = Toon.Empty(goc3, "BeRelic_" + i, new Vector3(PedestalX[i], PedestalTopY, PedestalZ));
+                Register(Interactable.Add(spot, "Relic_" + i, new Vector3(0f, 0.25f, 0f), new Vector3(0.9f, 0.6f, 0.9f),
+                    () => PedestalPrompt(slot), () => g.BuyRelic(slot)));
+                pedestalSpots.Add(spot.transform);
+                pedestalRelics.Add(null);
+                pedestalShown.Add(null);
+                // The dung truoc be (Dieu 9: gia va hieu ung nam tren do vat).
+                cards.Add(RelicCard.Create(goc3, "TheRelic_" + i, new Vector3(PedestalX[i], 1.05f, PedestalZ - 0.53f)));
+            }
+
+            // Gia relic 8 o tren tuong (Art Bible muc 8): disc co san trong canh, relic nho dung truoc moi disc.
             Transform rack = goc3.Find("OwnedRack");
-            if (rack != null)
-                foreach (Transform t in rack)
-                    if (t.name.StartsWith("Slot")) Toon.Recolor(t.gameObject, UiKit.Hex("#E3CFA6"));
+            int cap = g.Session.Relics.Capacity;
+            for (int i = 0; i < cap; i++)
+            {
+                float x = -1.5f + 0.5f * i;
+                Transform disc = rack != null ? (rack.Find("Slot" + i) ?? rack.Find("SlotEmpty" + i)) : null;
+                shelfDiscs.Add(disc != null ? disc.gameObject : null);
+                GameObject spot = Toon.Empty(goc3, "GiaRelic_" + i, new Vector3(x, 3.665f, 3.84f));
+                int index = i;
+                Register(Interactable.Add(spot, "Shelf_" + i, new Vector3(0f, 0.18f, 0f), new Vector3(0.46f, 0.46f, 0.3f),
+                    () => ShelfPrompt(index), () => UseShelf(index)));
+                shelfSpots.Add(spot.transform);
+                shelfRelics.Add(null);
+                shelfShown.Add(null);
+                Canvas tag = UiKit.WorldCanvas(goc3, "TenGia_" + i, new Vector3(x, 3.5f, 3.86f), Quaternion.identity, new Vector2(470f, 120f));
+                Image tb = UiKit.Panel(tag.transform, "Nen", new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(470f, 120f), UiKit.Cream, false);
+                shelfNames.Add(UiKit.Text(tb.transform, "", 46f, TextAlignmentOptions.Center, 4f));
+            }
+            Canvas head = UiKit.WorldCanvas(goc3, "TienDoBo", new Vector3(0.25f, 4.32f, 3.9f), Quaternion.identity, new Vector2(4200f, 230f));
+            Image hb = UiKit.Panel(head.transform, "Nen", new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(4200f, 230f), UiKit.Cream);
+            shelfHeader = UiKit.Text(hb.transform, "", 110f, TextAlignmentOptions.Center, 20f);
+        }
+
+        string PedestalPrompt(int slot)
+        {
+            GameSession s = g.Session;
+            if (!s.Shop.OpensOn(s.Day)) return "Cửa hàng relic mở từ ngày " + s.Balance.start.relicShopFromDay;
+            RelicDef r = slot < s.Shop.Offers.Count ? s.Shop.Offers[slot] : null;
+            if (r == null) return "Bệ trống · đã bán hôm nay";
+            if (g.PendingRelicSlot == slot) return "Bấm lại để huỷ mua " + r.name;
+            int missing = s.Shop.Missing(slot, s.Wallet);
+            if (missing > 0) return r.name + " · thiếu " + missing + " vé";
+            return "Mua · " + r.price + " vé (còn " + s.Wallet.Count + ")"
+                + (s.Relics.IsFull ? " · giá đầy, phải bỏ 1 relic" : "");
+        }
+
+        string ShelfPrompt(int index)
+        {
+            IReadOnlyList<RelicDef> owned = g.Session.Relics.Owned;
+            if (index >= owned.Count) return "Giá relic · ô trống";
+            RelicDef r = owned[index];
+            if (g.PendingRelicSlot >= 0)
+            {
+                RelicDef offer = g.Session.Shop.Offers[g.PendingRelicSlot];
+                return "Bỏ " + r.name + " để lấy " + (offer != null ? offer.name : "relic mới");
+            }
+            return r.name + " · " + RelicText.Effect(r);
+        }
+
+        void UseShelf(int index)
+        {
+            IReadOnlyList<RelicDef> owned = g.Session.Relics.Owned;
+            if (index < owned.Count) g.UseShelfRelic(owned[index].id);
+        }
+
+        void RefreshRelics()
+        {
+            GameSession s = g.Session;
+            RelicInventory inv = s.Relics;
+            bool opens = s.Shop.OpensOn(s.Day);
+            shopSign.text = opens
+                ? "Cửa hàng relic\n<size=70>" + s.Shop.Slots + " relic hôm nay · trả bằng vé trắng</size>"
+                : "Cửa hàng relic\n<size=80>mở từ ngày " + s.Balance.start.relicShopFromDay + "</size>";
+
+            // Relic vua mua bay tu be len gia (kich ban 10 giay, impl plan sprint 3): nho vi tri be truoc khi xoa.
+            Vector3? flyFrom = null;
+            for (int i = 0; i < pedestalShown.Count; i++)
+                if (g.LastBoughtRelic != null && pedestalShown[i] == g.LastBoughtRelic.id) flyFrom = pedestalSpots[i].position;
+
+            for (int i = 0; i < pedestalSpots.Count; i++)
+            {
+                RelicDef r = opens && i < s.Shop.Offers.Count ? s.Shop.Offers[i] : null;
+                string key = r != null ? r.id : null;
+                if (pedestalShown[i] != key)
+                {
+                    if (pedestalRelics[i] != null) Object.Destroy(pedestalRelics[i]);
+                    pedestalRelics[i] = r != null ? RelicArt.Create(pedestalSpots[i], r, ShopRelicScale) : null;
+                    pedestalShown[i] = key;
+                }
+                if (r != null) cards[i].Show(r, inv, g.PendingRelicSlot == i);
+                else cards[i].ShowEmpty(opens ? "Đã bán" : "Mở từ ngày " + s.Balance.start.relicShopFromDay);
+            }
+
+            for (int i = 0; i < shelfSpots.Count; i++)
+            {
+                RelicDef r = i < inv.Owned.Count ? inv.Owned[i] : null;
+                string key = r != null ? r.id : null;
+                if (shelfShown[i] != key)
+                {
+                    if (shelfRelics[i] != null) Object.Destroy(shelfRelics[i]);
+                    shelfRelics[i] = r != null ? RelicArt.Create(shelfSpots[i], r, ShelfRelicScale) : null;
+                    shelfShown[i] = key;
+                    if (shelfDiscs[i] != null) Toon.Recolor(shelfDiscs[i], r != null ? RelicArt.RarityColor(r.rarity) : UiKit.Hex("#E3CFA6"));
+                }
+                shelfNames[i].text = r != null ? r.name : "";
+                shelfNames[i].transform.parent.parent.gameObject.SetActive(r != null);
+                if (r != null && g.LastBoughtRelic == r && sparkledFor != r)
+                {
+                    sparkledFor = r;
+                    if (flyFrom.HasValue) RelicFly.Play(shelfRelics[i], flyFrom.Value, shelfSpots[i], ShopRelicScale / ShelfRelicScale);
+                    else Pop.Play(shelfRelics[i], 0.6f);
+                }
+            }
+            if (g.LastBoughtRelic == null) sparkledFor = null;
+            shelfHeader.text = ShelfSummary(inv) + (g.PendingRelicSlot >= 0 ? " · <color=#E8604F>bấm relic để bỏ</color>" : "");
+        }
+
+        /// <summary>Tien do bo tren gia (F-021 AC-4): "Gia relic 3/8 · Cho Som 2/4 · Vuon Nha 1/4".</summary>
+        public static string ShelfSummary(RelicInventory inv)
+        {
+            var sb = new StringBuilder("Giá relic " + inv.Owned.Count + "/" + inv.Capacity);
+            var sets = new List<string>();
+            foreach (RelicDef r in inv.Owned) if (!string.IsNullOrEmpty(r.set) && !sets.Contains(r.set)) sets.Add(r.set);
+            foreach (string set in sets)
+                sb.Append(" · " + RelicKeys.SetName(set) + " " + inv.CountInSet(set) + "/" + inv.SetSize(set));
+            return sb.ToString();
         }
 
         List<Recipe> BookRecipes()
@@ -879,6 +1094,7 @@ namespace QuanAnHope.Game
         public void Refresh()
         {
             RefreshOdds();
+            RefreshRelics();
             RefreshCrates();
             RefreshKitchen();
             RefreshServe();
@@ -1060,12 +1276,29 @@ namespace QuanAnHope.Game
         public string TypeId { get; private set; }
         public TextMeshProUGUI Label { get; private set; }
 
-        public static CrateView Create(Transform parent, Ingredient first, Color wood)
+        /// <summary>Ruong dot pha (Art Bible muc 7): than tim #C9B3F0, vien vang, nap vom mo ra sau.</summary>
+        public bool IsBreakthrough { get; private set; }
+
+        public static CrateView Create(Transform parent, Ingredient first, Color wood, bool breakthrough = false)
         {
-            var go = new GameObject("Thung_" + first.typeId);
+            var go = new GameObject((breakthrough ? "RuongDotPha_" : "Thung_") + first.typeId);
             go.transform.SetParent(parent, false);
             var c = go.AddComponent<CrateView>();
             c.TypeId = first.typeId;
+            c.IsBreakthrough = breakthrough;
+            if (breakthrough)
+            {
+                wood = UiKit.Lilac;
+                Color gold = UiKit.Mustard;
+                // Vien vang o bon goc (khong che nhan ten o mat truoc).
+                for (int k = 0; k < 4; k++)
+                    Toon.Prim(PrimitiveType.Cube, go.transform, "VienVang_" + k,
+                        new Vector3((k % 2 == 0 ? -1f : 1f) * (Size.x * 0.5f + 0.005f), 0.065f, (k < 2 ? -1f : 1f) * (Size.y * 0.5f + 0.005f)),
+                        new Vector3(0.045f, 0.13f, 0.045f), gold, Toon.OutlineSmall);
+                // Nap vom mo ngua ra sau de thay mon ben trong (Dieu 9: bac doc bang mau de).
+                Toon.Prim(PrimitiveType.Sphere, go.transform, "NapVom", new Vector3(0f, 0.2f, Size.y * 0.5f + 0.06f), new Vector3(Size.x, 0.24f, 0.14f), wood, Toon.OutlineSmall, new Vector3(-20f, 0f, 0f));
+                Toon.Prim(PrimitiveType.Cube, go.transform, "VienNap", new Vector3(0f, 0.09f, Size.y * 0.5f + 0.02f), new Vector3(Size.x + 0.02f, 0.03f, 0.03f), gold, Toon.OutlineSmall);
+            }
             Toon.Prim(PrimitiveType.Cube, go.transform, "Day", new Vector3(0f, 0.02f, 0f), new Vector3(Size.x, 0.04f, Size.y), wood, Toon.OutlineSmall);
             // Thanh thung thap de luon thay mau de bac cua tung mon (constitution Dieu 9).
             Toon.Prim(PrimitiveType.Cube, go.transform, "ThanhTruoc", new Vector3(0f, 0.035f, -Size.y * 0.5f), new Vector3(Size.x, 0.07f, 0.03f), wood, Toon.OutlineSmall);

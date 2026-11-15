@@ -1,5 +1,5 @@
 # PROJECT MAP
-Cập nhật: 2026-11-15
+Cập nhật: 2026-11-16
 ## Stack
 - Unity 6000.6.9f1 (D:\Unity\6000.6.9f1), URP 17.6.0, Input System 1.20.1, uGUI 2.6.0 [nguồn: My project/Packages/manifest.json]
 - Test: com.unity.test-framework 1.8.0 (builtin), Newtonsoft 3.2.1. Git + LFS, remote github.com/hungnhat29/quan-an-hope. Chưa có: Blender, gh CLI
@@ -27,3 +27,13 @@ Cập nhật: 2026-11-15
 - Game/IngredientModels.cs (hình 22 nguyên liệu nguyên + sơ chế, Piece cho chảo); Game/PanView.cs (PanView: lớp dầu, miếng, lửa, đảo, màu, hơi, món chín; DishFood: món hoàn chỉnh dùng chung chảo + đĩa); Game/PlaytestLog.cs (playtest-log.csv)
 - GameController.ClockScale (chỉ test tua đồng hồ); ảnh chụp: docs/sprint-2/ui/ (nguyen_lieu/, nau_*, 3d_*)
 - Tests: EditMode 142 (DayClockTests mới); PlayMode 5 (thêm F012_HinhNguyenLieu_AnhCan, Gio21_BienTuDong_*)
+## Sprint 3 (16/11) — relic
+- Core/Relics.cs: RelicKeys (khoá fx), RelicFx.Combine (gộp như sim_balance P.fx, thưởng bộ cộng dồn), RelicInventory (giá 8 ô), RelicShop (3 bệ/ngày, Buy có discardId), RelicText (chữ hiệu ứng, IsActiveNow)
+- Balance: relics[], setBonuses[], breakthrough, relicCap, relicShopOffers (balance.json `relic_shop_offers`). Importer: ParseBalance(json, relicsJson)
+- IngredientGacha.Pull(day, fx): RollTier theo thứ tự sim, CrateCount, rương đột phá (PullResult.breakthrough, Crate.isBreakthrough), EffectiveOdds (bảng Góc 2)
+- DishFormula.Relics (Muối hồng, Ớt ma, Chảo gang); Payment.Settle(..., fx) (Chuông vàng, Tượng mèo); TicketWallet.BeginDay(day, fx) (Vé số cào)
+- GameSession: Relics, Shop, BuyRelic, DebugGiveRelic, Breakthrough*; NaiveBot.BuyRelic (50% như sim naive)
+- Game: GameController.BuyRelic/UseShelfRelic/PendingRelicSlot; RoomView.BuildRelicShop/RefreshRelics/ShelfSummary, trạm Relic_0..2, Shelf_0..7; RelicArt.cs (22 hình relic, RelicCard, RelicFly, Sparkle); CrateView.IsBreakthrough
+- Editor/RelicDebugWindow.cs (menu "Quán Ăn Hope/Gỡ lỗi: cho relic"); Editor asmdef tham chiếu Game
+- Tests: EditMode 179 (RelicShopTests, RelicEffectTests); PlayMode 7 (F020_*, F022_*), ảnh docs/sprint-3/ui
+

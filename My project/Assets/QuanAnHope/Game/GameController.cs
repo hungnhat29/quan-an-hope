@@ -44,6 +44,12 @@ namespace QuanAnHope.Game
         public float ServedShowLeft { get; private set; }
         public string Toast { get; private set; }
 
+        /// <summary>Be relic dang cho chon relic de bo (gia day 8/8); -1 neu khong (F-020 AC-5).</summary>
+        public int PendingRelicSlot { get; private set; }
+
+        /// <summary>Relic vua mua (de hien lap lanh tren gia, Art Bible muc 11).</summary>
+        public RelicDef LastBoughtRelic { get; private set; }
+
         BalanceData data;
         FaceSwap face;
         GameObject customerModel;
@@ -112,6 +118,8 @@ namespace QuanAnHope.Game
             ServedShowLeft = 0f;
             Toast = null;
             reactionLeft = 0f;
+            PendingRelicSlot = -1;
+            LastBoughtRelic = null;
             if (Player != null) Player.Teleport(Vector3.zero, 0f);
             SyncCustomerModel();
         }
@@ -229,7 +237,75 @@ namespace QuanAnHope.Game
                 return false;
             }
             LastPull = pull;
-            Say("Thùng " + pull.side.name + " và thùng " + pull.main.name + " đã rơi xuống bàn.");
+            Say("Thùng " + pull.side.name + " và thùng " + pull.main.name + " đã rơi xuống bàn."
+                + (pull.breakthrough != null ? " Trúng rương đột phá: " + pull.breakthrough.name + "!" : ""));
+            return true;
+        }
+
+        // =====================================================================
+        // Goc 3: cua hang relic (constitution muc 7.1)
+        // =====================================================================
+
+        /// <summary>Bam relic tren be: mua bang ve trang. Gia day thi chuyen sang chon relic de bo; bam lai be de huy.</summary>
+        public bool BuyRelic(int slot)
+        {
+            if (PendingRelicSlot == slot)
+            {
+                PendingRelicSlot = -1;
+                Say("Đã huỷ, không mua relic.");
+                return false;
+            }
+            PendingRelicSlot = -1;
+            RelicDef offer = slot >= 0 && slot < Session.Shop.Offers.Count ? Session.Shop.Offers[slot] : null;
+            RelicBuyResult r = Session.BuyRelic(slot);
+            switch (r)
+            {
+                case RelicBuyResult.Bought:
+                    LastBoughtRelic = offer;
+                    Say("Đã mua " + offer.name + " · còn " + Session.Wallet.Count + " vé.");
+                    return true;
+                case RelicBuyResult.NeedDiscard:
+                    PendingRelicSlot = slot;
+                    Say("Giá relic đầy " + Session.Relics.Capacity + "/" + Session.Relics.Capacity
+                        + ": bấm một relic trên giá để bỏ, hoặc bấm lại bệ / chuột phải để huỷ.");
+                    return false;
+                case RelicBuyResult.NotEnoughTickets:
+                    Say("Thiếu " + Session.Shop.Missing(slot, Session.Wallet) + " vé để mua " + offer.name + ".");
+                    return false;
+                case RelicBuyResult.Closed:
+                    Say(Session.Shop.OpensOn(Session.Day) ? "Cửa hàng đã đóng." : "Cửa hàng relic mở từ ngày " + Session.Balance.start.relicShopFromDay + ".");
+                    return false;
+                default:
+                    Say("Bệ này đã bán hôm nay.");
+                    return false;
+            }
+        }
+
+        /// <summary>Bam relic tren gia: khi dang chon de bo thi bo no va mua relic dang cho.</summary>
+        public bool UseShelfRelic(string id)
+        {
+            if (PendingRelicSlot < 0) return false;
+            int slot = PendingRelicSlot;
+            PendingRelicSlot = -1;
+            RelicDef offer = Session.Shop.Offers[slot];
+            RelicDef old = null;
+            foreach (RelicDef d in Session.Relics.Owned) if (d.id == id) old = d;
+            if (Session.BuyRelic(slot, id) != RelicBuyResult.Bought)
+            {
+                Say("Không đổi được relic.");
+                return false;
+            }
+            LastBoughtRelic = offer;
+            Say("Đã bỏ " + (old != null ? old.name : id) + ", mua " + offer.name + " · còn " + Session.Wallet.Count + " vé.");
+            return true;
+        }
+
+        /// <summary>Lenh go loi "cho toi relic X" (impl plan sprint 3 muc 5): chi Editor goi.</summary>
+        public bool DebugGiveRelic(string id)
+        {
+            if (!Application.isEditor || !Session.DebugGiveRelic(id)) return false;
+            foreach (RelicDef d in Session.Relics.Owned) if (d.id == id) LastBoughtRelic = d;
+            Say("[Gỡ lỗi] Đã thêm relic " + id + ".");
             return true;
         }
 
@@ -248,6 +324,12 @@ namespace QuanAnHope.Game
         /// <summary>Chuot phai: dat lai thu dang cam ve cho cu (thung, chong dia, quay cho).</summary>
         public void PutDown()
         {
+            if (PendingRelicSlot >= 0)
+            {
+                PendingRelicSlot = -1;
+                Say("Đã huỷ, không mua relic.");
+                return;
+            }
             if (Hand == HandKind.Empty) return;
             string name = HeldName;
             Hand = HandKind.Empty;
@@ -500,6 +582,8 @@ namespace QuanAnHope.Game
         {
             if (!Session.StartNextDay()) return false;
             ClearHands();
+            PendingRelicSlot = -1;
+            LastBoughtRelic = null;
             LastPull = null;
             LastServed = null;
             ServedShowLeft = 0f;

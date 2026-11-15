@@ -26,14 +26,29 @@ namespace QuanAnHope.Core
             rules = balance.dish;
         }
 
+        /// <summary>Gia relic cua van choi (Muoi hong, Ot ma, Chao gang; constitution muc 7.3). Null = khong co relic.</summary>
+        public RelicInventory Relics { get; set; }
+
+        RelicFx Fx { get { return Relics != null ? Relics.Effects : RelicFx.None; } }
+
         public double Score(int mainTier, int sideTier)
         {
-            double b = (double)rules.weightChinh * mainTier + (double)rules.weightPhu * sideTier + rules.offset;
+            double b = (double)rules.weightChinh * mainTier + (double)rules.weightPhu * sideTier + rules.offset
+                + Fx.Get(RelicKeys.DishCenter);
             return Math.Round(b, ScoreDecimals);
         }
 
-        /// <summary>Thanh ti le hien cho nguoi choi: 1 o (chac chan) hoac 2 o (bac duoi, bac tren).</summary>
-        public TierChance[] Bar(int mainTier, int sideTier)
+        /// <summary>Bac thap nhat mon co the ra (Chao gang ba ngoai: khong duoi Do).</summary>
+        public int FloorTier { get { return Math.Min(rules.maxTier, (int)Fx.Get(RelicKeys.DishFloor)); } }
+
+        /// <summary>Bac sau san cua relic (ap ca cho mon sai cong thuc, Q-29).</summary>
+        public int ApplyFloor(int tier)
+        {
+            return Math.Max(tier, FloorTier);
+        }
+
+        /// <summary>Thanh ti le tu cong thuc muc 5.3 (truoc Ot ma va Chao gang): 1 o hoac 2 o.</summary>
+        TierChance[] BaseBar(int mainTier, int sideTier)
         {
             double b = Math.Max(0.0, Math.Min(rules.maxTier, Score(mainTier, sideTier)));
             int low = (int)Math.Floor(b);
@@ -49,11 +64,41 @@ namespace QuanAnHope.Core
             };
         }
 
+        /// <summary>
+        /// Thanh ti le hien cho nguoi choi (constitution Dieu 4): 1 o (chac chan) hoac 2 o (bac duoi, bac tren);
+        /// co Ot ma thi them o Lac vi, co Chao gang thi bac duoi Do gop vao Do.
+        /// </summary>
+        public TierChance[] Bar(int mainTier, int sideTier)
+        {
+            TierChance[] bar = BaseBar(mainTier, sideTier);
+            double ruin = Fx.Get(RelicKeys.DishRuin);
+            int floor = FloorTier;
+            if (ruin <= 0.0 && floor <= 0) return bar;
+
+            var pct = new SortedDictionary<int, double>();
+            foreach (TierChance c in bar) AddTo(pct, ApplyFloor(c.tier), c.chance * (1.0 - ruin));
+            if (ruin > 0.0) AddTo(pct, ApplyFloor(0), ruin);
+            var list = new List<TierChance>();
+            foreach (KeyValuePair<int, double> kv in pct)
+                list.Add(new TierChance { tier = kv.Key, chance = Math.Round(kv.Value, ScoreDecimals) });
+            return list.ToArray();
+        }
+
+        static void AddTo(SortedDictionary<int, double> pct, int tier, double chance)
+        {
+            double cur;
+            pct.TryGetValue(tier, out cur);
+            pct[tier] = cur + chance;
+        }
+
+        /// <summary>Quay bac mon theo thu tu cua sim_balance.py cook(): cong thuc -> Ot ma -> Chao gang.</summary>
         public int Roll(int mainTier, int sideTier, IRandom rng)
         {
-            TierChance[] bar = Bar(mainTier, sideTier);
-            if (bar.Length == 1) return bar[0].tier;
-            return rng.NextDouble() < bar[1].chance ? bar[1].tier : bar[0].tier;
+            TierChance[] bar = BaseBar(mainTier, sideTier);
+            int t = bar.Length == 1 ? bar[0].tier : (rng.NextDouble() < bar[1].chance ? bar[1].tier : bar[0].tier);
+            double ruin = Fx.Get(RelicKeys.DishRuin);
+            if (ruin > 0.0 && rng.NextDouble() < ruin) t = 0;
+            return ApplyFloor(t);
         }
     }
 
@@ -304,7 +349,7 @@ namespace QuanAnHope.Core
                 recipeId = Recipe.id,
                 name = Recipe.name,
                 baseName = Recipe.baseName,
-                tier = followsRecipe ? formula.Roll(main.tier, side.tier, rng) : SpoiledTier,
+                tier = followsRecipe ? formula.Roll(main.tier, side.tier, rng) : formula.ApplyFloor(SpoiledTier),
             };
             counter.TryPlace(dish);
             Reset();
