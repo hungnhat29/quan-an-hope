@@ -36,6 +36,28 @@ namespace QuanAnHope.Core
             throw new InvalidOperationException("Khong co bang ti le \"" + id + "\" trong balance.json");
         }
 
+        const string BlackTableId = "black";
+
+        /// <summary>Bang ti le ve den (constitution muc 4.3).</summary>
+        public static TierTable BlackOdds(this Balance b)
+        {
+            foreach (TierTable t in b.ingredientOdds)
+                if (t.id == BlackTableId) return t;
+            throw new InvalidOperationException("Khong co bang ti le \"" + BlackTableId + "\" trong balance.json");
+        }
+
+        /// <summary>Ngay mat dien (constitution muc 2: ngay 8).</summary>
+        public static bool IsBlackoutDay(this Balance b, int day)
+        {
+            return day == b.blackout.day;
+        }
+
+        /// <summary>So ghe khach cua ngay (constitution muc 6.1: vong 1 mot ghe, tu vong 2 ba ghe).</summary>
+        public static int SeatsForDay(this Balance b, int day)
+        {
+            return ByRound(b.seatsByRound, b.RoundOfDay(day), "so ghe");
+        }
+
         public static int SideCrateSize(this Balance b, int day)
         {
             return b.IsStormDay(day) ? b.crateSize.phuStorm : b.crateSize.phu;

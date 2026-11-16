@@ -391,6 +391,8 @@ Vòng 1 không tính giờ. Từ vòng 2, sau một **khoảng an toàn**, độ
 
 Khoảng an toàn ở bản 1.4 gấp 1,5 bản 1.3 (60 / 45 / 50 / +15 giây) vì thời gian nấu cũng gấp 1,5; chưa mô phỏng riêng, cần đo khi làm vòng 2 (sprint 4).
 
+**Đo ở sprint 4 (16/11/2026, chưa đổi số):** bot "không đọc chỉ số" chơi trên luật thật của game (3 ghế, giờ chờ thật, phục vụ theo thứ tự khách đến, món khách đầu hết thì phục vụ khách kế tiếp), 2.000 ván: khách mất trung bình **9,5 điểm** dễ tính lúc được phục vụ (mô phỏng giả định 8), qua lần trả nợ 2 là **84%** (mô phỏng 79%). Với 90 giây, vòng 2 không khó hơn mô phỏng.
+
 Về tra cứu: mình không tìm được con số công bố chính thức về thời gian chờ của Overcooked, Cook Serve Delicious hay Papa's Pizzeria (các nguồn chỉ mô tả có thanh kiên nhẫn, không ghi giây). Lập luận của bản 1.0 (số cũ, giữ để tra): các con số được đặt theo thời gian nấu khi đó (trung bình 17–19 giây một món): khoảng an toàn 60 giây đủ để nấu liền cho cả 3 khách ở vòng 2; vòng 3 (45 giây) thì khách thứ ba bắt đầu sốt ruột nếu không có món làm sẵn ở quầy chờ hoặc tủ lạnh — dễ hơn các game nấu ăn thông thường như bạn yêu cầu. Cần kiểm lại khi playtest.
 
 ### 6.7 Khách gọi món (từ 1.3)

@@ -179,7 +179,64 @@ namespace QuanAnHope.EditorTools
                     bonuses.Add(new SetBonus { set = set.Name, count = th.Key, effects = Effects((JObject)th.Value) });
             b.setBonuses = bonuses.ToArray();
 
+            // ---------- sprint 4 ----------
+            JObject seats = Obj(root, "seats");
+            b.seatsByRound = ByRound(seats, b.rounds);
+            b.itemShopFromDay = Int(root, "item_shop_from_day");
+            JObject pat = Obj(root, "patience");
+            JObject safe = Obj(pat, "safe_s");
+            b.patience = new PatienceRules
+            {
+                fromRound = Int(pat, "from_round"),
+                safeSecondsByRound = b.rounds.Select(r => safe[r.round.ToString()] != null ? (float)safe[r.round.ToString()] : 0f).ToArray(),
+                dropEverySeconds = Float(pat, "drop_every_s"),
+                maxDrop = Int(pat, "max_drop"),
+                blackoutExtraSeconds = Float(pat, "blackout_extra_s"),
+            };
+            JObject bo = Obj(root, "blackout");
+            b.blackout = new BlackoutRules { day = Int(bo, "day"), cookMultiplier = Float(bo, "cook_mult"), dim = Float(bo, "dim") };
+            JObject fr = Obj(root, "fridge");
+            b.fridge = new FridgeRules { slots = Int(fr, "slots"), decayDays = Int(fr, "decay_days") };
+            JObject sauce = Obj(root, "sauce");
+            b.sauce = new SauceRules
+            {
+                price = Int(sauce, "price"),
+                step = Int(sauce, "step"),
+                max = Int(sauce, "max"),
+                unlockDay = Int(sauce, "unlock_day"),
+                lateFromDay = Int(sauce, "late_from_day"),
+                oddsEarly = Sauce(Obj(sauce, "odds_early")),
+                oddsLate = Sauce(Obj(sauce, "odds_late")),
+            };
+            JObject mc = Obj(root, "machine");
+            JObject mo = Obj(mc, "odds");
+            b.machine = new MachineRules
+            {
+                price = Int(mc, "price"),
+                usesPerDay = Int(mc, "uses_per_day"),
+                trash = Float(mo, "trash"),
+                down1 = Float(mo, "down1"),
+                same = Float(mo, "same"),
+                up1 = Float(mo, "up1"),
+                up2 = Float(mo, "up2"),
+                up3 = Float(mo, "up3"),
+            };
+            JObject bk = Obj(root, "black_ticket");
+            b.blackTicket = new PricedItemRules { price = Int(bk, "price"), step = Int(bk, "step"), max = Int(bk, "max") };
+
             return b;
+        }
+
+        static SauceOdds Sauce(JObject o)
+        {
+            return new SauceOdds
+            {
+                fail = Float(o, "fail"),
+                same = Float(o, "same"),
+                up1 = Float(o, "up1"),
+                up2 = Float(o, "up2"),
+                legend = Float(o, "legend"),
+            };
         }
 
         public static RecipeBook ParseRecipes(string json)

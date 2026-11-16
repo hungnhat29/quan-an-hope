@@ -31,10 +31,13 @@ namespace QuanAnHope.Core
 
         RelicFx Fx { get { return Relics != null ? Relics.Effects : RelicFx.None; } }
 
+        /// <summary>Ngay mat dien: diem mon tru blackoutPenalty (constitution muc 5.3).</summary>
+        public bool Blackout { get; set; }
+
         public double Score(int mainTier, int sideTier)
         {
             double b = (double)rules.weightChinh * mainTier + (double)rules.weightPhu * sideTier + rules.offset
-                + Fx.Get(RelicKeys.DishCenter);
+                + Fx.Get(RelicKeys.DishCenter) - (Blackout ? (double)rules.blackoutPenalty : 0.0);
             return Math.Round(b, ScoreDecimals);
         }
 
@@ -181,6 +184,13 @@ namespace QuanAnHope.Core
         public string name;
         public string baseName;
         public int tier;
+
+        /// <summary>Da cho vao may gacha do an (moi mon 1 lan, constitution muc 5.6).</summary>
+        public bool machined;
+
+        /// <summary>So ngay nam trong tu lanh va da bi tut bac chua (constitution muc 5.7).</summary>
+        public int daysInFridge;
+        public bool decayed;
     }
 
     /// <summary>Quay cho: giu mot so dia da nau trong ngay, khong giam bac (constitution muc 5.1).</summary>
@@ -246,7 +256,22 @@ namespace QuanAnHope.Core
         public string Tool { get; private set; }
         public Recipe Recipe { get; private set; }
         public float Elapsed { get; private set; }
-        public float CookSeconds { get { return Recipe != null ? Recipe.cookSeconds : 0f; } }
+
+        /// <summary>He so thoi gian nau cua ngay (ngay mat dien x1,25; constitution muc 5.9). Mac dinh 1.</summary>
+        public float CookMultiplier { get; set; }
+
+        /// <summary>Tu vong 2 co qua lua (constitution muc 5.9).</summary>
+        public bool BurnEnabled { get; set; }
+
+        public float CookSeconds { get { return Recipe != null ? Recipe.cookSeconds * CookMultiplier : 0f; } }
+        public float WarnSeconds { get { return Recipe != null ? Recipe.warnSeconds * CookMultiplier : 0f; } }
+        public float BurnSeconds { get { return Recipe != null ? Recipe.burnSeconds * CookMultiplier : 0f; } }
+
+        /// <summary>Mon chin de tren bep qua 1,5 lan thoi gian nau: hien canh bao (khoi, bang bep doi mau).</summary>
+        public bool IsOverheating { get { return BurnEnabled && State == StoveState.Ready && Elapsed + 1e-4f >= WarnSeconds; } }
+
+        /// <summary>Qua 2 lan thoi gian nau: mon muc ra bi tru 1 bac.</summary>
+        public bool IsBurnt { get { return BurnEnabled && State == StoveState.Ready && Elapsed + 1e-4f >= BurnSeconds; } }
 
         /// <summary>Ten nhung thu da cho vao, theo thu tu.</summary>
         public IReadOnlyList<string> Added { get { return added; } }
@@ -258,6 +283,7 @@ namespace QuanAnHope.Core
         {
             this.lookup = lookup;
             this.formula = formula;
+            CookMultiplier = 1f;
         }
 
         bool CanEdit { get { return State == StoveState.Empty || State == StoveState.Filling; } }
@@ -331,11 +357,12 @@ namespace QuanAnHope.Core
             return true;
         }
 
+        /// <summary>Thoi gian troi tren bep; mon da chin van tiep tuc tinh gio de biet qua lua.</summary>
         public void Tick(float seconds)
         {
-            if (State != StoveState.Cooking) return;
+            if (State != StoveState.Cooking && State != StoveState.Ready) return;
             Elapsed += seconds;
-            if (Elapsed + 1e-4f >= CookSeconds) State = StoveState.Ready;
+            if (State == StoveState.Cooking && Elapsed + 1e-4f >= CookSeconds) State = StoveState.Ready;
         }
 
         /// <summary>Muc mon ra quay cho. Quay day thi mon o lai tren bep.</summary>
@@ -344,12 +371,15 @@ namespace QuanAnHope.Core
             dish = null;
             if (State != StoveState.Ready || counter.IsFull) return false;
 
+            int tier = followsRecipe ? formula.Roll(main.tier, side.tier, rng) : formula.ApplyFloor(SpoiledTier);
+            // Qua lua: -1 bac (constitution muc 5.9); Chao gang van giu san "khong duoi Do".
+            if (IsBurnt) tier = formula.ApplyFloor(Math.Max(SpoiledTier, tier - 1));
             dish = new Dish
             {
                 recipeId = Recipe.id,
                 name = Recipe.name,
                 baseName = Recipe.baseName,
-                tier = followsRecipe ? formula.Roll(main.tier, side.tier, rng) : formula.ApplyFloor(SpoiledTier),
+                tier = tier,
             };
             counter.TryPlace(dish);
             Reset();

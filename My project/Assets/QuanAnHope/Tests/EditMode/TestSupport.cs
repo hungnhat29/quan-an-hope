@@ -30,6 +30,22 @@ namespace QuanAnHope.Tests
             return i;
         }
 
+        /// <summary>Van choi nhay thang toi dau ngay <paramref name="day"/> (pha Prep) voi so tien cho truoc (sprint 4).</summary>
+        public static GameSession SessionAt(int day, int money = 0, int seed = 1, int lastDay = 8)
+        {
+            var s = new GameSession(Balance, Recipes, new SeededRandom(seed), lastDay);
+            s.DebugJumpToDay(day);
+            s.DebugAddMoney(money - s.Money);
+            return s;
+        }
+
+        /// <summary>Mot dia mon dung cong thuc <paramref name="recipeId"/> o bac cho truoc.</summary>
+        public static Dish DishOf(string recipeId, int tier)
+        {
+            Recipe r = Recipes.recipes.Single(x => x.id == recipeId);
+            return new Dish { recipeId = r.id, name = r.name, baseName = r.baseName, tier = tier };
+        }
+
         public static Ingredient Main(string id, int tier, bool prepared = true)
         {
             Ingredient i = Ingredient.FromMain(Recipes.mains.Single(m => m.id == id), tier);

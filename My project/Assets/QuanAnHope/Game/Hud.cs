@@ -133,7 +133,10 @@ namespace QuanAnHope.Game
             RefreshClock();
             money.text = "Ví <size=26>" + s.Money + "G</size>\n"
                 + (debt != null ? "Nợ <size=26>" + debt.amount + "G</size> đầu ngày " + debt.day : "Hết nợ");
-            tickets.text = s.Wallet.Count + " vé";
+            bool black = s.Items.BlackTickets > 0;
+            tickets.text = s.Wallet.Count + " vé" + (black ? " · " + s.Items.BlackTickets + " vé đen" : "");
+            var ticketBox = (RectTransform)tickets.transform.parent;
+            ticketBox.sizeDelta = new Vector2(black ? 310f : 150f, ticketBox.sizeDelta.y);
 
             bool hasToast = !string.IsNullOrEmpty(g.Toast);
             toastBox.SetActive(hasToast);
@@ -192,6 +195,7 @@ namespace QuanAnHope.Game
                 sb.Append("Đã phục vụ ").Append(s.ServedToday).Append(" khách · đóng quán lúc ").Append(s.ClosedAt).Append('\n');
                 sb.Append("Thu trong ngày: ").Append(s.IncomeToday >= 0 ? "+" : "").Append(s.IncomeToday).Append("G\n");
                 sb.Append("Tiền hiện có: ").Append(s.Money).Append("G\n");
+                if (s.Fridge.Dishes.Count > 0) sb.Append("Tủ lạnh giữ ").Append(s.Fridge.Dishes.Count).Append("/").Append(s.Fridge.Capacity).Append(" món\n");
                 if (debt != null)
                 {
                     if (debt.day == s.Day + 1) sb.Append("<b>Sáng mai chủ nợ thu ").Append(debt.amount).Append("G</b>");

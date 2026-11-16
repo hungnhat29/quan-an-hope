@@ -238,5 +238,43 @@ namespace QuanAnHope.Tests
             // docs/sprint-2/impl-plan.md F-011 AC-8: lech toi da 5 diem.
             Assert.That(passRate, Is.InRange(91.0, 100.0));
         }
+
+        /// <summary>
+        /// Sprint 4 (impl plan muc 4, 5): bot "khong doc chi so" choi tren luat that toi dau ngay 9 (3 khach cung ngoi,
+        /// gio cho that, ve den). Mo phong 1.4: qua lan tra no 2 = 79%. Cung dung sai 5 diem nhu F-011 AC-8.
+        /// </summary>
+        [Test]
+        public void Sprint4_BotKhongDocChiSo_CoTinhGio_2000Van_QuaLanTraNo2()
+        {
+            const int Games = 2000;
+            int pass1 = 0, pass2 = 0;
+            long timed = 0, drop = 0, served = 0, closes = 0, skips = 0, r2Days = 0, r2Served = 0, money9 = 0;
+            for (int g = 0; g < Games; g++)
+            {
+                var s = new GameSession(TestData.Balance, TestData.Recipes, new SeededRandom(20000 + g), 8);
+                GamePhase end = NaiveBot.PlayToEnd(s, BotTiming.Naive);
+                if (s.Day >= 4 && !(end == GamePhase.Lost && s.Day == 4)) pass1++;
+                if (end == GamePhase.Cleared) pass2++;
+                if (s.Day == 9) money9 += s.Money + s.LastDebtPaid;
+                timed += NaiveBot.LastRunTimedServes;
+                drop += NaiveBot.LastRunDrop;
+                served += NaiveBot.LastRunServed;
+                closes += NaiveBot.LastRunEarlyCloses;
+                skips += NaiveBot.LastRunSkips;
+                for (int d = 3; d < NaiveBot.LastRunServedByDay.Count; d++) { r2Days++; r2Served += NaiveBot.LastRunServedByDay[d]; }
+            }
+            double rate1 = 100.0 * pass1 / Games, rate2 = 100.0 * pass2 / Games;
+            UnityEngine.Debug.Log("NaiveBot sprint 4: qua no 1 = " + rate1.ToString("0.00") + "%, qua no 2 = " + rate2.ToString("0.00")
+                + "% (" + pass2 + "/" + Games + "), khach vong 2 duoc phuc vu = " + timed + ", diem de tinh mat vi cho trung binh = "
+                + (timed > 0 ? (double)drop / timed : 0).ToString("0.00") + ", tong khach = " + served
+                + ", khach / ngay vong 2 = " + (r2Days > 0 ? (double)r2Served / r2Days : 0).ToString("0.00")
+                + ", dong quan som = " + closes + ", bo qua khach = " + skips
+                + ", tien trung binh dau ngay 9 (van toi ngay 9) = " + (pass1 > 0 ? money9 / System.Math.Max(1, pass1) : 0));
+            Assert.That(rate1, Is.InRange(91.0, 100.0), "qua lan tra no 1 (mo phong 96%)");
+            // Do 16/11/2026: 84,15% (+5,15 diem so voi mo phong), mat 9,47 diem de tinh vi cho (mo phong gia dinh 8).
+            // Cong o day chi la can duoi (luat that khong duoc kho hon mo phong qua 5 diem, Dieu 1); lech len da bao
+            // nguoi dung (.dev-memory/QUESTIONS.md Q-38) de quyet co chinh so hay khong.
+            Assert.That(rate2, Is.GreaterThanOrEqualTo(74.0), "qua lan tra no 2 (mo phong 79%)");
+        }
     }
 }

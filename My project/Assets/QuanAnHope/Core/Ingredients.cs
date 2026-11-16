@@ -129,11 +129,12 @@ namespace QuanAnHope.Core
         }
 
         /// <summary>Tha 1 thung do phu + 1 thung nguyen lieu chinh theo bang cua ngay.</summary>
-        public PullResult Pull(int day, RelicFx fx = null)
+        /// <param name="black">Ve den: bang ti le den, thung co ban (khong nho lai ngay sau mua), constitution muc 4.3 / sim_balance.py pull().</param>
+        public PullResult Pull(int day, RelicFx fx = null, bool black = false)
         {
             if (fx == null) fx = RelicFx.None;
             int round = balance.RoundOfDay(day);
-            int[] odds = balance.OddsForDay(day).percents;
+            int[] odds = black ? balance.BlackOdds().percents : balance.OddsForDay(day).percents;
 
             var sides = new List<SideIngredient>();
             foreach (SideIngredient s in recipes.sides)
@@ -148,13 +149,13 @@ namespace QuanAnHope.Core
 
             SideIngredient sideType = sides[rng.NextInt(0, sides.Count - 1)];
             var sideCrate = new Crate { kind = IngredientKind.Side, typeId = sideType.id, name = sideType.name };
-            int sideCount = CrateCount(balance.SideCrateSize(day), fx, IngredientKind.Side);
+            int sideCount = CrateCount(black ? balance.crateSize.phu : balance.SideCrateSize(day), fx, IngredientKind.Side);
             for (int i = 0; i < sideCount; i++)
                 sideCrate.items.Add(Ingredient.FromSide(sideType, RollTier(odds, fx, IngredientKind.Side)));
 
             MainIngredient mainType = mains[rng.NextInt(0, mains.Count - 1)];
             var mainCrate = new Crate { kind = IngredientKind.Main, typeId = mainType.id, name = mainType.name };
-            int mainCount = CrateCount(balance.MainCrateSize(day), fx, IngredientKind.Main);
+            int mainCount = CrateCount(black ? balance.crateSize.chinh : balance.MainCrateSize(day), fx, IngredientKind.Main);
             for (int i = 0; i < mainCount; i++)
                 mainCrate.items.Add(Ingredient.FromMain(mainType, RollTier(odds, fx, IngredientKind.Main)));
 

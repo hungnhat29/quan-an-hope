@@ -37,3 +37,10 @@ Cập nhật: 2026-11-16
 - Editor/RelicDebugWindow.cs (menu "Quán Ăn Hope/Gỡ lỗi: cho relic"); Editor asmdef tham chiếu Game
 - Tests: EditMode 179 (RelicShopTests, RelicEffectTests); PlayMode 7 (F020_*, F022_*), ảnh docs/sprint-3/ui
 
+## Sprint 4 (16/11) — vòng 2
+- balance.json (make_next.py): seats, patience, blackout, item_shop_from_day; Balance: seatsByRound, patience, blackout, fridge, sauce, machine, blackTicket, itemShopFromDay (importer đọc hết)
+- Core/Round2.cs: Patience (SafeSeconds/Drop/EasinessNow/Left), Fridge, ItemShop, ItemRolls (nước sốt, máy gacha), enum ItemBuyResult/SauceResult/MachineResult
+- GameSession: Seats/SeatCount/SeatOf, CurrentCustomer = khách đến sớm nhất, ServeSeat(seat, dish), EasinessNow, PatienceLeft, Fridge/StoreInFridge, Items/BuySauce/BuyMachine/BuyBlackTicket/UseSauce/UseMachine/PullBlack, IsBlackout, LastPlayableDayFor, DebugJumpToDay/DebugAddMoney; Stove: CookMultiplier, BurnEnabled, IsOverheating/IsBurnt; DishFormula.Blackout; IngredientGacha.Pull(day, fx, black)
+- NaiveBot: mua vé đen như sim naive (ngày ≥ 6), thống kê LastRunTimedServes/LastRunDrop
+- Game: RoomViewRound2.cs (partial RoomView): 3 ghế Customer_0..2 (bản sao khách cảnh, BongThoai/BongThoai_1/_2), Fridge + FridgeDish_i, quầy vật phẩm Sauce/BlackTicket/FoodMachine/BlackSlot (giữa máy nhét vé và máy gacha), khói quá lửa + màu bảng bếp, nến + đèn tối ngày 8 (ItemView.HideTier); GameController: PlayableRounds=2, ServeSeat, UseFridge, BuyItem, UseSauceOnHeld, UseMachineOnHeld, PullBlack, DebugJumpToDay; Editor: cửa sổ gỡ lỗi có nút "Tới ngày 4 / 8"
+- Tests: EditMode +47 (SeatsAndPatienceTests, FridgeAndOvercookTests, ItemShopTests, Round2Tests, bot sprint 4); PlayMode +4 (F030_F031_*, F032_F033_*, F034_*, F035_*), ảnh docs/sprint-4/ui; spec specs/sprint-4/spec.md

@@ -386,6 +386,56 @@ MonoBehaviour:
       baseChance: 0
       items: 1
       tier5Share: 0.3
+    seatsByRound: 01000000030000000300000003000000i
+    itemShopFromDay: 4
+    patience:
+      fromRound: 2
+      safeSecondsByRound:
+      - 0
+      - 90
+      - 70
+      - 75
+      dropEverySeconds: 3
+      maxDrop: 20
+      blackoutExtraSeconds: 20
+    blackout:
+      day: 8
+      cookMultiplier: 1.25
+      dim: 0.6
+    fridge:
+      slots: 2
+      decayDays: 3
+    sauce:
+      price: 450
+      step: 45
+      max: 20
+      unlockDay: 4
+      lateFromDay: 9
+      oddsEarly:
+        fail: 12
+        same: 18
+        up1: 50
+        up2: 20
+        legend: 0
+      oddsLate:
+        fail: 12
+        same: 16
+        up1: 48
+        up2: 20
+        legend: 4
+    machine:
+      price: 800
+      usesPerDay: 3
+      trash: 15
+      down1: 20
+      same: 25
+      up1: 28
+      up2: 10
+      up3: 2
+    blackTicket:
+      price: 700
+      step: 120
+      max: 5
   recipes:
     timing:
       stepSeconds: 0.5

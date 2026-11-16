@@ -164,9 +164,10 @@ namespace QuanAnHope.Tests
         }
 
         [Test]
-        public void F021_RelicChuaCoHeThong_GhiNhanTuNgay4_VanMuaDuoc()
+        public void F021_RelicTuLanhGioChoNuocSot_TuSprint4DaCoTacDung()
         {
-            foreach (string id in new[] { "F1", "F3", "F7", "F9" }) Assert.IsFalse(RelicText.IsActiveNow(Def(id)), id);
+            // Sprint 3 ghi "tac dung tu ngay 4"; sprint 4 (F-031 AC-4, F-032 AC-3, F-034) bat ca bon.
+            foreach (string id in new[] { "F1", "F3", "F7", "F9" }) Assert.IsTrue(RelicText.IsActiveNow(Def(id)), id);
             foreach (string id in new[] { "V1", "C1", "S1", "F2", "F4", "F5", "F6", "F8", "F10" }) Assert.IsTrue(RelicText.IsActiveNow(Def(id)), id);
             GameSession s = NewSession();
             Assert.IsTrue(s.DebugGiveRelic("F1"));

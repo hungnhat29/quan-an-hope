@@ -108,14 +108,27 @@ namespace QuanAnHope.Game
                     s.Box("MatTren", V(0f, 0.0475f, 0f), V(0.05f, 0.002f, 0.05f), "#FBF6EA", default(Vector3), None);
                     return s;
 
-                // ---------- vong 2-4 va dot pha: muc co ban (>= 2 khoi) ----------
+                // ---------- vong 2: chi tiet nhu vong 1 (sprint 4, F-036) ----------
                 case "khoai_tay":
-                    return s.Sph("Cu", V(0f, 0.026f, 0f), V(0.074f, 0.05f, 0.056f), Tan)
-                        .Sph("Mat", V(0.02f, 0.044f, -0.018f), V(0.007f, 0.004f, 0.007f), "#8C5A3A", default(Vector3), None)
-                        .Sph("Mat", V(-0.018f, 0.04f, -0.02f), V(0.006f, 0.004f, 0.006f), "#8C5A3A", default(Vector3), None);
+                    // cu khoai hoi meo: than chinh + buou phu, vo lom dom, mat mam
+                    s.Sph("Cu", V(0f, 0.026f, 0f), V(0.074f, 0.05f, 0.056f), Tan)
+                     .Sph("Buou", V(0.026f, 0.03f, 0.012f), V(0.036f, 0.034f, 0.034f), Tan, V(0f, 20f, 0f), Small)
+                     .Sph("Mat", V(0.02f, 0.046f, -0.018f), V(0.008f, 0.004f, 0.008f), "#8C5A3A", default(Vector3), None)
+                     .Sph("Mat", V(-0.018f, 0.042f, -0.02f), V(0.007f, 0.004f, 0.007f), "#8C5A3A", default(Vector3), None)
+                     .Sph("Mat", V(-0.026f, 0.03f, 0.014f), V(0.006f, 0.004f, 0.006f), "#8C5A3A", default(Vector3), None);
+                    for (int i = 0; i < 4; i++)
+                        s.Sph("Dom", Ring(0.03f, 40f + 85f * i, 0.022f), V(0.005f, 0.003f, 0.004f), "#B8834F", V(0f, 85f * i, 0f), None);
+                    return s;
                 case "nam_rom":
-                    return s.Sph("Mu", V(0f, 0.042f, 0f), V(0.05f, 0.046f, 0.05f), "#8F8578")
-                        .Cyl("Chan", V(0f, 0.014f, 0f), V(0.032f, 0.028f, 0.032f), "#EDE6D8");
+                    // nam rom: mu tron xam nau day toi, than trang phinh, vay chan
+                    s.Sph("Mu", V(0f, 0.046f, 0f), V(0.05f, 0.042f, 0.05f), "#8F8578")
+                     .Sph("Dinh", V(0f, 0.062f, 0f), V(0.03f, 0.016f, 0.03f), "#6E655A", default(Vector3), None)
+                     .Cyl("Chan", V(0f, 0.016f, 0f), V(0.034f, 0.03f, 0.034f), "#EDE6D8")
+                     .Sph("Bau", V(0f, 0.008f, 0f), V(0.04f, 0.016f, 0.04f), "#F4EFE6", default(Vector3), Small)
+                     .Cyl("Vay", V(0f, 0.028f, 0f), V(0.046f, 0.004f, 0.046f), "#D9CFC0", default(Vector3), None);
+                    return s;
+
+                // ---------- vong 3-4 va dot pha: muc co ban (>= 2 khoi) ----------
                 case "bong_cai":
                     s.Sph("Bong", V(0f, 0.048f, 0f), V(0.058f, 0.04f, 0.058f), "#5E9E5B");
                     for (int i = 0; i < 3; i++) s.Sph("Bong", Ring(0.022f, 120f * i, 0.042f), V(0.034f, 0.03f, 0.034f), "#6FA855", default(Vector3), Small);
@@ -140,12 +153,20 @@ namespace QuanAnHope.Game
                         .Cyl("Chan", V(0f, 0.012f, 0f), V(0.018f, 0.024f, 0.018f), "#D9C9A8")
                         .Box("Nut", V(0f, 0.049f, 0f), V(0.03f, 0.002f, 0.004f), "#D9C9A8", V(0f, 35f, 0f), None);
                 case "bo":
+                    // mieng bo bit tet: nac do sam, vien mo, van mo cam thach, mat cat sang hon
                     return s.Box("Nac", V(0f, 0.017f, 0f), V(0.078f, 0.032f, 0.056f), "#B8443C")
-                        .Box("VanMo", V(0.01f, 0.0335f, 0.01f), V(0.05f, 0.002f, 0.004f), "#F3E2D5", V(0f, 25f, 0f), None)
-                        .Box("VanMo", V(-0.012f, 0.0335f, -0.01f), V(0.04f, 0.002f, 0.003f), "#F3E2D5", V(0f, -15f, 0f), None)
-                        .Box("Mo", V(0f, 0.017f, -0.03f), V(0.078f, 0.03f, 0.006f), Cream, default(Vector3), Small);
+                        .Box("MatCat", V(0f, 0.0335f, 0f), V(0.072f, 0.002f, 0.05f), "#C9574D", default(Vector3), None)
+                        .Box("VanMo", V(0.01f, 0.035f, 0.01f), V(0.05f, 0.002f, 0.004f), "#F3E2D5", V(0f, 25f, 0f), None)
+                        .Box("VanMo", V(-0.012f, 0.035f, -0.01f), V(0.04f, 0.002f, 0.003f), "#F3E2D5", V(0f, -15f, 0f), None)
+                        .Box("VanMo", V(0.018f, 0.035f, -0.014f), V(0.022f, 0.002f, 0.003f), "#F3E2D5", V(0f, 60f, 0f), None)
+                        .Box("Mo", V(0f, 0.017f, -0.03f), V(0.078f, 0.03f, 0.006f), Cream, default(Vector3), Small)
+                        .Box("Xuong", V(0.041f, 0.017f, 0.012f), V(0.006f, 0.022f, 0.014f), "#F4EFE6", default(Vector3), Small);
                 case "tom":
+                    // tom cong chu C: 4 dot vo, dau, mat den, 2 rau dai, duoi xoe
                     for (int i = 0; i < 4; i++) s.Sph("Dot", Ring(0.026f, 200f + 40f * i, 0.016f), V(0.028f, 0.026f, 0.026f), "#F08A6A");
+                    for (int i = 0; i < 2; i++)
+                        s.Cyl("Rau", Ring(0.026f, 160f, 0.03f) + V(0.004f, 0f, -0.006f + 0.012f * i), V(0.002f, 0.03f, 0.002f), "#D9704F", V(0f, 0f, 55f + 15f * i), None);
+                    s.Sph("MatTom", Ring(0.026f, 160f, 0.03f) + V(0f, 0f, -0.012f), V(0.006f, 0.006f, 0.006f), "#2B2321", default(Vector3), None);
                     return s.Sph("Dau", Ring(0.026f, 160f, 0.018f), V(0.03f, 0.028f, 0.028f), "#E8604F")
                         .Sph("Duoi", Ring(0.026f, 345f, 0.014f) + V(0.008f, 0f, 0.006f), V(0.024f, 0.006f, 0.026f), "#D9704F", V(0f, 30f, 0f), Small)
                         .Cyl("Rau", Ring(0.04f, 150f, 0.02f), V(0.002f, 0.04f, 0.002f), "#D9704F", V(0f, 30f, 80f), None);

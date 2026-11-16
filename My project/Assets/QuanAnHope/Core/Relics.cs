@@ -26,13 +26,13 @@ namespace QuanAnHope.Core
         public const string Income = "income";
         public const string TicketEvery3 = "ticket_every3";
 
-        // Gan voi he thong chua co o sprint 3 (tu lanh, gio cho, nuoc sot): mua va giu duoc, chua co tac dung.
+        // Gan voi he thong co tu sprint 4 (tu lanh, gio cho, nuoc sot).
         public const string Fridge = "fridge";
         public const string NoDecay = "no_decay";
         public const string Patience = "patience";
         public const string SauceSafe = "sauce_safe";
 
-        public static readonly string[] NotYetActive = { Fridge, NoDecay, Patience, SauceSafe };
+        public static readonly string[] NotYetActive = new string[0];
 
         /// <summary>Khoa cua thuong bo lay gia tri lon nhat thay vi cong (sim_balance.py P.fx).</summary>
         public static bool IsMaxKey(string key)

@@ -56,7 +56,64 @@ namespace QuanAnHope.Core
         /// <summary>Ngay cuoi cung choi duoc trong ban nay; qua ngay do (sau khi tra no) la Cleared.</summary>
         public int LastPlayableDay { get; private set; }
 
-        public Customer CurrentCustomer { get; private set; }
+        /// <summary>Tu lanh (constitution muc 5.7) va do mua bang tien (muc 8).</summary>
+        public Fridge Fridge { get; private set; }
+        public ItemShop Items { get; private set; }
+
+        /// <summary>Ghe khach hom nay: vong 1 mot ghe, tu vong 2 ba ghe (constitution muc 6.1). Phan tu null = ghe trong.</summary>
+        public IReadOnlyList<Customer> Seats { get { return seats; } }
+        public int SeatCount { get { return seats.Length; } }
+        Customer[] seats = new Customer[0];
+        float[] seatTimers = new float[0];
+
+        /// <summary>Khach den som nhat trong so khach dang ngoi (vong 1: khach duy nhat); null neu khong co ai.</summary>
+        public Customer CurrentCustomer
+        {
+            get
+            {
+                Customer first = null;
+                foreach (Customer c in seats)
+                    if (c != null && (first == null || c.number < first.number)) first = c;
+                return first;
+            }
+        }
+
+        /// <summary>Ghe cua khach nay; -1 neu khach khong ngoi.</summary>
+        public int SeatOf(Customer c)
+        {
+            for (int i = 0; i < seats.Length; i++) if (c != null && ReferenceEquals(seats[i], c)) return i;
+            return -1;
+        }
+
+        /// <summary>Ngay mat dien (constitution muc 2: ngay 8).</summary>
+        public bool IsBlackout { get { return Balance.IsBlackoutDay(Day); } }
+
+        /// <summary>Do de tinh cua khach luc nay, da tru gio cho (constitution muc 6.6).</summary>
+        public int EasinessNow(Customer c)
+        {
+            return Patience.EasinessNow(Balance, Day, c, Relics.Effects);
+        }
+
+        /// <summary>Thanh kien nhan 0..1 tren bong bong.</summary>
+        public float PatienceLeft(Customer c)
+        {
+            return Patience.Left(Balance, Day, c, Relics.Effects);
+        }
+
+        public bool IsImpatient(Customer c)
+        {
+            return Patience.IsImpatient(Balance, Day, c, Relics.Effects);
+        }
+
+        /// <summary>Khoang an toan hom nay (giay; vo cung o vong 1).</summary>
+        public float SafeSeconds { get { return Patience.SafeSeconds(Balance, Day, Relics.Effects); } }
+
+        /// <summary>Ngay cuoi cua vong <paramref name="round"/> (ban sprint 4 choi het vong 2, ngay 9 thu no roi dung).</summary>
+        public static int LastPlayableDayFor(Balance b, int round)
+        {
+            foreach (RoundRange r in b.rounds) if (r.round == round) return r.lastDay;
+            throw new ArgumentOutOfRangeException("round", "Khong co vong " + round);
+        }
 
         /// <summary>So khach da vao quan trong ngay (khong gioi han, constitution 1.4 muc 6.2).</summary>
         public int CustomersToday { get; private set; }
@@ -75,9 +132,6 @@ namespace QuanAnHope.Core
 
         /// <summary>Da qua 21:00: khong nhan khach moi, khach dang ngoi van duoc phuc vu.</summary>
         public bool IsClosedForNewCustomers { get { return Clock.IsPastClose; } }
-
-        /// <summary>Giay con lai truoc khi khach ke tiep vao; am khi khong co ai sap vao.</summary>
-        float nextCustomerIn = -1f;
 
         public int Round { get { return Balance.RoundOfDay(Day); } }
 
@@ -109,12 +163,51 @@ namespace QuanAnHope.Core
             Stove = new Stove(Lookup, Formula);
             Counter = new Counter(balance);
             Clock = new DayClock(balance.day);
+            Fridge = new Fridge(balance, Relics);
+            Items = new ItemShop(balance);
 
             Day = 1;
             Money = balance.start.money;
             Wallet.BeginDay(Day, Relics.Effects);
             Shop.Restock(Day, Relics);
+            BeginDayRules();
             Phase = GamePhase.Prep;
+        }
+
+        /// <summary>Luat theo ngay: so ghe, qua lua (tu vong 2), mat dien (ngay 8), luot may gacha do an.</summary>
+        void BeginDayRules()
+        {
+            int n = Balance.SeatsForDay(Day);
+            seats = new Customer[n];
+            seatTimers = new float[n];
+            for (int i = 0; i < n; i++) seatTimers[i] = -1f;
+            Stove.BurnEnabled = Round >= Recipes.timing.burnFromRound;
+            Stove.CookMultiplier = IsBlackout ? Balance.blackout.cookMultiplier : 1f;
+            Formula.Blackout = IsBlackout;
+            Items.BeginDay(Day);
+        }
+
+        // ---------- go loi / test (chi Editor va test goi) ----------
+
+        /// <summary>Nhay toi dau ngay <paramref name="day"/> (pha Prep), khong thu no. Dung cho test va cua so go loi.</summary>
+        public void DebugJumpToDay(int day)
+        {
+            if (day < 1) throw new ArgumentOutOfRangeException("day");
+            ResetDayState();
+            Stock.Clear();
+            Counter.Clear();
+            Stove.Reset();
+            Board.Cancel();
+            Day = day;
+            Wallet.BeginDay(Day, Relics.Effects);
+            Shop.Restock(Day, Relics);
+            BeginDayRules();
+            Phase = GamePhase.Prep;
+        }
+
+        public void DebugAddMoney(int amount)
+        {
+            Money += amount;
         }
 
         bool DayIsRunning { get { return Phase == GamePhase.Prep || Phase == GamePhase.Open; } }
@@ -137,6 +230,106 @@ namespace QuanAnHope.Core
             LastBreakthrough = result.breakthrough;
             if (result.breakthrough != null) Stock.AddCrate(result.breakthrough);
             return true;
+        }
+
+        /// <summary>Nhet ve den vao may: thung theo bang ve den (constitution muc 4.3), khong ton ve trang.</summary>
+        public bool PullBlack(out PullResult result)
+        {
+            result = null;
+            if (!DayIsRunning || !Items.SpendBlack()) return false;
+            result = gacha.Pull(Day, Relics.Effects, true);
+            Stock.AddCrate(result.side);
+            Stock.AddCrate(result.main);
+            LastBreakthrough = result.breakthrough;
+            if (result.breakthrough != null) Stock.AddCrate(result.breakthrough);
+            return true;
+        }
+
+        // ---------- cua hang vat pham (constitution muc 8) ----------
+
+        public ItemBuyResult BuySauce()
+        {
+            int cost;
+            ItemBuyResult r = DayIsRunning ? Items.CheckSauce(Money, out cost) : Closed(out cost);
+            if (r == ItemBuyResult.Bought) { Money -= cost; Items.AddSauce(); }
+            return r;
+        }
+
+        public ItemBuyResult BuyMachine()
+        {
+            int cost;
+            ItemBuyResult r = DayIsRunning ? Items.CheckMachine(Money, out cost) : Closed(out cost);
+            if (r == ItemBuyResult.Bought) { Money -= cost; Items.AddMachine(); }
+            return r;
+        }
+
+        public ItemBuyResult BuyBlackTicket()
+        {
+            int cost;
+            ItemBuyResult r = DayIsRunning ? Items.CheckBlack(Money, out cost) : Closed(out cost);
+            if (r == ItemBuyResult.Bought) { Money -= cost; Items.AddBlack(); }
+            return r;
+        }
+
+        static ItemBuyResult Closed(out int cost)
+        {
+            cost = 0;
+            return ItemBuyResult.Closed;
+        }
+
+        /// <summary>Dia nay dang nam tren quay cho hoac trong tu lanh.</summary>
+        public bool HasDish(Dish d)
+        {
+            if (d == null) return false;
+            foreach (Dish x in Counter.Dishes) if (ReferenceEquals(x, d)) return true;
+            return Fridge.Contains(d);
+        }
+
+        bool RemoveDish(Dish d)
+        {
+            for (int i = 0; i < Counter.Dishes.Count; i++)
+                if (ReferenceEquals(Counter.Dishes[i], d)) { Counter.TakeAt(i); return true; }
+            return Fridge.Remove(d);
+        }
+
+        /// <summary>Dung mot chai nuoc sot len dia (constitution muc 5.5). False neu het sot hoac dia khong o quay / tu.</summary>
+        public bool UseSauce(Dish dish, out SauceResult result)
+        {
+            result = SauceResult.Same;
+            if (!DayIsRunning || !HasDish(dish) || Items.Sauces <= 0) return false;
+            Items.SpendSauce();
+            result = ItemRolls.Sauce(Balance, Day, Relics.Effects, rng);
+            dish.tier = ItemRolls.ApplySauce(result, dish.tier, Balance);
+            return true;
+        }
+
+        /// <summary>Cho dia vao may gacha do an (constitution muc 5.6): moi mon 1 lan, 3 lan moi ngay; hong thi mat mon.</summary>
+        public bool UseMachine(Dish dish, out MachineResult result)
+        {
+            result = MachineResult.Same;
+            if (!DayIsRunning || !HasDish(dish) || dish.machined || !Items.HasMachine || Items.MachineUsesLeft <= 0) return false;
+            Items.SpendMachineUse();
+            result = ItemRolls.Machine(Balance, rng);
+            int tier = ItemRolls.ApplyMachine(result, dish.tier, Balance);
+            dish.machined = true;
+            if (tier < 0) RemoveDish(dish);
+            else dish.tier = tier;
+            return true;
+        }
+
+        // ---------- Goc 4: tu lanh (constitution muc 5.7) ----------
+
+        /// <summary>Cat dia tu quay cho vao tu lanh. False neu tu day hoac dia khong o quay.</summary>
+        public bool StoreInFridge(Dish dish)
+        {
+            if (!DayIsRunning || dish == null || Fridge.IsFull) return false;
+            for (int i = 0; i < Counter.Dishes.Count; i++)
+            {
+                if (!ReferenceEquals(Counter.Dishes[i], dish)) continue;
+                Counter.TakeAt(i);
+                return Fridge.TryStore(dish);
+            }
+            return false;
         }
 
         /// <summary>Ti le ra thung dot pha moi luot voi relic dang co (bang ti le Goc 2, Dieu 4).</summary>
@@ -197,7 +390,9 @@ namespace QuanAnHope.Core
         {
             if (Phase != GamePhase.Prep || IsClosedForNewCustomers) return false;
             Phase = GamePhase.Open;
-            SeatNextCustomer();
+            // Ghe dau co khach ngay; cac ghe con lai (tu vong 2) co khach sau vai giay (muc 6.2).
+            SeatCustomer(0);
+            for (int i = 1; i < seats.Length; i++) seatTimers[i] = Balance.day.nextCustomerSeconds;
             return true;
         }
 
@@ -213,21 +408,37 @@ namespace QuanAnHope.Core
             float before = Clock.Elapsed;
             Clock.Advance(seconds);
 
-            if (Phase == GamePhase.Open && CurrentCustomer == null && nextCustomerIn >= 0f)
+            if (Phase == GamePhase.Open)
             {
-                float arrivesAt = before + nextCustomerIn;
-                nextCustomerIn -= seconds;
-                if (nextCustomerIn <= 0f && arrivesAt < Clock.DaySeconds) SeatNextCustomer();
+                // Khach dang ngoi cho them (constitution muc 6.6).
+                foreach (Customer c in seats) if (c != null) c.waitedSeconds += seconds;
+
+                for (int i = 0; i < seats.Length; i++)
+                {
+                    if (seats[i] != null || seatTimers[i] < 0f) continue;
+                    float arrivesAt = before + seatTimers[i];
+                    seatTimers[i] -= seconds;
+                    if (seatTimers[i] > 0f) continue;
+                    if (arrivesAt < Clock.DaySeconds)
+                    {
+                        SeatCustomer(i);
+                        // vao giua buoc Tick: chi tinh phan thoi gian sau khi ngoi
+                        seats[i].waitedSeconds = Math.Max(0f, Clock.Elapsed - arrivesAt);
+                    }
+                    else seatTimers[i] = -1f;
+                }
             }
 
             if (IsClosedForNewCustomers && CurrentCustomer == null) EndDay();
         }
 
-        void SeatNextCustomer()
+        void SeatCustomer(int seat)
         {
-            nextCustomerIn = -1f;
-            CurrentCustomer = NextCustomer();
+            seatTimers[seat] = -1f;
             CustomersToday++;
+            Customer c = NextCustomer();
+            c.number = CustomersToday;
+            seats[seat] = c;
         }
 
         // ---------- goi mon (constitution muc 6.7) ----------
@@ -252,6 +463,7 @@ namespace QuanAnHope.Core
         {
             var byId = new SortedDictionary<string, Recipe>(StringComparer.Ordinal);
             foreach (Dish d in Counter.Dishes) AddRecipe(byId, Lookup.ById(d.recipeId));
+            foreach (Dish d in Fridge.Dishes) AddRecipe(byId, Lookup.ById(d.recipeId));
             AddRecipe(byId, Stove.PendingRecipe);
 
             var mains = new List<string>();
@@ -291,26 +503,41 @@ namespace QuanAnHope.Core
             return candidates[rng.NextInt(0, candidates.Count - 1)];
         }
 
-        /// <summary>Bam chuong: dua dia o vi tri nay tren quay cho cho khach dang doi. Null neu khong phuc vu duoc.</summary>
+        /// <summary>Dua dia o vi tri nay tren quay cho cho khach den som nhat dang ngoi. Null neu khong phuc vu duoc.</summary>
         public PaymentResult Serve(int counterIndex)
         {
-            if (Phase != GamePhase.Open || CurrentCustomer == null) return null;
             if (counterIndex < 0 || counterIndex >= Counter.Dishes.Count) return null;
+            return ServeSeat(SeatOf(CurrentCustomer), Counter.Dishes[counterIndex]);
+        }
 
-            Dish dish = Counter.TakeAt(counterIndex);
+        /// <summary>
+        /// Dua dia (tren quay cho hoac trong tu lanh) cho khach o ghe <paramref name="seat"/> (constitution muc 6.7: nguoi choi
+        /// chon phuc vu ai truoc). Tien va bac toi thieu tinh theo do de tinh luc phuc vu (muc 6.6). Null neu khong phuc vu duoc.
+        /// </summary>
+        public PaymentResult ServeSeat(int seat, Dish dish)
+        {
+            if (Phase != GamePhase.Open || seat < 0 || seat >= seats.Length || seats[seat] == null) return null;
+            if (!HasDish(dish)) return null;
+            Customer c = seats[seat];
+
+            RemoveDish(dish);
             // Sai mon: khach nhan dia nhung gian (constitution muc 6.7).
-            PaymentResult payment = dish.recipeId == CurrentCustomer.orderId
-                ? Payment.Settle(Balance, Round, CurrentCustomer.easiness, dish.tier, Relics.Effects)
+            PaymentResult payment = dish.recipeId == c.orderId
+                ? Payment.Settle(Balance, Round, EasinessNow(c), dish.tier, Relics.Effects)
                 : Payment.WrongOrder(Balance, Round);
             Money += payment.amount;
             IncomeToday += payment.amount;
             LastPayment = payment;
             ServedToday++;
 
-            // Khach ke tiep vao sau vai giay; qua 21:00 thi khach vua roi la nguoi cuoi (muc 6.2).
-            CurrentCustomer = null;
-            if (IsClosedForNewCustomers) EndDay();
-            else nextCustomerIn = Balance.day.nextCustomerSeconds;
+            // Ghe trong: khach moi vao sau vai giay; qua 21:00 thi khong ai vao nua (muc 6.2).
+            seats[seat] = null;
+            if (IsClosedForNewCustomers)
+            {
+                seatTimers[seat] = -1f;
+                if (CurrentCustomer == null) EndDay();
+            }
+            else seatTimers[seat] = Balance.day.nextCustomerSeconds;
             return payment;
         }
 
@@ -325,9 +552,10 @@ namespace QuanAnHope.Core
         void EndDay()
         {
             ClosedAt = Clock.Text;
-            nextCustomerIn = -1f;
-            CurrentCustomer = null;
+            for (int i = 0; i < seats.Length; i++) { seats[i] = null; seatTimers[i] = -1f; }
             Stock.Clear();
+            // Dia con tren quay cho vao tu lanh neu con o, khong thi bi bo (constitution muc 5.1, 5.7).
+            foreach (Dish d in Counter.Dishes) Fridge.TryStore(d);
             Counter.Clear();
             Stove.Reset();
             Board.Cancel();
@@ -343,14 +571,8 @@ namespace QuanAnHope.Core
             if (Phase != GamePhase.DayEnd) return false;
 
             Day++;
-            LastDebtPaid = 0;
-            LastPayment = null;
-            ServedToday = 0;
-            CustomersToday = 0;
-            IncomeToday = 0;
-            ClosedAt = null;
-            nextCustomerIn = -1f;
-            Clock.Reset();
+            ResetDayState();
+            Fridge.AgeOneDay();
 
             int due = Balance.DebtDueOn(Day);
             if (due > 0)
@@ -372,8 +594,21 @@ namespace QuanAnHope.Core
 
             Wallet.BeginDay(Day, Relics.Effects);
             Shop.Restock(Day, Relics);
+            BeginDayRules();
             Phase = GamePhase.Prep;
             return true;
+        }
+
+        void ResetDayState()
+        {
+            LastDebtPaid = 0;
+            LastPayment = null;
+            ServedToday = 0;
+            CustomersToday = 0;
+            IncomeToday = 0;
+            ClosedAt = null;
+            LastBreakthrough = null;
+            Clock.Reset();
         }
 
         bool Contains(Ingredient ingredient)
@@ -412,13 +647,30 @@ namespace QuanAnHope.Core
         public static int LastRunServed { get; private set; }
 
         /// <summary>Choi den khi qua phan choi duoc hoac thua.</summary>
+        /// <summary>So khach phuc vu tu vong 2 (co tinh gio cho) va tong so diem do de tinh bi tru vi cho, trong lan PlayToEnd gan nhat.</summary>
+        public static int LastRunTimedServes { get; private set; }
+        public static int LastRunDrop { get; private set; }
+
+        /// <summary>So lan dong quan som vi khong khach nao lam duoc mon, va so lan phai bo qua khach den truoc.</summary>
+        public static int LastRunEarlyCloses { get; private set; }
+        public static int LastRunSkips { get; private set; }
+
+        /// <summary>So khach phuc vu theo ngay trong lan PlayToEnd gan nhat (chi so 0 = ngay 1).</summary>
+        public static readonly List<int> LastRunServedByDay = new List<int>();
+
         public static GamePhase PlayToEnd(GameSession s, BotTiming timing = null)
         {
             LastRunServed = 0;
+            LastRunTimedServes = 0;
+            LastRunDrop = 0;
+            LastRunEarlyCloses = 0;
+            LastRunSkips = 0;
+            LastRunServedByDay.Clear();
             while (s.Phase != GamePhase.Cleared && s.Phase != GamePhase.Lost)
             {
                 PlayDay(s, timing);
                 LastRunServed += s.ServedToday;
+                LastRunServedByDay.Add(s.ServedToday);
                 s.StartNextDay();
             }
             return s.Phase;
@@ -430,8 +682,10 @@ namespace QuanAnHope.Core
             if (s.Phase != GamePhase.Prep) return;
 
             BuyRelic(s);
+            BuyBlackTickets(s);
             PullResult pull;
             while (s.PullCrates(out pull)) Spend(s, timing, timing == null ? 0f : timing.pullSeconds);
+            while (s.PullBlack(out pull)) Spend(s, timing, timing == null ? 0f : timing.pullSeconds);
 
             s.OpenShop();
             while (s.Phase == GamePhase.Open)
@@ -442,16 +696,33 @@ namespace QuanAnHope.Core
                     s.Tick(s.Balance.day.nextCustomerSeconds);
                     continue;
                 }
-                // Phuc vu dung mon khach goi (constitution muc 6.7); khong nau duoc thi dong quan.
-                string want = s.CurrentCustomer.orderId;
-                int index = IndexOnCounter(s, want);
-                if (index < 0 && CookFor(s, want, timing)) index = IndexOnCounter(s, want);
-                if (index < 0)
+                // Phuc vu dung mon khach goi (constitution muc 6.7) theo thu tu khach den. Tu vong 2 nhieu khach cung goi
+                // tu mot kho: mon cua khach dau khong con thi phuc vu khach ke tiep lam duoc; khong ai lam duoc thi dong quan.
+                Customer target = null;
+                int index = -1;
+                var queue = new List<Customer>();
+                foreach (Customer c in s.Seats) if (c != null) queue.Add(c);
+                queue.Sort((a, b) => a.number.CompareTo(b.number));
+                foreach (Customer c in queue)
                 {
+                    index = IndexOnCounter(s, c.orderId);
+                    if (index < 0 && CookFor(s, c.orderId, timing)) index = IndexOnCounter(s, c.orderId);
+                    if (index >= 0) { target = c; break; }
+                }
+                if (target == null)
+                {
+                    LastRunEarlyCloses++;
                     s.CloseEarly();
                     break;
                 }
-                s.Serve(index);
+                if (target != queue[0]) LastRunSkips++;
+                if (Patience.Applies(s.Balance, s.Day))
+                {
+                    // Do khoang an toan 90 giay (impl plan sprint 4 muc 5): khach mat bao nhieu diem luc duoc phuc vu.
+                    LastRunTimedServes++;
+                    LastRunDrop += target.easiness - s.EasinessNow(target);
+                }
+                s.ServeSeat(s.SeatOf(target), s.Counter.Dishes[index]);
             }
             // Khong mo duoc quan (vd da qua 21:00): cho het gio.
             if (s.Phase == GamePhase.Prep) s.Tick(s.Clock.DaySeconds);
@@ -483,6 +754,20 @@ namespace QuanAnHope.Core
                 discard = worst.id;
             }
             return s.BuyRelic(best, discard) == RelicBuyResult.Bought;
+        }
+
+        /// <summary>sim_balance.py run() style naive: tu ngay nay mua ve den neu tien con hon no sap toi x1,1 (GIA DINH cua mo phong).</summary>
+        public const int BlackFromDay = 6;
+        public const double BlackReserve = 1.1;
+
+        /// <summary>Mua toi da mot ve den moi ngay nhu sim (naive dung het ve den trong ngay).</summary>
+        public static bool BuyBlackTickets(GameSession s)
+        {
+            if (s.Day < BlackFromDay || !s.Items.IsOpen) return false;
+            DebtEntry next = s.NextDebt();
+            int reserve = next != null ? next.amount : 0;
+            if (s.Money - s.Items.BlackPrice <= reserve * BlackReserve) return false;
+            return s.BuyBlackTicket() == ItemBuyResult.Bought;
         }
 
         static void Spend(GameSession s, BotTiming timing, float seconds)

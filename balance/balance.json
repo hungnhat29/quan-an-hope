@@ -242,7 +242,6 @@
   "decay_days": 3
  },
  "relic_cap": 8,
- "relic_shop_offers": 3,
  "start": {
   "money": 100,
   "bonus_tickets": 2,
@@ -302,5 +301,29 @@
   "boss_hour": 20,
   "next_customer_s": 3
  },
- "day_seconds": 480
+ "day_seconds": 480,
+ "relic_shop_offers": 3,
+ "seats": {
+  "1": 1,
+  "2": 3,
+  "3": 3,
+  "4": 3
+ },
+ "patience": {
+  "from_round": 2,
+  "safe_s": {
+   "2": 90,
+   "3": 70,
+   "4": 75
+  },
+  "drop_every_s": 3,
+  "max_drop": 20,
+  "blackout_extra_s": 20
+ },
+ "blackout": {
+  "day": 8,
+  "cook_mult": 1.25,
+  "dim": 0.6
+ },
+ "item_shop_from_day": 4
 }

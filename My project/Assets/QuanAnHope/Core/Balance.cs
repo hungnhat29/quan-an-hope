@@ -43,6 +43,96 @@ namespace QuanAnHope.Core
         public SetBonus[] setBonuses = new SetBonus[0];
 
         public BreakthroughRules breakthrough = new BreakthroughRules();
+
+        // ---------- sprint 4: vong 2 ----------
+
+        /// <summary>So ghe theo vong; chi so 0 = vong 1 (constitution muc 6.1, 6.2).</summary>
+        public int[] seatsByRound = new int[0];
+
+        /// <summary>Cua hang vat pham mo tu ngay nay (constitution muc 8).</summary>
+        public int itemShopFromDay;
+        public PatienceRules patience = new PatienceRules();
+        public BlackoutRules blackout = new BlackoutRules();
+        public FridgeRules fridge = new FridgeRules();
+        public SauceRules sauce = new SauceRules();
+        public MachineRules machine = new MachineRules();
+        public PricedItemRules blackTicket = new PricedItemRules();
+    }
+
+    /// <summary>Thoi gian cho (constitution muc 6.6).</summary>
+    [Serializable]
+    public class PatienceRules
+    {
+        public int fromRound;
+
+        /// <summary>Khoang an toan (giay thuc) theo vong; chi so 0 = vong 1 (0 neu vong do khong tinh gio).</summary>
+        public float[] safeSecondsByRound = new float[0];
+        public float dropEverySeconds;
+        public int maxDrop;
+        public float blackoutExtraSeconds;
+    }
+
+    /// <summary>Ngay mat dien (constitution muc 2, 5.3, 5.9; Art Bible muc 4).</summary>
+    [Serializable]
+    public class BlackoutRules
+    {
+        public int day;
+        public float cookMultiplier;
+
+        /// <summary>Phong toi bao nhieu phan (0..1).</summary>
+        public float dim;
+    }
+
+    /// <summary>Tu lanh (constitution muc 5.7).</summary>
+    [Serializable]
+    public class FridgeRules
+    {
+        public int slots;
+        public int decayDays;
+    }
+
+    /// <summary>Vat pham mua bang tien: gia dau, moi lan mua sau + step, giu toi da max (constitution muc 8).</summary>
+    [Serializable]
+    public class PricedItemRules
+    {
+        public int price;
+        public int step;
+        public int max;
+    }
+
+    /// <summary>Ti le mot lan dung nuoc sot (phan tram).</summary>
+    [Serializable]
+    public class SauceOdds
+    {
+        public float fail;
+        public float same;
+        public float up1;
+        public float up2;
+        public float legend;
+    }
+
+    /// <summary>Nuoc sot than thanh (constitution muc 5.5, 8).</summary>
+    [Serializable]
+    public class SauceRules : PricedItemRules
+    {
+        public int unlockDay;
+        public int lateFromDay;
+        public SauceOdds oddsEarly = new SauceOdds();
+        public SauceOdds oddsLate = new SauceOdds();
+    }
+
+    /// <summary>May gacha do an (constitution muc 5.6, 8). Ti le an voi nguoi choi (Dieu 4).</summary>
+    [Serializable]
+    public class MachineRules
+    {
+        public int price;
+        public int usesPerDay;
+        public float trash;
+        public float down1;
+        public float same;
+        public float up1;
+        public float up2;
+        public float up3;
     }
 
     /// <summary>Mot hieu ung relic: khoa (vd "phu_up") va gia tri, nhu trong relics.json.</summary>

@@ -36,6 +36,15 @@ B['day_seconds'] = (21 - 9) * 40
 # Thung nho lai (2 chinh) nen can nhieu ve hon de du nguyen lieu cho ca ngay va con ve mua relic: 3 -> 6 ve / ngay
 B["tickets_per_day"] = 6
 B["relic_shop_offers"] = 3  # constitution 7.1: moi ngay 3 relic khac nhau (sprint 3)
+# ---- sprint 4 (vong 2): so co san o constitution 1.4, dua vao du lieu theo Dieu 2
+# 6.1 / 6.2: vong 1 mot ghe (khach lan luot), tu vong 2 toi da 3 khach cung ngoi
+B["seats"] = {"1": 1, "2": 3, "3": 3, "4": 3}
+# 6.6: tu vong 2, sau khoang an toan do de tinh giam 1 diem moi 3 giay, toi da -20; ngay 8 an toan +20 giay
+B["patience"] = {"from_round": 2, "safe_s": {"2": 90, "3": 70, "4": 75}, "drop_every_s": 3, "max_drop": 20, "blackout_extra_s": 20}
+# 2, 5.3, 5.9, Dieu 4: ngay 8 mat dien - diem mon -0,3 (dish.blackout_penalty), nau +25%, phong toi 60% (Art Bible 4)
+B["blackout"] = {"day": 8, "cook_mult": 1.25, "dim": 0.6}
+# 8: cua hang vat pham (may gacha do an, nuoc sot, ve den) mo tu ngay 4
+B["item_shop_from_day"] = 4
 save('balance.json', B)
 
 R = load('recipes.json')

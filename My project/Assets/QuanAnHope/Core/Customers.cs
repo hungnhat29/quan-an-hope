@@ -10,6 +10,12 @@ namespace QuanAnHope.Core
         /// <summary>Mon khach goi (id cong thuc "chinh__phu") va ten mon (constitution muc 6.7).</summary>
         public string orderId;
         public string orderName;
+
+        /// <summary>Khach thu may trong ngay (thu tu den).</summary>
+        public int number;
+
+        /// <summary>Giay thuc da ngoi cho (constitution muc 6.6).</summary>
+        public float waitedSeconds;
     }
 
     /// <summary>Sinh khach theo khoang do de tinh cua vong (constitution muc 6.3).</summary>

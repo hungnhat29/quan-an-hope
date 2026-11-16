@@ -46,3 +46,9 @@
 - L-019 | trigger: AC5_TiLeHienTrenBang do vi 0,2125 vs 0,21249999851 | goc: so tu JSON la float (0,15f), test so double voi sai so 1e-9 | quy tac: so lieu tu Balance la float: test dung sai so 1e-6 | count 1
 - Anh chup (L-005) bat duoc 3 loi du test xanh: tieu de bang ti le bi thu chu khi them dong relic, vien vang ruong che nhan, chu the relic nho
 
+
+### 2026-11-16 Sprint 4 (F-030..F-036)
+- L-020 | trigger: bot C# toi ngay 9 chi qua no 2 47% (mo phong 79%) | sai: bot "phuc vu theo thu tu" dong quan ngay khi mon khach dau khong nau duoc; voi 3 khach goi cung luc tu mot kho, viec nay xay ra hang ngay | goc: luat moi (nhieu khach) lam doi hanh vi hop ly cua nguoi choi ma bot cu khong mo hinh | sua: mon khach dau het thi phuc vu khach ke tiep lam duoc -> 84% | quy tac: truoc khi ket luan "can bang lech", kiem bot co lam dieu nguoi that se lam voi luat moi khong (dem so lan dong quan som / bo qua) | count 1
+- L-021 | trigger: PlayMode "nhin Sauce trung BookPrev" | goc: dat quay vat pham o goc phong ma khong tinh do vat cua goc ben canh (Goc 3 xoay 180 do) | quy tac: dat do vat moi gan goc phong: doi toa do sang khung the gioi (yaw 90/180/270) va kiem do vat cua goc ke ben truoc khi chot | count 1
+- L-005 | trigger: anh goc2_quay_vat_pham: chu bang qua nho doc khong duoc; anh goc1 dung qua sat thi bong bong bi cat | count 3
+- L-002 | trigger: python doc heredoc co tieng Viet qua stdin (cp1258) -> chuoi khong khop | sua: ghi .py bang Write, chay voi PYTHONUTF8=1 | count 4

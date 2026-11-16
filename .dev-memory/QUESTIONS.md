@@ -36,3 +36,11 @@
 - Q-30 | 2026-11-16 | chặn: không | Art Bible không có màu độ hiếm relic. Đang dùng thang màu bậc §4: Thường bạc hà #8CC9AE, Hiếm tím #C9B3F0, Huyền thoại vàng #F2C14E (viền thẻ, đĩa trên giá). Được không? | trạng thái: OPEN
 - Q-31 | 2026-11-16 | chặn: không | Thêm `relic_shop_offers: 3` vào balance.json (số 3 có sẵn ở constitution §7.1, Điều 2: số nằm ở dữ liệu); `sim_balance.py` đọc số này thay vì viết sẵn 3. Kết quả mô phỏng không đổi (63/90/46%) | trạng thái: OPEN
 
+- Q-32 | 2026-11-16 | chặn: không (đã làm theo mặc định) | Sprint 4 phục vụ: nhìn vào khách rồi bấm (impl plan §6 câu 1). Chuông vẫn còn, phục vụ khách đến sớm nhất. Hay muốn mỗi ghế một chuông? | trạng thái: OPEN
+- Q-33 | 2026-11-16 | chặn: không (đã làm theo mặc định) | Quầy vật phẩm: kệ nhỏ giữa máy nhét vé và máy gacha đồ ăn (Góc 2). Đề xuất cũ "góc phải Góc 2" sát quyển sách Góc 3, tia nhìn trúng trang sách (PlayMode bắt được). Được không? | trạng thái: OPEN
+- Q-34 | 2026-11-16 | chặn: không (đã làm theo mặc định) | Tủ lạnh: tủ treo tường trên giá dụng cụ, bên phải quầy chờ (mặt quầy phải đã kín). Nhìn từ dưới lên nên đĩa trong tủ hơi khó thấy. Muốn tủ đứng dưới sàn không (phải dời đồ)? | trạng thái: OPEN
+- Q-35 | 2026-11-16 | chặn: không | "Giữ tối đa 20 nước sốt / 5 vé đen" (constitution §8) đang code là số đang giữ; sim_balance.py tính là tổng số lần mua. Giữ cách code không? | trạng thái: OPEN
+- Q-36 | 2026-11-16 | chặn: không | Món trong tủ quá 3 ngày tụt 1 bậc — đang code: tụt một lần (không tụt tiếp mỗi 3 ngày) | trạng thái: OPEN
+- Q-37 | 2026-11-16 | chặn: không | Độ dễ tính sau khi trừ giờ chờ không dưới 1% (như sim_balance.py) | trạng thái: OPEN
+- Q-38 | 2026-11-16 | chặn: không | Đo vòng 2 bằng bot C# trên luật thật (2.000 ván): qua nợ 2 = 84% (mô phỏng 79%), mất 9,5 điểm dễ tính vì chờ (mô phỏng giả định 8). Ghi vào constitution §6.6, chưa đổi số. Mô phỏng Python vẫn 63/90/46%. Có muốn chỉnh `sim_balance.py` theo số đo (8 → 9,5) hoặc chỉnh nợ không? | trạng thái: OPEN
+- Q-39 | 2026-11-16 | chặn: không | Khách không bao giờ bỏ về (constitution không có luật). Từ vòng 2, 3 khách gọi cùng lúc từ một kho nên món của một khách có thể hết; ghế đó bị giữ tới khi bạn đưa món khác (khách giận, −30%), quay thêm thùng, hoặc 21:00. Giữ vậy, hay thêm luật "khách đổi món / bỏ về"? (sim_balance.py đang cho khách gọi lại món còn làm được) | trạng thái: OPEN
