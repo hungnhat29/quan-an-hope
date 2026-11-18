@@ -35,6 +35,7 @@ namespace QuanAnHope.Core
         /// <summary>Do de tinh luc nay (khong duoi 1, nhu sim_balance.py pay(): max(1, E - impatience)).</summary>
         public static int EasinessNow(Balance b, int day, Customer c, RelicFx fx)
         {
+            if (c.isBoss) return c.easiness; // chu no: co dinh 5% (muc 6.3), ngoi toi khi duoc phuc vu
             int drop = Drop(b, day, c.waitedSeconds, fx);
             return drop == 0 ? c.easiness : Math.Max(1, c.easiness - drop);
         }
@@ -46,7 +47,7 @@ namespace QuanAnHope.Core
         public static float Left(Balance b, int day, Customer c, RelicFx fx)
         {
             float safe = SafeSeconds(b, day, fx);
-            if (float.IsInfinity(safe)) return 1f;
+            if (float.IsInfinity(safe) || c.isBoss) return 1f;
             float total = safe + b.patience.maxDrop * b.patience.dropEverySeconds;
             if (total <= 0f) return 0f;
             return Math.Max(0f, Math.Min(1f, 1f - c.waitedSeconds / total));
@@ -55,7 +56,7 @@ namespace QuanAnHope.Core
         /// <summary>Khach da qua khoang an toan (thanh doi mau).</summary>
         public static bool IsImpatient(Balance b, int day, Customer c, RelicFx fx)
         {
-            return c.waitedSeconds > SafeSeconds(b, day, fx);
+            return !c.isBoss && c.waitedSeconds > SafeSeconds(b, day, fx);
         }
     }
 

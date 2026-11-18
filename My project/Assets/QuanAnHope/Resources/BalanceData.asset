@@ -142,6 +142,7 @@ MonoBehaviour:
       closeHour: 21
       secondsPerHour: 40
       bossHour: 20
+      bossDay: 21
       nextCustomerSeconds: 3
     relicCap: 8
     relicShopOffers: 3

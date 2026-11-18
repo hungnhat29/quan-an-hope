@@ -161,6 +161,7 @@ namespace QuanAnHope.EditorTools
                 closeHour = Int(day, "close_hour"),
                 secondsPerHour = Float(day, "seconds_per_hour"),
                 bossHour = Int(day, "boss_hour"),
+                bossDay = Int(day, "boss_day"),
                 nextCustomerSeconds = Float(day, "next_customer_s"),
             };
 

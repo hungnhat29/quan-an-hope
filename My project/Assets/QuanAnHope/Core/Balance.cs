@@ -189,6 +189,9 @@ namespace QuanAnHope.Core
         /// <summary>Gio chu no den ngay 21 (sprint 4).</summary>
         public int bossHour;
 
+        /// <summary>Ngay chu no den (constitution muc 2: ngay 21, sprint 5).</summary>
+        public int bossDay;
+
         /// <summary>Vong 1: khach ke tiep vao sau bay nhieu giay tu luc khach truoc duoc phuc vu.</summary>
         public float nextCustomerSeconds;
     }

@@ -49,6 +49,9 @@ namespace QuanAnHope.Core
         public const string SetCho = "cho";
         public const string SetSonHao = "sonhao";
 
+        /// <summary>Do hiem "Thuong" trong relics.json (ve den chi ban tu Hiem tro len, muc 7.1).</summary>
+        public const string RarityCommon = "thuong";
+
         public static string SetName(string set)
         {
             switch (set)
@@ -289,6 +292,55 @@ namespace QuanAnHope.Core
         {
             if (slot < 0 || slot >= offers.Length || offers[slot] == null) return 0;
             return Math.Max(0, offers[slot].price - wallet.Count);
+        }
+
+        /// <summary>Do hiem duoc ban bang ve den (constitution muc 7.1: "chi gom relic Hiem tro len").</summary>
+        public static bool IsRareOrBetter(RelicDef r)
+        {
+            return r != null && r.rarity != RelicKeys.RarityCommon;
+        }
+
+        /// <summary>
+        /// Ba lua chon khi dung ve den (constitution muc 7.1): relic Hiem tro len, chua co tren gia, khac nhau; it nhat mot cai
+        /// thuoc bo dang co nhieu mon nhat (bang nhau thi bo nao trong so do cung duoc). Chua co relic bo nao: ba cai bat ky.
+        /// </summary>
+        public RelicDef[] RollBlackOffers(RelicInventory inventory)
+        {
+            var pool = new List<RelicDef>();
+            foreach (RelicDef r in balance.relics)
+                if (IsRareOrBetter(r) && !inventory.Has(r.id)) pool.Add(r);
+
+            int best = 0;
+            foreach (RelicDef r in inventory.Owned)
+                if (!string.IsNullOrEmpty(r.set)) best = Math.Max(best, inventory.CountInSet(r.set));
+
+            var result = new List<RelicDef>();
+            if (best > 0)
+            {
+                var fromTop = new List<RelicDef>();
+                foreach (RelicDef r in pool)
+                    if (!string.IsNullOrEmpty(r.set) && inventory.CountInSet(r.set) == best) fromTop.Add(r);
+                if (fromTop.Count > 0)
+                {
+                    RelicDef first = fromTop[rng.NextInt(0, fromTop.Count - 1)];
+                    result.Add(first);
+                    pool.Remove(first);
+                }
+            }
+            int n = balance.relicShopOffers;
+            while (result.Count < n && pool.Count > 0)
+            {
+                int k = rng.NextInt(0, pool.Count - 1);
+                result.Add(pool[k]);
+                pool.RemoveAt(k);
+            }
+            // tron thu tu de cai thuoc bo khong luon nam o be dau
+            for (int i = result.Count - 1; i > 0; i--)
+            {
+                int j = rng.NextInt(0, i);
+                RelicDef t = result[i]; result[i] = result[j]; result[j] = t;
+            }
+            return result.ToArray();
         }
     }
 

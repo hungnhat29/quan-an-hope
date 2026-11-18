@@ -31,7 +31,8 @@ B['breakthrough']['items'] = 1
 del B['customers']['per_day']
 # Ngay dai hon de kip phuc vu nhieu khach hon khi so che / nau lau hon: 1 gio game = 40 giay (truoc 30) -> 8 phut / ngay
 # next_customer_s: vong 1 khach ke tiep vao 3 giay sau khi khach truoc duoc phuc vu (constitution 1.4 muc 6.2)
-B['day'] = {"open_hour": 9, "close_hour": 21, "seconds_per_hour": 40, "boss_hour": 20, "next_customer_s": 3}
+B['day'] = {"open_hour": 9, "close_hour": 21, "seconds_per_hour": 40, "boss_hour": 20, "boss_day": 21, "next_customer_s": 3}
+# boss_day (sprint 5): constitution muc 2 "Ngay 21, dung 20:00 chu no den"
 B['day_seconds'] = (21 - 9) * 40
 # Thung nho lai (2 chinh) nen can nhieu ve hon de du nguyen lieu cho ca ngay va con ve mua relic: 3 -> 6 ve / ngay
 B["tickets_per_day"] = 6

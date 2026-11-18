@@ -29,6 +29,10 @@ namespace QuanAnHope.Game
             public GameObject ServedDish;
             public Interactable Hit;
             public string ShownText;
+
+            /// <summary>Do cua chu no (mu, day vang) va vien vang bong bong (sprint 5, Art Bible muc 5, 6).</summary>
+            public GameObject BossLook;
+            public Image BossFrame;
         }
 
         // Ba ghe doc quay (x), ti le khach khi ngoi 3 nguoi; vong 1 mot khach giua, co nhu canh cu.
@@ -58,6 +62,7 @@ namespace QuanAnHope.Game
                     v.Model.transform.localScale = Vector3.one;
                     v.Face = v.Model.GetComponent<FaceSwap>();
                     Toon.BlobShadow(v.Model.transform, "Bong", new Vector3(0f, 0.01f, SeatZ), 1.4f);
+                    v.BossLook = BuildBossLook(v.Model.transform);
                 }
                 int seat = i;
                 v.Hit = Register(Interactable.Add(v.Pivot.gameObject, "Customer_" + i, new Vector3(0f, 1.9f, 0f), new Vector3(1.4f, 2.4f, 1.0f),
@@ -65,6 +70,10 @@ namespace QuanAnHope.Game
 
                 // Bong bong tren dau khach (constitution muc 6.7, Dieu 9): do de tinh, mon goi, thanh kien nhan (muc 6.6).
                 v.Bubble = UiKit.WorldCanvas(goc1, i == 0 ? "BongThoai" : "BongThoai_" + i, Vector3.zero, Quaternion.identity, BubbleSize);
+                // vien vang cho bong bong chu no (kich ban 10 giay sprint 5), nam duoi nen kem
+                v.BossFrame = UiKit.Panel(v.Bubble.transform, "VienChuNo", new Vector2(0.5f, 0.5f), Vector2.zero, BubbleSize + Vector2.one * 60f, BossGold, false);
+                v.BossFrame.raycastTarget = false;
+                v.BossFrame.gameObject.SetActive(false);
                 Image bb = UiKit.Panel(v.Bubble.transform, "Nen", new Vector2(0.5f, 0.5f), Vector2.zero, BubbleSize, UiKit.Cream);
                 bb.raycastTarget = false;
                 v.Text = UiKit.Label(bb.transform, "Chu", new Vector2(0.5f, 1f), new Vector2(0f, -16f), new Vector2(BubbleSize.x - 40f, 390f), "", 76f);
@@ -75,6 +84,44 @@ namespace QuanAnHope.Game
                 seatViews[i] = v;
             }
             if (src != null) src.gameObject.SetActive(false);
+        }
+
+        static readonly Color BossGold = UiKit.Hex("#F2C14E");
+        static readonly Color BossVest = UiKit.Hex("#4A3F3A");
+
+        /// <summary>
+        /// Chu no dung lai khoi khach cua canh (impl plan sprint 5 ngay 5: "model khoi hien co + mat lanh lung") them mu
+        /// chu nhat bo nho mau vest #4A3F3A, bang mu va day vang #F2C14E (Art Bible muc 5: quyen luc = chu nhat bo nho).
+        /// </summary>
+        GameObject BuildBossLook(Transform model)
+        {
+            // Mu dat theo tam mat (khung bao ca khoi khach gom tay va ang-ten nen qua to): rong ~ mat, ngoi tren dinh dau.
+            FaceSwap fs = model.GetComponentInChildren<FaceSwap>();
+            Renderer face = fs != null ? fs.faceRenderer : null;
+            GameObject look = Toon.Empty(model, "ChuNo", Vector3.zero);
+            if (face == null) { look.SetActive(false); return look; }
+            Bounds fb = face.bounds;
+            float fw = Mathf.Max(fb.size.x, fb.size.z);
+            Vector3 back = model.position - fb.center;
+            back.y = 0f;
+            back = back.sqrMagnitude > 1e-6f ? back.normalized : Vector3.forward;
+            Vector3 headTop = fb.center + back * fw * 0.35f + Vector3.up * (fb.extents.y + fw * 0.32f);
+            Vector3 top = model.InverseTransformPoint(headTop);
+            Vector3 chin = model.InverseTransformPoint(new Vector3(fb.center.x, fb.min.y - fw * 0.06f, fb.center.z) - back * fw * 0.05f);
+            float k = 1f / Mathf.Max(1e-4f, model.lossyScale.x);
+            float w = fw * k;
+            Toon.Prim(PrimitiveType.Cube, look.transform, "VanhMu", top + new Vector3(0f, 0.015f * w, 0f), new Vector3(w * 1.05f, 0.04f * w, w * 0.9f), BossVest, Toon.OutlineSmall);
+            Toon.Prim(PrimitiveType.Cube, look.transform, "Mu", top + new Vector3(0f, 0.2f * w, 0f), new Vector3(w * 0.66f, 0.36f * w, w * 0.58f), BossVest, Toon.OutlineSmall);
+            Toon.Prim(PrimitiveType.Cube, look.transform, "BangMu", top + new Vector3(0f, 0.07f * w, 0f), new Vector3(w * 0.67f, 0.07f * w, w * 0.59f), BossGold, 0f);
+            // day vang ngay duoi cam (Art Bible muc 5: vest #4A3F3A, day vang #F2C14E)
+            for (int n = 0; n < 5; n++)
+            {
+                float t = (n - 2) / 2f;
+                Toon.Prim(PrimitiveType.Sphere, look.transform, "DayVang_" + n, chin + new Vector3(t * w * 0.3f, -0.05f * w * (1f - t * t), 0f),
+                    Vector3.one * 0.07f * w, BossGold, 0f);
+            }
+            look.SetActive(false);
+            return look;
         }
 
         /// <summary>Dat ghe theo so ghe hom nay: 1 ghe (vong 1) o giua co lon, 3 ghe (tu vong 2) nho lai cho vua quay.</summary>
@@ -101,11 +148,16 @@ namespace QuanAnHope.Game
             GameSession s = g.Session;
             Customer c = seat < s.SeatCount ? s.Seats[seat] : null;
             if (s.Phase != GamePhase.Open || c == null) return "Ghế trống";
+            if (c.isBoss)
+            {
+                if (g.Hand != HandKind.Dish) return "Chủ nợ · gọi " + c.orderName + " · Tuyệt hảo trở lên: thưởng " + s.Balance.bossBonus + "G";
+                return "Phục vụ chủ nợ: " + g.HeldDish.Title + (g.HeldDish.tier >= s.Balance.dish.maxTier ? " · được thưởng " + s.Balance.bossBonus + "G" : " · chưa đủ Tuyệt hảo, không có thưởng");
+            }
             string who = g.SeatName(seat);
             string whoCap = char.ToUpper(who[0]) + who.Substring(1);
             if (g.Hand != HandKind.Dish) return whoCap + " · gọi " + c.orderName;
             if (g.HeldDish.recipeId != c.orderId) return "Sai món: " + who + " gọi " + c.orderName + " (bấm vẫn đưa, khách sẽ giận)";
-            return "Phục vụ " + who + ": " + g.HeldDish.name;
+            return "Phục vụ " + who + ": " + g.HeldDish.Title;
         }
 
         void RefreshSeats()
@@ -121,7 +173,19 @@ namespace QuanAnHope.Game
                 bool show = i < s.SeatCount && (c != null || reacting);
                 if (v.Model != null) v.Model.SetActive(show);
                 v.Hit.enabled = c != null;
-                if (v.Face != null && show)
+                bool bonus;
+                bool bossReact = g.IsBossReaction(i, out bonus);
+                bool boss = (c != null && c.isBoss) || (reacting && bossReact);
+                if (v.BossLook != null) v.BossLook.SetActive(show && boss);
+                v.BossFrame.gameObject.SetActive(c != null && c.isBoss);
+                if (v.Face != null && show && boss)
+                {
+                    // chu no: lanh lung; chi ngac nhien khi duoc mon Tuyet hao / Huyen thoai (Art Bible muc 6)
+                    if (reacting && bossReact && bonus) v.Face.Show(FaceArt.Boss(true));
+                    else if (reacting && bossReact) v.Face.ShowAngry();
+                    else v.Face.Show(FaceArt.Boss(false));
+                }
+                else if (v.Face != null && show)
                 {
                     if (reacting && outcome == PaymentOutcome.Angry) v.Face.ShowAngry();
                     else if (reacting && outcome == PaymentOutcome.Satisfied) v.Face.ShowHappy();
@@ -146,9 +210,11 @@ namespace QuanAnHope.Game
             if (!v.Bubble.gameObject.activeSelf || i >= s.SeatCount) return;
             Customer c = s.Seats[i];
             if (c == null) return;
-            bool timed = Patience.Applies(s.Balance, s.Day);
+            bool timed = Patience.Applies(s.Balance, s.Day) && !c.isBoss;
             int easy = s.EasinessNow(c);
-            string text = "<size=64>" + (timed ? char.ToUpper(g.SeatName(i)[0]) + g.SeatName(i).Substring(1) : "Khách " + c.number)
+            string text = c.isBoss
+                ? "<size=64>Chủ nợ · Dễ tính " + easy + "%</size>\nGọi: " + c.orderName
+                : "<size=64>" + (timed ? char.ToUpper(g.SeatName(i)[0]) + g.SeatName(i).Substring(1) : "Khách " + c.number)
                 + " · Dễ tính " + easy + "%</size>\nGọi: " + c.orderName;
             if (text != v.ShownText)
             {
@@ -238,7 +304,7 @@ namespace QuanAnHope.Game
                 model.transform.localScale = Vector3.one * Mathf.Min(1f, w / 0.42f);
                 Dish captured = dish;
                 Interactable.Add(model, "FridgeDish_" + i, new Vector3(0f, 0.08f, 0f), new Vector3(0.42f, 0.25f, 0.42f),
-                    () => "Lấy " + captured.name + " · " + UiKit.DishTierName[captured.tier] + " (" + captured.daysInFridge + " ngày trong tủ)",
+                    () => "Lấy " + captured.Title + " · " + UiKit.DishTierName[captured.tier] + " (" + captured.daysInFridge + " ngày trong tủ)",
                     () => g.TakeDish(captured));
                 fridgeDishes.Add(model);
             }

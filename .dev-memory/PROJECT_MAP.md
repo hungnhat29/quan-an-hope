@@ -44,3 +44,10 @@ Cập nhật: 2026-11-16
 - NaiveBot: mua vé đen như sim naive (ngày ≥ 6), thống kê LastRunTimedServes/LastRunDrop
 - Game: RoomViewRound2.cs (partial RoomView): 3 ghế Customer_0..2 (bản sao khách cảnh, BongThoai/BongThoai_1/_2), Fridge + FridgeDish_i, quầy vật phẩm Sauce/BlackTicket/FoodMachine/BlackSlot (giữa máy nhét vé và máy gacha), khói quá lửa + màu bảng bếp, nến + đèn tối ngày 8 (ItemView.HideTier); GameController: PlayableRounds=2, ServeSeat, UseFridge, BuyItem, UseSauceOnHeld, UseMachineOnHeld, PullBlack, DebugJumpToDay; Editor: cửa sổ gỡ lỗi có nút "Tới ngày 4 / 8"
 - Tests: EditMode +47 (SeatsAndPatienceTests, FridgeAndOvercookTests, ItemShopTests, Round2Tests, bot sprint 4); PlayMode +4 (F030_F031_*, F032_F033_*, F034_*, F035_*), ảnh docs/sprint-4/ui; spec specs/sprint-4/spec.md
+
+## Sprint 5 (16/11) — vong 3-4, chu no, Alpha
+- balance.json `day.boss_day` (make_next.py); Balance.DayRules.bossDay; importer doc
+- Core/GameSession: LastDayOfGame, IsWon, IsBossDay, BossArrived/BossWaiting/Boss/BossServed (chu no 20:00 ngay 21, uu tien ghe giua, cho ghe trong, de tinh co dinh), BlackRelicOffers/UseBlackForRelic/ChooseBlackRelic; PaymentResult.bossBonus; Customer.isBoss; Dish.IsLegend/Title/LegendName; RelicShop.RollBlackOffers; Patience bo qua chu no
+- Core/Bots.cs (moi): BotStyle (Naive/NoCombo/Smart), StrategyBot (chien thuat chep tu sim_balance.py tren luat that), BotRun, BotStats (bang cung dang sim + so chenh). Lenh balance/run_bots.ps1 -> balance/bot_report.md
+- Game: GameController PlayableRounds=4, DebugStartAt/DebugAddCrate, PendingIsBlack, IsBossReaction, toast vong 3/4/ngay 14/ngay 21; RoomViewRound2 BuildBossLook (mu + day vang), BossFrame bong bong vang; RoomView khe ve den "BlackRelic" (cot giua sach va be dau Goc 3), DishModel + LegendHalo; PanView vi nuong lat + vet nuong, noi hap co nap (RimY tu hinh noi that); FaceArt.Boss (lanh lung / ngac nhien); IngredientModels 8 nguyen lieu vong 3-4 chi tiet; Hud man thang / thua ngay 22
+- Tests: EditMode Sprint5Tests (31), Sprint5BotTests (5 + 1 Explicit bao cao); PlayMode +5 (F043_F044_*, F044_*, F042_*, F041_*, F040_*), anh docs/sprint-5/ui; F035 doi: ngay 9 choi tiep

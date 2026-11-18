@@ -42,6 +42,55 @@ namespace QuanAnHope.Game
             return Get("Mat_Mon_" + tier, p => DrawDish(p, tier));
         }
 
+        /// <summary>
+        /// Mat chu no (Art Bible muc 6): "lanh lung" (mac dinh: mi mat sup, con nguoi nho, may chau xuong, mieng thang)
+        /// hoac "ngac nhien" (ngay 21 khi duoc mon Tuyet hao / Huyen thoai). Ve de dan len tam mat 800 x 500 cua khach
+        /// (FaceSwap): truc x bi keo dan 1,6 lan nen hinh tron ve thanh elip hep.
+        /// </summary>
+        public static Texture2D Boss(bool surprised)
+        {
+            return Get(surprised ? "Mat_ChuNo_NgacNhien" : "Mat_ChuNo_LanhLung", p => DrawBoss(p, surprised));
+        }
+
+        const float FaceAspect = 1.6f;
+
+        static void DrawBoss(Painter p, bool surprised)
+        {
+            Vector2 l = new Vector2(0.38f, 0.56f), r = new Vector2(0.62f, 0.56f);
+            float rx = 0.085f / FaceAspect, ry = 0.085f;
+            foreach (Vector2 c in new[] { l, r })
+            {
+                float k = surprised ? 1.25f : 1f;
+                p.Ellipse(c, rx * k, ry * k, EyeWhite);
+                p.EllipseRing(c, rx * k, ry * k, Line * 1.2f, Ink, -1f, 0f);
+                // con nguoi nho (Art Bible muc 6: chu no co con nguoi nho)
+                p.Ellipse(c + new Vector2(0f, surprised ? 0f : -0.02f), 0.022f / FaceAspect, 0.022f, Ink);
+                if (!surprised)
+                {
+                    // mi mat sup nua tren
+                    p.Polygon(new[] { c + new Vector2(-rx * 1.1f, 0.005f), c + new Vector2(rx * 1.1f, 0.005f),
+                        c + new Vector2(rx * 0.8f, ry * 1.05f), c + new Vector2(-rx * 0.8f, ry * 1.05f) }, Ink, 0f);
+                }
+            }
+            if (surprised)
+            {
+                // may nhuong cao, mieng chu O
+                p.Stroke(new[] { new Vector2(0.33f, 0.74f), new Vector2(0.38f, 0.77f), new Vector2(0.43f, 0.745f) }, 0.022f, Ink);
+                p.Stroke(new[] { new Vector2(0.57f, 0.745f), new Vector2(0.62f, 0.77f), new Vector2(0.67f, 0.74f) }, 0.022f, Ink);
+                p.Ellipse(new Vector2(0.5f, 0.33f), 0.05f / FaceAspect, 0.065f, Ink);
+                p.Ellipse(new Vector2(0.5f, 0.33f), 0.03f / FaceAspect, 0.042f, MouthRed);
+            }
+            else
+            {
+                // may chau xuong giua, mieng thang mong, ria mep
+                p.Stroke(new[] { new Vector2(0.32f, 0.71f), new Vector2(0.44f, 0.665f) }, 0.026f, Ink);
+                p.Stroke(new[] { new Vector2(0.56f, 0.665f), new Vector2(0.68f, 0.71f) }, 0.026f, Ink);
+                p.Stroke(new[] { new Vector2(0.44f, 0.37f), new Vector2(0.56f, 0.37f) }, 0.02f, Ink);
+                p.Stroke(new[] { new Vector2(0.42f, 0.43f), new Vector2(0.47f, 0.415f), new Vector2(0.5f, 0.425f),
+                    new Vector2(0.53f, 0.415f), new Vector2(0.58f, 0.43f) }, 0.026f, Ink);
+            }
+        }
+
         /// <summary>Hat hieu ung: "khoi" (khoi xam gap khuc), "hoi" (net hoi trang), "tim", "tim_vang", "lap_lanh".</summary>
         public static Texture2D Fx(string kind)
         {

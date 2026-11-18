@@ -9,14 +9,13 @@
 - [L-009] Tam anh quay ve camera dat truoc vat 3D: day ra bang ban kinh bao cua than (khong phai nua be day), test bang ban kinh tu localBounds (AABB cua khoi xoay phinh to) (P4)
 - [L-010] Doc ket qua test Unity: grep result="[A-Za-z()]*" vi that bai ghi "Failed(Child)"; khong in dong ket qua = coi la DO (P6)
 - [L-007] Nguoi dung muon game 3D that: moi thong tin dat tren do vat, HUD chi so lieu, khong nut chuyen goc (constitution v1.2 Dieu 5, 9). Tinh nang moi phai co do vat 3D de bam (P2/P3)
-- [L-008] Do vat tao luc chay (BoxCollider) phai goi Physics.SyncTransforms; san canh khong co collider; test PlayMode tua nhanh can chia buoc di (P4)
-- [L-005] UI moi phai chup anh tu PlayMode (docs/sprint-N/ui) va tu xem truoc khi bao xong: loi hien thi chi lo ra tren anh (P6) [count 2: sprint 2 do trong chao nho, lua khuat duoi day chao du test xanh]
-- [L-006] Test PlayMode bam nut qua ten GameObject; doi ten nut trong GameView thi sua PlaythroughTests cung luc (P4)
-- [L-002] Trong Bash tool cua may nay, heredoc nhieu dong co dau nhay don bi loi cu phap; ghi script .py bang Write vao scratchpad roi chay (moi pha) [count 3: sprint 3 heredoc chua ''' long nhau; them: khong de "cat > file" khong co heredoc, lenh treo cho stdin]
-- [L-003] Bat/sua hau ky URP phai chup anh so voi ban khong hau ky (PreviewCapture) truoc khi bao xong (P6)
+- [L-008] Do vat tao luc chay (BoxCollider) phai goi Physics.SyncTransforms; san canh khong co collider; test PlayMode tua nhanh can chia buoc di; doi ten nut / tram thi sua PlaythroughTests cung luc (L-006) (P4)
+- [L-005] UI / hinh moi (ca bat/sua hau ky URP, L-003) phai chup anh tu PlayMode (docs/sprint-N/ui) va tu xem truoc khi bao xong: loi hien thi chi lo ra tren anh (P6) [count 4: sprint 2-5]
+- [L-002] Trong Bash tool cua may nay, heredoc nhieu dong co dau nhay don bi loi cu phap; ghi script .py bang Write vao scratchpad roi chay (moi pha) [count 5: sprint 3-5; them: khong de "cat > file" khong co heredoc, lenh treo cho stdin]
 - [L-004] Chay Unity batchmode: dong Editor truoc; -testResults va -logFile dung duong dan tuyet doi kieu Windows (P4)
 - [L-001] Chạy sim_balance.py phải đặt PYTHONUTF8=1 (Windows mặc định cp1258, lỗi đọc JSON tiếng Việt) (P4/P6)
-- [L-016] Hinh dat trong/tren do vat 3D: lay kich thuoc tu hinh that (BuildTool x scale), khong tu so cu; test hinh hoc phai do theo hinh that (P4) [sprint 2: PanSpec 0,17 m trong chao 0,29 m]
+- [L-016] Hinh dat trong/tren do vat 3D: lay kich thuoc tu hinh that (Renderer.bounds), khong tu so uoc luong; test hinh hoc phai do theo hinh that (P4) [count 2: sprint 2 PanSpec; sprint 5 nap noi bi vanh che, mu chu no qua to]
+- [L-020] Truoc khi ket luan "can bang lech": kiem bot co lam dieu nguoi that se lam voi luat moi khong; dem ly do that bai (dong quan som, khong phuc vu chu no) trong BotRun (P6) [count 2: sprint 4, 5]
 <!-- max 15 lines: [L-id] rule (phase) -->
 
 ## Nhat ky
@@ -52,3 +51,11 @@
 - L-021 | trigger: PlayMode "nhin Sauce trung BookPrev" | goc: dat quay vat pham o goc phong ma khong tinh do vat cua goc ben canh (Goc 3 xoay 180 do) | quy tac: dat do vat moi gan goc phong: doi toa do sang khung the gioi (yaw 90/180/270) va kiem do vat cua goc ke ben truoc khi chot | count 1
 - L-005 | trigger: anh goc2_quay_vat_pham: chu bang qua nho doc khong duoc; anh goc1 dung qua sat thi bong bong bi cat | count 3
 - L-002 | trigger: python doc heredoc co tieng Viet qua stdin (cp1258) -> chuoi khong khop | sua: ghi .py bang Write, chay voi PYTHONUTF8=1 | count 4
+
+
+### 2026-11-16 Sprint 5 (F-040..F-045)
+- L-002 | trigger: heredoc python co chuoi C# chua dau nhay don -> "unexpected EOF" (lan 5) | sua: ghi .py bang Write roi chay | count 5
+- L-016 | trigger: nap noi hap dat theo so uoc luong (0,1 m tren tam) bi vanh noi che, test LidOn xanh nhung anh khong thay nap; mu chu no tinh tu khung bao ca khoi khach (tay, ang-ten) nen to gap doi dau | sua: lay dinh vanh tu Renderer.bounds cua noi that, mu theo kich thuoc tam mat; them test hinh hoc "vom nap cao hon vanh" | count 2
+- L-022 | trigger: anh "chu no ngac nhien" khong co chu no | goc: phan ung chi 0,8 giay, test tua Time.timeScale 25 roi di bo truoc khi chup | quy tac: hieu ung ngan (mat phan ung, pop) chup ngay sau thao tac voi Time.timeScale = 1 | count 1
+- L-023 | trigger: PlayMode bat "Mo quan! Khach dau tien da toi" khi chu no dang doi ngoai cua | goc: thong bao chung ghi de thong bao rieng cua su kien moi | quy tac: them su kien moi (chu no, ngay dac biet) thi ra soat moi cho dat Toast cung luc do (ToggleShop, OnClockEvent, NextDay) | count 1
+- L-020 | trigger: bot gom bo chi 77% duoc thuong chu no | goc: luat moi (chu no can ghe trong) + bot tieu het ve tu sang | sua: ghi ly do "khong phuc vu chu no" vao BotRun, bot giu 1 ve toi 20:00 -> 100% | count 2

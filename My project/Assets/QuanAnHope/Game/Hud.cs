@@ -204,6 +204,14 @@ namespace QuanAnHope.Game
                 overlayBody.text = sb.ToString();
                 UiKit.SetLabel(overlayButton, "Sang ngày " + (s.Day + 1));
             }
+            else if (s.IsWon)
+            {
+                // F-044 AC-2: man thang bang chu (tranh lam o sprint 6)
+                overlayTitle.text = "Hope trả hết nợ!";
+                overlayBody.text = "Đầu ngày " + s.Day + ", chủ nợ thu khoản cuối " + s.LastDebtPaid + "G.\nHope còn " + s.Money
+                    + "G và quán ăn đã đứng vững.\n\nChủ nợ bật cười lần đầu tiên, rồi gả con gái cho Hope.";
+                UiKit.SetLabel(overlayButton, "Chơi lại");
+            }
             else if (s.Phase == GamePhase.Cleared)
             {
                 overlayTitle.text = "Qua vòng " + s.Balance.RoundOfDay(s.LastPlayableDay) + "!";
@@ -215,7 +223,8 @@ namespace QuanAnHope.Game
             {
                 int due = s.Balance.DebtDueOn(s.Day);
                 overlayTitle.text = "Thua rồi";
-                overlayBody.text = "Đầu ngày " + s.Day + ", chủ nợ đòi " + due + "G\nnhưng bạn chỉ có " + s.Money + "G.";
+                overlayBody.text = "Đầu ngày " + s.Day + ", chủ nợ đòi " + due + "G\nnhưng bạn chỉ có " + s.Money + "G."
+                    + (s.Day == s.Balance.day.bossDay + 1 ? "\n\nCần phục vụ chủ nợ món Tuyệt hảo ngày " + s.Balance.day.bossDay + " (thưởng " + s.Balance.bossBonus + "G)." : "");
                 UiKit.SetLabel(overlayButton, "Chơi lại");
             }
         }

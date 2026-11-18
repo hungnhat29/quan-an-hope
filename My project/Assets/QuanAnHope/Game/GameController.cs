@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using BepNhanPham;
 using QuanAnHope.Core;
 using QuanAnHope.Data;
@@ -50,8 +51,22 @@ namespace QuanAnHope.Game
         /// <summary>Relic vua mua (de hien lap lanh tren gia, Art Bible muc 11).</summary>
         public RelicDef LastBoughtRelic { get; private set; }
 
-        /// <summary>Ban sprint 4 choi het vong 2: dau ngay 9 thu no 2.900G roi dung (impl plan sprint 4 muc 1).</summary>
-        public const int PlayableRounds = 2;
+        /// <summary>Ban Alpha (sprint 5) choi du 4 vong: dau ngay 22 thu no 32.000G roi ra man thang (impl plan sprint 5 muc 1).</summary>
+        public const int PlayableRounds = 4;
+
+        /// <summary>Be relic dang cho chon de bo la lua chon ve den (F-042), khong phai be ve trang.</summary>
+        public bool PendingIsBlack { get; private set; }
+
+        // Ghe vua phuc vu chu no: mat ngac nhien neu duoc thuong (Art Bible muc 6), khong thi mat gian.
+        int bossReactSeat = -1;
+        bool bossReactHappy;
+
+        /// <summary>Ghe nay dang hien phan ung cua chu no vua duoc phuc vu; <paramref name="bonus"/> = co thuong.</summary>
+        public bool IsBossReaction(int seat, out bool bonus)
+        {
+            bonus = bossReactHappy;
+            return seat == bossReactSeat && seat >= 0 && seat < reactionLeft.Length && reactionLeft[seat] > 0f;
+        }
 
         /// <summary>Ghe vua phuc vu (de hien dia vua dua), -1 neu chua.</summary>
         public int LastServedSeat { get; private set; }
@@ -135,6 +150,8 @@ namespace QuanAnHope.Game
             ClearReactions();
             LastServedSeat = -1;
             PendingRelicSlot = -1;
+            PendingIsBlack = false;
+            bossReactSeat = -1;
             LastBoughtRelic = null;
             if (Player != null) Player.Teleport(Vector3.zero, 0f);
             Changed();
@@ -152,6 +169,7 @@ namespace QuanAnHope.Game
         string seenSeats;
         GamePhase seenPhase;
         bool seenClosed;
+        bool seenBoss;
 
         /// <summary>Tua nhanh dong ho ngay (chi cho test PlayMode, constitution 1.4 muc 2: 1 gio = 40 giay).</summary>
         public float ClockScale = 1f;
@@ -163,7 +181,8 @@ namespace QuanAnHope.Game
 
             // Dong ho ngay chay tu dau ngay ke ca khi quan chua mo (constitution 1.4 muc 2, 6.2).
             Session.Tick(dt * ClockScale);
-            if (Session.Phase != seenPhase || SeatSignature() != seenSeats || Session.IsClosedForNewCustomers != seenClosed)
+            if (Session.Phase != seenPhase || SeatSignature() != seenSeats || Session.IsClosedForNewCustomers != seenClosed
+                || Session.BossArrived != seenBoss)
                 OnClockEvent();
 
             Stove stove = Session.Stove;
@@ -213,6 +232,7 @@ namespace QuanAnHope.Game
             seenPhase = Session.Phase;
             seenSeats = SeatSignature();
             seenClosed = Session.IsClosedForNewCustomers;
+            seenBoss = Session.BossArrived;
             if (Room != null) Room.Refresh();
             if (Hud != null) Hud.Refresh();
         }
@@ -233,7 +253,7 @@ namespace QuanAnHope.Game
                 {
                     case HandKind.Ingredient: return HeldIngredient.name + (HeldIngredient.prepared ? " đã sơ chế" : "");
                     case HandKind.Plate: return "đĩa trống";
-                    case HandKind.Dish: return HeldDish.name;
+                    case HandKind.Dish: return HeldDish.Title;
                     default: return null;
                 }
             }
@@ -271,6 +291,7 @@ namespace QuanAnHope.Game
         /// <summary>Bam relic tren be: mua bang ve trang. Gia day thi chuyen sang chon relic de bo; bam lai be de huy.</summary>
         public bool BuyRelic(int slot)
         {
+            if (Session.BlackRelicOffers.Count > 0) return ChooseBlackRelic(slot);
             if (PendingRelicSlot == slot)
             {
                 PendingRelicSlot = -1;
@@ -303,12 +324,60 @@ namespace QuanAnHope.Game
             }
         }
 
+        /// <summary>Khe ve den o Goc 3 (F-042, constitution muc 7.1): dung 1 ve den, ba be hien 3 relic Hiem tro len.</summary>
+        public bool UseBlackForRelic()
+        {
+            if (!DayRunning) return false;
+            if (Session.BlackRelicOffers.Count > 0) { Say("Đang chờ bạn chọn 1 trong 3 relic trên bệ."); return false; }
+            if (Session.Items.BlackTickets <= 0)
+            {
+                Say(Session.Items.IsOpen ? "Chưa có vé đen. Mua ở quầy vật phẩm (Góc 2)." : "Vé đen bán ở quầy vật phẩm từ ngày " + Session.Balance.itemShopFromDay + ".");
+                return false;
+            }
+            if (!HandsFree("dùng vé đen")) return false;
+            if (!Session.UseBlackForRelic()) { Say("Không còn relic Hiếm nào để chọn."); return false; }
+            PendingRelicSlot = -1;
+            PendingIsBlack = false;
+            Say("Vé đen: chọn 1 trong 3 relic Hiếm trở lên trên bệ.");
+            return true;
+        }
+
+        bool ChooseBlackRelic(int slot)
+        {
+            IReadOnlyList<RelicDef> offers = Session.BlackRelicOffers;
+            if (slot < 0 || slot >= offers.Count) return false;
+            RelicDef pick = offers[slot];
+            RelicBuyResult r = Session.ChooseBlackRelic(slot);
+            if (r == RelicBuyResult.NeedDiscard)
+            {
+                PendingRelicSlot = slot;
+                PendingIsBlack = true;
+                Say("Giá relic đầy " + Session.Relics.Capacity + "/" + Session.Relics.Capacity + ": bấm một relic trên giá để bỏ, lấy " + pick.name + ".");
+                return false;
+            }
+            if (r != RelicBuyResult.Bought) return false;
+            PendingRelicSlot = -1;
+            PendingIsBlack = false;
+            LastBoughtRelic = pick;
+            Say("Vé đen: đã lấy " + pick.name + " (" + RelicKeys.RarityName(pick.rarity) + ").");
+            return true;
+        }
+
         /// <summary>Bam relic tren gia: khi dang chon de bo thi bo no va mua relic dang cho.</summary>
         public bool UseShelfRelic(string id)
         {
             if (PendingRelicSlot < 0) return false;
             int slot = PendingRelicSlot;
             PendingRelicSlot = -1;
+            if (PendingIsBlack)
+            {
+                PendingIsBlack = false;
+                RelicDef pick = slot < Session.BlackRelicOffers.Count ? Session.BlackRelicOffers[slot] : null;
+                if (pick == null || Session.ChooseBlackRelic(slot, id) != RelicBuyResult.Bought) { Say("Không đổi được relic."); return false; }
+                LastBoughtRelic = pick;
+                Say("Đã bỏ " + id + ", lấy " + pick.name + " bằng vé đen.");
+                return true;
+            }
             RelicDef offer = Session.Shop.Offers[slot];
             RelicDef old = null;
             foreach (RelicDef d in Session.Relics.Owned) if (d.id == id) old = d;
@@ -583,6 +652,12 @@ namespace QuanAnHope.Game
             if (!Session.UseSauce(d, out r)) return false;
             LastItemEffect = "sauce:" + r;
             if (r == SauceResult.Fail) Player.Shake(0.15f);
+            if (r == SauceResult.Legend)
+            {
+                Say("Nước sốt thần thánh: " + d.name + " thành " + Dish.LegendName + " (Huyền thoại, giá ×"
+                    + Session.Balance.dish.priceMult[d.tier].ToString("0.0") + ")! · còn " + Session.Items.Sauces + " chai.");
+                return true;
+            }
             Say("Nước sốt: " + d.name + " " + UiKit.DishTierName[before] + " → " + UiKit.DishTierName[d.tier] + " · còn " + Session.Items.Sauces + " chai.");
             return true;
         }
@@ -633,7 +708,7 @@ namespace QuanAnHope.Game
             if (Session.Phase == GamePhase.Prep)
             {
                 if (!Session.OpenShop()) return false;
-                Toast = "Mở quán! Khách đầu tiên đã tới.";
+                Toast = Session.Boss != null ? BossArrivedText(Session.Boss) : "Mở quán! Khách đầu tiên đã tới.";
                 ClearReactions();
                 Changed();
                 return true;
@@ -692,7 +767,12 @@ namespace QuanAnHope.Game
             ServedShowLeft = ReactionSeconds * 2f;
             if (Session.Phase != GamePhase.Open) ClearHands();
 
-            if (paid.wrongOrder)
+            if (c.isBoss)
+                Toast = paid.bossBonus > 0
+                    ? "Chủ nợ ngạc nhiên! +" + paid.amount + "G (món " + paid.price + "G, tip " + paid.tip + "G, thưởng " + paid.bossBonus + "G)."
+                    : "Chủ nợ nhận " + dish.Title + " (" + UiKit.DishTierName[Mathf.Min(dish.tier, UiKit.DishTierName.Length - 1)] + "): "
+                        + (paid.amount >= 0 ? "+" : "") + paid.amount + "G, không có thưởng (cần Tuyệt hảo trở lên).";
+            else if (paid.wrongOrder)
                 Toast = "Sai món: khách gọi " + ordered + ". Khách giận, quán đền " + (-paid.amount) + "G.";
             else if (paid.outcome == PaymentOutcome.Satisfied)
                 Toast = "Khách vui: +" + paid.amount + "G (món " + paid.price + "G, tip " + paid.tip + "G).";
@@ -701,6 +781,8 @@ namespace QuanAnHope.Game
             else
                 Toast = "Khách giận: quán đền " + (-paid.amount) + "G.";
 
+            bossReactSeat = c.isBoss ? seat : (bossReactSeat == seat ? -1 : bossReactSeat);
+            if (c.isBoss) bossReactHappy = paid.bossBonus > 0;
             if (Session.Phase == GamePhase.Open)
             {
                 reactionLeft[seat] = ReactionSeconds;
@@ -736,12 +818,17 @@ namespace QuanAnHope.Game
             foreach (Customer c in Session.Seats) if (c != null && c.number > maxSeen) arrived = c;
             bool justClosed = Session.IsClosedForNewCustomers && !seenClosed;
             bool dayEnded = seenPhase != Session.Phase && !DayRunning;
+            bool bossCame = Session.BossArrived && !seenBoss;
             seenPhase = Session.Phase;
             seenSeats = SeatSignature();
             seenClosed = Session.IsClosedForNewCustomers;
+            seenBoss = Session.BossArrived;
 
             if (dayEnded) { ClearHands(); ClearReactions(); }
-            if (justClosed && Session.Phase == GamePhase.Open) Toast = "21:00 · Quán đóng cửa, phục vụ nốt khách đang ngồi.";
+            if (arrived != null && arrived.isBoss) Toast = BossArrivedText(arrived);
+            else if (bossCame && Session.Phase == GamePhase.Prep) Toast = "Chủ nợ đã tới, đang đợi ngoài cửa: mở quán để ông vào.";
+            else if (bossCame && Session.BossWaiting) Toast = "Chủ nợ đã tới, đang đợi ghế trống: phục vụ một khách để ông ngồi.";
+            else if (justClosed && Session.Phase == GamePhase.Open) Toast = "21:00 · Quán đóng cửa, phục vụ nốt khách đang ngồi.";
             else if (arrived != null && !AnyReaction) Toast = "Khách mới vào: gọi " + arrived.orderName + ".";
             Changed();
         }
@@ -757,6 +844,17 @@ namespace QuanAnHope.Game
             LastServedSeat = -1;
             ServedShowLeft = 0f;
             if (Session.IsBlackout) Toast = "Ngày " + Session.Day + ": sét đánh cột điện, mất điện! Nấu bằng nến, khó nhìn bậc món.";
+            else if (Session.Phase == GamePhase.Prep && Session.IsBossDay)
+                Toast = "Ngày " + Session.Day + ": đúng " + Session.Balance.day.bossHour + ":00 chủ nợ tới. Để dành món Tuyệt hảo: thưởng "
+                    + Session.Balance.bossBonus + "G.";
+            else if (Session.Phase == GamePhase.Prep && Session.Day == LastDayBeforeDebt(Session) && Session.Round == 3)
+                Toast = "Ngày " + Session.Day + ": có kẻ tung tin xấu về quán. Mai chủ nợ thu " + Session.Balance.DebtDueOn(Session.Day + 1)
+                    + "G: dốc hết món trong tủ, nước sốt, vé đen!";
+            else if (Session.LastDebtPaid > 0 && Session.Phase == GamePhase.Prep && Session.Round == 3)
+                Toast = "Chủ nợ đã thu " + Session.LastDebtPaid + "G. Vòng 3: khách khó tính hơn hẳn; từ hôm nay nước sốt có "
+                    + Session.Balance.sauce.oddsLate.legend + "% ra " + Dish.LegendName + ".";
+            else if (Session.LastDebtPaid > 0 && Session.Phase == GamePhase.Prep && Session.Round == 4)
+                Toast = "Chủ nợ đã thu " + Session.LastDebtPaid + "G. Vòng 4: uy tín phục hồi; có thêm gà ta (vỉ nướng), bí đỏ, măng tây, nấm đông cô.";
             else if (Session.LastDebtPaid > 0 && Session.Phase == GamePhase.Prep)
                 Toast = "Chủ nợ đã thu " + Session.LastDebtPaid + "G. Vòng " + Session.Round + ": tối đa " + Session.SeatCount
                     + " khách cùng ngồi, khách chờ lâu sẽ khó tính hơn; quầy vật phẩm mở ở Góc 2.";
@@ -764,6 +862,18 @@ namespace QuanAnHope.Game
             ClearReactions();
             Changed();
             return true;
+        }
+
+        string BossArrivedText(Customer boss)
+        {
+            return "Chủ nợ đã tới · dễ tính " + boss.easiness + "% · gọi " + boss.orderName
+                + ". Món Tuyệt hảo trở lên: thưởng " + Session.Balance.bossBonus + "G.";
+        }
+
+        static int LastDayBeforeDebt(GameSession s)
+        {
+            DebtEntry next = s.NextDebt();
+            return next != null ? next.day - 1 : -1;
         }
 
         public void Restart()
@@ -777,12 +887,43 @@ namespace QuanAnHope.Game
             for (int i = 0; i < reactionLeft.Length; i++) reactionLeft[i] = 0f;
         }
 
+        /// <summary>
+        /// Lenh go loi "bat dau tu vong N voi tien va relic trung binh cua bot" (impl plan sprint 5 muc 5): dat tien dung bang
+        /// <paramref name="money"/>, thay gia relic bang <paramref name="relicIds"/>. Chi Editor.
+        /// </summary>
+        public bool DebugStartAt(int day, int money, string[] relicIds, string topDishRecipe = null)
+        {
+            if (!DebugJumpToDay(day, 0)) return false;
+            Recipe top = topDishRecipe != null ? Session.Lookup.ById(topDishRecipe) : null;
+            // bot gom bo de danh mot dia Tuyet hao trong tu lanh cho chu no (97% van, bot_report.md)
+            if (top != null)
+                Session.Fridge.TryStore(new Dish { recipeId = top.id, name = top.name, baseName = top.baseName, tier = Session.Balance.dish.maxTier });
+            Session.DebugAddMoney(money - Session.Money);
+            var owned = new List<string>();
+            foreach (RelicDef r in Session.Relics.Owned) owned.Add(r.id);
+            foreach (string id in owned) Session.Relics.Remove(id);
+            foreach (string id in relicIds) Session.DebugGiveRelic(id);
+            Say("[Gỡ lỗi] Đầu ngày " + day + " · " + money + "G · " + Session.Relics.Owned.Count + " relic (trung vị của bot gom bộ).");
+            return true;
+        }
+
+        /// <summary>Lenh go loi cho test PlayMode: dat mot thung nguyen lieu cho truoc len ban (chi Editor; vd thung ga ta de thu vi nuong).</summary>
+        public bool DebugAddCrate(Crate crate)
+        {
+            if (!Application.isEditor || crate == null || !DayRunning) return false;
+            Session.Stock.AddCrate(crate);
+            Changed();
+            return true;
+        }
+
         /// <summary>Lenh go loi: nhay toi dau ngay va cho tien (chi Editor).</summary>
         public bool DebugJumpToDay(int day, int addMoney)
         {
             if (!Application.isEditor) return false;
             Session.DebugJumpToDay(day);
             Session.DebugAddMoney(addMoney);
+            PendingRelicSlot = -1;
+            PendingIsBlack = false;
             ClearHands();
             ClearReactions();
             LastPull = null;

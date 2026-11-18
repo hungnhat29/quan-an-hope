@@ -229,4 +229,34 @@ namespace QuanAnHope.Game
             }
         }
     }
+
+    /// <summary>
+    /// Hao quang vang cua Mon Hy Vong (Art Bible muc 4, 7: "Bac 5 / Huyen thoai luon co them hao quang vang"):
+    /// vong 12 hat vang quay cham phia tren dia, nhap nho len xuong.
+    /// </summary>
+    public class LegendHalo : MonoBehaviour
+    {
+        public const int Beads = 12;
+        Transform ring;
+
+        public static LegendHalo Create(Transform dish)
+        {
+            var h = dish.gameObject.AddComponent<LegendHalo>();
+            h.ring = Toon.Empty(dish, "HaoQuang", new Vector3(0f, 0.2f, 0f)).transform;
+            for (int i = 0; i < Beads; i++)
+            {
+                float a = i * Mathf.PI * 2f / Beads;
+                Toon.Prim(PrimitiveType.Sphere, h.ring, "Hat_" + i, new Vector3(Mathf.Cos(a) * 0.2f, 0f, Mathf.Sin(a) * 0.2f),
+                    Vector3.one * 0.03f, UiKit.Hex("#F2C14E"), 0f);
+            }
+            return h;
+        }
+
+        void Update()
+        {
+            if (ring == null) return;
+            ring.localRotation = Quaternion.Euler(0f, Time.time * 40f, 0f);
+            ring.localPosition = new Vector3(0f, 0.2f + Mathf.Sin(Time.time * 2f) * 0.012f, 0f);
+        }
+    }
 }

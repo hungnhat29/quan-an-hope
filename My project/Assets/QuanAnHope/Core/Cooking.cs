@@ -191,6 +191,18 @@ namespace QuanAnHope.Core
         /// <summary>So ngay nam trong tu lanh va da bi tut bac chua (constitution muc 5.7).</summary>
         public int daysInFridge;
         public bool decayed;
+
+        /// <summary>Ten tam cua mon Huyen thoai duy nhat (constitution muc 5.4).</summary>
+        public const string LegendName = "Món Hy Vọng";
+
+        /// <summary>Bac Huyen thoai (bac cao nhat cua bang he so gia, constitution muc 5.2).</summary>
+        public const int LegendTier = 5;
+
+        /// <summary>Mon Hy Vong: chi ra qua nuoc sot tu ngay 9 (muc 5.4, 5.5). Van giu cong thuc goc de khach goi mon do nhan.</summary>
+        public bool IsLegend { get { return tier >= LegendTier; } }
+
+        /// <summary>Ten hien tren dia: Mon Hy Vong neu la Huyen thoai, khong thi ten mon.</summary>
+        public string Title { get { return IsLegend ? LegendName : name; } }
     }
 
     /// <summary>Quay cho: giu mot so dia da nau trong ngay, khong giam bac (constitution muc 5.1).</summary>

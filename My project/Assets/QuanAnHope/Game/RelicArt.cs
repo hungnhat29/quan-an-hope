@@ -209,12 +209,12 @@ namespace QuanAnHope.Game
             return card;
         }
 
-        public void Show(RelicDef r, RelicInventory inv, bool pending)
+        public void Show(RelicDef r, RelicInventory inv, bool pending, bool viaBlack = false)
         {
             gameObject.SetActive(true);
             frame.color = RelicArt.RarityColor(r.rarity);
             title.text = r.name;
-            meta.text = r.price + " vé · " + RelicKeys.RarityName(r.rarity);
+            meta.text = (viaBlack ? "Vé đen" : r.price + " vé") + " · " + RelicKeys.RarityName(r.rarity);
             effect.text = RelicText.Effect(r)
                 + (RelicText.IsActiveNow(r) ? "" : "\n<color=#E8604F><size=46>có tác dụng từ ngày 4</size></color>");
             if (string.IsNullOrEmpty(r.set)) setLine.text = "Relic lẻ";

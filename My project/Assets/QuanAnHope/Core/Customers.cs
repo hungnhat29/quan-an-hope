@@ -16,6 +16,12 @@ namespace QuanAnHope.Core
 
         /// <summary>Giay thuc da ngoi cho (constitution muc 6.6).</summary>
         public float waitedSeconds;
+
+        /// <summary>Chu no ngay 21 (constitution muc 2, 6.2, 6.3, 6.7): do de tinh co dinh, goi "mon ngon nhat cua quan".</summary>
+        public bool isBoss;
+
+        /// <summary>Chu no khong goi mon cu the (Q-20): ten tren bong bong.</summary>
+        public const string BossOrderName = "món ngon nhất của quán";
     }
 
     /// <summary>Sinh khach theo khoang do de tinh cua vong (constitution muc 6.3).</summary>
@@ -81,6 +87,9 @@ namespace QuanAnHope.Core
 
         /// <summary>Dia khac mon khach goi: khach nhan nhung gian (constitution muc 6.7).</summary>
         public bool wrongOrder;
+
+        /// <summary>Thuong chu no ngay 21 (constitution muc 8), da cong vao <see cref="amount"/>; 0 neu khong co.</summary>
+        public int bossBonus;
     }
 
     /// <summary>Tra tien va tip (constitution muc 5.2, 6.5). Tien lam tron den 1G.</summary>

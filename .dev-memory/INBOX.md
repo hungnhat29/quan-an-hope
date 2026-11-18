@@ -15,3 +15,5 @@
 Ghi chú 15/11: 4 dòng [~] của 14/11 về số đã vào game (F-010, F-011); 2 dòng hình (F-012, F-013) đã làm, chờ duyệt ảnh.
 
 Ký hiệu: [x] xong · [~] đã vào constitution 1.4 và kế hoạch, chưa vào game · [ ] chưa làm
+
+- [x] 2026-11-16 | "dùng @specs/ và @docs/ và @.dev-memory/ để không phải đọc lại dự án và triển khai @docs/sprint-5/impl-plan.md sau khi triển khai xong hãy double-check lại với @specs/ ban đầu để kiểm tra có bị lệch không và chạy giả lập để kiểm tra lỗi" | → specs/sprint-5/spec.md, .dev-memory/acceptance/2026-11-16-sprint-5.md

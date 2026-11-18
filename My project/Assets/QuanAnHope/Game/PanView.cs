@@ -34,11 +34,14 @@ namespace QuanAnHope.Game
         readonly List<Color> baseColors = new List<Color>();
         readonly List<Transform> pieces = new List<Transform>();
         readonly List<Vector3> homes = new List<Vector3>();
+        readonly List<float> yaws = new List<float>();
         readonly List<Transform> spreading = new List<Transform>();
         Transform eggLiquid;
         Transform flames;
         Transform steam;
         Transform bubbles;
+        Transform lid;
+        readonly List<GameObject> grillMarks = new List<GameObject>();
         GameObject finished;
         MaterialPropertyBlock block;
         float clock;
@@ -56,6 +59,25 @@ namespace QuanAnHope.Game
         public float Doneness { get; private set; }
 
         public bool ShowsBurnt { get; private set; }
+
+        /// <summary>Vi nuong: cac mieng da lat (F-040 AC-4: nuong co lat, lo vet nuong).</summary>
+        public bool Flipped { get; private set; }
+
+        /// <summary>So vet nuong dang hien tren mat mieng.</summary>
+        public int GrillMarksShown
+        {
+            get { int n = 0; foreach (GameObject m in grillMarks) if (m != null && m.activeSelf) n++; return n; }
+        }
+
+        /// <summary>Hap: noi dang day nap (F-040 AC-4).</summary>
+        public bool LidOn { get { return lid != null && lid.gameObject.activeSelf; } }
+
+        const string Grill = "Vỉ nướng";
+        const string SteamMethod = "hấp";
+        const float FlipFrom = 0.45f, FlipTo = 0.6f;
+        /// <summary>Do cao vanh noi so voi goc dung cu (RoomView dat tu hinh noi that); nap noi hap nam tren vanh.</summary>
+        public float RimY = 0.06f;
+        float LidY { get { return RimY; } }
 
         public void Setup(string toolName, float innerRadius, float itemScale, float burnerLocalY)
         {
@@ -76,11 +98,15 @@ namespace QuanAnHope.Game
             baseColors.Clear();
             pieces.Clear();
             homes.Clear();
+            yaws.Clear();
             spreading.Clear();
             eggLiquid = null;
             ringIndex = 0;
             Doneness = 0f;
             ShowsBurnt = false;
+            Flipped = false;
+            grillMarks.Clear();
+            if (lid != null) lid.gameObject.SetActive(false);
             if (finished != null) Destroy(finished);
             finished = null;
             if (flames != null) flames.gameObject.SetActive(false);
@@ -118,6 +144,7 @@ namespace QuanAnHope.Game
                 Register(g.GetComponent<Renderer>());
                 pieces.Add(g.transform);
                 homes.Add(g.transform.localPosition);
+                yaws.Add(float.NaN);
             }
             return go;
         }
@@ -156,8 +183,53 @@ namespace QuanAnHope.Game
                 foreach (Renderer r in piece.GetComponentsInChildren<Renderer>()) if (r.name != "Outline") Register(r);
                 pieces.Add(piece.transform);
                 homes.Add(piece.transform.localPosition);
+                yaws.Add(-a + 90f);
+                if (tool == Grill) AddGrillMarks(go.transform, piece.transform);
             }
             return go;
+        }
+
+        /// <summary>Ba vet nuong cheo tren mat mieng; an cho toi khi lat (mat da nuong lat len tren).</summary>
+        void AddGrillMarks(Transform parent, Transform piece)
+        {
+            Vector3 top = piece.localPosition + new Vector3(0f, 0.034f * scale, 0f);
+            Quaternion turn = Quaternion.Euler(0f, 45f + piece.localEulerAngles.y, 0f);
+            for (int k = 0; k < 2; k++)
+            {
+                GameObject m = Toon.Prim(PrimitiveType.Cube, parent, "VetNuong", top + turn * new Vector3(0f, 0f, (k - 0.5f) * 0.012f * scale),
+                    new Vector3(0.032f * scale, 0.003f, 0.004f * scale), UiKit.Hex("#4A2E1E"), 0f, turn.eulerAngles);
+                m.SetActive(false);
+                grillMarks.Add(m);
+            }
+        }
+
+        /// <summary>Nap noi hap: dia vom + num, rung nhe khi soi.</summary>
+        void Lid(bool on)
+        {
+            if (!on)
+            {
+                if (lid != null) lid.gameObject.SetActive(false);
+                return;
+            }
+            if (lid == null)
+            {
+                // Nap dat tren vanh noi (vanh ~4 cm tren tam, ban kinh ~0,28 m): vanh nap rong hon vanh noi, vom cao
+                // de dung ngang tam mat van thay noi dang day nap.
+                lid = Toon.Empty(transform, "NapNoi", Center + new Vector3(0f, LidY, 0f)).transform;
+                Toon.Prim(PrimitiveType.Cylinder, lid, "Nap", Vector3.zero, new Vector3(2.7f * radius, 0.012f, 2.7f * radius), UiKit.Hex("#A9B4BA"), Toon.OutlineSmall);
+                Toon.Prim(PrimitiveType.Sphere, lid, "Vom", new Vector3(0f, 0.01f, 0f), new Vector3(2.4f * radius, 0.2f, 2.4f * radius), UiKit.Hex("#BCC6CB"), Toon.OutlineSmall);
+                Toon.Prim(PrimitiveType.Sphere, lid, "Num", new Vector3(0f, 0.11f, 0f), new Vector3(0.07f, 0.05f, 0.07f), UiKit.Hex("#2B2321"), Toon.OutlineSmall);
+            }
+            lid.gameObject.SetActive(true);
+            lid.localPosition = Center + new Vector3(0f, LidY + Mathf.Max(0f, Mathf.Sin(clock * 9f)) * 0.008f, 0f);
+            lid.localRotation = Quaternion.Euler(Mathf.Sin(clock * 9f) * 1.5f, 0f, 0f);
+        }
+
+        static string MethodOf(Recipe recipe)
+        {
+            if (recipe == null || DishFood.Book == null) return null;
+            foreach (MainIngredient m in DishFood.Book.mains) if (m.id == recipe.mainId) return m.method;
+            return null;
         }
 
         /// <summary>Tam vung dat do: chao / vi o giua; noi o nua sau de mep noi phia truoc khong che.</summary>
@@ -199,9 +271,11 @@ namespace QuanAnHope.Game
             Doneness = progress;
             ShowsBurnt = burnt && progress > 0.5f;
 
+            bool steaming = deep && MethodOf(recipe) == SteamMethod;
             Flames(cooking);
-            Steam(cooking || ready, burnt);
-            Bubbles(cooking && deep);
+            Steam(cooking || ready, burnt, steaming && cooking);
+            Bubbles(cooking && deep && !steaming);
+            Lid(steaming && cooking);
 
             if (ready && finished == null && recipe != null) ShowFinished(recipe, burnt);
             if (finished != null) return;
@@ -242,10 +316,23 @@ namespace QuanAnHope.Game
                 {
                     p.localPosition = home + Vector3.up * Mathf.Sin(clock * 3f + i) * 0.006f;
                 }
+                else if (tool == Grill && i < yaws.Count && !float.IsNaN(yaws[i]))
+                {
+                    // Nuong: xeo nhe, toi giua thi lat tung mieng (mat da co vet nuong lat len tren)
+                    float f = Mathf.Clamp01((progress - FlipFrom) / (FlipTo - FlipFrom));
+                    float lift = Mathf.Sin(f * Mathf.PI) * 0.04f;
+                    p.localPosition = home + new Vector3(0f, lift + Mathf.Abs(Mathf.Sin(clock * 20f + i)) * 0.002f, 0f);
+                    p.localRotation = Quaternion.Euler(0f, yaws[i], 0f) * Quaternion.Euler(180f * Mathf.SmoothStep(0f, 1f, f), 0f, 0f);
+                }
                 else
                 {
                     p.localPosition = home + new Vector3(Mathf.Sin(clock * 40f + i) * 0.002f, Mathf.Abs(Mathf.Sin(clock * 20f + i)) * 0.004f, 0f);
                 }
+            }
+            if (tool == Grill)
+            {
+                Flipped = progress >= FlipTo;
+                foreach (GameObject m in grillMarks) if (m != null) m.SetActive(Flipped && cooking);
             }
         }
 
@@ -300,7 +387,7 @@ namespace QuanAnHope.Game
             }
         }
 
-        void Steam(bool on, bool burnt)
+        void Steam(bool on, bool burnt, bool fromLid = false)
         {
             if (!on)
             {
@@ -320,9 +407,11 @@ namespace QuanAnHope.Game
                 Transform puff = steam.GetChild(i);
                 Toon.Recolor(puff.gameObject, c);
                 float u = Mathf.Repeat(clock / 2.2f + i / 4f, 1f);
-                Vector3 basePos = Center + new Vector3(Mathf.Cos(i * 1.9f) * 0.3f * radius, 0f, Mathf.Sin(i * 1.9f) * 0.3f * radius);
+                // Hap: hoi thoat ra o mep nap, nhieu va to hon
+                float ring = fromLid ? 1.3f * radius : 0.3f * radius;
+                Vector3 basePos = Center + new Vector3(Mathf.Cos(i * 1.9f) * ring, fromLid ? LidY : 0f, Mathf.Sin(i * 1.9f) * ring);
                 puff.localPosition = basePos + new Vector3(Mathf.Sin(u * 6f + i) * 0.02f, 0.05f + 0.35f * u, 0f);
-                puff.localScale = Vector3.one * (burnt ? 0.08f : 0.055f) * Mathf.Sin(u * Mathf.PI);
+                puff.localScale = Vector3.one * (burnt ? 0.08f : fromLid ? 0.075f : 0.055f) * Mathf.Sin(u * Mathf.PI);
             }
         }
 
@@ -428,8 +517,12 @@ namespace QuanAnHope.Game
                     }
                 default:
                     {
-                        // ap chao / nuong: mieng lon giua + do phu quanh
+                        // ap chao / nuong: mieng lon giua + do phu quanh; nuong co 3 vet nuong cheo tren mieng (F-040 AC-4)
                         Pieces(root.transform, main, 1, 0f, 0.004f, pieceScale * 1.8f, fix, rng);
+                        if (method == "nướng")
+                            for (int k = 0; k < 3; k++)
+                                Toon.Prim(PrimitiveType.Cube, root.transform, "VetNuong", new Vector3((k - 1) * 0.022f * pieceScale, 0.062f * pieceScale, 0f),
+                                    new Vector3(0.006f * pieceScale, 0.003f, 0.08f * pieceScale), UiKit.Hex(burnt ? "#2B2321" : "#4A2E1E"), 0f, new Vector3(0f, 40f, 0f));
                         Pieces(root.transform, side, Mathf.Max(4, sideCount - 1), 0.62f * radius, 0.006f, pieceScale * 0.9f, fix, rng);
                         break;
                     }

@@ -225,7 +225,8 @@ namespace QuanAnHope.PlayTests
         /// Nau mot mon bang tay theo dung cong thuc (hoac dao 2 buoc dau de ra Lac vi).
         /// recipeId = mon khach goi; null thi lay cap chinh + phu dau tien trong kho.
         /// </summary>
-        IEnumerator CookOne(bool correctOrder = true, string recipeId = null, System.Func<IEnumerator> beforePlate = null)
+        IEnumerator CookOne(bool correctOrder = true, string recipeId = null, System.Func<IEnumerator> beforePlate = null,
+            System.Func<IEnumerator> whileCooking = null)
         {
             Recipe want = recipeId != null ? S.Lookup.ById(recipeId) : null;
             Ingredient main = S.Stock.Items.FirstOrDefault(i => i.kind == IngredientKind.Main && (want == null || i.typeId == want.mainId));
@@ -267,6 +268,7 @@ namespace QuanAnHope.PlayTests
             Assert.AreEqual(StoveState.Cooking, S.Stove.State);
             Assert.IsTrue(g.Room.PanItems.All(p => p.Sizzle), "dang nau thi do trong bep rung");
             Assert.IsTrue(g.Room.Pan.FlameOn, "F-013 AC-3: vat num thi co lua duoi dung cu");
+            if (whileCooking != null) yield return whileCooking();
             if (cookShots != null)
             {
                 yield return WaitUntil(() => g.Room.Pan.Doneness > 0.5f, r.cookSeconds, "nau toi nua chung");
@@ -1426,12 +1428,253 @@ namespace QuanAnHope.PlayTests
             g.Hud.OverlayButton.onClick.Invoke();
             yield return null;
             Assert.AreEqual(9, S.Day);
-            Assert.AreEqual(GamePhase.Cleared, S.Phase);
+            // Sprint 5 (ban Alpha): thu 2.900G roi choi tiep vong 3, khong dung o ngay 9 nua.
+            Assert.AreEqual(GamePhase.Prep, S.Phase);
             Assert.AreEqual(money - 2900, S.Money);
-            StringAssert.Contains("Qua vòng 2", HudText("ManPhu"));
-            StringAssert.Contains("2900G", HudText("ManPhu"));
+            StringAssert.Contains("Vòng 3", g.Toast);
+            StringAssert.Contains("2900G", g.Toast);
             Assert.IsFalse(g.Room.BlackoutShown, "het ngay 8 thi co dien lai");
-            yield return Shot("qua_vong_2.png", null, Sprint4);
+            yield return Shot("ngay9_dau_vong3.png", null, Sprint5);
+        }
+
+        // =====================================================================
+        // Sprint 5: vong 3-4, Mon Hy Vong, relic ve den, chu no, thang / thua (F-040..F-044). Anh: docs/sprint-5/ui/
+        // =====================================================================
+
+        const string Sprint5 = "sprint-5";
+
+        // Tien va relic trung vi cua bot gom bo dau ngay 9 / 21 (balance/bot_report.md); ngay 21 cho them tien de thang chac.
+        static readonly string[] BotRelicsDay9 = { "V3", "V4", "C2", "S1", "F4", "F3", "F2", "F1" };
+        static readonly string[] BotRelicsDay21 = { "S3", "F2", "F4", "S2", "S1", "F10", "S4", "F1" };
+
+        IEnumerator StartAt(int day, int money, string[] relics, string topDish = null)
+        {
+            Assert.IsTrue(g.DebugStartAt(day, money, relics, topDish), "lenh go loi chi chay trong Editor");
+            yield return null;
+            Assert.AreEqual(day, S.Day);
+            Assert.AreEqual(GamePhase.Prep, S.Phase);
+            Assert.AreEqual(money, S.Money);
+        }
+
+        Crate CrateOf(string id, int tier, int count)
+        {
+            var c = new Crate { typeId = id };
+            MainIngredient m = S.Recipes.mains.FirstOrDefault(x => x.id == id);
+            for (int i = 0; i < count; i++)
+            {
+                if (m != null) c.items.Add(Ingredient.FromMain(m, tier));
+                else c.items.Add(Ingredient.FromSide(S.Recipes.sides.Single(x => x.id == id), tier));
+            }
+            c.kind = m != null ? IngredientKind.Main : IngredientKind.Side;
+            c.name = m != null ? m.name : S.Recipes.sides.Single(x => x.id == id).name;
+            c.isBreakthrough = m != null && m.group == "dotpha";
+            return c;
+        }
+
+        /// <summary>
+        /// Kich ban 10 giay F-043 (impl plan sprint 5): ngay 21, 20:00 chu no toi; mo quan thi ong ngoi ghe giua, bong bong vien vang
+        /// "Chu no · De tinh 5% · Goi: mon ngon nhat cua quan". Lay dia Tuyet hao de danh trong tu lanh, mang ra, bam:
+        /// mat lanh lung -> ngac nhien, "thuong 11500G". Dong quan, sang ngay 22 thu 32.000G -> man thang (F-044).
+        /// </summary>
+        [UnityTest]
+        public IEnumerator F043_F044_Ngay21_ChuNoLuc20Gio_MonTuyetHao_Thuong_SangNgay22_Thang()
+        {
+            yield return StartAt(21, 21000, BotRelicsDay21, "ga__bi_do");
+            Assert.IsTrue(S.IsBossDay);
+            Assert.AreEqual(1, S.Fridge.Dishes.Count);
+            Dish top = S.Fridge.Dishes[0];
+            Assert.AreEqual(4, top.tier);
+
+            // tua dong ho toi 20:00 (quan chua mo: chu no doi ngoai cua, F-043 AC-5)
+            g.ClockScale = 60f;
+            yield return WaitUntil(() => S.BossArrived, 60f, "20:00 chu no toi");
+            g.ClockScale = 1f;
+            Assert.AreEqual(20, S.Clock.Hour);
+            Assert.IsTrue(S.BossWaiting);
+            StringAssert.Contains("Chủ nợ đã tới", g.Toast);
+
+            yield return Use("ShopSign");
+            Assert.AreEqual(GamePhase.Open, S.Phase);
+            Assert.IsNotNull(S.Boss, "mo quan thi chu no vao ngay");
+            Assert.AreEqual(1, S.SeatOf(S.Boss), "chu no ngoi ghe giua");
+            yield return null;
+            RoomView.SeatView v = g.Room.SeatViews[1];
+            Assert.IsTrue(v.Model.activeInHierarchy);
+            Assert.IsTrue(v.BossLook.activeInHierarchy, "chu no co mu va day vang");
+            Assert.IsTrue(v.BossFrame.gameObject.activeInHierarchy, "bong bong vien vang");
+            Assert.IsFalse(v.Patience.gameObject.activeInHierarchy, "chu no ngoi toi khi duoc phuc vu: khong co thanh kien nhan");
+            StringAssert.Contains("Chủ nợ · Dễ tính 5%", g.Room.BubbleText(1));
+            StringAssert.Contains("Gọi: món ngon nhất của quán", g.Room.BubbleText(1));
+            StringAssert.Contains("Chủ nợ đã tới", g.Toast);
+            yield return WalkTo(new Vector3(0f, 0f, 0.6f));
+            yield return Shot("ngay21_chu_no_toi.png", new Vector3(0f, 2.0f, 3.0f), Sprint5);
+
+            // lay dia Tuyet hao trong tu lanh, mang ra, nhin vao chu no, bam
+            Interactable inFridge = g.Room.FridgeDishes[0].GetComponent<Interactable>();
+            yield return Approach(inFridge);
+            P.TapPrimary();
+            yield return null;
+            Assert.AreSame(top, g.HeldDish);
+            Interactable seat = g.Room.Station("Customer_1");
+            yield return Approach(seat);
+            StringAssert.Contains("Phục vụ chủ nợ: " + top.name, seat.CurrentPrompt);
+            StringAssert.Contains("được thưởng 11500G", seat.CurrentPrompt);
+            int money = S.Money;
+            int plain = Payment.Settle(S.Balance, S.Round, 5, top.tier, S.Relics.Effects).amount;
+            // phan ung chi 0,8 giay: chup ngay sau khi bam, thoi gian thuong
+            yield return WalkTo(new Vector3(0f, 0f, 0.6f));
+            Vector3 aimBoss = seat.WorldCenter + new Vector3(0f, 0.3f, 0f);
+            P.LookAt(aimBoss);
+            yield return null;
+            P.LookAt(aimBoss);
+            Assert.AreSame(seat, P.Focus);
+            Time.timeScale = 1f;
+            P.TapPrimary();
+            yield return null;
+            yield return Shot("ngay21_chu_no_ngac_nhien.png", null, Sprint5);
+            Time.timeScale = FastForward;
+            Assert.AreEqual(money + plain + 11500, S.Money, "tien mon + 11.500G (F-043 AC-3)");
+            Assert.IsTrue(S.BossServed);
+            StringAssert.Contains("thưởng 11500G", g.Toast);
+            bool bonus;
+            Assert.IsTrue(g.IsBossReaction(1, out bonus) && bonus, "mat chu no doi sang ngac nhien");
+
+            // dong quan, sang ngay 22: thu 32.000G -> man thang (chu)
+            yield return Use("ShopSign");
+            Assert.AreEqual(GamePhase.DayEnd, S.Phase);
+            StringAssert.Contains("Sáng mai chủ nợ thu 32000G", HudText("ManPhu"));
+            int before = S.Money;
+            g.Hud.OverlayButton.onClick.Invoke();
+            yield return null;
+            Assert.AreEqual(22, S.Day);
+            Assert.AreEqual(GamePhase.Cleared, S.Phase);
+            Assert.IsTrue(S.IsWon);
+            Assert.AreEqual(before - 32000, S.Money);
+            StringAssert.Contains("Hope trả hết nợ", HudText("ManPhu"));
+            StringAssert.Contains("gả con gái", HudText("ManPhu"));
+            yield return Shot("ngay22_thang.png", null, Sprint5);
+        }
+
+        /// <summary>F-044 AC-1: dau ngay 22 thieu tien thi thua ngay (man thua nhac thuong chu no).</summary>
+        [UnityTest]
+        public IEnumerator F044_Ngay22_ThieuTien_Thua()
+        {
+            yield return StartAt(21, 5000, BotRelicsDay21);
+            yield return EndDayEarly();
+            Assert.AreEqual(22, S.Day);
+            Assert.AreEqual(GamePhase.Lost, S.Phase);
+            StringAssert.Contains("chủ nợ đòi 32000G", HudText("ManPhu"));
+            StringAssert.Contains("thưởng 11500G", HudText("ManPhu"));
+            yield return Shot("ngay22_thua.png", null, Sprint5);
+        }
+
+        /// <summary>F-042: mua ve den o Goc 2, dung o khe ve den Goc 3: ba be doi sang 3 relic Hiem tro len; gia day thi bo mot relic.</summary>
+        [UnityTest]
+        public IEnumerator F042_VeDen_Goc3_3RelicHiem_GiaDayThiBo()
+        {
+            yield return StartAt(9, 5000, BotRelicsDay9);
+            Assert.IsTrue(S.Relics.IsFull);
+            yield return Use("BlackTicket");
+            Assert.AreEqual(1, S.Items.BlackTickets);
+            int white = S.Wallet.Count;
+
+            yield return UseGoc3("BlackRelic");
+            Assert.AreEqual(0, S.Items.BlackTickets, "ton 1 ve den");
+            Assert.AreEqual(white, S.Wallet.Count, "khong ton ve trang");
+            Assert.AreEqual(3, S.BlackRelicOffers.Count);
+            Assert.IsTrue(S.BlackRelicOffers.All(r => r.rarity != "thuong"), "chi Hiem tro len");
+            yield return null;
+            StringAssert.Contains("Vé đen", TextOf("TheRelic_0"));
+            StringAssert.Contains("Vé đen", TextOf("BienRelic"));
+            yield return WalkTo(Goc3Point(0.6f, 1.3f));
+            yield return Shot("goc3_ve_den_3_relic.png", PedestalsView() + new Vector3(-0.4f, 0.1f, 0f), Sprint5);
+
+            RelicDef pick = S.BlackRelicOffers[0];
+            yield return UseGoc3("Relic_0");
+            Assert.IsTrue(g.PendingIsBlack, "gia day: phai bo mot relic");
+            string drop = S.Relics.Owned[0].id;
+            yield return UseGoc3("Shelf_0");
+            Assert.IsTrue(S.Relics.Has(pick.id));
+            Assert.IsFalse(S.Relics.Has(drop));
+            Assert.AreEqual(0, S.BlackRelicOffers.Count);
+            StringAssert.Contains("bằng vé đen", g.Toast);
+        }
+
+        /// <summary>F-041 AC-2, AC-3: tu ngay 9 bien nuoc sot hien 4% Huyen thoai; Mon Hy Vong vien vang, hao quang, kinh den + vuong mien, tim vang.</summary>
+        [UnityTest]
+        public IEnumerator F041_TuNgay9_NuocSotHien4PhanTram_MonHyVong()
+        {
+            yield return StartAt(9, 3000, BotRelicsDay9);
+            StringAssert.Contains("Huyền thoại 4%", g.Room.ItemSignText, "Dieu 4: hien ti le Huyen thoai tu ngay 9");
+            Recipe r = S.Lookup.Find("ca_hoi", "ot_chuong");
+            var legend = new Dish { recipeId = r.id, name = r.name, baseName = r.baseName, tier = 5 };
+            Assert.IsTrue(S.Counter.TryPlace(legend));
+            g.Room.Refresh();
+            yield return null;
+            GameObject plate = g.Room.ShelfDishes[0];
+            Assert.IsNotNull(plate.GetComponent<LegendHalo>(), "hao quang vang");
+            Color rim = plate.transform.Find("VienDia").GetComponent<Renderer>().sharedMaterial.GetColor("_Color");
+            Assert.Less(Vector4.Distance(UiKit.DishTier[5], rim), 0.01f, "vien dia vang");
+            Assert.AreEqual("Mat_Mon_5", plate.GetComponentsInChildren<FaceBillboard>().First(f => f.name == "MatMon").Texture.name, "kinh den + vuong mien");
+            Assert.AreEqual("tim_vang", plate.GetComponent<DishFx>().Kind, "tim vang");
+            yield return Approach(g.Room.Station("PlateStack"));
+            yield return Shot("mon_hy_vong.png", plate.transform.position, Sprint5);
+            yield return UseShelfDish(0);
+            Assert.AreSame(legend, g.HeldDish);
+            Assert.AreEqual(Dish.LegendName, g.HeldName);
+        }
+
+        /// <summary>F-040 AC-3, AC-4: vong 4 ga ta nuong tren vi (lat giua chung, lo vet nuong); cua hoang de hap trong noi co nap va hoi.</summary>
+        [UnityTest]
+        public IEnumerator F040_Vong4_ViNuong_LatVaVetNuong_Hap_NapVaHoi()
+        {
+            yield return ToDay(15, 3000);
+            Assert.AreEqual(4, S.Round);
+            Assert.IsTrue(g.DebugAddCrate(CrateOf("ga", 3, 2)));
+            Assert.IsTrue(g.DebugAddCrate(CrateOf("mang_tay", 3, 3)));
+            Assert.IsTrue(g.DebugAddCrate(CrateOf("bi_do", 2, 3)));
+            Assert.IsTrue(g.DebugAddCrate(CrateOf("cua", 4, 1)));
+            yield return new WaitForSeconds(1f);
+            yield return Shot("goc2_thung_vong4.png", g.Room.Station("Kiosk").WorldCenter + new Vector3(0.6f, -0.35f, 1.2f), Sprint5);
+
+            System.Func<IEnumerator> grill = () => GrillCheck();
+            yield return CookOne(true, "ga__mang_tay", null, grill);
+            Assert.AreEqual("Vỉ nướng", S.Lookup.ById("ga__mang_tay").tool);
+            GameObject plate = g.Room.ShelfDishes[S.Counter.Dishes.Count - 1];
+            Assert.IsTrue(plate.GetComponentsInChildren<Transform>().Any(t => t.name == "VetNuong"), "mon nuong tren dia co vet nuong");
+            yield return Approach(g.Room.Station("PlateStack"));
+            yield return Shot("goc4_ga_nuong_dia.png", plate.transform.position, Sprint5);
+
+            System.Func<IEnumerator> steam = () => SteamCheck();
+            yield return CookOne(true, "cua__bi_do", null, steam);
+        }
+
+        IEnumerator GrillCheck()
+        {
+            Assert.IsFalse(g.Room.Pan.Flipped, "dau tien chua lat");
+            Assert.AreEqual(0, g.Room.Pan.GrillMarksShown);
+            yield return WaitUntil(() => g.Room.Pan.Doneness > 0.7f, S.Stove.CookSeconds + 5f, "nuong qua nua");
+            yield return null;
+            Assert.IsTrue(g.Room.Pan.Flipped, "nuong toi giua thi lat");
+            Assert.Greater(g.Room.Pan.GrillMarksShown, 0, "lat len thay vet nuong");
+            yield return WalkTo(StandFor(g.Room.PanRoot.position));
+            yield return Shot("goc4_vi_nuong_lat.png", g.Room.PanRoot.position + new Vector3(0f, 0.3f, 0f), Sprint5);
+        }
+
+        IEnumerator SteamCheck()
+        {
+            yield return null;
+            Assert.IsTrue(g.Room.Pan.LidOn, "hap: noi day nap");
+            // nap phai nho len tren vanh noi (nhin ngang tam mat van thay)
+            Transform lid = g.Room.PanRoot.Find("NapNoi");
+            Assert.IsNotNull(lid);
+            float rimTop = GameObject.Find("NhaHang").transform.Find("Goc4/Pot").GetComponentsInChildren<Renderer>()
+                .Where(r => r.enabled).Max(r => r.bounds.max.y);
+            Assert.Greater(lid.GetComponentsInChildren<Renderer>().Max(r => r.bounds.max.y), rimTop + 0.03f, "vom nap cao hon vanh noi");
+            yield return WaitUntil(() => g.Room.Pan.Doneness > 0.3f, S.Stove.CookSeconds + 5f, "hap mot luc");
+            yield return WalkTo(StandFor(g.Room.PanRoot.position));
+            yield return Shot("goc4_hap_nap_noi.png", g.Room.PanRoot.position + new Vector3(0f, 0.12f, 0f), Sprint5);
+            Assert.IsTrue(g.Room.Pan.LidOn);
         }
 
         IEnumerator BlackoutStove()
