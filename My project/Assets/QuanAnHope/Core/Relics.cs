@@ -266,6 +266,15 @@ namespace QuanAnHope.Core
             IsOpen = false;
         }
 
+        /// <summary>Tai game (F-052): bay lai dung ba relic da bay dau ngay (khong rut lai).</summary>
+        internal void Restore(int day, IList<RelicDef> shown)
+        {
+            IsOpen = OpensOn(day);
+            offers = new RelicDef[balance.relicShopOffers];
+            if (!IsOpen) return;
+            for (int i = 0; i < offers.Length && i < shown.Count; i++) offers[i] = shown[i];
+        }
+
         /// <summary>
         /// Mua relic o be <paramref name="slot"/>. Gia day thi phai truyen <paramref name="discardId"/>
         /// (relic tren gia se bo); khong truyen thi tra NeedDiscard va khong doi gi.

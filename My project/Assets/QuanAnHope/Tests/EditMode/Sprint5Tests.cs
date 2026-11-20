@@ -283,10 +283,13 @@ namespace QuanAnHope.Tests
             Assert.IsTrue(s.BossArrived);
             Assert.IsTrue(s.BossWaiting, "het ghe: cho ghe trong");
 
-            // phuc vu ghe 1 (dia bat ky) -> chu no ngoi vao ngay, khong doi 3 giay
+            // phuc vu ghe 1 (dia bat ky) -> khach an xong thi chu no ngoi vao ngay, khong doi 3 giay
             Dish d = TestData.DishOf(s.Seats[1].orderId ?? "trung__ca_chua", 2);
             s.Counter.TryPlace(d);
             Assert.IsNotNull(s.ServeSeat(1, d));
+            Assert.IsNull(s.Boss, "khach ghe 1 con dang an");
+            Assert.IsTrue(s.BossWaiting);
+            s.Tick(TestData.Eat);
             Assert.IsNotNull(s.Boss);
             Assert.AreEqual(1, s.SeatOf(s.Boss));
             Assert.IsTrue(s.Boss.isBoss);
@@ -306,6 +309,7 @@ namespace QuanAnHope.Tests
                 Dish d = TestData.DishOf("trung__ca_chua", 2);
                 s.Counter.TryPlace(d);
                 s.ServeSeat(seat, d);
+                s.Tick(TestData.Eat);
             }
             Assert.IsNotNull(s.Boss);
             s.Tick(B.DaySeconds());
@@ -327,7 +331,8 @@ namespace QuanAnHope.Tests
             Dish top = TestData.DishOf("heo__hanh_tay", 4);
             s.Counter.TryPlace(top);
             s.ServeSeat(s.SeatOf(s.Boss), top);
-            Assert.AreEqual(GamePhase.DayEnd, s.Phase, "phuc vu chu no (nguoi cuoi) thi het ngay");
+            s.Tick(TestData.Eat);
+            Assert.AreEqual(GamePhase.DayEnd, s.Phase, "phuc vu chu no (nguoi cuoi), an xong thi het ngay");
         }
 
         [Test]

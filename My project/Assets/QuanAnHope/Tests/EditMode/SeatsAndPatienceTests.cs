@@ -57,7 +57,10 @@ namespace QuanAnHope.Tests
             s.Counter.TryPlace(TestData.DishOf(middle.orderId, 2));
             Assert.IsNotNull(s.ServeSeat(1, s.Counter.Dishes[0]));
             Assert.IsNull(s.Seats[1]);
+            Assert.AreSame(middle, s.Eaters[1], "khach giua dang an");
             Assert.AreEqual(2, Seated(s));
+            s.Tick(TestData.Eat);
+            Assert.IsNull(s.Eaters[1], "an xong roi ghe");
             s.Tick(Gap - 0.01f);
             Assert.IsNull(s.Seats[1]);
             s.Tick(0.02f);
@@ -144,7 +147,7 @@ namespace QuanAnHope.Tests
             {
                 s.Counter.TryPlace(TestData.DishOf(s.Seats[seat].orderId, 2));
                 s.ServeSeat(seat, s.Counter.Dishes[0]);
-                s.Tick(Gap * 2);
+                s.Tick(TestData.Eat + Gap * 2);
                 if (seat < 2) Assert.AreEqual(GamePhase.Open, s.Phase, "con khach ngoi: chua het ngay");
             }
             Assert.AreEqual(GamePhase.DayEnd, s.Phase);

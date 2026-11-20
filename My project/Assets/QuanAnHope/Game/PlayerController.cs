@@ -34,6 +34,15 @@ namespace QuanAnHope.Game
         /// <summary>Bam chuot phai.</summary>
         public event Action SecondaryPressed;
 
+        /// <summary>Bam Esc (F-050 AC-2: mo menu tam dung). Khong ai nghe thi Esc nha chuot nhu cu.</summary>
+        public event Action EscapePressed;
+
+        /// <summary>Dao truc doc cua chuot (F-054 AC-2).</summary>
+        public bool InvertY;
+
+        /// <summary>Camera dat o vi tri co dinh (menu chinh nhin tu cua, F-050); nguoi choi khong di, khong nhin.</summary>
+        public bool CameraOverride { get; private set; }
+
         CharacterController body;
         float yaw, pitch, fallSpeed;
         Interactable holdTarget;
@@ -86,11 +95,17 @@ namespace QuanAnHope.Game
                 pressed = SimulatedHold && !simulatedHoldStarted;
                 simulatedHoldStarted = SimulatedHold;
             }
-            else if (InputEnabled)
+            else if (InputEnabled && !CameraOverride)
             {
                 ReadDevices(ref move, ref pressed, ref held, ref secondary);
             }
+            else ReadEscapeOnly();
 
+            if (CameraOverride)
+            {
+                Focus = null;
+                return;
+            }
             Move(move, dt);
             RefreshFocus();
 
@@ -132,7 +147,7 @@ namespace QuanAnHope.Game
                 if (kb.sKey.isPressed || kb.downArrowKey.isPressed) move.y -= 1f;
                 if (kb.dKey.isPressed || kb.rightArrowKey.isPressed) move.x += 1f;
                 if (kb.aKey.isPressed || kb.leftArrowKey.isPressed) move.x -= 1f;
-                if (kb.escapeKey.wasPressedThisFrame) SetCursorLocked(false);
+                if (kb.escapeKey.wasPressedThisFrame) OnEscape();
             }
             if (mouse == null) return;
 
@@ -145,12 +160,40 @@ namespace QuanAnHope.Game
 
             Vector2 delta = mouse.delta.ReadValue();
             yaw += delta.x * LookDegreesPerPixel;
-            pitch = Mathf.Clamp(pitch - delta.y * LookDegreesPerPixel, -PitchLimit, PitchLimit);
+            pitch = Mathf.Clamp(pitch - delta.y * LookDegreesPerPixel * (InvertY ? -1f : 1f), -PitchLimit, PitchLimit);
             ApplyLook();
 
             pressed = mouse.leftButton.wasPressedThisFrame;
             held = mouse.leftButton.isPressed;
             secondary = mouse.rightButton.wasPressedThisFrame;
+        }
+
+        void ReadEscapeOnly()
+        {
+            if (SimulateInput) return;
+            Keyboard kb = Keyboard.current;
+            if (kb != null && kb.escapeKey.wasPressedThisFrame) OnEscape();
+        }
+
+        void OnEscape()
+        {
+            if (EscapePressed != null) EscapePressed();
+            else SetCursorLocked(false);
+        }
+
+        /// <summary>Dat camera o mot vi tri co dinh trong phong (menu chinh). Goi ReleaseCamera de tra ve mat Hope.</summary>
+        public void HoldCamera(Vector3 worldPosition, Quaternion rotation)
+        {
+            CameraOverride = true;
+            Cam.transform.SetPositionAndRotation(worldPosition, rotation);
+        }
+
+        public void ReleaseCamera()
+        {
+            if (!CameraOverride) return;
+            CameraOverride = false;
+            Cam.transform.localPosition = new Vector3(0f, EyeHeight, 0f);
+            ApplyLook();
         }
 
         public static void SetCursorLocked(bool locked)

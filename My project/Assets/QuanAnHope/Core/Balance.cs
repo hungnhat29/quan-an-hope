@@ -194,6 +194,9 @@ namespace QuanAnHope.Core
 
         /// <summary>Vong 1: khach ke tiep vao sau bay nhieu giay tu luc khach truoc duoc phuc vu.</summary>
         public float nextCustomerSeconds;
+
+        /// <summary>Khach an xong mon sau bay nhieu giay thuc roi moi roi ghe (constitution 1.5 muc 6.2). 0 = roi ghe ngay.</summary>
+        public float eatSeconds;
     }
 
     /// <summary>No phai tra vao dau ngay <see cref="day"/>.</summary>

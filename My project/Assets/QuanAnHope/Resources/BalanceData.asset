@@ -144,6 +144,7 @@ MonoBehaviour:
       bossHour: 20
       bossDay: 21
       nextCustomerSeconds: 3
+      eatSeconds: 5
     relicCap: 8
     relicShopOffers: 3
     relics:

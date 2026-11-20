@@ -89,6 +89,12 @@ namespace QuanAnHope.Core
             if (fx != null && day % 3 == 0) Count += (int)fx.Get(RelicKeys.TicketEvery3);
         }
 
+        /// <summary>Tai game (F-052): dat lai so ve dang co.</summary>
+        internal void Restore(int count)
+        {
+            Count = Math.Max(0, count);
+        }
+
         public bool TrySpend(int count = 1)
         {
             if (count <= 0 || Count < count) return false;

@@ -20,6 +20,7 @@ namespace QuanAnHope.Tests
         static float Hour { get { return TestData.Balance.day.secondsPerHour; } }
         static float DaySeconds { get { return TestData.Balance.DaySeconds(); } }
         static float Gap { get { return TestData.Balance.day.nextCustomerSeconds; } }
+        static float Eat { get { return TestData.Eat; } }
 
         /// <summary>Phuc vu khach dang ngoi bang dung mon khach goi (bot nau khong tinh gio).</summary>
         static PaymentResult ServeCurrent(GameSession s)
@@ -30,6 +31,18 @@ namespace QuanAnHope.Tests
         }
 
         // ---------- AC-1: dong ho ----------
+
+        [Test]
+        public void GioThuc_ChoTroiDoiMau_KhongLamTron()
+        {
+            var clock = new DayClock(TestData.Balance.day);
+            Assert.AreEqual(9f, clock.HourOfDay, 1e-5f);
+            clock.Advance(Hour * 2.5f);
+            Assert.AreEqual(11.5f, clock.HourOfDay, 1e-4f);
+            Assert.AreEqual("11:30", clock.Text);
+            clock.Advance(DaySeconds);
+            Assert.AreEqual(23.5f, clock.HourOfDay, 1e-3f, "van chay qua gio dong cua");
+        }
 
         [Test]
         public void AC1_DauNgay_9Gio_40GiayLa1Gio()
@@ -100,8 +113,11 @@ namespace QuanAnHope.Tests
 
             Assert.IsNotNull(ServeCurrent(s));
             Assert.AreEqual(GamePhase.Open, s.Phase);
-            Assert.IsNull(s.CurrentCustomer, "ghe trong trong luc cho khach ke tiep");
+            Assert.IsNull(s.CurrentCustomer, "khach dang an: khong goi mon nua");
+            Assert.AreSame(first, s.Eaters[0], "khach vua phuc vu ngoi an tai ghe (constitution 1.5 muc 6.2)");
 
+            s.Tick(Eat);                                   // an xong, roi ghe
+            Assert.IsNull(s.Eaters[0]);
             s.Tick(Gap - 0.1f);
             Assert.IsNull(s.CurrentCustomer);
             s.Tick(0.2f);
@@ -123,7 +139,7 @@ namespace QuanAnHope.Tests
                 Assert.AreEqual(GamePhase.Open, s.Phase, "khach thu " + (i + 1));
                 Assert.IsNotNull(s.CurrentCustomer, "khach thu " + (i + 1));
                 Assert.IsNotNull(ServeCurrent(s));
-                s.Tick(Gap);
+                s.Tick(Eat + Gap);
             }
             Assert.AreEqual(12, s.ServedToday);
             Assert.AreEqual(13, s.CustomersToday);
@@ -153,8 +169,10 @@ namespace QuanAnHope.Tests
             Assert.IsNotNull(s.CurrentCustomer);
 
             Assert.IsNotNull(ServeCurrent(s));
+            Assert.AreEqual(GamePhase.Open, s.Phase, "khach cuoi dang an: ngay chua het");
+            s.Tick(Eat);
 
-            Assert.AreEqual(GamePhase.DayEnd, s.Phase);
+            Assert.AreEqual(GamePhase.DayEnd, s.Phase, "khach cuoi an xong thi het ngay");
             Assert.IsNull(s.CurrentCustomer);
             Assert.AreEqual(1, s.ServedToday);
             Assert.AreEqual(0, s.Stock.Count, "het ngay bo nguyen lieu (muc 4.2)");
@@ -168,7 +186,7 @@ namespace QuanAnHope.Tests
             s.OpenShop();
             s.Tick(DaySeconds - 1f);                     // 20:58,5
             ServeCurrent(s);
-            s.Tick(Gap);                                 // khach ke tiep le ra vao luc 21:00,5
+            s.Tick(Eat + Gap);                           // an xong qua 21:00, khach ke tiep le ra vao sau do
             Assert.AreEqual(GamePhase.DayEnd, s.Phase, "21:00 trong luc cho khach ke tiep -> het ngay");
             Assert.AreEqual(1, s.CustomersToday);
         }
@@ -190,10 +208,14 @@ namespace QuanAnHope.Tests
             GameSession s = NewSession(5);
             s.OpenShop();
             s.Tick(DaySeconds - 1f);
-            ServeCurrent(s);                             // 20:58,5: ghe trong, khach ke tiep le ra vao 21:01
+            ServeCurrent(s);                             // 20:58,5: khach an toi qua 21:00
             s.Tick(1f);                                  // dung 21:00
-            Assert.AreEqual(GamePhase.DayEnd, s.Phase, "khong doi het 3 giay");
-            Assert.AreEqual("21:00", s.ClosedAt);
+            Assert.AreEqual(GamePhase.Open, s.Phase, "khach con dang an");
+            s.Tick(Eat - 1f);                            // an xong
+            Assert.AreEqual(GamePhase.DayEnd, s.Phase, "an xong la het ngay, khong doi them 3 giay");
+            var expect = new DayClock(TestData.Balance.day);
+            expect.Advance(DaySeconds - 1f + Eat);
+            Assert.AreEqual(expect.Text, s.ClosedAt, "gio dong = luc khach cuoi an xong");
         }
 
         [Test]

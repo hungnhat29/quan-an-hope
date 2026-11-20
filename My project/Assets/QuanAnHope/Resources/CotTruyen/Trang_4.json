@@ -1,0 +1,851 @@
+{
+ "page": 4,
+ "chapter": "Chương 4 · Tin đồn",
+ "width": 1920,
+ "height": 1080,
+ "panels": [
+  {
+   "i": 0,
+   "poly": [
+    40,
+    36,
+    647,
+    36,
+    707,
+    520,
+    40,
+    520
+   ],
+   "x": 40,
+   "y": 36,
+   "w": 667,
+   "h": 484,
+   "layers": [
+    {
+     "file": "k1_lop0",
+     "x": -50,
+     "y": -54,
+     "w": 844,
+     "h": 664,
+     "d": 0
+    },
+    {
+     "file": "k1_lop1",
+     "x": -50,
+     "y": -54,
+     "w": 844,
+     "h": 664,
+     "d": 1
+    },
+    {
+     "file": "k1_lop2",
+     "x": -50,
+     "y": -54,
+     "w": 844,
+     "h": 664,
+     "d": 2
+    },
+    {
+     "file": "k1_lop3",
+     "x": -50,
+     "y": -54,
+     "w": 844,
+     "h": 664,
+     "d": 3
+    },
+    {
+     "file": "k1_lop4",
+     "x": -50,
+     "y": -54,
+     "w": 844,
+     "h": 664,
+     "d": 4
+    },
+    {
+     "file": "k1_lop5",
+     "x": -50,
+     "y": -54,
+     "w": 844,
+     "h": 664,
+     "d": 5
+    }
+   ],
+   "texts": [
+    {
+     "s": "QUÁN",
+     "x": 116.2,
+     "y": 202.9,
+     "size": 19.8,
+     "rot": -8,
+     "anchor": "middle",
+     "fill": "#5A4A80",
+     "stroke": "",
+     "sw": 0.9,
+     "ls": 0,
+     "depth": 2,
+     "panel": 0,
+     "pop": false
+    },
+    {
+     "s": "BẨN!!",
+     "x": 119.2,
+     "y": 224.3,
+     "size": 19.8,
+     "rot": -8,
+     "anchor": "middle",
+     "fill": "#5A4A80",
+     "stroke": "",
+     "sw": 0.9,
+     "ls": 0,
+     "depth": 2,
+     "panel": 0,
+     "pop": false
+    },
+    {
+     "s": "QUÁN",
+     "x": 242.8,
+     "y": 164,
+     "size": 19.8,
+     "rot": 6,
+     "anchor": "middle",
+     "fill": "#5A4A80",
+     "stroke": "",
+     "sw": 0.9,
+     "ls": 0,
+     "depth": 2,
+     "panel": 0,
+     "pop": false
+    },
+    {
+     "s": "BẨN!!",
+     "x": 240.6,
+     "y": 185.5,
+     "size": 19.8,
+     "rot": 6,
+     "anchor": "middle",
+     "fill": "#5A4A80",
+     "stroke": "",
+     "sw": 0.9,
+     "ls": 0,
+     "depth": 2,
+     "panel": 0,
+     "pop": false
+    },
+    {
+     "s": "QUÁN",
+     "x": 181.4,
+     "y": 309.1,
+     "size": 19.8,
+     "rot": 3,
+     "anchor": "middle",
+     "fill": "#5A4A80",
+     "stroke": "",
+     "sw": 0.9,
+     "ls": 0,
+     "depth": 2,
+     "panel": 0,
+     "pop": false
+    },
+    {
+     "s": "BẨN!!",
+     "x": 180.3,
+     "y": 330.7,
+     "size": 19.8,
+     "rot": 3,
+     "anchor": "middle",
+     "fill": "#5A4A80",
+     "stroke": "",
+     "sw": 0.9,
+     "ls": 0,
+     "depth": 2,
+     "panel": 0,
+     "pop": false
+    },
+    {
+     "s": "QUÁN",
+     "x": 435.8,
+     "y": 317.7,
+     "size": 18.5,
+     "rot": -10,
+     "anchor": "middle",
+     "fill": "#5A4A80",
+     "stroke": "",
+     "sw": 0.8,
+     "ls": 0,
+     "depth": 3,
+     "panel": 0,
+     "pop": false
+    },
+    {
+     "s": "BẨN!!",
+     "x": 439.3,
+     "y": 337.5,
+     "size": 18.5,
+     "rot": -10,
+     "anchor": "middle",
+     "fill": "#5A4A80",
+     "stroke": "",
+     "sw": 0.8,
+     "ls": 0,
+     "depth": 3,
+     "panel": 0,
+     "pop": false
+    },
+    {
+     "s": "hí hí hí",
+     "x": 306.8,
+     "y": 126,
+     "size": 52,
+     "rot": -6,
+     "anchor": "middle",
+     "fill": "#C9B3F0",
+     "stroke": "#2B2321",
+     "sw": 6,
+     "ls": 2,
+     "depth": 4,
+     "panel": 0,
+     "pop": false
+    },
+    {
+     "s": "Ngày 9 · Tin đồn lan",
+     "x": 210.2,
+     "y": 479.2,
+     "size": 24,
+     "rot": -1.5,
+     "anchor": "middle",
+     "fill": "#2B2321",
+     "stroke": "",
+     "sw": 1,
+     "ls": 0,
+     "depth": 4,
+     "panel": 0,
+     "pop": false
+    }
+   ],
+   "vig": {
+    "file": "k1_toi",
+    "x": 40,
+    "y": 36,
+    "w": 664,
+    "h": 484
+   }
+  },
+  {
+   "i": 1,
+   "poly": [
+    673,
+    36,
+    1287,
+    36,
+    1227,
+    520,
+    733,
+    520
+   ],
+   "x": 673,
+   "y": 36,
+   "w": 614,
+   "h": 484,
+   "layers": [
+    {
+     "file": "k2_lop0",
+     "x": 583,
+     "y": -54,
+     "w": 792,
+     "h": 664,
+     "d": 0
+    },
+    {
+     "file": "k2_lop1",
+     "x": 583,
+     "y": -54,
+     "w": 792,
+     "h": 664,
+     "d": 1
+    },
+    {
+     "file": "k2_lop2",
+     "x": 583,
+     "y": -54,
+     "w": 792,
+     "h": 664,
+     "d": 2
+    },
+    {
+     "file": "k2_lop3",
+     "x": 583,
+     "y": -54,
+     "w": 792,
+     "h": 664,
+     "d": 3
+    },
+    {
+     "file": "k2_lop4",
+     "x": 583,
+     "y": -54,
+     "w": 792,
+     "h": 664,
+     "d": 4
+    }
+   ],
+   "texts": [
+    {
+     "s": "QUÁN",
+     "x": 818.4,
+     "y": 444,
+     "size": 17.6,
+     "rot": 70,
+     "anchor": "middle",
+     "fill": "#5A4A80",
+     "stroke": "",
+     "sw": 0.8,
+     "ls": 0,
+     "depth": 4,
+     "panel": 1,
+     "pop": false
+    },
+    {
+     "s": "BẨN!!",
+     "x": 800.3,
+     "y": 450.6,
+     "size": 17.6,
+     "rot": 70,
+     "anchor": "middle",
+     "fill": "#5A4A80",
+     "stroke": "",
+     "sw": 0.8,
+     "ls": 0,
+     "depth": 4,
+     "panel": 1,
+     "pop": false
+    },
+    {
+     "s": "QUÁN",
+     "x": 1143.4,
+     "y": 430.6,
+     "size": 17.6,
+     "rot": -60,
+     "anchor": "middle",
+     "fill": "#5A4A80",
+     "stroke": "",
+     "sw": 0.8,
+     "ls": 0,
+     "depth": 4,
+     "panel": 1,
+     "pop": false
+    },
+    {
+     "s": "BẨN!!",
+     "x": 1160,
+     "y": 440.2,
+     "size": 17.6,
+     "rot": -60,
+     "anchor": "middle",
+     "fill": "#5A4A80",
+     "stroke": "",
+     "sw": 0.8,
+     "ls": 0,
+     "depth": 4,
+     "panel": 1,
+     "pop": false
+    },
+    {
+     "s": "…vắng tanh",
+     "x": 1151.9,
+     "y": 156,
+     "size": 46,
+     "rot": 4,
+     "anchor": "middle",
+     "fill": "#C9C2D6",
+     "stroke": "#2B2321",
+     "sw": 6,
+     "ls": 2,
+     "depth": 4,
+     "panel": 1,
+     "pop": false
+    },
+    {
+     "s": "Ngày 10–13",
+     "x": 823.2,
+     "y": 89.2,
+     "size": 24,
+     "rot": -1.5,
+     "anchor": "middle",
+     "fill": "#2B2321",
+     "stroke": "",
+     "sw": 1,
+     "ls": 0,
+     "depth": 4,
+     "panel": 1,
+     "pop": false
+    }
+   ],
+   "vig": {
+    "file": "k2_toi",
+    "x": 673,
+    "y": 36,
+    "w": 612,
+    "h": 484
+   }
+  },
+  {
+   "i": 2,
+   "poly": [
+    1313,
+    36,
+    1880,
+    36,
+    1880,
+    520,
+    1253,
+    520
+   ],
+   "x": 1253,
+   "y": 36,
+   "w": 627,
+   "h": 484,
+   "layers": [
+    {
+     "file": "k3_lop0",
+     "x": 1163,
+     "y": -54,
+     "w": 804,
+     "h": 664,
+     "d": 0
+    },
+    {
+     "file": "k3_lop3",
+     "x": 1163,
+     "y": -54,
+     "w": 804,
+     "h": 664,
+     "d": 3
+    },
+    {
+     "file": "k3_lop4",
+     "x": 1163,
+     "y": -54,
+     "w": 804,
+     "h": 664,
+     "d": 4
+    }
+   ],
+   "texts": [
+    {
+     "s": "QUÁN",
+     "x": 1718.5,
+     "y": 321.9,
+     "size": 7.9,
+     "rot": 6,
+     "anchor": "middle",
+     "fill": "#5A4A80",
+     "stroke": "",
+     "sw": 0.4,
+     "ls": 0,
+     "depth": 4,
+     "panel": 2,
+     "pop": false
+    },
+    {
+     "s": "BẨN!!",
+     "x": 1717.6,
+     "y": 330.5,
+     "size": 7.9,
+     "rot": 6,
+     "anchor": "middle",
+     "fill": "#5A4A80",
+     "stroke": "",
+     "sw": 0.4,
+     "ls": 0,
+     "depth": 4,
+     "panel": 2,
+     "pop": false
+    },
+    {
+     "s": "REC",
+     "x": 1648.8,
+     "y": 276.6,
+     "size": 20,
+     "rot": 6,
+     "anchor": "start",
+     "fill": "#FFFFFF",
+     "stroke": "",
+     "sw": 1,
+     "ls": 0,
+     "depth": 4,
+     "panel": 2,
+     "pop": false
+    },
+    {
+     "s": "Bắt được",
+     "x": 1435.6,
+     "y": 97,
+     "size": 32,
+     "rot": 0,
+     "anchor": "middle",
+     "fill": "#2B2321",
+     "stroke": "",
+     "sw": 1,
+     "ls": 0,
+     "depth": 4,
+     "panel": 2,
+     "pop": false
+    },
+    {
+     "s": "rồi nhé!",
+     "x": 1435.6,
+     "y": 132.8,
+     "size": 32,
+     "rot": 0,
+     "anchor": "middle",
+     "fill": "#2B2321",
+     "stroke": "",
+     "sw": 1,
+     "ls": 0,
+     "depth": 4,
+     "panel": 2,
+     "pop": false
+    }
+   ],
+   "vig": {
+    "file": "k3_toi",
+    "x": 1253,
+    "y": 36,
+    "w": 624,
+    "h": 484
+   }
+  },
+  {
+   "i": 3,
+   "poly": [
+    40,
+    548,
+    1047,
+    548,
+    987,
+    1036,
+    40,
+    1036
+   ],
+   "x": 40,
+   "y": 548,
+   "w": 1007,
+   "h": 488,
+   "layers": [
+    {
+     "file": "k4_lop0",
+     "x": -50,
+     "y": 458,
+     "w": 1184,
+     "h": 668,
+     "d": 0
+    },
+    {
+     "file": "k4_lop1",
+     "x": -50,
+     "y": 458,
+     "w": 1184,
+     "h": 668,
+     "d": 1
+    },
+    {
+     "file": "k4_lop2",
+     "x": -50,
+     "y": 458,
+     "w": 1184,
+     "h": 668,
+     "d": 2
+    },
+    {
+     "file": "k4_lop3",
+     "x": -50,
+     "y": 458,
+     "w": 1184,
+     "h": 668,
+     "d": 3
+    },
+    {
+     "file": "k4_lop4",
+     "x": -50,
+     "y": 458,
+     "w": 1184,
+     "h": 668,
+     "d": 4
+    }
+   ],
+   "texts": [
+    {
+     "s": "QUÁN",
+     "x": 535.4,
+     "y": 673.6,
+     "size": 17.6,
+     "rot": 30,
+     "anchor": "middle",
+     "fill": "#5A4A80",
+     "stroke": "",
+     "sw": 0.8,
+     "ls": 0,
+     "depth": 4,
+     "panel": 3,
+     "pop": false
+    },
+    {
+     "s": "BẨN!!",
+     "x": 525.8,
+     "y": 690.2,
+     "size": 17.6,
+     "rot": 30,
+     "anchor": "middle",
+     "fill": "#5A4A80",
+     "stroke": "",
+     "sw": 0.8,
+     "ls": 0,
+     "depth": 4,
+     "panel": 3,
+     "pop": false
+    },
+    {
+     "s": "QUÁN",
+     "x": 769.8,
+     "y": 646.7,
+     "size": 17.6,
+     "rot": -40,
+     "anchor": "middle",
+     "fill": "#5A4A80",
+     "stroke": "",
+     "sw": 0.8,
+     "ls": 0,
+     "depth": 4,
+     "panel": 3,
+     "pop": false
+    },
+    {
+     "s": "BẨN!!",
+     "x": 782.1,
+     "y": 661.4,
+     "size": 17.6,
+     "rot": -40,
+     "anchor": "middle",
+     "fill": "#5A4A80",
+     "stroke": "",
+     "sw": 0.8,
+     "ls": 0,
+     "depth": 4,
+     "panel": 3,
+     "pop": false
+    },
+    {
+     "s": "QUÁN",
+     "x": 869.2,
+     "y": 836.6,
+     "size": 17.6,
+     "rot": 80,
+     "anchor": "middle",
+     "fill": "#5A4A80",
+     "stroke": "",
+     "sw": 0.8,
+     "ls": 0,
+     "depth": 4,
+     "panel": 3,
+     "pop": false
+    },
+    {
+     "s": "BẨN!!",
+     "x": 850.3,
+     "y": 840,
+     "size": 17.6,
+     "rot": 80,
+     "anchor": "middle",
+     "fill": "#5A4A80",
+     "stroke": "",
+     "sw": 0.8,
+     "ls": 0,
+     "depth": 4,
+     "panel": 3,
+     "pop": false
+    },
+    {
+     "s": "LỘ RỒI!!",
+     "x": 664.3,
+     "y": 648,
+     "size": 100,
+     "rot": -6,
+     "anchor": "middle",
+     "fill": "#E8604F",
+     "stroke": "#2B2321",
+     "sw": 8,
+     "ls": 2,
+     "depth": 4,
+     "panel": 3,
+     "pop": false
+    },
+    {
+     "s": "Ngày 14",
+     "x": 170.2,
+     "y": 601.8,
+     "size": 26,
+     "rot": -1.5,
+     "anchor": "middle",
+     "fill": "#2B2321",
+     "stroke": "",
+     "sw": 1,
+     "ls": 0,
+     "depth": 4,
+     "panel": 3,
+     "pop": false
+    }
+   ],
+   "vig": {
+    "file": "k4_toi",
+    "x": 40,
+    "y": 548,
+    "w": 1004,
+    "h": 488
+   }
+  },
+  {
+   "i": 4,
+   "poly": [
+    1073,
+    548,
+    1880,
+    548,
+    1880,
+    1036,
+    1013,
+    1036
+   ],
+   "x": 1013,
+   "y": 548,
+   "w": 867,
+   "h": 488,
+   "layers": [
+    {
+     "file": "k5_lop0",
+     "x": 923,
+     "y": 458,
+     "w": 1044,
+     "h": 668,
+     "d": 0
+    },
+    {
+     "file": "k5_lop1",
+     "x": 923,
+     "y": 458,
+     "w": 1044,
+     "h": 668,
+     "d": 1
+    },
+    {
+     "file": "k5_lop2",
+     "x": 923,
+     "y": 458,
+     "w": 1044,
+     "h": 668,
+     "d": 2
+    },
+    {
+     "file": "k5_lop4",
+     "x": 923,
+     "y": 458,
+     "w": 1044,
+     "h": 668,
+     "d": 4
+    }
+   ],
+   "texts": [
+    {
+     "s": "QUÁN CỦA HOPE",
+     "x": 1446.5,
+     "y": 692,
+     "size": 27.2,
+     "rot": 0,
+     "anchor": "middle",
+     "fill": "#E8604F",
+     "stroke": "",
+     "sw": 0.7,
+     "ls": 0,
+     "depth": 1,
+     "panel": 4,
+     "pop": false
+    },
+    {
+     "s": "Ngày 15 · Danh tiếng trở lại!",
+     "x": 1396.6,
+     "y": 876.6,
+     "size": 26,
+     "rot": -1.5,
+     "anchor": "middle",
+     "fill": "#2B2321",
+     "stroke": "",
+     "sw": 1,
+     "ls": 0,
+     "depth": 4,
+     "panel": 4,
+     "pop": false
+    }
+   ],
+   "vig": {
+    "file": "k5_toi",
+    "x": 1013,
+    "y": 548,
+    "w": 864,
+    "h": 488
+   }
+  }
+ ],
+ "pops": [],
+ "texts": [
+  {
+   "s": "Chương 4 · Tin đồn",
+   "x": 40,
+   "y": 1072,
+   "size": 22,
+   "rot": 0,
+   "anchor": "start",
+   "fill": "#8A6F55",
+   "stroke": "",
+   "sw": 1,
+   "ls": 0,
+   "depth": -1,
+   "panel": -1,
+   "pop": false
+  },
+  {
+   "s": "— 4 —",
+   "x": 1880,
+   "y": 1072,
+   "size": 22,
+   "rot": 0,
+   "anchor": "end",
+   "fill": "#8A6F55",
+   "stroke": "",
+   "sw": 1,
+   "ls": 0,
+   "depth": -1,
+   "panel": -1,
+   "pop": false
+  }
+ ],
+ "bg": {
+  "file": "nen",
+  "x": 0,
+  "y": 0,
+  "w": 1920,
+  "h": 1080
+ },
+ "border": {
+  "file": "vien",
+  "x": 0,
+  "y": 0,
+  "w": 1920,
+  "h": 1080
+ },
+ "top": {
+  "file": "phu",
+  "x": 0,
+  "y": 0,
+  "w": 1920,
+  "h": 1080
+ }
+}

@@ -38,6 +38,9 @@ namespace QuanAnHope.Core
             }
         }
 
+        /// <summary>Gio trong game dang so thuc (9,5 = 9:30), khong lam tron: cho troi doi mau muot.</summary>
+        public float HourOfDay { get { return rules.openHour + Elapsed / rules.secondsPerHour; } }
+
         public int Hour { get { return MinuteOfDay / 60; } }
         public int Minute { get { return MinuteOfDay % 60; } }
 

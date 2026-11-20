@@ -69,7 +69,7 @@ namespace QuanAnHope.Tests
             Assert.AreSame(first, s.CurrentCustomer, "khach sau chi vao khi khach truoc da duoc phuc vu");
             Assert.IsNotNull(s.Serve(0));
             Assert.AreEqual(1, s.ServedToday);
-            s.Tick(TestData.Balance.day.nextCustomerSeconds);
+            s.Tick(TestData.NextSeat);
             Assert.IsNotNull(s.CurrentCustomer);
             Assert.AreNotSame(first, s.CurrentCustomer);
         }
@@ -111,7 +111,7 @@ namespace QuanAnHope.Tests
                     s.Tick(TestData.Balance.DaySeconds());
                 }
                 Assert.IsNotNull(s.Serve(s.Counter.Dishes.ToList().FindIndex(d => d.recipeId == s.CurrentCustomer.orderId)));
-                s.Tick(TestData.Balance.day.nextCustomerSeconds);
+                s.Tick(TestData.NextSeat);
             }
 
             Assert.AreEqual(GamePhase.DayEnd, s.Phase);

@@ -17,6 +17,18 @@ namespace QuanAnHope.Game
     {
         // Dung cu co trong cong thuc (constitution muc 5.1).
         public static readonly string[] Tools = { "Chảo", "Nồi", "Vỉ nướng" };
+
+        /// <summary>Ten tren bien quan (thay anh chu sign.png, F-055). Ten chinh thuc cua game con cho nguoi dung chot.</summary>
+        public const string ShopName = "QUÁN NHÂN PHẨM";
+
+        /// <summary>Anh co chu ve san trong Assets/BepNhanPham/Textures: khong vat lieu nao trong canh duoc dung (Dieu 6, F-055 AC-2).</summary>
+        public static readonly string[] TextImages =
+        {
+            "sign", "lbl_upgrade", "lbl_drop", "lbl_owned", "lbl_relicshop", "lbl_step1", "lbl_step2", "lbl_step3", "label_dish",
+            "btn_buy", "btn_drop", "btn_pick", "btn_season", "btn_serve", "btn_stop", "btn_swap", "btn_taste", "btn_ticket", "btn_upgrade",
+            "ui_title1", "ui_title2", "ui_title3", "ui_title4", "ui_day", "ui_steps", "ui_ticket", "tag_r1", "tag_r2", "tag_r3",
+            "odds_board", "book_pages", "nav_next", "nav_prev",
+        };
         const string StandardGroup = "chinh";
         const string BreakthroughGroup = "dotpha";
 
@@ -130,8 +142,81 @@ namespace QuanAnHope.Game
             BuildBookAndRelics();
             BuildShadows();
             BuildCandles();
+            BuildShopName();
+            BuildSway();
+            BuildSkyCycle();
 
             handAnchor = Toon.Empty(g.Player.Cam.transform, "Tay", new Vector3(0.3f, -0.26f, 0.55f)).transform;
+        }
+
+        // =====================================================================
+        // Sprint 6: bien ten quan bang chu (F-055), den long / den treo dung dua (menu nhin tu cua)
+        // =====================================================================
+
+        TextMeshProUGUI shopNameText;
+        public string ShopNameText { get { return shopNameText != null ? shopNameText.text : ""; } }
+
+        void BuildShopName()
+        {
+            // Cung cho va kich thuoc voi anh cu sign.png (2,5 x 0,42 m tren cua Goc 1).
+            Canvas c = UiKit.WorldCanvas(goc1, "BienTenQuan", new Vector3(0f, 4.5f, 3.9f), Quaternion.identity, new Vector2(2500f, 420f));
+            Image back = UiKit.Panel(c.transform, "Nen", new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(2500f, 420f), UiKit.Hex("#B97F52"), false);
+            back.raycastTarget = false;
+            shopNameText = UiKit.Text(back.transform, ShopName, 260f);
+            shopNameText.color = UiKit.Cream;
+        }
+
+        /// <summary>Den long o cua va den treo Goc 1 dung dua nhe (kich ban 10 giay sprint 6).</summary>
+        void BuildSway()
+        {
+            Transform entrance = goc1.Find("Entrance"), decor = goc1.Find("Decor");
+            for (int i = 0; i < 2; i++)
+            {
+                MakeSway(entrance, new[] { "LanternCord" + i, "Lantern" + i, "LanternTop" + i, "LanternBottom" + i }, "LanternCord" + i, 6f, 2.6f, i * 1.3f);
+                MakeSway(decor, new[] { "LampCord" + i, "LampShade" + i, "LampBulb" + i }, "LampCord" + i, 3f, 3.4f, 0.7f + i * 1.7f);
+            }
+
+            // Con pho ngoai cua (BuildStreet): long den qua duong dung dua theo gio, may troi cham.
+            Transform street = goc1.Find("Street/Giua"), sky = goc1.Find("Street/Troi");
+            for (int i = 1; i < 10; i++)
+                MakeSway(street, new[] { "DayLongPho_" + i, "LongPho_" + i }, "DayLongPho_" + i, 7f, 2.2f + (i % 3) * 0.4f, i * 0.9f);
+            if (sky != null)
+                for (int i = 0; i < 4; i++)
+                    foreach (string n in new[] { "May_" + i, "May_" + i + "_Bong" })
+                    {
+                        Transform cloud = sky.Find(n);
+                        if (cloud != null) cloud.gameObject.AddComponent<Drift>().Init(0.12f + i * 0.03f, 5f, i * 7f);
+                    }
+        }
+
+        /// <summary>Troi ngoai cua doi mau theo gio trong game (yeu cau 19/11). Ngoai luc choi (menu) la 9:00.</summary>
+        public SkyCycle Sky { get; private set; }
+
+        void BuildSkyCycle()
+        {
+            Transform street = goc1.Find("Street");
+            if (street == null) return;
+            Sky = street.gameObject.AddComponent<SkyCycle>();
+            Sky.Init(() => g.Session != null ? g.Session.Clock.HourOfDay : 9f);
+        }
+
+        static void MakeSway(Transform group, string[] parts, string cordName, float degrees, float period, float phase)
+        {
+            if (group == null) return;
+            Transform cord = group.Find(cordName);
+            if (cord == null) return;
+            Renderer cr = cord.GetComponent<Renderer>();
+            Vector3 top = cr != null ? new Vector3(cord.position.x, cr.bounds.max.y, cord.position.z) : cord.position;
+            var pivot = new GameObject("DungDua_" + cordName).transform;
+            pivot.SetParent(group, true);
+            pivot.position = top;
+            pivot.rotation = group.rotation;
+            foreach (string n in parts)
+            {
+                Transform t = group.Find(n);
+                if (t != null) t.SetParent(pivot, true);
+            }
+            pivot.gameObject.AddComponent<Sway>().Init(degrees, period, phase);
         }
 
         /// <summary>Tram tuong tac theo ten (dung cho test va huong dan).</summary>
@@ -189,10 +274,10 @@ namespace QuanAnHope.Game
             var go = new GameObject("VaCham");
             go.transform.SetParent(root, false);
 
-            // San phong 8 x 8 m (Art Bible muc 8): khoi san cua canh khong co collider.
+            // San phong (Art Bible muc 8: 8 x 8 m; constitution 1.5: rong hon, BepNhanPham.RoomSize): khoi san cua canh khong co collider.
             var floor = go.AddComponent<BoxCollider>();
             floor.center = new Vector3(0f, -0.1f, 0f);
-            floor.size = new Vector3(8f, 0.2f, 8f);
+            floor.size = new Vector3(BepNhanPham.RoomSize.Width, 0.2f, BepNhanPham.RoomSize.Width);
             foreach (Bounds b in blockers)
             {
                 var c = go.AddComponent<BoxCollider>();
@@ -1198,6 +1283,7 @@ namespace QuanAnHope.Game
             if (panView != null) panView.Tick(stove, stove.Recipe, dt);
             TickOverheat();
             for (int i = 0; i < seatViews.Length; i++) UpdateBubble(i);
+            TickSeats(dt);
             foreach (CrateView c in crates.Values) c.Tick(dt);
             foreach (ItemView i in items.Values) if (i != null) i.Tick(dt);
         }
@@ -1248,6 +1334,9 @@ namespace QuanAnHope.Game
         bool hidden;
         public GameObject Disc { get; private set; }
 
+        /// <summary>Chuyen dong song cua khoi hinh (test).</summary>
+        public IngredientIdle Idle { get; private set; }
+
         /// <summary>Mat cua mon (anh theo bac).</summary>
         public FaceBillboard Face { get; private set; }
 
@@ -1289,6 +1378,8 @@ namespace QuanAnHope.Game
             prepared = asPrepared;
 
             var holder = Toon.Empty(transform, "GiuHinh", new Vector3(0f, DiscHeight, 0f)).transform;
+            Idle = holder.gameObject.AddComponent<IngredientIdle>();   // nhun, tho, nghieng nhe (20/11)
+            if (asPrepared) Idle.Boing();
             float radius;
             // anh 08: bac 0 than xin mau
             Transform root = IngredientModels.Build(holder, typeId, asPrepared, Tier == 0 && !hidden ? SpoiledBody : (Color?)null, 0.6f, out radius);
@@ -1298,7 +1389,8 @@ namespace QuanAnHope.Game
             // Mat theo bac (Art Bible muc 7: bac doc bang mau khung + bieu cam + phu kien), luon quay ve nguoi choi.
             // Day mat ra bang ban kinh bao cua ca hinh de mat khong lot vao khoi nao khi nhin xeo.
             float faceSize = Mathf.Clamp(radius * 2.2f, 0.09f, 0.14f);
-            Face = FaceBillboard.Create(transform, center, FaceArt.Ingredient(hidden ? HiddenFaceTier : Tier), faceSize, radius);
+            // +6% ban kinh: khoi hinh tho / nhun phinh toi ~4% (IngredientIdle) ma mat khong lot vao than
+            Face = FaceBillboard.Create(transform, center, FaceArt.Ingredient(hidden ? HiddenFaceTier : Tier), faceSize, radius * 1.06f);
             Face.SetSizeFactor(asPrepared ? 0.8f : 1f);
         }
 
@@ -1313,7 +1405,9 @@ namespace QuanAnHope.Game
         {
             if (appear >= 1f) return;
             appear = Mathf.Min(1f, appear + dt / (Tier >= 4 ? 1.5f : 0.4f));
-            float sc = appear < 1f ? Mathf.Sin(appear * Mathf.PI * 0.5f) * (1f + 0.12f * Mathf.Sin(appear * Mathf.PI)) : 1f;
+            // easeOutBack: phong ra, vuot 12% roi ve (muot, khong khung giat)
+            float a = appear - 1f;
+            float sc = appear < 1f ? 1f + 2.70158f * a * a * a + 1.70158f * a * a : 1f;
             transform.localScale = Vector3.one * Mathf.Max(0.01f, sc) * baseScale;
         }
     }

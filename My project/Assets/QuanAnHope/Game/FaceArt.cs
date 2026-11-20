@@ -540,6 +540,11 @@ namespace QuanAnHope.Game
         float baseSize;
         float sizeFactor = 1f;
         MeshRenderer quad;
+        float blinkIn = -1f, blink = 1f;
+        const float BlinkSeconds = 0.14f;
+
+        /// <summary>Chop mat (nep mat theo chieu doc) - 20/11: nguyen lieu song nhu nhan vat cot truyen. Tat cho anh test on dinh.</summary>
+        public static bool Blinking = true;
 
         public Texture2D Texture { get; private set; }
         public MeshRenderer Renderer { get { return quad; } }
@@ -584,6 +589,22 @@ namespace QuanAnHope.Game
             Vector3 dir = toCam.sqrMagnitude > 1e-6f ? toCam.normalized : -c.forward;
             transform.position = anchor.position + dir * worldDepth;
             transform.rotation = c.rotation;
+
+            // chop mat: moi 2,5-6 giay nep doc trong 0,14 giay (muot)
+            float y = 1f;
+            if (Blinking)
+            {
+                if (blinkIn < 0f) blinkIn = UnityEngine.Random.Range(1.5f, 5f);
+                blinkIn -= Time.deltaTime;
+                if (blinkIn <= 0f && blinkIn > -1f) { blink = 0f; blinkIn = UnityEngine.Random.Range(2.5f, 6f); }
+                if (blink < 1f)
+                {
+                    blink = Mathf.Min(1f, blink + Time.deltaTime / BlinkSeconds);
+                    y = 1f - 0.8f * Mathf.Sin(blink * Mathf.PI);
+                }
+            }
+            float k = baseSize * sizeFactor;
+            transform.localScale = new Vector3(k, k * y, k);
         }
     }
 }

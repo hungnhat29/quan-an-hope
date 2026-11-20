@@ -27,14 +27,27 @@ namespace QuanAnHope.Core
     {
         readonly Random random;
 
+        /// <summary>Seed ban dau va so lan da rut: du de dung lai dung trang thai (luu game, F-052).</summary>
+        public int Seed { get; private set; }
+        public long Draws { get; private set; }
+
         public SeededRandom(int seed)
         {
+            Seed = seed;
             random = new Random(seed);
         }
 
         public double NextDouble()
         {
+            Draws++;
             return random.NextDouble();
+        }
+
+        /// <summary>Rut bo cho toi khi da rut dung <paramref name="draws"/> lan (khong lui lai duoc).</summary>
+        public void AdvanceTo(long draws)
+        {
+            if (draws < Draws) throw new ArgumentOutOfRangeException("draws", "Khong lui lai duoc: da rut " + Draws + " lan");
+            while (Draws < draws) NextDouble();
         }
     }
 

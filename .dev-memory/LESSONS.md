@@ -3,15 +3,15 @@
 ## Quy tac dang ap dung
 - [L-014] Tinh nang co hien thi: viet "kich ban 10 giay" (dung dau, nhin gi, bam gi, thay gi) cho nguoi dung duyet TRUOC khi code; cho constitution im lang ve vong choi cot loi thi hoi, khong tu mac dinh (P2) [sprint 1: lam lai UI 2D->3D, them goi mon]
 - [L-013] Spec co hinh phai co bang "muc Art Bible -> lam o dau" va moi thao tac co AC "nguoi choi thay gi" (hinh + chuyen dong) (P2/P6) [sprint 1: thieu mat, thieu animation]
-- [L-015] Test moi phai chay thay DO mot lan truoc khi viet code, ke ca do vi chua bien dich (P4) [count 2: sprint 1 bo 8 test goi mon; sprint 3 viet Core relic truoc test, chi do nho importer chua nhap]
+- [L-015] Test moi phai chay thay DO mot lan truoc khi viet code, ke ca do vi chua bien dich (P4) [count 3: sprint 1 bo 8 test goi mon; sprint 3 viet Core relic truoc test; sprint 6 viet luat an + luu/tai truoc test]
 - [L-011] Khong chay thu ban build voi -screen-fullscreen 0 / -screen-width: Unity luu vao registry, lan sau nguoi dung mo len thanh cua so (nguoi dung bao 14/11). Chay thu khong co co man hinh (P6)
 - [L-012] Doi luat ghep mon / khach phai dua vao sim_balance.py va chay lai Dieu 1 truoc khi code; luat goi mon lam nguoi choi gioi tu 83% xuong 59% neu mo phong thieu 3 khach cung ngoi + ngoai le chu no (P2)
 - [L-009] Tam anh quay ve camera dat truoc vat 3D: day ra bang ban kinh bao cua than (khong phai nua be day), test bang ban kinh tu localBounds (AABB cua khoi xoay phinh to) (P4)
 - [L-010] Doc ket qua test Unity: grep result="[A-Za-z()]*" vi that bai ghi "Failed(Child)"; khong in dong ket qua = coi la DO (P6)
 - [L-007] Nguoi dung muon game 3D that: moi thong tin dat tren do vat, HUD chi so lieu, khong nut chuyen goc (constitution v1.2 Dieu 5, 9). Tinh nang moi phai co do vat 3D de bam (P2/P3)
 - [L-008] Do vat tao luc chay (BoxCollider) phai goi Physics.SyncTransforms; san canh khong co collider; test PlayMode tua nhanh can chia buoc di; doi ten nut / tram thi sua PlaythroughTests cung luc (L-006) (P4)
-- [L-005] UI / hinh moi (ca bat/sua hau ky URP, L-003) phai chup anh tu PlayMode (docs/sprint-N/ui) va tu xem truoc khi bao xong: loi hien thi chi lo ra tren anh (P6) [count 4: sprint 2-5]
-- [L-002] Trong Bash tool cua may nay, heredoc nhieu dong co dau nhay don bi loi cu phap; ghi script .py bang Write vao scratchpad roi chay (moi pha) [count 5: sprint 3-5; them: khong de "cat > file" khong co heredoc, lenh treo cho stdin]
+- [L-005] UI / hinh moi (ca bat/sua hau ky URP, L-003) phai chup anh tu PlayMode (docs/sprint-N/ui) va tu xem truoc khi bao xong: loi hien thi chi lo ra tren anh (P6) [count 7: sprint 2-6, 19/11 truyen tranh giay; 19/11 khung nhieu lop: chan bat cheo khi quay trai, cua tron, chu tuong thanh de mat]
+- [L-002] Trong Bash tool cua may nay, heredoc nhieu dong co dau nhay don bi loi cu phap; ghi script .py bang Write vao scratchpad roi chay (moi pha) [count 6: sprint 3-6; them: khong de "cat > file" khong co heredoc, lenh treo cho stdin]
 - [L-004] Chay Unity batchmode: dong Editor truoc; -testResults va -logFile dung duong dan tuyet doi kieu Windows (P4)
 - [L-001] Chạy sim_balance.py phải đặt PYTHONUTF8=1 (Windows mặc định cp1258, lỗi đọc JSON tiếng Việt) (P4/P6)
 - [L-016] Hinh dat trong/tren do vat 3D: lay kich thuoc tu hinh that (Renderer.bounds), khong tu so uoc luong; test hinh hoc phai do theo hinh that (P4) [count 2: sprint 2 PanSpec; sprint 5 nap noi bi vanh che, mu chu no qua to]
@@ -59,3 +59,26 @@
 - L-022 | trigger: anh "chu no ngac nhien" khong co chu no | goc: phan ung chi 0,8 giay, test tua Time.timeScale 25 roi di bo truoc khi chup | quy tac: hieu ung ngan (mat phan ung, pop) chup ngay sau thao tac voi Time.timeScale = 1 | count 1
 - L-023 | trigger: PlayMode bat "Mo quan! Khach dau tien da toi" khi chu no dang doi ngoai cua | goc: thong bao chung ghi de thong bao rieng cua su kien moi | quy tac: them su kien moi (chu no, ngay dac biet) thi ra soat moi cho dat Toast cung luc do (ToggleShop, OnClockEvent, NextDay) | count 1
 - L-020 | trigger: bot gom bo chi 77% duoc thuong chu no | goc: luat moi (chu no can ghe trong) + bot tieu het ve tu sang | sua: ghi ly do "khong phuc vu chu no" vao BotRun, bot giu 1 ve toi 20:00 -> 100% | count 2
+
+
+### 2026-11-18 Truoc sprint 6 + Sprint 6 (F-050..F-055)
+- L-002 | trigger: heredoc python sua RoomViewRound2 co chuoi C# chua dau nhay don -> "unexpected EOF" (lan 6) | sua: ghi .py bang Write | count 6
+- L-015 | trigger: viet GameSession.Eaters va SaveGame truoc EatingTests / Sprint6Tests | sai: test chay xanh ngay lan dau, khong thay do | count 3
+- L-005 | trigger: anh menu_chinh cho thay camera menu nam sau rem cua (noren), nut "Xong" de dong cuoi Cai dat, dong huong dan cham o HUD trai; test deu xanh | count 5
+- L-022 | trigger: PlayMode khach an 5 giay ket thuc truoc khi kiem / chup vi tua Time.timeScale 25 | quy tac: ve toc do that ngay sau thao tac tao hieu ung co thoi han | count 2
+- L-024 | trigger: doi luat lam khach / ghe ban lau hon (khach an) | goc: thang cua bot rat nhay so khach / ngay (-2% khach -> -8 diem thang) | quy tac: luat moi dong vao ghe / thoi gian phai chay bot C# truoc khi chot so, thu 2 muc (vd 5 va 8 giay) de thay do nhay | count 1
+- L-025 | trigger: Write voi duong dan tuong doi "..\..\Users\..." tao file o D:\Users | quy tac: duong dan scratchpad luon viet tuyet doi bat dau tu C:\Users | count 1
+- PowerShell Start-Process -ArgumentList tach duong dan co dau cach ("dev game") -> Unity bao "Couldn't set project path"; goi Unity bang & voi tham so rieng
+
+### 2026-11-19 Cot truyen nhieu lop + nhan vat SDF
+- L-026 | trigger: Graphic tu viet (InkCanvas) tao bang AddComponent -> MissingComponentException CanvasRenderer trong RectMask2D.PerformClipping | goc: uGUI 2.x (Unity 6) Graphic khong con RequireComponent(CanvasRenderer) | quy tac: them CanvasRenderer truoc khi AddComponent Graphic tu viet | count 2 (20/11 PolygonGraphic lam mat na khung)
+- L-027 | trigger: chu tuong thanh bien mat | goc: UiKit.Label tra ve TMP la con stretch cua hop; doi pivot/anchoredPosition cua TMP thay vi cua hop | quy tac: muon dat vi tri nhan thi sua RectTransform cha (hop) | count 1
+- L-005 | trigger: anh khung truyen cho thay chan bat cheo khi nhan vat quay trai (hong khong nhan facing), cua vom thanh hinh tron, chu de len mat; test deu xanh | count 7
+
+### 2026-11-20 Cot truyen tu zip (SVG -> lop PNG -> Unity)
+- L-028 | trigger: anh lop xuat tu Edge co nhieu hat mo khap trang, 46 MB / trang | goc: Chromium van ve bo loc feTurbulence cua phan tu visibility:hidden | quy tac: an phan tu SVG khi chup bang display:none; bo nhieu khoi anh PNG (phu trong engine) | count 1
+- L-029 | trigger: khung truyen trong tron (chi thay goc toi) | goc: doi pivot RectTransform (giu vi tri) roi gan anchoredPosition = offset, xoa mat phan bu pivot | quy tac: luu vi tri goc sau khi doi pivot, moi khung gan goc + offset | count 1
+- L-030 | trigger: chu tuong thanh TMP khong co vien du dat outlineWidth | goc: shader SDF can tu khoa OUTLINE_ON khi dat bang code | quy tac: fontMaterial.EnableKeyword("OUTLINE_ON") truoc khi dat outlineWidth / outlineColor | count 1
+- L-022 | trigger: F050_F053 kiem khach dang an sau Frames(2) o toc do 25x -> khach an xong truoc khi kiem (chap chon theo may) | count 3
+- L-031 | trigger: test do vi tri khach sau "yield return null" khong thay cu nhay cua Lively | goc: coroutine chay sau Update, truoc LateUpdate; khoi khach con Bob (canh goc) ghi vi tri trong Update | quy tac: thanh phan chuyen dong moi phai tat / thay thanh phan cu cung ghi transform (grep localPosition tren prefab), test doc gia tri cua khung truoc | count 1
+- L-032 | trigger: Random.Range trong khoi tao truong MonoBehaviour -> UnityException moi PlayMode | quy tac: ngau nhien trong Awake / lan dau Update | count 1

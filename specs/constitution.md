@@ -1,6 +1,6 @@
 # Constitution — Quán ăn của Hope (tên tạm)
 
-Phiên bản 1.4 · 15/11/2026 · Trạng thái: **đổi số cân bằng** — ngày theo giờ, khách không giới hạn, thùng nhỏ, sơ chế và nấu lâu hơn, nợ cao hơn. Game sprint 1 còn chạy số 1.3; số 1.4 vào game ở sprint 2
+Phiên bản 1.6 · 20/11/2026 · Trạng thái: **cốt truyện 6 chương** (mục 2.1, tranh `CotTruyen_BepNhanPham.zip`). Trước đó 1.5: **khung game** — phòng rộng hơn, khách ăn tại ghế, lưu game theo ngày, hướng dẫn ngày 1, cài đặt (mục 2.1, 6.2, Điều 5). Số cân bằng 1.4 giữ nguyên, thêm một số: thời gian ăn 5 giây (mục 6.2)
 
 Đây là nguồn sự thật cao nhất của dự án. Mọi spec, plan, task và dòng code phải tuân theo file này. Khi một spec mâu thuẫn với constitution, constitution thắng; muốn đổi thì sửa constitution trước (tăng số phiên bản, ghi lý do ở mục 9).
 
@@ -36,6 +36,7 @@ Mỗi bảng xác suất có một test thống kê (EditMode): quay 100.000 l�
 
 ### Điều 5 — Một căn phòng 3D, tự đi lại
 Người chơi chỉ ở trong một căn phòng 3D và nhìn bằng mắt Hope (góc nhìn thứ nhất). Mỗi tường là một khu chức năng.
+- **Kích thước (từ 1.5):** sàn **9,6 × 9,6 m** (Art Bible §8 ghi 8 × 8 m): mỗi tường lùi ra 0,8 m, đồ vật trong từng góc giữ nguyên vị trí so với tường của góc đó, khoảng trống giữa phòng rộng ra. Số nằm ở `BepNhanPham.RoomSize` (quy cách hình, không phải số cân bằng).
 - **Di chuyển:** tự đi bằng bàn phím (W A S D hoặc phím mũi tên), nhìn bằng chuột. **Không có nút chuyển góc.**
 - **Tương tác:** nhìn vào đồ vật (tâm ngắm giữa màn hình) và bấm chuột trái; việc cần giữ (sơ chế) thì giữ chuột trái. Chuột phải: đặt lại thứ đang cầm.
 - **Cầm đồ:** mỗi lúc cầm tối đa **một** thứ: một nguyên liệu, một đĩa trống hoặc một đĩa món.
@@ -66,6 +67,16 @@ Thông tin của một thứ hiện **trên chính thứ đó trong phòng**, kh
 - **Không gian:** một quán ăn trong một căn phòng 4 tường; người chơi chỉ tương tác trong phòng.
 - **Giờ mở cửa:** 9:00 – 21:00 (trong game). **1 giờ trong game = 40 giây thực, một ngày 8 phút.** Đồng hồ chạy từ đầu ngày. Khách vào liên tục, không giới hạn số lượng, cho tới 21:00 (mục 6.2). Sau 21:00, khách còn ngồi vẫn được phục vụ đến người cuối cùng.
 - **Kết thúc:** trả hết nợ ngày 22; chủ nợ gả con gái cho Hope.
+
+### 2.1 Khung game: menu, cốt truyện, lưu game, hướng dẫn, cài đặt (từ 1.5)
+
+Người dùng duyệt ngày 18/11/2026 khi yêu cầu triển khai `docs/sprint-6/impl-plan.md` (Q-8).
+
+- **Menu chính** (màn ngoài phòng, Điều 5): căn phòng nhìn từ cửa, bốn nút dọc bên trái: Chơi mới, Chơi tiếp (mờ khi chưa có bản lưu), Cài đặt, Thoát. **Esc** trong phòng mở menu tạm dừng (Tiếp tục, Cài đặt, Về menu chính); khi tạm dừng đồng hồ ngày, bếp và khách đều dừng.
+- **Cốt truyện (từ 1.6, 20/11/2026):** 6 trang truyện tranh vẽ sẵn (`CotTruyen_BepNhanPham.zip`, mỗi khung 6 lớp giấy có thị sai). **Chương 1** khi Chơi mới (bị đuổi việc, gặp chủ nợ, nhận quán, giấy nợ) rồi vào ngày 1. **Chương 2–4** chiếu ở đầu ngày: ngày 2 (bão, kho trống), ngày mất điện (`blackout.day`), ngày chủ nợ thu lần 3 (tin đồn bị lật tẩy, danh tiếng trở lại). Thắng → **Chương 5–6** (món cuối cho chủ nợ, xé giấy nợ, gả con gái). Thua → tranh ghi rõ thiếu bao nhiêu ở lần trả nợ nào (tranh khối, chưa có trang vẽ), rồi màn thua có nút Chơi lại. Khung tự sang sau nhịp khung + thời gian đọc; bấm để qua sớm, giữ để bỏ qua. Lời kể dưới trang và chữ trên tranh đều là TextMeshPro (Điều 6); số ngày, số tiền lấy từ dữ liệu (Điều 2). Cài đặt "Hiệu ứng truyện": Đầy đủ / Giảm / Tắt.
+- **Lưu game:** tự lưu **đầu mỗi ngày** (sau khi thu nợ, phát vé): ngày, tiền, vé trắng, vé đen, relic, ba relic đang bày, tủ lạnh, nước sốt, máy gacha, số lần đã mua, và trạng thái ngẫu nhiên (seed + số lần đã rút). Chơi tiếp → về đúng đầu ngày đã lưu. **Tải lại thì ngày đó ra y như lần trước** (gacha, khách, cửa hàng): không "lưu rồi quay lại" để chọn kết quả tốt. Thắng hoặc thua thì xoá bản lưu. Chỉ có một bản lưu.
+- **Hướng dẫn ngày 1:** ván đầu tiên, ngày 1: một dòng chỉ dẫn trên HUD + mũi tên nổi trên đồ vật kế tiếp (máy nhét vé → thùng → thớt → giá dụng cụ → sách → bếp → núm → chồng đĩa → biển Mở quán → khách / chuông). Làm đúng bước thì sang bước sau, không chặn việc khác. Tắt / bật trong Cài đặt; chưa chọn thì ván thứ hai trở đi tắt.
+- **Cài đặt:** âm lượng tổng, nhạc, hiệu ứng (0–100); độ nhạy chuột (mặc định 0,1°/điểm ảnh, Art Bible §9) và đảo trục dọc; toàn màn hình (mặc định) / cửa sổ, độ phân giải; lưu qua các lần mở.
 
 ### Lịch 22 ngày
 
@@ -328,7 +339,7 @@ Về tra cứu: các wiki của Overcooked và PlateUp mô tả cấu trúc côn
 ## 6. Khách hàng
 
 ### 6.1 Chỗ ngồi và mở quán
-Phục vụ tối đa **3 khách cùng lúc**; khách có thể đến lần lượt hoặc 3 người liền nhau. **Vòng 1: khách đến lần lượt**, người sau vào khi người trước đã được phục vụ.
+Phục vụ tối đa **3 khách cùng lúc**; khách có thể đến lần lượt hoặc 3 người liền nhau. **Vòng 1: khách đến lần lượt**, người sau vào khi người trước đã được phục vụ và ăn xong (mục 6.2, từ 1.5).
 
 **Mở quán:** đầu ngày quán đóng, người chơi gacha và nấu trước. Bấm **biển Mở quán** ở Góc 1 thì khách mới bắt đầu đến. Khi quán đang mở, bấm biển lần nữa để **đóng quán sớm**: khách còn lại ra về, không trả tiền, không bị phạt, và hết ngày.
 
@@ -338,9 +349,10 @@ Không còn số khách cố định mỗi ngày (bản 1.3: 6 / 8 / 5 / 9). S�
 
 - **Đồng hồ:** mỗi ngày bắt đầu lúc 9:00 và chạy liên tục tới 21:00 (8 phút thực), kể cả khi quán chưa mở. HUD hiện giờ. *(Q-21: hay chỉ chạy từ lúc bấm Mở quán?)*
 - **Khách chỉ đến khi quán mở** (biển Mở quán, mục 6.1). Mở sớm thì có nhiều giờ bán hơn; mở muộn để gacha và nấu sẵn thì mất giờ bán.
-- **Vòng 1 — lần lượt:** mỗi lúc một khách; khách kế tiếp vào **3 giây** sau khi khách trước được phục vụ. Cứ thế tới 21:00.
+- **Vòng 1 — lần lượt:** mỗi lúc một khách; khách kế tiếp vào **3 giây** sau khi khách trước được phục vụ và ăn xong. Cứ thế tới 21:00.
 - **Từ vòng 2 — nhiều khách:** tối đa 3 khách cùng ngồi; ghế nào trống thì 3 giây sau có khách mới ngồi vào. Cứ thế tới 21:00.
-- **21:00:** không nhận khách mới. Khách đang ngồi vẫn được phục vụ; phục vụ xong người cuối (hoặc không còn ai ngồi) thì hết ngày.
+- **Khách ăn (từ 1.5):** phục vụ xong, khách **ngồi ăn tại ghế 5 giây** (`day.eat_s`) rồi mới rời ghế; tiền và tip trả ngay lúc nhận món. Khách đang ăn không gọi món, không nhận đĩa khác. "Ghế trống" ở các dòng trên và dưới tính từ lúc khách ăn xong (khách mới vào 3 giây sau đó); chủ nợ đang đợi ghế thì vào ngay khi khách ăn xong.
+- **21:00:** không nhận khách mới. Khách đang ngồi vẫn được phục vụ; phục vụ xong người cuối và người đó ăn xong (hoặc không còn ai ngồi) thì hết ngày.
 - **Hết nguyên liệu và hết vé** khi còn khách: bấm biển để đóng quán sớm (mục 6.1).
 - **Ngày 21:** đúng 20:00 chủ nợ đến, chiếm một ghế và ngồi tới khi được phục vụ.
 - **Ngày 14 "all-in":** không còn khác các ngày vòng 3 về số khách; "all-in" nghĩa là ngày cuối trước hạn nợ 10.500G, nên dốc món trong tủ lạnh, nước sốt, vé đen. *(cần bạn xác nhận)*
@@ -491,6 +503,10 @@ Mô phỏng: với giá nước sốt 450G, 10% người chơi may mắn mua đ�
   - **1.4 (15/11/2026):** theo 6 ghi chú của bạn khi đóng sprint 1. (a) Khách không giới hạn tới 21:00, đồng hồ ngày (mục 2, 6.2). (b) Sơ chế ×3, nấu ×1,5 (mục 4.5, 5.8, 5.9); khoảng chờ an toàn ×1,5 (6.6). (c) Thùng 3 phụ + 2 chính, ngày 3 là 2 + 1, đột phá 1 món; Rổ tre +1 thay vì +2 (mục 4.2–4.4, 7.2). (d) Nợ 750 / 2.900 / 10.500 / 32.000G (mục 2). (e) Hai số mình thêm để hệ thống còn chạy được, cần bạn xác nhận: **6 vé mỗi ngày** (thùng nhỏ nên 3 vé chỉ đủ 6 món, không còn vé mua relic, không ai trả nổi nợ) và **1 giờ = 40 giây** (nấu lâu hơn mà ngày vẫn 6 phút thì số khách giảm chứ không tăng). (f) Bảng tỉ lệ bậc và giá món giữ nguyên. Mô phỏng: 63% / 90% / 46% (Điều 1). Số nằm ở `balance/next/`, chạy `V=next python balance/sim_balance.py`.
   - **1.3 (14/11/2026):** theo yêu cầu của bạn "khách hàng phải order 1 món ăn cụ thể và từng món phải hiển thị giá ở trên quyển sách công thức". Thêm mục 6.7 (gọi món), dòng "Sai món" ở 6.5, giá bán theo bậc trên trang sách (5.8), Điều 9 cập nhật vị trí thông tin. Ba lựa chọn do bạn trả lời 14/11: gọi món nấu được, sai món coi như khách giận, giá chung theo vòng ghi theo bậc. Không đổi số trong dữ liệu. Mô phỏng `sim_balance.py` thêm loại nguyên liệu cho từng thùng, công thức cho từng đĩa, khách gọi món, và 3 khách cùng ngồi từ vòng 2 (trước đây mô phỏng cho người chơi tự ghép món với khách bất kỳ); chạy `ORDERS=0` để ra lại số cũ.
   - **1.2 (14/11/2026):** theo nghiệm thu sprint 1 của bạn ("game này là 3D nhưng hiện tại chơi như game 2D"): Điều 5 đổi từ xoay camera 90° sang tự đi lại góc nhìn thứ nhất; thêm Điều 9 (thông tin nằm trên đồ vật, HUD chỉ số liệu); mục 4.2, 5.1, 5.8 tả lại thao tác bằng đồ vật; mục 6.1 thêm nút Mở quán (bạn trả lời 14/11) và đóng quán sớm. Không đổi số cân bằng; mô phỏng không bị ảnh hưởng. Thời gian đi lại trong phòng chưa có trong ước tính "17–19 giây một món" ở mục 5.9 — cần đo lại khi playtest vòng 2 (có tính giờ chờ).
+
+  - **1.5 (18/11/2026):** theo yêu cầu của bạn trước sprint 6 ("dựng không gian 3D phòng rộng hơn 1 chút", "thêm hoạt ảnh ăn cho khách hàng và mất 1 khoảng thời gian mới ăn xong") và việc triển khai impl plan sprint 6. (a) Phòng 9,6 × 9,6 m (Điều 5). (b) Khách ăn 5 giây tại ghế (mục 6.2): số mới `day.eat_s = 5` trong dữ liệu. Đo bằng bot C# trên luật thật, 4.000 ván mỗi kiểu: 8 giây làm người không đọc chỉ số tụt từ 67% xuống 61% chặng đường (sát mốc 60% của Điều 1) và người gom bộ từ 60% xuống 53% thắng; **5 giây**: 63% / 52% / chơi tốt không gom bộ 9%. Mô phỏng Python không đổi (63 / 89 / 46%) vì mô phỏng tính số món theo thời gian nấu, không theo ghế. Người gom bộ đã dưới mốc 70% từ sprint 5 (Q-44, chỉnh ở sprint 7). (c) Mục 2.1 khung game: menu, cốt truyện, lưu game, hướng dẫn ngày 1, cài đặt (Q-8). Chọn "tải lại ra y như cũ" cho lưu game.
+
+  - **1.6 (20/11/2026):** theo yêu cầu "sử dụng @CotTruyen_BepNhanPham.zip để làm lại phần cốt truyện". Cốt truyện từ 3 ý mở đầu + 2 kết thành 6 chương; thêm 3 chương giữa ván (đầu ngày 2, ngày mất điện, ngày thu nợ lần 3). Nhân vật mới trong tranh: sếp cũ, kẻ phá đám (tờ rơi "Quán bẩn"), bà cụ khách quen, con gái chủ nợ. Không đổi luật chơi hay số cân bằng.
 
 ### Các điểm mình đã tự diễn giải (cần bạn xác nhận)
 1. "Hoàn hảo" = bậc Tuyệt hảo.

@@ -19,20 +19,23 @@ namespace QuanAnHope.PlayTests
     /// di bang phim (CharacterController that), quay dau nhin vao do vat, bam / giu chuot trai qua tia nhin o tam ngam.
     /// Khong goi tat vao luat choi. Anh chup luu vao docs/sprint-2/ui/ (sprint 2: ngay theo gio, constitution 1.4).
     /// </summary>
-    public class PlaythroughTests
+    public partial class PlaythroughTests
     {
         const string SceneName = "NhaHang";
         const float FastForward = 25f;
         const int Seed = 20261121;
 
         // Vung di lai trong phong (giua cac quay), Art Bible muc 9.
-        const float MinX = -2.2f, MaxX = 2.0f, MinZ = -2.1f, MaxZ = 1.35f;
+        // Phong rong them RoomSize.Grow moi phia (constitution 1.5): vung di lai cung rong ra.
+        const float MinX = -2.2f - BepNhanPham.RoomSize.Grow, MaxX = 2.0f + BepNhanPham.RoomSize.Grow,
+            MinZ = -2.1f - BepNhanPham.RoomSize.Grow, MaxZ = 1.35f + BepNhanPham.RoomSize.Grow;
 
         GameController g;
 
         [UnitySetUp]
         public IEnumerator LoadScene()
         {
+            GameController.ChaptersByDefault = false;   // trang chuong giua van: chi test rieng bat
             SceneManager.LoadScene(SceneName);
             yield return null;
             yield return null;
@@ -49,6 +52,7 @@ namespace QuanAnHope.PlayTests
         {
             Time.timeScale = 1f;
             if (g != null) g.ClockScale = 1f;
+            GameController.ChaptersByDefault = true;
         }
 
         PlayerController P { get { return g.Player; } }
@@ -461,7 +465,7 @@ namespace QuanAnHope.PlayTests
         IEnumerator WaitForCustomer()
         {
             yield return WaitUntil(() => S.CurrentCustomer != null || S.Phase != GamePhase.Open,
-                S.Balance.day.nextCustomerSeconds + 1f, "khach ke tiep vao sau 3 giay");
+                S.Balance.day.eatSeconds + S.Balance.day.nextCustomerSeconds + 1f, "khach truoc an xong, khach ke tiep vao sau 3 giay");
             CheckClock();
         }
 
@@ -562,8 +566,8 @@ namespace QuanAnHope.PlayTests
             Assert.AreEqual(GamePhase.Open, S.Phase);
             if (shotPrefix != null)
             {
-                yield return WalkTo(new Vector3(0.3f, 0f, 0.9f));
-                yield return Shot(shotPrefix + "_khach.png", new Vector3(-0.6f, 2.1f, 3.0f));
+                yield return WalkTo(new Vector3(0.3f, 0f, 0.9f + BepNhanPham.RoomSize.Grow));
+                yield return Shot(shotPrefix + "_khach.png", new Vector3(-0.6f, 2.1f, 3.0f + BepNhanPham.RoomSize.Grow));
             }
             while (S.Phase == GamePhase.Open) yield return ServeOne();
             Assert.AreEqual(GamePhase.DayEnd, S.Phase);
@@ -654,13 +658,21 @@ namespace QuanAnHope.PlayTests
             yield return WalkTo(new Vector3(0f, 0f, 1.2f));
             Assert.AreEqual(1.2f, P.transform.position.z, 0.1f);
 
-            // Va cham: di thang vao quay Goc 1 thi bi chan truoc quay (mat quay o z = 1,8)
+            // Va cham: di thang vao quay Goc 1 thi bi chan truoc quay (mat quay o z = 1,8 + RoomSize.Grow)
             P.SimulatedMove = new Vector2(0f, 1f);
             P.SetLook(0f, 0f);
-            for (int i = 0; i < 30; i++) yield return null;
+            // di toi khi dung han (phong rong hon nen quay xa hon: khong dem so khung hinh co dinh)
+            float lastZ = P.transform.position.z;
+            int still = 0;
+            for (int i = 0; i < 400 && still < 8; i++)
+            {
+                yield return null;
+                still = Mathf.Abs(P.transform.position.z - lastZ) < 0.001f ? still + 1 : 0;
+                lastZ = P.transform.position.z;
+            }
             P.SimulatedMove = Vector2.zero;
-            Assert.Less(P.transform.position.z, 1.6f, "phai bi quay chan lai");
-            Assert.Greater(P.transform.position.z, 1.3f);
+            Assert.Less(P.transform.position.z, 1.6f + BepNhanPham.RoomSize.Grow, "phai bi quay chan lai");
+            Assert.Greater(P.transform.position.z, 1.3f + BepNhanPham.RoomSize.Grow);
 
             // Nhin quanh bang chuot: quay 360 do, tam ngam doi theo
             P.SetLook(90f, 10f);
@@ -782,8 +794,8 @@ namespace QuanAnHope.PlayTests
             Assert.AreEqual(GamePhase.Open, S.Phase);
             StringAssert.Contains("Dễ tính " + S.CurrentCustomer.easiness + "%", TextOf("BongThoai"));
             StringAssert.Contains(S.CurrentCustomer.orderName, TextOf("BongThoai"), "khach goi mot mon cu the");
-            yield return WalkTo(new Vector3(0.3f, 0f, 0.9f));
-            yield return Shot("3d_goc1_khach.png", new Vector3(-0.6f, 2.1f, 3.0f));
+            yield return WalkTo(new Vector3(0.3f, 0f, 0.9f + BepNhanPham.RoomSize.Grow));
+            yield return Shot("3d_goc1_khach.png", new Vector3(-0.6f, 2.1f, 3.0f + BepNhanPham.RoomSize.Grow));
             bool wrongTried = false;
             while (S.Phase == GamePhase.Open)
             {
@@ -954,7 +966,9 @@ namespace QuanAnHope.PlayTests
             yield return Shot("3d_21h_da_dong.png", g.Room.Station("ShopSign").WorldCenter + new Vector3(-1.2f, 0.4f, 0f));
 
             yield return ServeOne();
-            Assert.AreEqual(GamePhase.DayEnd, S.Phase, "phuc vu xong khach cuoi sau 21:00 thi het ngay");
+            Assert.AreEqual(GamePhase.Open, S.Phase, "khach cuoi dang an: chua het ngay");
+            yield return WaitUntil(() => S.Phase == GamePhase.DayEnd, S.Balance.day.eatSeconds + 1f, "khach cuoi an xong thi het ngay");
+            Assert.AreEqual(GamePhase.DayEnd, S.Phase, "phuc vu xong khach cuoi sau 21:00, an xong thi het ngay");
             StringAssert.Contains("Đã phục vụ 1 khách", HudText("ManPhu"));
             StringAssert.Contains("đóng quán lúc " + S.ClosedAt, HudText("ManPhu"));
             yield return Shot("3d_het_ngay_21h.png");
@@ -1210,8 +1224,8 @@ namespace QuanAnHope.PlayTests
                 Assert.AreEqual(UiKit.Mint, g.Room.BubblePatienceColor(i));
             }
             Assert.Less(g.Room.SeatViews[0].Bubble.transform.position.x, g.Room.SeatViews[2].Bubble.transform.position.x);
-            yield return WalkTo(new Vector3(0f, 0f, 0.6f));
-            yield return Shot("goc1_ba_khach.png", new Vector3(0f, 2.0f, 3.0f), Sprint4);
+            yield return WalkTo(new Vector3(0f, 0f, 0.6f + BepNhanPham.RoomSize.Grow));
+            yield return Shot("goc1_ba_khach.png", new Vector3(0f, 2.0f, 3.0f + BepNhanPham.RoomSize.Grow), Sprint4);
 
             // AC-3: nau mon khach giua goi, cam dia nhin vao khach giua, bam
             Customer middle = S.Seats[1];
@@ -1223,7 +1237,7 @@ namespace QuanAnHope.PlayTests
             yield return Approach(seat1);
             Assert.AreEqual("Phục vụ khách giữa: " + dish.name, seat1.CurrentPrompt, "goi y kich ban 10 giay");
             // Kich ban 10 giay: lui ra de thay ca ba bong bong, tam ngam van tren khach giua.
-            yield return WalkTo(new Vector3(0f, 0f, 0.45f));
+            yield return WalkTo(new Vector3(0f, 0f, 0.45f + BepNhanPham.RoomSize.Grow));
             Vector3 aim = seat1.WorldCenter + new Vector3(0f, 0.55f, 0f);
             P.LookAt(aim);
             yield return null;
@@ -1243,7 +1257,7 @@ namespace QuanAnHope.PlayTests
             Assert.IsTrue(g.IsReacting(1, out outcome), "khach giua hien mat vui / gian");
             Assert.IsTrue(g.Room.SeatViews[1].Model.activeInHierarchy);
             Assert.IsNotNull(g.Room.SeatViews[1].ServedDish, "dia vua dua nam truoc khach giua");
-            yield return WaitUntil(() => S.Seats[1] != null, S.Balance.day.nextCustomerSeconds + 2f, "3 giay sau ghe giua co khach moi");
+            yield return WaitUntil(() => S.Seats[1] != null, S.Balance.day.eatSeconds + S.Balance.day.nextCustomerSeconds + 2f, "khach giua an xong, 3 giay sau ghe giua co khach moi");
             Assert.AreNotSame(middle, S.Seats[1]);
 
             // F-031: cho qua khoang an toan -> thanh doi cam, do de tinh giam 1 diem / 3 giay
@@ -1257,7 +1271,7 @@ namespace QuanAnHope.PlayTests
             StringAssert.Contains("Dễ tính " + S.EasinessNow(waiting) + "%", g.Room.BubbleText(0), "bong bong hien do de tinh luc nay");
             Assert.AreEqual(UiKit.Coral, g.Room.BubblePatienceColor(0), "qua khoang an toan: thanh doi cam");
             Assert.Less(g.Room.BubblePatience(0), g.Room.BubblePatience(1), "khach cho lau thanh ngan hon khach moi");
-            yield return Shot("goc1_khach_cho_lau.png", new Vector3(-0.8f, 2.0f, 3.0f), Sprint4);
+            yield return Shot("goc1_khach_cho_lau.png", new Vector3(-0.8f, 2.0f, 3.0f + BepNhanPham.RoomSize.Grow), Sprint4);
         }
 
         /// <summary>F-033 AC-1, AC-2: de mon chin tren bep qua 1,5x thi khoi + bang bep doi mau; qua 2x thi muc ra tru 1 bac.
@@ -1506,8 +1520,8 @@ namespace QuanAnHope.PlayTests
             StringAssert.Contains("Chủ nợ · Dễ tính 5%", g.Room.BubbleText(1));
             StringAssert.Contains("Gọi: món ngon nhất của quán", g.Room.BubbleText(1));
             StringAssert.Contains("Chủ nợ đã tới", g.Toast);
-            yield return WalkTo(new Vector3(0f, 0f, 0.6f));
-            yield return Shot("ngay21_chu_no_toi.png", new Vector3(0f, 2.0f, 3.0f), Sprint5);
+            yield return WalkTo(new Vector3(0f, 0f, 0.6f + BepNhanPham.RoomSize.Grow));
+            yield return Shot("ngay21_chu_no_toi.png", new Vector3(0f, 2.0f, 3.0f + BepNhanPham.RoomSize.Grow), Sprint5);
 
             // lay dia Tuyet hao trong tu lanh, mang ra, nhin vao chu no, bam
             Interactable inFridge = g.Room.FridgeDishes[0].GetComponent<Interactable>();
@@ -1522,7 +1536,7 @@ namespace QuanAnHope.PlayTests
             int money = S.Money;
             int plain = Payment.Settle(S.Balance, S.Round, 5, top.tier, S.Relics.Effects).amount;
             // phan ung chi 0,8 giay: chup ngay sau khi bam, thoi gian thuong
-            yield return WalkTo(new Vector3(0f, 0f, 0.6f));
+            yield return WalkTo(new Vector3(0f, 0f, 0.6f + BepNhanPham.RoomSize.Grow));
             Vector3 aimBoss = seat.WorldCenter + new Vector3(0f, 0.3f, 0f);
             P.LookAt(aimBoss);
             yield return null;
@@ -1546,6 +1560,10 @@ namespace QuanAnHope.PlayTests
             int before = S.Money;
             g.Hud.OverlayButton.onClick.Invoke();
             yield return null;
+            // sprint 6: tranh ket truoc man thang; nguoi choi giu de bo qua
+            Assert.AreEqual(GameMode.Story, g.Mode, "thang: tranh ket (F-051)");
+            g.Menu.SkipStory();
+            yield return null;
             Assert.AreEqual(22, S.Day);
             Assert.AreEqual(GamePhase.Cleared, S.Phase);
             Assert.IsTrue(S.IsWon);
@@ -1561,9 +1579,11 @@ namespace QuanAnHope.PlayTests
         {
             yield return StartAt(21, 5000, BotRelicsDay21);
             yield return EndDayEarly();
+            if (g.Mode == GameMode.Story) g.Menu.SkipStory();   // sprint 6: tranh ket thua
+            yield return null;
             Assert.AreEqual(22, S.Day);
             Assert.AreEqual(GamePhase.Lost, S.Phase);
-            StringAssert.Contains("chủ nợ đòi 32000G", HudText("ManPhu"));
+            StringAssert.Contains("chủ nợ đòi 32.000G", HudText("ManPhu"));
             StringAssert.Contains("thưởng 11500G", HudText("ManPhu"));
             yield return Shot("ngay22_thua.png", null, Sprint5);
         }

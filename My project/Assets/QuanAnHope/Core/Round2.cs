@@ -98,6 +98,13 @@ namespace QuanAnHope.Core
             return dishes.Remove(d);
         }
 
+        /// <summary>Tai game (F-052): dat dia vao tu khong qua suc chua.</summary>
+        internal void Restore(IEnumerable<Dish> stored)
+        {
+            dishes.Clear();
+            foreach (Dish d in stored) if (dishes.Count < Capacity) dishes.Add(d);
+        }
+
         /// <summary>Sang ngay moi: moi dia them 1 ngay; qua <see cref="FridgeRules.decayDays"/> ngay thi tut 1 bac (mot lan).</summary>
         public void AgeOneDay()
         {
@@ -185,6 +192,17 @@ namespace QuanAnHope.Core
         public ItemBuyResult CheckSauce(int money, out int cost) { return Check(money, SaucePrice, Sauces >= balance.sauce.max, out cost); }
         public ItemBuyResult CheckMachine(int money, out int cost) { return Check(money, balance.machine.price, HasMachine, out cost); }
         public ItemBuyResult CheckBlack(int money, out int cost) { return Check(money, BlackPrice, BlackTickets >= balance.blackTicket.max, out cost); }
+
+        /// <summary>Tai game (F-052).</summary>
+        internal void Restore(int day, int sauces, int saucesBought, int black, int blackBought, bool hasMachine)
+        {
+            BeginDay(day);
+            Sauces = sauces;
+            SaucesBought = saucesBought;
+            BlackTickets = black;
+            BlackBought = blackBought;
+            HasMachine = hasMachine;
+        }
 
         internal void AddSauce() { Sauces++; SaucesBought++; }
         internal void AddMachine() { HasMachine = true; }

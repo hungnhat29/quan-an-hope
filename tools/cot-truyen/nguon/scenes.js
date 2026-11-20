@@ -1,0 +1,59 @@
+const L = require('./lib.js'); const { C, INK, P, layer } = L;
+const st = 'stroke="#2B2321" stroke-width="5" stroke-linejoin="round"';
+// ---------- phong nen dung chung (toa do noi bo panel 0..w,0..h)
+function cloud(x, y, s = 1, col = '#FFFDF6') { return `<g transform="translate(${x},${y}) scale(${s})"><path d="M-60 20 q-30 0 -24 -26 q4 -24 30 -18 q8 -34 44 -28 q30 4 32 30 q30 -6 36 20 q4 24 -24 22 Z" fill="${col}" ${st}/></g>`; }
+function wall(w, h, o = {}) {
+  const col = o.col || C.wall, dot = o.dot || C.walldot;
+  let dots = ''; for (let y = 30; y < h; y += 56) for (let x = ((y / 56) % 2) * 28 + 20; x < w; x += 56) dots += `<circle cx="${x}" cy="${y}" r="7" fill="${dot}"/>`;
+  return layer(0, `<rect x="-20" y="-20" width="${w + 40}" height="${h + 40}" fill="${col}"/>${dots}<rect x="-20" y="${h * (o.wain ?? 0.62)}" width="${w + 40}" height="${h}" fill="${C.woodl}" ${st}/>${Array.from({ length: Math.ceil(w / 70) + 1 }, (_, i) => `<path d="M${i * 70} ${h * (o.wain ?? 0.62) + 6} V${h + 20}" stroke="${C.wood}" stroke-width="4"/>`).join('')}`);
+}
+function floor(w, h, y) { return layer(1, `<path d="M-20 ${y} H${w + 20} V${h + 20} H-20Z" fill="${C.floor}" ${st}/>${Array.from({ length: 8 }, (_, i) => `<path d="M${-20 + i * w / 6} ${y} L${-200 + i * w / 4.2} ${h + 20}" stroke="#D3A97A" stroke-width="4"/>`).join('')}`); }
+function windowFrame(x, y, w, h, inner) { return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${w * 0.5 > 60 ? 30 : w * 0.3}" fill="${C.wood}" ${st}/><g><clipPath id="wc${x}${y}"><rect x="${x + 12}" y="${y + 12}" width="${w - 24}" height="${h - 24}" rx="20"/></clipPath><g clip-path="url(#wc${x}${y})">${inner}</g></g><rect x="${x + 12}" y="${y + 12}" width="${w - 24}" height="${h - 24}" rx="20" fill="none" ${st}/><path d="M${x + w / 2} ${y + 12} V${y + h - 12} M${x + 12} ${y + h / 2} H${x + w - 12}" stroke="${C.wood}" stroke-width="10"/><path d="M${x + w / 2} ${y + 12} V${y + h - 12} M${x + 12} ${y + h / 2} H${x + w - 12}" stroke="${INK}" stroke-width="3" opacity="0.5"/>`; }
+const skyFill = (mode) => ({ day: '#BFE0EA', dusk: '#F2B48A', storm: '#7E8FA6', night: '#4B4466', gold: '#F7D88A' }[mode]);
+// ---------- dao cu
+const pr = {
+  box: (x, y, s = 1) => `<g transform="translate(${x},${y}) scale(${s})"><path d="M-60 -70 H60 V0 H-60Z" fill="${C.woodl}" ${st}/><path d="M-60 -70 l18 -22 h84 l18 22" fill="#E8C690" ${st}/><rect x="-26" y="-60" width="18" height="34" rx="4" fill="${C.mint}" stroke="${INK}" stroke-width="3"/><circle cx="22" cy="-82" r="14" fill="${C.coral}" stroke="${INK}" stroke-width="3"/><path d="M-4 -92 q6 -26 22 -22" fill="none" stroke="${C.green}" stroke-width="6" stroke-linecap="round"/></g>`,
+  key: (x, y, s = 1, rot = 0) => `<g transform="translate(${x},${y}) rotate(${rot}) scale(${s})"><circle r="18" fill="${C.must}" ${st}/><circle r="7" fill="${C.cream}" stroke="${INK}" stroke-width="3"/><path d="M16 -5 h46 v10 h-8 v10 h-8 v-10 h-6 v8 h-8 v-8 h-16z" fill="${C.must}" stroke="${INK}" stroke-width="4" stroke-linejoin="round"/></g>`,
+  pot: (x, y, s = 1, steam = true) => `<g transform="translate(${x},${y}) scale(${s})">${steam ? `<path d="M-20 -86 q-14 -18 0 -36 q14 -18 0 -36 M12 -86 q-14 -18 0 -36 q14 -18 0 -36" fill="none" stroke="#FFFFFF" stroke-width="9" stroke-linecap="round" opacity="0.9"/>` : ''}<path d="M-70 -64 h140 v40 q0 26 -30 26 h-80 q-30 0 -30 -26z" fill="${C.coral}" ${st}/><rect x="-80" y="-74" width="160" height="16" rx="8" fill="#D9503F" ${st}/><path d="M-90 -50 h-16 M90 -50 h16" stroke="${INK}" stroke-width="10" stroke-linecap="round"/><path d="M-40 -44 h20" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round" opacity="0.7"/></g>`,
+  candle: (x, y, s = 1) => `<g transform="translate(${x},${y}) scale(${s})"><ellipse cx="0" cy="0" rx="26" ry="8" fill="${C.must}" ${st}/><rect x="-12" y="-56" width="24" height="56" rx="4" fill="${C.cream}" ${st}/><path d="M0 -56 v-10" stroke="${INK}" stroke-width="3"/><path d="M0 -96 q14 18 0 30 q-14 -12 0 -30z" fill="#FFC46B" stroke="${INK}" stroke-width="3"/><path d="M0 -84 q5 8 0 14 q-5 -6 0 -14z" fill="#FFF3DC"/></g>`,
+  dish: (x, y, s = 1, glow = false) => `<g transform="translate(${x},${y}) scale(${s})">${glow ? '<circle cx="0" cy="-40" r="150" fill="url(#glowY)"/>' : ''}<ellipse cx="0" cy="0" rx="110" ry="30" fill="#FFFDF6" ${st}/><path d="M-80 -6 q-4 -60 80 -64 q84 4 80 64 q-80 22 -160 0z" fill="${C.must}" ${st}/><path d="M-56 -20 q10 -30 40 -26 q-6 20 -40 26z" fill="${C.coral}" stroke="${INK}" stroke-width="3"/><path d="M-40 -30 l-10 -6" stroke="${INK}" stroke-width="3"/><circle cx="6" cy="-58" r="12" fill="${C.mint}" stroke="${INK}" stroke-width="3"/><circle cx="26" cy="-46" r="9" fill="${C.coral}" stroke="${INK}" stroke-width="3"/><path d="M-8 -66 q-6 -16 8 -22 q6 14 -8 22z M10 -70 q4 -16 18 -14 q-2 14 -18 14z" fill="${C.green}" stroke="${INK}" stroke-width="2.5"/><path d="M30 -22 q14 -8 30 2 q-14 14 -30 -2z" fill="#F7EBD0" stroke="${INK}" stroke-width="3"/></g>`,
+  bill: (x, y, s = 1, rot = 0, text = 'GIẤY NỢ') => `<g transform="translate(${x},${y}) rotate(${rot}) scale(${s})"><path d="M-60 -80 H60 V70 l-12 10 l-12 -10 l-12 10 l-12 -10 l-12 10 l-12 -10 l-12 10 l-12 -10 l-12 10 l-12 -10 Z" fill="#FFFDF6" ${st}/><text x="0" y="-46" text-anchor="middle" font-family="'Baloo 2', sans-serif" font-weight="800" font-size="24" fill="${C.coral}">${text}</text><path d="M-40 -20 h80 M-40 0 h80 M-40 20 h50" stroke="${INK}" stroke-width="4" stroke-linecap="round" opacity="0.6"/><circle cx="30" cy="44" r="18" fill="none" stroke="${C.coral}" stroke-width="5"/></g>`,
+  flyer: (x, y, s = 1, rot = 0) => `<g transform="translate(${x},${y}) rotate(${rot}) scale(${s})"><rect x="-50" y="-66" width="100" height="132" fill="#E7E0F2" ${st}/><text x="0" y="-30" text-anchor="middle" font-family="'Baloo 2', sans-serif" font-weight="800" font-size="22" fill="#5A4A80">QUÁN</text><text x="0" y="-6" text-anchor="middle" font-family="'Baloo 2', sans-serif" font-weight="800" font-size="22" fill="#5A4A80">BẨN!!</text><path d="M-30 18 l60 30 M30 18 l-60 30" stroke="${C.coral}" stroke-width="7" stroke-linecap="round"/></g>`,
+  stool: (x, y, s = 1) => `<g transform="translate(${x},${y}) scale(${s})"><path d="M-34 0 l8 -60 M34 0 l-8 -60" stroke="${INK}" stroke-width="10" stroke-linecap="round"/><path d="M-34 0 l8 -60 M34 0 l-8 -60" stroke="${C.wood}" stroke-width="5" stroke-linecap="round"/><ellipse cx="0" cy="-64" rx="44" ry="14" fill="${C.coral}" ${st}/></g>`,
+  plant: (x, y, s = 1) => `<g transform="translate(${x},${y}) scale(${s})"><path d="M0 -60 q-60 -30 -50 -110 q40 30 50 110z M0 -60 q60 -40 56 -120 q-44 30 -56 120z M0 -60 q-10 -80 10 -150 q20 80 -10 150z" fill="${C.green}" ${st}/><path d="M-40 -60 h80 l-12 60 h-56z" fill="${C.coral}" ${st}/></g>`,
+  lantern: (x, y, s = 1, lit = true) => `<g transform="translate(${x},${y}) scale(${s})">${lit ? '<circle r="90" fill="url(#candle)"/>' : ''}<path d="M0 -60 v14" stroke="${INK}" stroke-width="4"/><ellipse cx="0" cy="0" rx="34" ry="46" fill="${C.coral}" ${st}/><path d="M-34 0 h68 M-30 -20 h60 M-30 20 h60" stroke="${INK}" stroke-width="3" opacity="0.5"/><rect x="-16" y="-52" width="32" height="10" fill="${INK}"/><rect x="-16" y="42" width="32" height="10" fill="${INK}"/></g>`,
+  star: (x, y, s = 1, col = C.must) => `<path transform="translate(${x},${y}) scale(${s})" d="M0 -30 l9 19 l21 3 l-15 15 l4 21 l-19 -10 l-19 10 l4 -21 l-15 -15 l21 -3z" fill="${col}" ${st}/>`,
+  camera: (x, y, s = 1) => `<g transform="translate(${x},${y}) scale(${s})"><rect x="-50" y="-34" width="100" height="68" rx="12" fill="${C.blue}" ${st}/><circle r="22" fill="${INK}"/><circle r="12" fill="#5A7FB8"/><circle cx="-5" cy="-5" r="4" fill="#fff"/><rect x="18" y="-46" width="24" height="14" rx="3" fill="${C.coral}" ${st}/></g>`,
+  ring: (x, y, s = 1) => `<g transform="translate(${x},${y}) scale(${s})"><circle r="26" fill="none" stroke="${INK}" stroke-width="14"/><circle r="26" fill="none" stroke="${C.must}" stroke-width="8"/><path d="M0 -36 l14 -14 l-14 -14 l-14 14z" fill="${C.blue}" ${st}/></g>`,
+};
+// ---------- mat tien quan
+function facade(x, y, s = 1, o = {}) {
+  const old = o.old, sign = o.sign || (old ? 'QUÁN CŨ' : 'QUÁN CỦA HOPE');
+  return `<g transform="translate(${x},${y}) scale(${s})">
+  <path d="M-260 0 V-300 H260 V0Z" fill="${old ? '#D9C6A2' : C.wall}" ${st}/>
+  ${old ? '<path d="M-200 -260 l40 30 l-20 20 M180 -120 l-30 20 l10 30" fill="none" stroke="#8A7558" stroke-width="5" stroke-linecap="round"/>' : ''}
+  <path d="M-300 -300 Q0 -420 300 -300 Z" fill="${old ? '#9A6B4F' : C.coral}" ${st}/>
+  ${Array.from({ length: 6 }, (_, i) => `<path d="M${-300 + i * 100} -300 q50 40 100 0" fill="${old ? '#B08068' : '#F4A08F'}" ${st}/>`).join('')}
+  <g transform="rotate(${old ? -6 : 0} 0 -360)"><rect x="-150" y="-392" width="300" height="64" rx="14" fill="${C.cream}" ${st}/><text x="0" y="-348" text-anchor="middle" font-family="'Baloo 2', sans-serif" font-weight="800" font-size="40" fill="${old ? '#8A7558' : C.coral}">${sign}</text></g>
+  <rect x="-80" y="-200" width="160" height="200" rx="14" fill="${C.wood}" ${st}/>
+  ${old ? '<rect x="-80" y="-200" width="160" height="200" rx="14" fill="#6B4A3A" opacity="0.45"/>' : `<path d="M-80 -200 H80 V-120 Q60 -110 40 -120 Q20 -110 0 -120 Q-20 -110 -40 -120 Q-60 -110 -80 -120Z" fill="${C.coral}" ${st}/><path d="M-27 -200 V-118 M27 -200 V-118" stroke="${INK}" stroke-width="4"/>`}
+  <circle cx="50" cy="-90" r="8" fill="${C.must}" stroke="${INK}" stroke-width="3"/>
+  ${windowFrame(-230, -230, 120, 130, `<rect x="-300" y="-300" width="600" height="400" fill="${o.lit ? '#FFE27A' : '#9CC7D8'}"/>`)}
+  ${windowFrame(110, -230, 120, 130, `<rect x="-300" y="-300" width="600" height="400" fill="${o.lit ? '#FFE27A' : '#9CC7D8'}"/>`)}
+  ${old ? '<path d="M120 -220 l40 50 M200 -220 l-60 70" stroke="#8A7558" stroke-width="6"/>' : ''}
+  </g>`;
+}
+function cityFar(w, baseY, col = '#E3B392', seed = 1) {
+  let s = ''; let x = -40; let i = 0;
+  while (x < w + 40) { const bw = 70 + ((i * 53 + seed * 17) % 60), bh = 90 + ((i * 71 + seed * 29) % 140); s += `<path d="M${x} ${baseY} V${baseY - bh + 20} q${bw / 2} -40 ${bw} 0 V${baseY}Z" fill="${col}" stroke="${INK}" stroke-width="4"/>`; if (i % 2) s += `<rect x="${x + bw / 2 - 10}" y="${baseY - bh + 40}" width="20" height="26" rx="6" fill="${C.cream}" opacity="0.6"/>`; x += bw - 6; i++; }
+  return s;
+}
+function rain(w, h, n = 70, op = 0.7) { let s = ''; for (let i = 0; i < n; i++) { const x = (i * 97.3) % (w + 100) - 50, y = (i * 61.7) % h; s += `<path d="M${x} ${y} l-14 46" stroke="#E8F3F8" stroke-width="4" stroke-linecap="round"/>`; } return `<g opacity="${op}">${s}</g>`; }
+function bolt(x, y, s = 1) { return `<path transform="translate(${x},${y}) scale(${s})" d="M0 0 l-40 110 h36 l-30 120 l90 -150 h-40 l34 -80z" fill="${C.must}" ${st}/>`; }
+function confetti(w, h, n = 60) { const cols = [C.coral, C.must, C.mint, C.blue, C.lilac, C.pink]; let s = ''; for (let i = 0; i < n; i++) { const x = (i * 83.1) % w, y = (i * 47.9) % h, r = (i * 37) % 180; s += `<rect x="${x}" y="${y}" width="16" height="9" rx="2" fill="${cols[i % 6]}" stroke="${INK}" stroke-width="2" transform="rotate(${r} ${x} ${y})"/>`; } return s; }
+function darkness(w, h, lights, op = 0.62) { // lights: [[x,y,r]]
+  const id = 'dk' + Math.round(Math.random() * 1e6);
+  return `<mask id="${id}"><rect x="-20" y="-20" width="${w + 40}" height="${h + 40}" fill="#fff"/>${lights.map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r}" fill="url(#lightMask)"/>`).join('')}</mask>
+  <rect x="-20" y="-20" width="${w + 40}" height="${h + 40}" fill="#2A2445" opacity="${op}" mask="url(#${id})"/>${lights.map(([x, y, r]) => `<circle cx="${x}" cy="${y}" r="${r * 0.9}" fill="url(#candle)" style="mix-blend-mode:screen"/>`).join('')}`;
+}
+module.exports = { cloud, wall, floor, windowFrame, skyFill, pr, facade, cityFar, rain, bolt, confetti, darkness, st };

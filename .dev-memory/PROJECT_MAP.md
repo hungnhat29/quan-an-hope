@@ -1,5 +1,5 @@
 # PROJECT MAP
-Cập nhật: 2026-11-16
+Cập nhật: 2026-11-18
 ## Stack
 - Unity 6000.6.9f1 (D:\Unity\6000.6.9f1), URP 17.6.0, Input System 1.20.1, uGUI 2.6.0 [nguồn: My project/Packages/manifest.json]
 - Test: com.unity.test-framework 1.8.0 (builtin), Newtonsoft 3.2.1. Git + LFS, remote github.com/hungnhat29/quan-an-hope. Chưa có: Blender, gh CLI
@@ -51,3 +51,17 @@ Cập nhật: 2026-11-16
 - Core/Bots.cs (moi): BotStyle (Naive/NoCombo/Smart), StrategyBot (chien thuat chep tu sim_balance.py tren luat that), BotRun, BotStats (bang cung dang sim + so chenh). Lenh balance/run_bots.ps1 -> balance/bot_report.md
 - Game: GameController PlayableRounds=4, DebugStartAt/DebugAddCrate, PendingIsBlack, IsBossReaction, toast vong 3/4/ngay 14/ngay 21; RoomViewRound2 BuildBossLook (mu + day vang), BossFrame bong bong vang; RoomView khe ve den "BlackRelic" (cot giua sach va be dau Goc 3), DishModel + LegendHalo; PanView vi nuong lat + vet nuong, noi hap co nap (RimY tu hinh noi that); FaceArt.Boss (lanh lung / ngac nhien); IngredientModels 8 nguyen lieu vong 3-4 chi tiet; Hud man thang / thua ngay 22
 - Tests: EditMode Sprint5Tests (31), Sprint5BotTests (5 + 1 Explicit bao cao); PlayMode +5 (F043_F044_*, F044_*, F042_*, F041_*, F040_*), anh docs/sprint-5/ui; F035 doi: ngay 9 choi tiep
+
+## Truoc sprint 6 + Sprint 6 (18/11) — khung game, constitution 1.5
+- Phong 9,6 m: BepNhanPham/Scripts/RoomSize.cs (Grow 0,8, Width, Half); BuildNhaHang day moi Goc ra Grow, tuong/san/tran theo W; test PlayMode dung MinX..MaxZ +- Grow, toa do phia Goc 1 + Grow
+- Khach an: balance.json day.eat_s = 5 (DayRules.eatSeconds); GameSession Eaters/EatingDish/EatProgress/AnyoneEating, FreeSeat (ghe trong sau khi an xong; chu no vao ngay); Game/EatingFx.cs (EatingFx dua + mon voi 4 mieng, LeaveFx roi ghe, Sway den dung dua)
+- Core/SaveGame.cs: SaveData/SaveDish, GameSession.Snapshot()/FromSave() (partial); SeededRandom.Seed/Draws/AdvanceTo; Restore() noi bo o TicketWallet, ItemShop, Fridge, RelicShop; StrategyBot.PlayUntil
+- Core/Story.cs: StoryScene, StoryPanel, StoryScript.Intro/Win/Lose/Money ("32.000G")
+- Game: GameMode (Menu/Story/Playing/Paused) trong GameController (ShowMainMenu, StartNewGame, ContinueGame, Pause/Resume, PlayEnding, AutoSave, ReloadSettings, MenuCameraPosition); MenuView.cs (menu chinh, tam dung, cai dat, chieu truyen); StoryArt.cs (tranh phac bang UI); Tutorial.cs (10 buoc + mui ten 3D); GameSettings.cs (PlayerPrefs, Prefix cho test); SaveStore.cs (save.json, Directory cho test); Hud: dong huong dan, nut "Ve menu chinh" o man thang/thua; PlayerController: EscapePressed, HoldCamera/ReleaseCamera, InvertY
+- F-055: RoomView.ShopName (TMP "QUAN NHAN PHAM" thay sign.png), RoomView.TextImages (33 anh chu), BuildNhaHang bo quad Sign, UpgradeLabel
+- Tests: EditMode EatingTests (8), Sprint6Tests (12); PlayMode Sprint6PlayTests.cs (partial PlaythroughTests, 9 kich ban), anh docs/sprint-6/ui
+- Ngoai cua (18/11): BepNhanPham/Editor/BuildStreet.cs (WallMesh tuong Goc 1 co lo cua vom, Frame, Street 4 lop Goc1/Street/Gan|Giua|Xa|Troi); bo quad DoorStreet; RoomView.BuildSway them long den pho + Drift may (EatingFx.cs)
+- 19/11: Game/SkyCycle.cs (troi ngoai cua doi mau theo DayClock.HourOfDay, MaterialPropertyBlock; RoomView.Sky); Game/StoryComic.cs (trang truyen tranh ngang: bo cuc + khung chen, khung hien lan luot, camera tung khung); Game/StoryStage.cs (san khau 6 lop, 9 boi canh); Game/StoryChibi.cs (nhan vat chibi: bieu cam, dang, hoat anh muot); Game/StoryShapes.cs (hinh ve bang code); Core StoryShot/ShotFrame, StoryPanel = trang (shots, layout); bo StoryArt; bao cao reports/Phong cách giấy cắt lớp diorama.md + research_notes/
+- 19/11 (2): cot truyen ve lai: Resources/Shaders/InkShape.shader (SDF uGUI) + Game/InkCanvas.cs (Begin/End bo phan, Box/Ellipse/Capsule/Hose/Arc/RingEye); Game/Puppet.cs (Hope/Boss/Daughter, Mood, Prop, HandFrontAt); Game/StoryStage.cs (9 canh nhieu lop, SfxAt, LayerFactor/LayerRect); Game/StoryComic.cs (dai ngang, PrimeTween, PanelDim); StoryArt.cs da xoa; Core StoryScene.Payoff; package com.kyrylokuzyk.primetween 1.5.3 (npm scoped registry), asmdef Game tham chieu PrimeTween.Runtime
+- 20/11 cot truyen zip: tools/cot-truyen (nguon/*.js tu zip, export.js -> Resources/CotTruyen/Trang_N.json + PNG lop, README); Game/ComicBook.cs (ComicPageData/ComicCue/PolygonGraphic, MenuView dung khi StoryPanel.comicPage > 0); Core StoryScript.Chapter/ChapterPageFor/ComicDayMap, StoryPanel.Comic(); GameController.PlayChapter + PlayChapters/ChaptersByDefault (test tat); GameSettings.comicMotion; Editor/ComicTextureImporter.cs; docs/cot-truyen (mo ta hoat anh, bao cao goc); ket thua van dung StoryComic/StoryStage (phien 19/11)
+- 20/11 chuyen dong muot: Game/CharacterMotion.cs (Lively tren khoi khach: tat BepNhanPham.Bob, Hop/Shake/Chew/Leave; IngredientIdle tren GiuHinh cua ItemView, chay truoc FaceBillboard); FaceBillboard chop mat (Blinking); LeaveFx/EatingFx uy quyen cho Lively; SeatView.Mood

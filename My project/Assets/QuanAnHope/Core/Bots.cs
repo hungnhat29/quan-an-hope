@@ -98,6 +98,17 @@ namespace QuanAnHope.Core
             public bool Good { get { return style != BotStyle.Naive; } }
         }
 
+        /// <summary>Choi toi dau ngay <paramref name="day"/> (pha Prep) hoac het van. Dung cho test luu / tai (F-052).</summary>
+        public static void PlayUntil(GameSession s, BotStyle style, int day)
+        {
+            var c = new Ctx { s = s, style = style, timing = style == BotStyle.Naive ? BotTiming.Naive : Good, run = new BotRun { style = style } };
+            while (s.Phase == GamePhase.Prep && s.Day < day)
+            {
+                PlayDay(c);
+                s.StartNextDay();
+            }
+        }
+
         public static GamePhase PlayToEnd(GameSession s, BotStyle style)
         {
             var c = new Ctx

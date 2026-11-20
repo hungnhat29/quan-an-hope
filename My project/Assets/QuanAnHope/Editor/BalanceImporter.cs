@@ -163,6 +163,7 @@ namespace QuanAnHope.EditorTools
                 bossHour = Int(day, "boss_hour"),
                 bossDay = Int(day, "boss_day"),
                 nextCustomerSeconds = Float(day, "next_customer_s"),
+                eatSeconds = Float(day, "eat_s"),
             };
 
             b.relicCap = Int(root, "relic_cap");

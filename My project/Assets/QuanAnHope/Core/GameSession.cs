@@ -25,7 +25,7 @@ namespace QuanAnHope.Core
     /// Mot van choi: ngay, tien, ve, kho, bep, quay cho, khach (constitution muc 2, 3, 4.2, 5.1, 6).
     /// Lop nay khong biet gi ve Unity; thoi gian di vao qua Tick (dong ho, khach) va HoldPrep / Stove.Tick (bep).
     /// </summary>
-    public class GameSession
+    public partial class GameSession
     {
         readonly IRandom rng;
         readonly IngredientGacha gacha;
@@ -65,6 +65,34 @@ namespace QuanAnHope.Core
         public int SeatCount { get { return seats.Length; } }
         Customer[] seats = new Customer[0];
         float[] seatTimers = new float[0];
+
+        // Khach da duoc phuc vu, dang an (constitution 1.5 muc 6.2): ghe chua trong cho toi khi an xong.
+        Customer[] eaters = new Customer[0];
+        Dish[] eatingDishes = new Dish[0];
+        float[] eatTimers = new float[0];
+
+        /// <summary>Khach dang an o tung ghe (null = khong ai an). Khach dang an khong goi mon, khong nhan dia.</summary>
+        public IReadOnlyList<Customer> Eaters { get { return eaters; } }
+
+        /// <summary>Dia khach o ghe nay dang an (null neu khong ai an).</summary>
+        public Dish EatingDish(int seat) { return seat >= 0 && seat < eatingDishes.Length ? eatingDishes[seat] : null; }
+
+        /// <summary>Phan mon da an o ghe nay, 0..1 (0 neu khong ai an).</summary>
+        public float EatProgress(int seat)
+        {
+            if (seat < 0 || seat >= eaters.Length || eaters[seat] == null || Balance.day.eatSeconds <= 0f) return 0f;
+            return Math.Max(0f, Math.Min(1f, 1f - eatTimers[seat] / Balance.day.eatSeconds));
+        }
+
+        /// <summary>Con khach nao dang an khong.</summary>
+        public bool AnyoneEating
+        {
+            get
+            {
+                foreach (Customer c in eaters) if (c != null) return true;
+                return false;
+            }
+        }
 
         /// <summary>Khach den som nhat trong so khach dang ngoi (vong 1: khach duy nhat); null neu khong co ai.</summary>
         public Customer CurrentCustomer
@@ -166,9 +194,15 @@ namespace QuanAnHope.Core
         int BossSeat()
         {
             int mid = seats.Length / 2;
-            if (seats[mid] == null) return mid;
-            for (int i = 0; i < seats.Length; i++) if (seats[i] == null) return i;
+            if (SeatFree(mid)) return mid;
+            for (int i = 0; i < seats.Length; i++) if (SeatFree(i)) return i;
             return -1;
+        }
+
+        /// <summary>Ghe khong co khach ngoi doi va khong co khach dang an.</summary>
+        bool SeatFree(int i)
+        {
+            return seats[i] == null && eaters[i] == null;
         }
 
         void SeatBoss(int seat)
@@ -284,6 +318,9 @@ namespace QuanAnHope.Core
             int n = Balance.SeatsForDay(Day);
             seats = new Customer[n];
             seatTimers = new float[n];
+            eaters = new Customer[n];
+            eatingDishes = new Dish[n];
+            eatTimers = new float[n];
             for (int i = 0; i < n; i++) seatTimers[i] = -1f;
             Stove.BurnEnabled = Round >= Recipes.timing.burnFromRound;
             Stove.CookMultiplier = IsBlackout ? Balance.blackout.cookMultiplier : 1f;
@@ -521,6 +558,18 @@ namespace QuanAnHope.Core
                 // Khach dang ngoi cho them (constitution muc 6.6).
                 foreach (Customer c in seats) if (c != null) c.waitedSeconds += seconds;
 
+                // Khach an xong thi roi ghe; khach moi vao sau nextCustomerSeconds tinh tu luc do (muc 6.2).
+                for (int i = 0; i < eaters.Length; i++)
+                {
+                    if (eaters[i] == null) continue;
+                    float left = eatTimers[i];
+                    eatTimers[i] -= seconds;
+                    if (eatTimers[i] > 0f) continue;
+                    eaters[i] = null;
+                    eatingDishes[i] = null;
+                    FreeSeat(i, Math.Max(0f, left));
+                }
+
                 for (int i = 0; i < seats.Length; i++)
                 {
                     if (seats[i] != null || seatTimers[i] < 0f) continue;
@@ -537,7 +586,7 @@ namespace QuanAnHope.Core
                 }
             }
 
-            if (IsClosedForNewCustomers && CurrentCustomer == null && !(Phase == GamePhase.Open && BossWaiting)) EndDay();
+            if (IsClosedForNewCustomers && CurrentCustomer == null && !AnyoneEating && !(Phase == GamePhase.Open && BossWaiting)) EndDay();
         }
 
         void SeatCustomer(int seat)
@@ -645,16 +694,32 @@ namespace QuanAnHope.Core
             LastPayment = payment;
             ServedToday++;
 
-            // Ghe trong: khach moi vao sau vai giay; qua 21:00 thi khong ai vao nua (muc 6.2).
             seats[seat] = null;
+            if (Balance.day.eatSeconds > 0f)
+            {
+                // Khach an tai ghe (constitution 1.5 muc 6.2); an xong moi roi ghe (Tick).
+                eaters[seat] = c;
+                eatingDishes[seat] = dish;
+                eatTimers[seat] = Balance.day.eatSeconds;
+                seatTimers[seat] = -1f;
+            }
+            else FreeSeat(seat, 0f);
+            return payment;
+        }
+
+        /// <summary>
+        /// Ghe vua trong (khach an xong): chu no dang doi thi vao ngay; qua 21:00 thi khong ai vao nua, het khach thi het ngay;
+        /// con lai khach moi vao sau nextCustomerSeconds. <paramref name="offset"/>: ghe trong tu bay nhieu giay sau dau buoc Tick.
+        /// </summary>
+        void FreeSeat(int seat, float offset)
+        {
             if (BossWaiting) SeatBoss(seat); // chu no dang doi ghe: vao ngay (muc 6.2 "chiem mot ghe")
             else if (IsClosedForNewCustomers)
             {
                 seatTimers[seat] = -1f;
-                if (CurrentCustomer == null) EndDay();
+                if (CurrentCustomer == null && !AnyoneEating) EndDay();
             }
-            else seatTimers[seat] = Balance.day.nextCustomerSeconds;
-            return payment;
+            else seatTimers[seat] = offset + Balance.day.nextCustomerSeconds;
         }
 
         /// <summary>Dong quan khi con khach: khach con lai ra ve, khong tra va khong phat.</summary>
@@ -668,7 +733,7 @@ namespace QuanAnHope.Core
         void EndDay()
         {
             ClosedAt = Clock.Text;
-            for (int i = 0; i < seats.Length; i++) { seats[i] = null; seatTimers[i] = -1f; }
+            for (int i = 0; i < seats.Length; i++) { seats[i] = null; seatTimers[i] = -1f; eaters[i] = null; eatingDishes[i] = null; }
             Stock.Clear();
             // Dia con tren quay cho vao tu lanh neu con o, khong thi bi bo (constitution muc 5.1, 5.7).
             foreach (Dish d in Counter.Dishes) Fridge.TryStore(d);

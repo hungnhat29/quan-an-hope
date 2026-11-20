@@ -41,3 +41,6 @@ __pycache__/
 # Bo nho dev-pilot: chi muc tu sinh
 /.dev-memory/index/manifest.tsv
 /.dev-memory/index/last-sync.txt
+
+# Cong cu xuat truyen tranh
+/tools/cot-truyen/node_modules/

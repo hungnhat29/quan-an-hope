@@ -65,8 +65,10 @@ namespace QuanAnHope.Game
             }
             if (Sizzle)
             {
-                float bob = Mathf.Abs(Mathf.Sin(Time.time * 16f + phase)) * 0.012f;
+                // xeo xeo: nay muot (khong |sin| gay goc), nghieng nhe
+                float bob = (0.5f + 0.5f * Mathf.Sin(Time.time * 11f + phase)) * 0.012f;
                 transform.localPosition = target + Vector3.up * bob;
+                transform.localRotation = Quaternion.Euler(Mathf.Sin(Time.time * 7f + phase) * 4f, 0f, Mathf.Sin(Time.time * 9f + phase * 1.3f) * 4f);
             }
             else transform.localPosition = target;
         }

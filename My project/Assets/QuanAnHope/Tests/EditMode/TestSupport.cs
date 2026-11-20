@@ -13,6 +13,12 @@ namespace QuanAnHope.Tests
         static Balance balance;
         static RecipeBook recipes;
 
+        /// <summary>Khach an xong roi ghe sau bay nhieu giay (constitution 1.5 muc 6.2).</summary>
+        public static float Eat { get { return Balance.day.eatSeconds; } }
+
+        /// <summary>Tu luc phuc vu toi luc khach ke tiep ngoi vao ghe do: an xong + 3 giay.</summary>
+        public static float NextSeat { get { return Balance.day.eatSeconds + Balance.day.nextCustomerSeconds; } }
+
         public static Balance Balance
         {
             get { return balance ?? (balance = BalanceImporter.ParseBalance(File.ReadAllText(BalanceImporter.BalanceJsonPath), File.ReadAllText(BalanceImporter.RelicsJsonPath))); }

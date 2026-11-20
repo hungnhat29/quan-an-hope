@@ -8,6 +8,15 @@ using UnityEngine.SceneManagement;
 
 namespace QuanAnHope.Game
 {
+    /// <summary>Man dang hien (sprint 6, F-050): menu chinh, cot truyen, dang choi trong phong, tam dung.</summary>
+    public enum GameMode
+    {
+        Menu,
+        Story,
+        Playing,
+        Paused,
+    }
+
     public enum HandKind
     {
         Empty,
@@ -30,6 +39,22 @@ namespace QuanAnHope.Game
         public PlayerController Player { get; private set; }
         public RoomView Room { get; private set; }
         public Hud Hud { get; private set; }
+
+        // ---- sprint 6: khung game ----
+        public GameMode Mode { get; private set; }
+        public MenuView Menu { get; private set; }
+        public GameSettings Settings { get; private set; }
+        public Tutorial Tutorial { get; private set; }
+
+        /// <summary>Tu luu dau moi ngay (F-052). Tat voi van do test / go loi tao (NewGame truc tiep).</summary>
+        public bool AutoSave { get; private set; }
+
+        /// <summary>
+        /// Menu chinh nhin tu cua vao phong (kich ban 10 giay sprint 6): dung ngay trong rem cua Goc 1 (rem o z = 3,72 + Grow,
+        /// mep duoi 2,65 m), cao hon quay, nhin ve phia Goc 4; thay den treo dung dua phia tren.
+        /// </summary>
+        public static readonly Vector3 MenuCameraPosition = new Vector3(0f, 2.55f, 3.45f + BepNhanPham.RoomSize.Grow);
+        public static readonly Quaternion MenuCameraRotation = Quaternion.Euler(10f, 180f, 0f);
 
         // ---- tay nguoi choi (constitution Dieu 5: cam toi da mot thu) ----
         public HandKind Hand { get; private set; }
@@ -104,13 +129,9 @@ namespace QuanAnHope.Game
 
         void Awake()
         {
-            // Ban build luon mo toan man hinh o do phan giai goc, ke ca khi lan chay truoc da luu che do cua so
-            // (Unity nho che do man hinh trong registry). Editor va batchmode giu nguyen.
-            if (!Application.isEditor && !Application.isBatchMode)
-            {
-                Resolution native = Screen.currentResolution;
-                Screen.SetResolution(native.width, native.height, FullScreenMode.FullScreenWindow);
-            }
+            // Man hinh theo Cai dat (F-054): mac dinh toan man hinh do phan giai goc (L-011: khong de che do cua so
+            // con sot lai tu lan chay thu). Editor va batchmode giu nguyen.
+            Settings = GameSettings.Load();
 
             data = Resources.Load<BalanceData>(BalanceResource);
             if (data == null)
@@ -124,12 +145,142 @@ namespace QuanAnHope.Game
             if (playerGo == null) playerGo = new GameObject("Player");
             Player = PlayerController.Attach(playerGo);
             Player.SecondaryPressed += PutDown;
+            Player.EscapePressed += OnEscape;
             FaceBillboard.View = Player.Cam;
+            Settings.Apply(Player, true);
 
             NewGame(Environment.TickCount);
             Room = new RoomView(this, GameObject.Find(RoomRootName).transform);
             Hud = new Hud(this);
+            Menu = new MenuView(this);
+            Tutorial = new Tutorial(this);
+            ShowMainMenu();
+        }
+
+        // =====================================================================
+        // Khung game (sprint 6): menu, cot truyen, tam dung, luu / tai
+        // =====================================================================
+
+        /// <summary>Menu chinh (F-050 AC-1): camera nhin tu cua, con tro chuot hien, dong ho dung.</summary>
+        public void ShowMainMenu()
+        {
+            Mode = GameMode.Menu;
+            if (Tutorial != null) Tutorial.Stop();
+            ClearHands();
+            Player.HoldCamera(MenuCameraPosition, MenuCameraRotation);
+            PlayerController.SetCursorLocked(false);
+            if (Menu != null) Menu.ShowMain();
             Changed();
+        }
+
+        /// <summary>"Choi moi": van moi, cot truyen mo dau roi vao ngay 1 (co huong dan neu la van dau).</summary>
+        public void StartNewGame()
+        {
+            int before = GameSettings.GamesStarted;
+            GameSettings.GamesStarted = before + 1;
+            NewGame(Environment.TickCount);
+            AutoSave = true;
+            SaveStore.Save(Session.Snapshot());
+            if (Tutorial != null) Tutorial.Begin(Settings.TutorialForNewGame(before));
+            Mode = GameMode.Story;
+            Player.HoldCamera(MenuCameraPosition, MenuCameraRotation);
+            Changed();
+            Menu.PlayStory(StoryScript.Intro(Session.Balance), () =>
+            {
+                EnterPlaying();
+                Say("Ngày 1 · Quán còn đóng: quay nguyên liệu, nấu sẵn rồi bấm biển Mở quán.");
+            });
+        }
+
+        /// <summary>"Choi tiep" (F-052 AC-2): ve dung dau ngay da luu. False neu khong co ban luu.</summary>
+        public bool ContinueGame()
+        {
+            SaveData save = SaveStore.Load();
+            if (save == null) { Menu.ShowMain(); return false; }
+            GameSession loaded;
+            try { loaded = GameSession.FromSave(data.balance, data.recipes, save); }
+            catch (ArgumentException e)
+            {
+                Debug.LogWarning("Quán Ăn Hope: bản lưu hỏng (" + e.Message + ").");
+                SaveStore.Delete();
+                Menu.ShowMain();
+                return false;
+            }
+            UseSession(loaded);
+            AutoSave = true;
+            if (Tutorial != null) Tutorial.Begin(Session.Day == 1 && Settings.TutorialForNewGame(Mathf.Max(0, GameSettings.GamesStarted - 1)));
+            Toast = "Chơi tiếp từ đầu ngày " + Session.Day + ".";
+            EnterPlaying();
+            return true;
+        }
+
+        /// <summary>Vao phong choi: tra camera ve mat Hope, an menu, khoa chuot.</summary>
+        void EnterPlaying()
+        {
+            Mode = GameMode.Playing;
+            Player.ReleaseCamera();
+            if (Menu != null) Menu.HideAll();
+            PlayerController.SetCursorLocked(!ShowsOverlay);
+            Changed();
+        }
+
+        /// <summary>Esc: dang choi thi tam dung; dang tam dung / cai dat thi quay lai (F-050 AC-2).</summary>
+        void OnEscape()
+        {
+            if (Mode == GameMode.Playing) Pause();
+            else if (Mode == GameMode.Paused)
+            {
+                if (Menu.SettingsShown) Menu.CloseSettings();
+                else Resume();
+            }
+            else if (Mode == GameMode.Menu && Menu.SettingsShown) Menu.CloseSettings();
+        }
+
+        /// <summary>Tam dung: dong ho ngay, bep, khach deu dung (Update khong goi Session.Tick).</summary>
+        public void Pause()
+        {
+            if (Mode != GameMode.Playing) return;
+            Mode = GameMode.Paused;
+            PlayerController.SetCursorLocked(false);
+            Menu.ShowPause();
+            Changed();
+        }
+
+        public void Resume()
+        {
+            if (Mode != GameMode.Paused) return;
+            EnterPlaying();
+        }
+
+        public void Quit()
+        {
+            Application.Quit();
+        }
+
+        /// <summary>Cai dat vua doi (MenuView da luu va ap); huong dan bat / tat ngay.</summary>
+        public void OnSettingsChanged()
+        {
+            if (Tutorial != null && Tutorial.Active && Settings.tutorialChosen && !Settings.tutorial) Tutorial.Stop();
+            Changed();
+        }
+
+        public void OnTutorialChanged()
+        {
+            if (Hud != null) Hud.Refresh();
+        }
+
+        /// <summary>Doc lai cai dat (test doi GameSettings.Prefix de khong dung cai dat that).</summary>
+        public void ReloadSettings()
+        {
+            Settings = GameSettings.Load();
+            Settings.Apply(Player, false);
+        }
+
+        /// <summary>Ve menu tu man thang / thua.</summary>
+        public void BackToMenuAfterEnd()
+        {
+            SaveStore.Delete();
+            ShowMainMenu();
         }
 
         /// <summary>Bat dau van moi. Phan choi duoc cua ban nay la vong dau tien trong du lieu.</summary>
@@ -138,9 +289,19 @@ namespace QuanAnHope.Game
 
         public void NewGame(int seed)
         {
-            if (Log == null) Log = new PlaytestLog(Application.persistentDataPath);
             int lastDay = GameSession.LastPlayableDayFor(data.balance, PlayableRounds);
-            Session = new GameSession(data.balance, data.recipes, new SeededRandom(seed), lastDay);
+            UseSession(new GameSession(data.balance, data.recipes, new SeededRandom(seed), lastDay));
+            // Van tao truc tiep (test, go loi) vao thang phong, khong tu luu, khong huong dan.
+            AutoSave = false;
+            if (Tutorial != null) Tutorial.Stop();
+            if (Menu != null) EnterPlaying();
+        }
+
+        /// <summary>Dung mot van choi (moi hoac vua tai): xoa tay, phan ung, thong bao.</summary>
+        void UseSession(GameSession session)
+        {
+            if (Log == null) Log = new PlaytestLog(Application.persistentDataPath);
+            Session = session;
             DishFood.Book = data.recipes;
             ClearHands();
             LastPull = null;
@@ -178,6 +339,13 @@ namespace QuanAnHope.Game
         {
             if (Session == null) return;
             float dt = Time.deltaTime;
+            if (Menu != null) Menu.Tick(Time.unscaledDeltaTime);
+            if (Mode != GameMode.Playing)
+            {
+                // Menu, cot truyen, tam dung: dong ho ngay, bep, khach dung (F-050 AC-2).
+                Player.InputEnabled = false;
+                return;
+            }
 
             // Dong ho ngay chay tu dau ngay ke ca khi quan chua mo (constitution 1.4 muc 2, 6.2).
             Session.Tick(dt * ClockScale);
@@ -214,6 +382,7 @@ namespace QuanAnHope.Game
 
             Player.InputEnabled = !ShowsOverlay;
             if (Room != null) Room.Tick(dt);
+            if (Tutorial != null) Tutorial.Tick(dt);
             if (Hud != null) Hud.Tick();
         }
 
@@ -748,6 +917,8 @@ namespace QuanAnHope.Game
         public bool ServeSeat(int seat)
         {
             if (Session.Phase != GamePhase.Open) { Say("Chưa có khách. Bấm biển Mở quán trước."); return false; }
+            if (seat >= 0 && seat < Session.SeatCount && Session.Seats[seat] == null && Session.Eaters[seat] != null)
+            { Say("Khách đang ăn. Ăn xong khách rời ghế, khách mới vào sau " + Mathf.RoundToInt(Session.Balance.day.nextCustomerSeconds) + " giây."); return false; }
             if (seat < 0 || seat >= Session.SeatCount || Session.Seats[seat] == null) { Say("Ghế này đang trống."); return false; }
             Customer c = Session.Seats[seat];
             if (Hand != HandKind.Dish) { Say("Cầm " + c.orderName + " từ quầy chờ (hoặc tủ lạnh) tới đây."); return false; }
@@ -802,6 +973,8 @@ namespace QuanAnHope.Game
         {
             var sb = new System.Text.StringBuilder();
             foreach (Customer c in Session.Seats) sb.Append(c == null ? 0 : c.number).Append(',');
+            // khach an xong roi ghe cung la mot thay doi can hien (constitution 1.5 muc 6.2)
+            foreach (Customer c in Session.Eaters) sb.Append(c == null ? 0 : -c.number).Append(',');
             return sb.ToString();
         }
 
@@ -836,6 +1009,12 @@ namespace QuanAnHope.Game
         public bool NextDay()
         {
             if (!Session.StartNextDay()) return false;
+            if (AutoSave)
+            {
+                // F-052 AC-1 / AC-3: tu luu dau ngay; thang hoac thua thi xoa ban luu.
+                if (Session.Phase == GamePhase.Prep) SaveStore.Save(Session.Snapshot());
+                else if (Session.Phase == GamePhase.Lost || Session.Phase == GamePhase.Cleared) SaveStore.Delete();
+            }
             ClearHands();
             PendingRelicSlot = -1;
             LastBoughtRelic = null;
@@ -861,7 +1040,46 @@ namespace QuanAnHope.Game
             else Toast = null;
             ClearReactions();
             Changed();
+            if (Menu != null && (Session.Phase == GamePhase.Lost || Session.IsWon)) PlayEnding();
+            else if (Menu != null && PlayChapters && Session.Phase == GamePhase.Prep) PlayChapter(Session.Day);
             return true;
+        }
+
+        /// <summary>
+        /// Trang chuong giua van (CotTruyen Chuong 2-4) chieu dau ngay 2, ngay mat dien, ngay chu no thu lan 3.
+        /// Test choi qua nhieu ngay tat di de khong vuong man truyen.
+        /// </summary>
+        public bool PlayChapters = ChaptersByDefault;
+
+        /// <summary>Mac dinh cho moi GameController (test dat false de ca khi nap lai canh van tat).</summary>
+        public static bool ChaptersByDefault = true;
+
+        /// <summary>Chieu trang chuong cua ngay <paramref name="day"/> neu co; xong thi ve phong choi. False neu ngay khong co chuong.</summary>
+        public bool PlayChapter(int day)
+        {
+            List<StoryPanel> chapter = StoryScript.Chapter(Session.Balance, day);
+            if (chapter.Count == 0 || Menu == null) return false;
+            Mode = GameMode.Story;
+            PlayerController.SetCursorLocked(false);
+            Changed();
+            Menu.PlayStory(chapter, () => EnterPlaying());
+            return true;
+        }
+
+        /// <summary>Tranh ket (F-051 AC-2): thang thi chu no ga con gai; thua thi ghi ro thieu bao nhieu. Xong thi hien man ket thuc.</summary>
+        void PlayEnding()
+        {
+            int due = Session.Balance.DebtDueOn(Session.Day);
+            var panels = Session.IsWon ? StoryScript.Win(Session.Balance, Session.Money) : StoryScript.Lose(Session.Day, due, Session.Money);
+            Mode = GameMode.Story;
+            PlayerController.SetCursorLocked(false);
+            Changed();
+            Menu.PlayStory(panels, () =>
+            {
+                Mode = GameMode.Playing;
+                PlayerController.SetCursorLocked(false);
+                Changed();
+            });
         }
 
         string BossArrivedText(Customer boss)
@@ -876,9 +1094,17 @@ namespace QuanAnHope.Game
             return next != null ? next.day - 1 : -1;
         }
 
+        /// <summary>"Choi lai" o man thang / thua: van moi vao thang ngay 1 (khong chieu lai mo dau), tu luu nhu van thuong.</summary>
         public void Restart()
         {
+            bool save = AutoSave;
             NewGame(Environment.TickCount);
+            if (save)
+            {
+                AutoSave = true;
+                GameSettings.GamesStarted = GameSettings.GamesStarted + 1;
+                SaveStore.Save(Session.Snapshot());
+            }
             Changed();
         }
 

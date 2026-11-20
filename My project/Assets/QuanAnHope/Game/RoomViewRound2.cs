@@ -33,6 +33,15 @@ namespace QuanAnHope.Game
             /// <summary>Do cua chu no (mu, day vang) va vien vang bong bong (sprint 5, Art Bible muc 5, 6).</summary>
             public GameObject BossLook;
             public Image BossFrame;
+
+            /// <summary>Khach dang an (constitution 1.5 muc 6.2): diem truoc mieng, dia dang an, hoat anh.</summary>
+            public Transform Mouth;
+            public Dish ServedFor;
+            public EatingFx Eating;
+            public Customer EaterShown;
+            /// <summary>Tam trang da dien (0 cho, 1 vui, 2 gian): doi thi nhay cang / lac dau.</summary>
+            public int Mood;
+            public float LeaveLeft;
         }
 
         // Ba ghe doc quay (x), ti le khach khi ngoi 3 nguoi; vong 1 mot khach giua, co nhu canh cu.
@@ -61,8 +70,11 @@ namespace QuanAnHope.Game
                     v.Model.transform.localRotation = Quaternion.identity;
                     v.Model.transform.localScale = Vector3.one;
                     v.Face = v.Model.GetComponent<FaceSwap>();
+                    Lively.On(v.Model);   // tho, dung dua, nhay vao ghe, nhai, roi ghe muot (20/11)
                     Toon.BlobShadow(v.Model.transform, "Bong", new Vector3(0f, 0.01f, SeatZ), 1.4f);
                     v.BossLook = BuildBossLook(v.Model.transform);
+                    // dau khach cua canh: tam (0; 2,2; SeatZ), ban kinh 0,6 m -> mieng o mat truoc, thap hon tam
+                    v.Mouth = Toon.Empty(v.Model.transform, "Mieng", new Vector3(0f, 1.98f, SeatZ - 0.62f)).transform;
                 }
                 int seat = i;
                 v.Hit = Register(Interactable.Add(v.Pivot.gameObject, "Customer_" + i, new Vector3(0f, 1.9f, 0f), new Vector3(1.4f, 2.4f, 1.0f),
@@ -147,6 +159,10 @@ namespace QuanAnHope.Game
         {
             GameSession s = g.Session;
             Customer c = seat < s.SeatCount ? s.Seats[seat] : null;
+            Customer eater = seat < s.SeatCount && s.Phase == GamePhase.Open ? s.Eaters[seat] : null;
+            if (c == null && eater != null)
+                return (eater.isBoss ? "Chủ nợ" : char.ToUpper(g.SeatName(seat)[0]) + g.SeatName(seat).Substring(1))
+                    + " đang ăn · còn " + Mathf.CeilToInt((1f - s.EatProgress(seat)) * s.Balance.day.eatSeconds) + " giây";
             if (s.Phase != GamePhase.Open || c == null) return "Ghế trống";
             if (c.isBoss)
             {
@@ -168,37 +184,85 @@ namespace QuanAnHope.Game
             {
                 SeatView v = seatViews[i];
                 Customer c = i < s.SeatCount && s.Phase == GamePhase.Open ? s.Seats[i] : null;
+                Customer eater = i < s.SeatCount && s.Phase == GamePhase.Open ? s.Eaters[i] : null;
                 PaymentOutcome outcome;
                 bool reacting = g.IsReacting(i, out outcome);
-                bool show = i < s.SeatCount && (c != null || reacting);
+                bool eatingFace = eater != null && c == null;
+                // An xong roi ghe: khoi khach thu nho bay len roi moi an (LeaveFx).
+                if (v.EaterShown != null && eater != v.EaterShown && c == null && s.Phase == GamePhase.Open)
+                {
+                    v.LeaveLeft = LeaveFx.Seconds;
+                    LeaveFx.Play(v.Model);
+                }
+                v.EaterShown = eater;
+                if (c != null || eater != null || s.Phase != GamePhase.Open) { v.LeaveLeft = 0f; LeaveFx.Stop(v.Model); }
+                bool leaving = v.LeaveLeft > 0f;
+                bool show = i < s.SeatCount && (c != null || reacting || eater != null || leaving);
                 if (v.Model != null) v.Model.SetActive(show);
-                v.Hit.enabled = c != null;
+                v.Hit.enabled = c != null || eater != null;
                 bool bonus;
                 bool bossReact = g.IsBossReaction(i, out bonus);
-                bool boss = (c != null && c.isBoss) || (reacting && bossReact);
+                bool boss = (c != null && c.isBoss) || (reacting && bossReact) || (eatingFace && eater.isBoss);
                 if (v.BossLook != null) v.BossLook.SetActive(show && boss);
                 v.BossFrame.gameObject.SetActive(c != null && c.isBoss);
                 if (v.Face != null && show && boss)
                 {
                     // chu no: lanh lung; chi ngac nhien khi duoc mon Tuyet hao / Huyen thoai (Art Bible muc 6)
-                    if (reacting && bossReact && bonus) v.Face.Show(FaceArt.Boss(true));
+                    if ((reacting || eatingFace) && bossReact && bonus) v.Face.Show(FaceArt.Boss(true));
                     else if (reacting && bossReact) v.Face.ShowAngry();
                     else v.Face.Show(FaceArt.Boss(false));
                 }
                 else if (v.Face != null && show)
                 {
-                    if (reacting && outcome == PaymentOutcome.Angry) v.Face.ShowAngry();
-                    else if (reacting && outcome == PaymentOutcome.Satisfied) v.Face.ShowHappy();
+                    // dang an: giu mat theo ket qua phuc vu (vui / gian / cho)
+                    if ((reacting || eatingFace) && outcome == PaymentOutcome.Angry) v.Face.ShowAngry();
+                    else if ((reacting || eatingFace) && outcome == PaymentOutcome.Satisfied) v.Face.ShowHappy();
                     else v.Face.ShowWaiting();
                 }
+                int mood = !show ? 0 : (reacting || eatingFace) && outcome == PaymentOutcome.Angry ? 2
+                    : (reacting || eatingFace) && (outcome == PaymentOutcome.Satisfied || (boss && bossReact && bonus)) ? 1 : 0;
+                if (mood != v.Mood && v.Model != null)
+                {
+                    Lively l = v.Model.GetComponent<Lively>();
+                    if (l != null && mood == 1) l.Hop();
+                    else if (l != null && mood == 2) l.Shake();
+                }
+                v.Mood = mood;
                 v.Bubble.gameObject.SetActive(c != null && !reacting);
                 v.ShownText = null;
                 UpdateBubble(i);
 
-                if (v.ServedDish != null) Object.Destroy(v.ServedDish);
-                v.ServedDish = null;
-                if (g.ServedShowLeft > 0f && g.LastServed != null && g.LastServedSeat == i)
-                    v.ServedDish = DishModel.Create(v.ServedSpot, g.LastServed, s.Recipes);
+                // Dia truoc khach: dang an thi dia do (mon voi dan, EatingFx); khong an (eat_s = 0) thi hien dia vua dua mot luc.
+                Dish want = eater != null ? s.EatingDish(i)
+                    : (g.ServedShowLeft > 0f && g.LastServed != null && g.LastServedSeat == i && s.Balance.day.eatSeconds <= 0f ? g.LastServed : null);
+                if (want != v.ServedFor)
+                {
+                    if (v.ServedDish != null) Object.Destroy(v.ServedDish);
+                    v.ServedDish = null;
+                    v.Eating = null;
+                    v.ServedFor = want;
+                    if (want != null)
+                    {
+                        v.ServedDish = DishModel.Create(v.ServedSpot, want, s.Recipes);
+                        if (eater != null && v.Model != null)
+                        {
+                            int seat = i;
+                            v.Eating = EatingFx.Attach(v.ServedDish, v.Model.transform, v.Mouth, () => g.Session.EatProgress(seat));
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>Dem nguoc hoat anh roi ghe; xong thi an khoi khach.</summary>
+        void TickSeats(float dt)
+        {
+            for (int i = 0; i < seatViews.Length; i++)
+            {
+                SeatView v = seatViews[i];
+                if (v.LeaveLeft <= 0f) continue;
+                v.LeaveLeft -= dt;
+                if (v.LeaveLeft <= 0f) RefreshSeats();
             }
         }
 

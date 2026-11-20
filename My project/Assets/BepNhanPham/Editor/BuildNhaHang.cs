@@ -55,29 +55,40 @@ namespace BepNhanPham
             outlineMat.SetColor("_Color", Hex("#2B2321"));
             AssetDatabase.CreateAsset(outlineMat, GenPath + "/M_Outline.mat");
 
-            for (int c = 0; c < 4; c++) Group("Goc" + (c + 1)).localEulerAngles = new Vector3(0f, c * 90f, 0f);
+            // Phong rong hon 8 x 8 m (RoomSize, constitution 1.5): moi goc lui ra phia tuong cua no.
+            for (int c = 0; c < 4; c++)
+            {
+                Transform gc = Group("Goc" + (c + 1));
+                gc.localEulerAngles = new Vector3(0f, c * 90f, 0f);
+                gc.localPosition = Quaternion.Euler(0f, c * 90f, 0f) * new Vector3(0f, 0f, RoomSize.Grow);
+            }
+            const float W = RoomSize.Width;
+            const float Tile = 4f * W / 8f;
 
-            Box("Floor", new Vector3(8f, 0.1f, 8f), new Vector3(0f, -0.05f, 0f), new Vector3(-0f, -0f, 0f), "#FFFFFF", "floor_wood", 4f, 4f, 0f, "Room");
-            Box("Ceiling", new Vector3(8f, 0.1f, 8f), new Vector3(0f, 5.05f, 0f), new Vector3(-0f, -0f, 0f), "#FFF3DC", "", 1f, 1f, 0f, "Room");
-            Box("WallBack", new Vector3(8f, 5f, 0.1f), new Vector3(0f, 2.5f, 4.05f), new Vector3(-0f, -0f, 0f), "#FFFFFF", "wall_pattern", 4f, 2.5f, 0f, "Goc1/Wall");
-            Box("Baseboard", new Vector3(7.9f, 0.22f, 0.08f), new Vector3(0f, 0.11f, 3.96f), new Vector3(-0f, -0f, 0f), "#D69B68", "", 1f, 1f, 0.028f, "Goc1/Wall");
-            Box("Rail", new Vector3(7.9f, 0.1f, 0.06f), new Vector3(0f, 4.85f, 3.97f), new Vector3(-0f, -0f, 0f), "#D69B68", "", 1f, 1f, 0.018f, "Goc1/Wall");
-            Box("CornerPost", new Vector3(0.16f, 5f, 0.16f), new Vector3(-3.92f, 2.5f, 3.92f), new Vector3(-0f, -0f, 0f), "#D69B68", "", 1f, 1f, 0.028f, "Goc1/Wall");
-            Box("WallBack", new Vector3(8f, 5f, 0.1f), new Vector3(0f, 2.5f, 4.05f), new Vector3(-0f, -0f, 0f), "#FFFFFF", "wall_pattern", 4f, 2.5f, 0f, "Goc2/Wall");
-            Box("Baseboard", new Vector3(7.9f, 0.22f, 0.08f), new Vector3(0f, 0.11f, 3.96f), new Vector3(-0f, -0f, 0f), "#D69B68", "", 1f, 1f, 0.028f, "Goc2/Wall");
-            Box("Rail", new Vector3(7.9f, 0.1f, 0.06f), new Vector3(0f, 4.85f, 3.97f), new Vector3(-0f, -0f, 0f), "#D69B68", "", 1f, 1f, 0.018f, "Goc2/Wall");
-            Box("CornerPost", new Vector3(0.16f, 5f, 0.16f), new Vector3(-3.92f, 2.5f, 3.92f), new Vector3(-0f, -0f, 0f), "#D69B68", "", 1f, 1f, 0.028f, "Goc2/Wall");
-            Box("WallBack", new Vector3(8f, 5f, 0.1f), new Vector3(0f, 2.5f, 4.05f), new Vector3(-0f, -0f, 0f), "#FFFFFF", "wall_pattern", 4f, 2.5f, 0f, "Goc3/Wall");
-            Box("Baseboard", new Vector3(7.9f, 0.22f, 0.08f), new Vector3(0f, 0.11f, 3.96f), new Vector3(-0f, -0f, 0f), "#D69B68", "", 1f, 1f, 0.028f, "Goc3/Wall");
-            Box("Rail", new Vector3(7.9f, 0.1f, 0.06f), new Vector3(0f, 4.85f, 3.97f), new Vector3(-0f, -0f, 0f), "#D69B68", "", 1f, 1f, 0.018f, "Goc3/Wall");
-            Box("CornerPost", new Vector3(0.16f, 5f, 0.16f), new Vector3(-3.92f, 2.5f, 3.92f), new Vector3(-0f, -0f, 0f), "#D69B68", "", 1f, 1f, 0.028f, "Goc3/Wall");
-            Box("WallBack", new Vector3(8f, 5f, 0.1f), new Vector3(0f, 2.5f, 4.05f), new Vector3(-0f, -0f, 0f), "#FFFFFF", "wall_pattern", 4f, 2.5f, 0f, "Goc4/Wall");
-            Box("Baseboard", new Vector3(7.9f, 0.22f, 0.08f), new Vector3(0f, 0.11f, 3.96f), new Vector3(-0f, -0f, 0f), "#D69B68", "", 1f, 1f, 0.028f, "Goc4/Wall");
-            Box("Rail", new Vector3(7.9f, 0.1f, 0.06f), new Vector3(0f, 4.85f, 3.97f), new Vector3(-0f, -0f, 0f), "#D69B68", "", 1f, 1f, 0.018f, "Goc4/Wall");
-            Box("CornerPost", new Vector3(0.16f, 5f, 0.16f), new Vector3(-3.92f, 2.5f, 3.92f), new Vector3(-0f, -0f, 0f), "#D69B68", "", 1f, 1f, 0.028f, "Goc4/Wall");
-            Quad("DoorStreet", 3.2f, 3.769f, new Vector3(0f, 1.88f, 3.98f), new Vector3(-0f, -0f, 0f), "door_street", "Goc1/Entrance", false);
+            Box("Floor", new Vector3(W, 0.1f, W), new Vector3(0f, -0.05f, 0f), new Vector3(-0f, -0f, 0f), "#FFFFFF", "floor_wood", Tile, Tile, 0f, "Room");
+            Box("Ceiling", new Vector3(W, 0.1f, W), new Vector3(0f, 5.05f, 0f), new Vector3(-0f, -0f, 0f), "#FFF3DC", "", 1f, 1f, 0f, "Room");
+            // Tuong Goc 1 co o cua vom khoet that (BuildStreet): nhin qua cua thay con pho 3D phia sau.
+            WallWithDoor(W, Tile);
+            Box("Baseboard", new Vector3(W - 0.1f, 0.22f, 0.08f), new Vector3(0f, 0.11f, 3.96f), new Vector3(-0f, -0f, 0f), "#D69B68", "", 1f, 1f, 0.028f, "Goc1/Wall");
+            Box("Rail", new Vector3(W - 0.1f, 0.1f, 0.06f), new Vector3(0f, 4.85f, 3.97f), new Vector3(-0f, -0f, 0f), "#D69B68", "", 1f, 1f, 0.018f, "Goc1/Wall");
+            Box("CornerPost", new Vector3(0.16f, 5f, 0.16f), new Vector3(-3.92f - RoomSize.Grow, 2.5f, 3.92f), new Vector3(-0f, -0f, 0f), "#D69B68", "", 1f, 1f, 0.028f, "Goc1/Wall");
+            Box("WallBack", new Vector3(W, 5f, 0.1f), new Vector3(0f, 2.5f, 4.05f), new Vector3(-0f, -0f, 0f), "#FFFFFF", "wall_pattern", Tile, 2.5f, 0f, "Goc2/Wall");
+            Box("Baseboard", new Vector3(W - 0.1f, 0.22f, 0.08f), new Vector3(0f, 0.11f, 3.96f), new Vector3(-0f, -0f, 0f), "#D69B68", "", 1f, 1f, 0.028f, "Goc2/Wall");
+            Box("Rail", new Vector3(W - 0.1f, 0.1f, 0.06f), new Vector3(0f, 4.85f, 3.97f), new Vector3(-0f, -0f, 0f), "#D69B68", "", 1f, 1f, 0.018f, "Goc2/Wall");
+            Box("CornerPost", new Vector3(0.16f, 5f, 0.16f), new Vector3(-3.92f - RoomSize.Grow, 2.5f, 3.92f), new Vector3(-0f, -0f, 0f), "#D69B68", "", 1f, 1f, 0.028f, "Goc2/Wall");
+            Box("WallBack", new Vector3(W, 5f, 0.1f), new Vector3(0f, 2.5f, 4.05f), new Vector3(-0f, -0f, 0f), "#FFFFFF", "wall_pattern", Tile, 2.5f, 0f, "Goc3/Wall");
+            Box("Baseboard", new Vector3(W - 0.1f, 0.22f, 0.08f), new Vector3(0f, 0.11f, 3.96f), new Vector3(-0f, -0f, 0f), "#D69B68", "", 1f, 1f, 0.028f, "Goc3/Wall");
+            Box("Rail", new Vector3(W - 0.1f, 0.1f, 0.06f), new Vector3(0f, 4.85f, 3.97f), new Vector3(-0f, -0f, 0f), "#D69B68", "", 1f, 1f, 0.018f, "Goc3/Wall");
+            Box("CornerPost", new Vector3(0.16f, 5f, 0.16f), new Vector3(-3.92f - RoomSize.Grow, 2.5f, 3.92f), new Vector3(-0f, -0f, 0f), "#D69B68", "", 1f, 1f, 0.028f, "Goc3/Wall");
+            Box("WallBack", new Vector3(W, 5f, 0.1f), new Vector3(0f, 2.5f, 4.05f), new Vector3(-0f, -0f, 0f), "#FFFFFF", "wall_pattern", Tile, 2.5f, 0f, "Goc4/Wall");
+            Box("Baseboard", new Vector3(W - 0.1f, 0.22f, 0.08f), new Vector3(0f, 0.11f, 3.96f), new Vector3(-0f, -0f, 0f), "#D69B68", "", 1f, 1f, 0.028f, "Goc4/Wall");
+            Box("Rail", new Vector3(W - 0.1f, 0.1f, 0.06f), new Vector3(0f, 4.85f, 3.97f), new Vector3(-0f, -0f, 0f), "#D69B68", "", 1f, 1f, 0.018f, "Goc4/Wall");
+            Box("CornerPost", new Vector3(0.16f, 5f, 0.16f), new Vector3(-3.92f - RoomSize.Grow, 2.5f, 3.92f), new Vector3(-0f, -0f, 0f), "#D69B68", "", 1f, 1f, 0.028f, "Goc4/Wall");
+            // Cua: khung go vom + con pho nhieu lop thay anh phang door_street.png (yeu cau 18/11: them do sau ngoai cua).
+            BuildStreet.Frame(Box, Tube, "Goc1/Entrance");
+            BuildStreet.Street(Box, Sphere, Cyl, Tube, "Goc1/Street");
             Quad("Noren", 3.1f, 1.137f, new Vector3(0f, 3.22f, 3.72f), new Vector3(-0f, -0f, 0f), "noren", "Goc1/Entrance", true);
-            Quad("Sign", 2.5f, 0.4218f, new Vector3(0f, 4.5f, 3.9f), new Vector3(-0f, -0f, 0f), "sign", "Goc1/Entrance", false);
+            // Bien ten quan: chu TextMeshProUGUI dung luc chay (RoomView.BuildShopName), khong dung anh chu (constitution Dieu 6, F-055).
             Sphere("Bulb0", new Vector3(0.17f, 0.17f, 0.17f), new Vector3(-2.4f, 4.02f, 3.85f), new Vector3(-0f, -0f, 0f), "#F2C14E", "", 1f, 1f, 0.018f, "Goc1/Entrance");
             Sphere("Bulb1", new Vector3(0.17f, 0.17f, 0.17f), new Vector3(-1.8f, 4.08f, 3.85f), new Vector3(-0f, -0f, 0f), "#FFF3DC", "", 1f, 1f, 0.018f, "Goc1/Entrance");
             Sphere("Bulb2", new Vector3(0.17f, 0.17f, 0.17f), new Vector3(-1.2f, 4.02f, 3.85f), new Vector3(-0f, -0f, 0f), "#F2C14E", "", 1f, 1f, 0.018f, "Goc1/Entrance");
@@ -160,7 +171,7 @@ namespace BepNhanPham
             Cyl("Lever", new Vector3(0.1f, 0.8f, 0.1f), new Vector3(2.48f, 1.7f, 3.2f), new Vector3(-0f, -0f, 0f), "#C9C1B6", "", 1f, 1f, 0.028f, "Goc2/UpgradeMachine");
             Sphere("LeverBall", new Vector3(0.26f, 0.26f, 0.26f), new Vector3(2.48f, 2.15f, 3.2f), new Vector3(-0f, -0f, 0f), "#E8604F", "", 1f, 1f, 0.028f, "Goc2/UpgradeMachine");
             Sphere("TopLight", new Vector3(0.3f, 0.3f, 0.3f), new Vector3(1.6f, 2.4f, 3.2f), new Vector3(-0f, -0f, 0f), "#F2C14E", "", 1f, 1f, 0.028f, "Goc2/UpgradeMachine");
-            Quad("UpgradeLabel", 1f, 0.3719f, new Vector3(1.6f, 0.62f, 2.7f), new Vector3(-0f, -0f, 0f), "lbl_upgrade", "Goc2/UpgradeMachine", false);
+            // Nhan may: RoomView.BienMayGacha (TextMeshPro, F-055).
             Cyl("LecternBase", new Vector3(0.8f, 0.08f, 0.8f), new Vector3(-2.2f, 0.04f, 3f), new Vector3(-0f, -0f, 0f), "#B97F52", "", 1f, 1f, 0.028f, "Goc3/Cookbook");
             Cyl("LecternPost", new Vector3(0.18f, 1.25f, 0.18f), new Vector3(-2.2f, 0.66f, 3f), new Vector3(-0f, -0f, 0f), "#B97F52", "", 1f, 1f, 0.028f, "Goc3/Cookbook");
             Box("BookCover", new Vector3(1.9f, 0.06f, 1.2f), new Vector3(-2.2f, 1.45f, 3f), new Vector3(-42.97f, -0f, 0f), "#E8604F", "", 1f, 1f, 0.028f, "Goc3/Cookbook");
@@ -279,6 +290,18 @@ namespace BepNhanPham
                 var b = go.AddComponent<Bob>();
                 b.phase = pos.x * 3f + pos.y;
             }
+        }
+
+        static void WallWithDoor(float width, float tile)
+        {
+            Vector3[] v, n;
+            Vector2[] uv;
+            int[] t;
+            BuildStreet.WallMesh(width, 5f, out v, out n, out uv, out t);
+            var go = new GameObject("WallBack");
+            go.transform.SetParent(Group("Goc1/Wall"), false);
+            go.AddComponent<MeshFilter>().sharedMesh = SaveMesh(v, n, uv, t, "TuongCua");
+            SetRenderer(go.AddComponent<MeshRenderer>(), GetMat(false, "#FFFFFF", "wall_pattern", tile, 2.5f));
         }
 
         static void Tube(string name, Vector3[] points, float radius, string hex, float outline, string group)

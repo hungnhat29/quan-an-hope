@@ -300,7 +300,8 @@
   "seconds_per_hour": 40,
   "boss_hour": 20,
   "boss_day": 21,
-  "next_customer_s": 3
+  "next_customer_s": 3,
+  "eat_s": 5
  },
  "day_seconds": 480,
  "relic_shop_offers": 3,

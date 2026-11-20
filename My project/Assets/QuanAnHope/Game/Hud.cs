@@ -21,7 +21,7 @@ namespace QuanAnHope.Game
         static readonly Vector2 Bottom = new Vector2(0.5f, 0f);
         static readonly Vector2 BottomLeft = new Vector2(0f, 0f);
 
-        const string ControlsHint = "W A S D: đi · Chuột: nhìn · Chuột trái: bấm / giữ · Chuột phải: đặt lại đồ đang cầm · Esc: nhả chuột";
+        const string ControlsHint = "W A S D: đi · Chuột: nhìn · Chuột trái: bấm / giữ · Chuột phải: đặt lại đồ đang cầm · Esc: tạm dừng";
 
         readonly GameController g;
         public Transform Canvas { get; private set; }
@@ -32,8 +32,12 @@ namespace QuanAnHope.Game
 
         GameObject overlay;
         TextMeshProUGUI overlayTitle, overlayBody;
-        Button overlayButton;
+        Button overlayButton, overlayMenuButton;
         bool overlayShown;
+
+        // F-053: dong huong dan ngay 1
+        GameObject tutorialBox;
+        TextMeshProUGUI tutorialText;
 
         public Hud(GameController controller)
         {
@@ -97,6 +101,13 @@ namespace QuanAnHope.Game
             hint.rectTransform.pivot = new Vector2(0f, 0f);
             hint.color = UiKit.Cream;
 
+            // Huong dan ngay 1 (F-053 AC-1): mot dong duoi thong bao, nen vang.
+            Image tb = UiKit.Panel(Canvas, "HuongDan", Top, new Vector2(0f, -96f), new Vector2(720f, 44f), UiKit.Mustard, false);
+            tb.raycastTarget = false;
+            tutorialBox = tb.gameObject;
+            tutorialText = UiKit.Text(tb.transform, "", 18f);
+            tutorialBox.SetActive(false);
+
             clickToPlay = UiKit.Label(Canvas, "BamDeChoi", Center, new Vector2(0f, 60f), new Vector2(500f, 40f), "Bấm chuột vào màn hình để điều khiển", 20f);
             clickToPlay.color = UiKit.Cream;
 
@@ -115,6 +126,10 @@ namespace QuanAnHope.Game
             overlayBody = UiKit.Label(card.transform, "NoiDung", Center, new Vector2(0f, 6f), new Vector2(560f, 176f), "", UiKit.NumberFontSize);
             overlayBody.lineSpacing = -22f;
             overlayButton = UiKit.Button(card.transform, "Btn_ManPhu", Bottom, new Vector2(0f, 24f), new Vector2(280f, 64f), "", UiKit.Coral, OnOverlayButton, 24f);
+            // Man thang / thua (F-050, F-051): them nut ve menu chinh ben canh "Choi lai".
+            overlayMenuButton = UiKit.Button(card.transform, "Btn_VeMenu", Bottom, new Vector2(150f, 24f), new Vector2(240f, 64f), "Về menu chính", UiKit.Cream,
+                () => g.BackToMenuAfterEnd(), 22f);
+            overlayMenuButton.gameObject.SetActive(false);
             overlay.SetActive(false);
         }
 
@@ -125,10 +140,21 @@ namespace QuanAnHope.Game
         }
 
         public Button OverlayButton { get { return overlayButton; } }
+        public Button OverlayMenuButton { get { return overlayMenuButton; } }
+        public string TutorialText { get { return tutorialBox.activeSelf ? tutorialText.text : null; } }
+        public string OverlayTitle { get { return overlay.activeSelf ? overlayTitle.text : null; } }
+        public string OverlayBody { get { return overlay.activeSelf ? overlayBody.text : null; } }
 
         public void Refresh()
         {
             GameSession s = g.Session;
+            // Menu, cot truyen: HUD an (man ngoai phong, Dieu 5); tam dung van thay so lieu phia sau.
+            bool visible = g.Mode == GameMode.Playing || g.Mode == GameMode.Paused;
+            Canvas.gameObject.SetActive(visible);
+            if (!visible) { overlayShown = false; return; }
+            string line = g.Tutorial != null ? g.Tutorial.Line : null;
+            tutorialBox.SetActive(line != null && g.Mode == GameMode.Playing);
+            if (line != null) tutorialText.text = line;
             DebtEntry debt = s.NextDebt();
             RefreshClock();
             money.text = "Ví <size=26>" + s.Money + "G</size>\n"
@@ -167,6 +193,9 @@ namespace QuanAnHope.Game
         public void Tick()
         {
             RefreshClock();
+            string line = g.Tutorial != null ? g.Tutorial.Line : null;
+            if (line != null && tutorialText.text != line) tutorialText.text = line;
+            if ((line != null) != tutorialBox.activeSelf) tutorialBox.SetActive(line != null);
             Interactable focus = g.Player.Focus;
             bool show = focus != null && !overlayShown;
             promptBox.SetActive(show);
@@ -180,12 +209,15 @@ namespace QuanAnHope.Game
         void RefreshOverlay()
         {
             GameSession s = g.Session;
-            bool show = g.ShowsOverlay;
+            bool show = g.ShowsOverlay && g.Mode == GameMode.Playing;
             if (show != overlayShown) PlayerController.SetCursorLocked(!show);
             overlayShown = show;
             overlay.SetActive(show);
             if (!show) return;
             overlay.transform.SetAsLastSibling();
+            bool final = s.Phase != GamePhase.DayEnd;
+            overlayMenuButton.gameObject.SetActive(final);
+            ((RectTransform)overlayButton.transform).anchoredPosition = new Vector2(final ? -130f : 0f, 24f);
 
             if (s.Phase == GamePhase.DayEnd)
             {
@@ -223,7 +255,8 @@ namespace QuanAnHope.Game
             {
                 int due = s.Balance.DebtDueOn(s.Day);
                 overlayTitle.text = "Thua rồi";
-                overlayBody.text = "Đầu ngày " + s.Day + ", chủ nợ đòi " + due + "G\nnhưng bạn chỉ có " + s.Money + "G."
+                overlayBody.text = "Đầu ngày " + s.Day + ", chủ nợ đòi " + StoryScript.Money(due) + "\nnhưng bạn chỉ có " + StoryScript.Money(s.Money)
+                    + ", thiếu " + StoryScript.Money(due - s.Money) + "."
                     + (s.Day == s.Balance.day.bossDay + 1 ? "\n\nCần phục vụ chủ nợ món Tuyệt hảo ngày " + s.Balance.day.bossDay + " (thưởng " + s.Balance.bossBonus + "G)." : "");
                 UiKit.SetLabel(overlayButton, "Chơi lại");
             }
