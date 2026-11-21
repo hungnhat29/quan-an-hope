@@ -36,6 +36,9 @@ namespace QuanAnHope.PlayTests
         public IEnumerator LoadScene()
         {
             GameController.ChaptersByDefault = false;   // trang chuong giua van: chi test rieng bat
+            Time.maximumDeltaTime = 1f / 3f;            // mac dinh Unity (test truoc co the doi)
+            // so do thoi gian cua test khong lan vao playtest-log.csv cua nguoi that (sprint 7 F-060 AC-1)
+            GameController.PlaytestFolder = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "QuanAnHope_TestLog");
             SceneManager.LoadScene(SceneName);
             yield return null;
             yield return null;
@@ -689,11 +692,11 @@ namespace QuanAnHope.PlayTests
             StringAssert.Contains("100G", HudText("HUD_Trai"));
             StringAssert.Contains("750G", HudText("HUD_Trai"));
             StringAssert.IsMatch("Ngày 1 · 9:[0-9][0-9]", HudText("HUD_Trai"), "dong ho chay tu 9:00 (F-011 AC-1)");
-            StringAssert.Contains("8 vé", HudText("HUD_Phai"));
+            StringAssert.Contains(S.Balance.start.firstDayTickets + " vé", HudText("HUD_Phai"));
 
             // Nhin vao may nhet ve: goi y hien o tam ngam, bam thi thung roi xuong ban (nguyen lieu la vat 3D)
             yield return Use("Kiosk");
-            StringAssert.Contains("7 vé", HudText("HUD_Phai"));
+            StringAssert.Contains((S.Balance.start.firstDayTickets - 1) + " vé", HudText("HUD_Phai"));
             yield return new WaitForSeconds(1.5f);
             var crates = g.Room.Crates.ToList();
             Assert.AreEqual(2, crates.Count, "1 thung do phu + 1 thung chinh");
@@ -842,7 +845,7 @@ namespace QuanAnHope.PlayTests
             g.Hud.OverlayButton.onClick.Invoke();
             yield return null;
             Assert.AreEqual(2, S.Day);
-            Assert.AreEqual(ticketsLeft + 6, S.Wallet.Count, "6 ve moi ngay (constitution 1.4 muc 3)");
+            Assert.AreEqual(ticketsLeft + S.Balance.ticketsPerDay, S.Wallet.Count, "ve moi ngay (constitution muc 3)");
             StringAssert.Contains("Ngày 2 · 9:0", HudText("HUD_Trai"), "sang ngay moi dong ho ve 9:00");
             Assert.AreEqual(0, g.Room.Crates.Count(), "nguyen lieu thua bi bo cuoi ngay");
 
@@ -870,7 +873,8 @@ namespace QuanAnHope.PlayTests
             string[] lines = File.ReadAllLines(g.Log.Path);
             Assert.AreEqual(PlaytestLog.Header, lines[0]);
             string last = lines[lines.Length - 1];
-            Assert.AreEqual(10, last.Split(',').Length, "du 10 cot: " + last);
+            Assert.AreEqual(11, last.Split(',').Length, "du 11 cot (them phien, sprint 7): " + last);
+            StringAssert.Contains("QuanAnHope_TestLog", g.Log.Path, "test ghi vao thu muc tam");
             Debug.Log("Gia lap 3D: playtest-log " + g.Log.Path + " +" + g.Log.RowsWritten + " dong, dong cuoi: " + last);
 
             int before = S.Money;
@@ -1046,7 +1050,7 @@ namespace QuanAnHope.PlayTests
             Assert.IsTrue(g.Room.PedestalRelics.All(r => r == null));
             yield return UseGoc3("Relic_0");
             StringAssert.Contains("mở từ ngày 2", g.Room.Station("Relic_0").CurrentPrompt);
-            Assert.AreEqual(8, S.Wallet.Count, "ngay 1 khong mua duoc");
+            Assert.AreEqual(S.Balance.start.firstDayTickets, S.Wallet.Count, "ngay 1 khong mua duoc");
             yield return Shot("goc3_ngay1_be_trong.png", PedestalsView(), Sprint3);
 
             yield return EndDayEarly();
@@ -1084,13 +1088,19 @@ namespace QuanAnHope.PlayTests
             Assert.IsNull(g.Room.ShelfRelics[0].GetComponent<RelicFly>(), "bay xong");
             Assert.Less(g.Room.ShelfRelics[0].transform.localPosition.magnitude, 1e-4f, "nam dung o dau cua gia");
             StringAssert.Contains("Giá relic 1/8", g.Room.ShelfHeaderText);
-            if (!string.IsNullOrEmpty(buy.set)) StringAssert.Contains(RelicKeys.SetName(buy.set) + " 1/4", g.Room.ShelfHeaderText);
+            // yeu cau 21/11/2026: khong lo relic nao thuoc bo, relic nao le
+            if (!string.IsNullOrEmpty(buy.set)) StringAssert.DoesNotContain(RelicKeys.SetName(buy.set), g.Room.ShelfHeaderText);
             yield return null;
             yield return Shot("goc3_vua_mua.png", PedestalsView(), Sprint3);
 
-            // AC-4 (F-021): gia ghi tien do bo
+            // AC-4 (F-021) doi 21/11/2026: gia khong ghi tien do bo; tac dung bo van tinh (bang ti le duoi day)
             foreach (string id in new[] { "C1", "C2" }) if (!S.Relics.Has(id)) g.DebugGiveRelic(id);
-            StringAssert.Contains("Chợ Sớm " + S.Relics.CountInSet("cho") + "/4", g.Room.ShelfHeaderText);
+            StringAssert.DoesNotContain("Chợ Sớm", g.Room.ShelfHeaderText);
+            foreach (RelicCard card in Object.FindObjectsByType<RelicCard>(FindObjectsInactive.Exclude))
+            {
+                StringAssert.DoesNotContain("Bộ ", card.SetText);
+                StringAssert.DoesNotContain("lẻ", card.SetText);
+            }
             // F-021 AC-5: bang ti le Goc 2 hien tac dung relic (Dao phay + Thung da + thuong bo 2)
             StringAssert.Contains("Có relic", g.Room.OddsHeaderText);
             StringAssert.Contains("Chính", g.Room.OddsCellText(1));
@@ -1493,23 +1503,35 @@ namespace QuanAnHope.PlayTests
         [UnityTest]
         public IEnumerator F043_F044_Ngay21_ChuNoLuc20Gio_MonTuyetHao_Thuong_SangNgay22_Thang()
         {
-            yield return StartAt(21, 21000, BotRelicsDay21, "ga__bi_do");
+            yield return StartAt(21, 25000, BotRelicsDay21, "ga__bi_do");
             Assert.IsTrue(S.IsBossDay);
             Assert.AreEqual(1, S.Fridge.Dishes.Count);
             Dish top = S.Fridge.Dishes[0];
             Assert.AreEqual(4, top.tier);
 
-            // tua dong ho toi 20:00 (quan chua mo: chu no doi ngoai cua, F-043 AC-5)
+            // constitution 1.7: dong ho chi chay sau khi mo quan. Mo quan luc 9:00, nau san mot dia, tua toi 20:00:
+            // ba ghe kin khach (khong ai duoc phuc vu) nen chu no doi ghe; dua dia cho khach ghe giua, an xong thi ong vao.
+            g.ClockScale = 60f;
+            yield return new WaitForSeconds(0.5f);
+            Assert.AreEqual("9:00", S.Clock.Text, "chua mo quan: dong ho dung");
+            g.ClockScale = 1f;
+            Assert.IsTrue(g.DebugAddCrate(CrateOf("ga", 2, 1)));
+            Assert.IsTrue(g.DebugAddCrate(CrateOf("bi_do", 2, 1)));
+            yield return null;
+            yield return Use("ShopSign");
+            Assert.AreEqual(GamePhase.Open, S.Phase);
+            yield return CookOne(true, "ga__bi_do");
             g.ClockScale = 60f;
             yield return WaitUntil(() => S.BossArrived, 60f, "20:00 chu no toi");
             g.ClockScale = 1f;
             Assert.AreEqual(20, S.Clock.Hour);
-            Assert.IsTrue(S.BossWaiting);
+            Assert.IsTrue(S.BossWaiting, "ba ghe kin: chu no doi ghe");
             StringAssert.Contains("Chủ nợ đã tới", g.Toast);
-
-            yield return Use("ShopSign");
-            Assert.AreEqual(GamePhase.Open, S.Phase);
-            Assert.IsNotNull(S.Boss, "mo quan thi chu no vao ngay");
+            Assert.IsNotNull(S.Seats[1], "ghe giua co khach");
+            yield return UseShelfDish(0);
+            Assert.AreEqual(HandKind.Dish, g.Hand);
+            yield return Use("Customer_1");
+            yield return WaitUntil(() => S.Boss != null, S.Balance.day.eatSeconds + 2f, "khach ghe giua an xong, chu no vao");
             Assert.AreEqual(1, S.SeatOf(S.Boss), "chu no ngoi ghe giua");
             yield return null;
             RoomView.SeatView v = g.Room.SeatViews[1];
@@ -1556,7 +1578,7 @@ namespace QuanAnHope.PlayTests
             // dong quan, sang ngay 22: thu 32.000G -> man thang (chu)
             yield return Use("ShopSign");
             Assert.AreEqual(GamePhase.DayEnd, S.Phase);
-            StringAssert.Contains("Sáng mai chủ nợ thu 32000G", HudText("ManPhu"));
+            StringAssert.Contains("Sáng mai chủ nợ thu " + S.Balance.DebtDueOn(22) + "G", HudText("ManPhu"));
             int before = S.Money;
             g.Hud.OverlayButton.onClick.Invoke();
             yield return null;
@@ -1567,7 +1589,7 @@ namespace QuanAnHope.PlayTests
             Assert.AreEqual(22, S.Day);
             Assert.AreEqual(GamePhase.Cleared, S.Phase);
             Assert.IsTrue(S.IsWon);
-            Assert.AreEqual(before - 32000, S.Money);
+            Assert.AreEqual(before - S.Balance.DebtDueOn(22), S.Money);
             StringAssert.Contains("Hope trả hết nợ", HudText("ManPhu"));
             StringAssert.Contains("gả con gái", HudText("ManPhu"));
             yield return Shot("ngay22_thang.png", null, Sprint5);
@@ -1583,7 +1605,7 @@ namespace QuanAnHope.PlayTests
             yield return null;
             Assert.AreEqual(22, S.Day);
             Assert.AreEqual(GamePhase.Lost, S.Phase);
-            StringAssert.Contains("chủ nợ đòi 32.000G", HudText("ManPhu"));
+            StringAssert.Contains("chủ nợ đòi " + StoryScript.Money(S.Balance.DebtDueOn(22)), HudText("ManPhu"));
             StringAssert.Contains("thưởng 11500G", HudText("ManPhu"));
             yield return Shot("ngay22_thua.png", null, Sprint5);
         }

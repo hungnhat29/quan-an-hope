@@ -198,6 +198,16 @@ namespace QuanAnHope.Game
             if (street == null) return;
             Sky = street.gameObject.AddComponent<SkyCycle>();
             Sky.Init(() => g.Session != null ? g.Session.Clock.HourOfDay : 9f);
+            Rain = RainFx.Create(street);   // sau Init: vet mua khong bi SkyCycle nhuom
+        }
+
+        /// <summary>Mua ngoai cua ngay 2 (sprint 7 F-062 AC-4).</summary>
+        public RainFx Rain { get; private set; }
+
+        /// <summary>Ngay mua: ngay truoc ngay "sau mua" (constitution muc 2: "ngay 2 mua lon -> ngay 3 nguyen lieu it hon").</summary>
+        public static bool IsRainDay(GameSession s)
+        {
+            return s != null && s.Balance.stormDay > 1 && s.Day == s.Balance.stormDay - 1;
         }
 
         static void MakeSway(Transform group, string[] parts, string cordName, float degrees, float period, float phase)
@@ -1131,15 +1141,10 @@ namespace QuanAnHope.Game
             shelfHeader.text = ShelfSummary(inv) + (g.PendingRelicSlot >= 0 ? " · <color=#E8604F>bấm relic để bỏ</color>" : "");
         }
 
-        /// <summary>Tien do bo tren gia (F-021 AC-4): "Gia relic 3/8 · Cho Som 2/4 · Vuon Nha 1/4".</summary>
+        /// <summary>Dong tren gia: "Gia relic 3/8". Khong ghi tien do bo combo (yeu cau 21/11/2026, constitution 1.7 muc 7.1).</summary>
         public static string ShelfSummary(RelicInventory inv)
         {
-            var sb = new StringBuilder("Giá relic " + inv.Owned.Count + "/" + inv.Capacity);
-            var sets = new List<string>();
-            foreach (RelicDef r in inv.Owned) if (!string.IsNullOrEmpty(r.set) && !sets.Contains(r.set)) sets.Add(r.set);
-            foreach (string set in sets)
-                sb.Append(" · " + RelicKeys.SetName(set) + " " + inv.CountInSet(set) + "/" + inv.SetSize(set));
-            return sb.ToString();
+            return "Giá relic " + inv.Owned.Count + "/" + inv.Capacity;
         }
 
         List<Recipe> BookRecipes()
@@ -1404,6 +1409,9 @@ namespace QuanAnHope.Game
         public void Tick(float dt)
         {
             if (appear >= 1f) return;
+            // bac 4-5 lo ra co am thanh rieng (Art Bible muc 11; F-061 AC-2); mat dien giau bac thi im
+            if (appear <= 0f && Tier >= 4 && !hidden && GameAudio.Current != null)
+                GameAudio.Current.PlayThrottled(Tier >= 5 ? "bac_5" : "bac_4", transform.position, 0.6f);
             appear = Mathf.Min(1f, appear + dt / (Tier >= 4 ? 1.5f : 0.4f));
             // easeOutBack: phong ra, vuot 12% roi ve (muot, khong khung giat)
             float a = appear - 1f;
@@ -1478,6 +1486,11 @@ namespace QuanAnHope.Game
         /// <summary>Nguyen lieu trong thung to hon kich thuoc goc de nhin ro mau de bac tu xa.</summary>
         public const float ItemScale = 1.4f;
 
+        /// <summary>Cong xoan oc dang mo tren thung (sprint 7 F-062 AC-1); null khi da dong.</summary>
+        public PortalFx Portal { get; private set; }
+        /// <summary>Da lap lanh khi cham ban.</summary>
+        public bool Sparkled { get; private set; }
+
         public void MoveTo(Vector3 localSlot)
         {
             if (target == localSlot) return;
@@ -1486,7 +1499,10 @@ namespace QuanAnHope.Game
             if (first)
             {
                 drop = 0f;
+                Sparkled = false;
                 transform.localPosition = target + Vector3.up * DropHeight;
+                // xoan oc mo ngay tren cho thung roi (Art Bible muc 11)
+                if (transform.parent != null) Portal = PortalFx.Play(transform.parent, target + Vector3.up * (DropHeight + 0.25f));
             }
             else transform.localPosition = target;
         }
@@ -1495,6 +1511,7 @@ namespace QuanAnHope.Game
         {
             if (drop >= 1f) return;
             drop = Mathf.Min(1f, drop + dt / DropSeconds);
+            if (drop >= 1f && !Sparkled) { Sparkled = true; Sparkle.Play(transform); }
             // roi xuong roi nay 2 lan (Art Bible muc 11)
             float fall = Mathf.Clamp01(drop / 0.6f);
             float y = (1f - fall * fall) * DropHeight;

@@ -29,7 +29,7 @@ namespace QuanAnHope.Game
     /// Noi luat choi (Core.GameSession) voi can phong 3D. Moi thao tac cua nguoi choi la mot ham public o day,
     /// do vat trong phong (RoomView) goi vao khi duoc bam. Tu gan vao canh co doi tuong "NhaHang".
     /// </summary>
-    public class GameController : MonoBehaviour
+    public partial class GameController : MonoBehaviour
     {
         const string BalanceResource = "BalanceData";
         const string RoomRootName = "NhaHang";
@@ -76,7 +76,7 @@ namespace QuanAnHope.Game
         /// <summary>Relic vua mua (de hien lap lanh tren gia, Art Bible muc 11).</summary>
         public RelicDef LastBoughtRelic { get; private set; }
 
-        /// <summary>Ban Alpha (sprint 5) choi du 4 vong: dau ngay 22 thu no 32.000G roi ra man thang (impl plan sprint 5 muc 1).</summary>
+        /// <summary>Ban Alpha (sprint 5) choi du 4 vong: dau ngay 22 thu no (du lieu) roi ra man thang (impl plan sprint 5 muc 1).</summary>
         public const int PlayableRounds = 4;
 
         /// <summary>Be relic dang cho chon de bo la lua chon ve den (F-042), khong phai be ve trang.</summary>
@@ -148,6 +148,8 @@ namespace QuanAnHope.Game
             Player.EscapePressed += OnEscape;
             FaceBillboard.View = Player.Cam;
             Settings.Apply(Player, true);
+            InitAudio();
+            InitAmbient();
 
             NewGame(Environment.TickCount);
             Room = new RoomView(this, GameObject.Find(RoomRootName).transform);
@@ -287,6 +289,9 @@ namespace QuanAnHope.Game
         /// <summary>F-014: ghi thoi gian moi mon vao playtest-log.csv (Application.persistentDataPath).</summary>
         public PlaytestLog Log { get; private set; }
 
+        /// <summary>Thu muc ghi playtest-log.csv; null = Application.persistentDataPath. Test PlayMode dat thu muc tam (F-060 AC-1).</summary>
+        public static string PlaytestFolder;
+
         public void NewGame(int seed)
         {
             int lastDay = GameSession.LastPlayableDayFor(data.balance, PlayableRounds);
@@ -300,7 +305,7 @@ namespace QuanAnHope.Game
         /// <summary>Dung mot van choi (moi hoac vua tai): xoa tay, phan ung, thong bao.</summary>
         void UseSession(GameSession session)
         {
-            if (Log == null) Log = new PlaytestLog(Application.persistentDataPath);
+            if (Log == null) Log = new PlaytestLog(PlaytestFolder ?? Application.persistentDataPath);
             Session = session;
             DishFood.Book = data.recipes;
             ClearHands();
@@ -340,6 +345,7 @@ namespace QuanAnHope.Game
             if (Session == null) return;
             float dt = Time.deltaTime;
             if (Menu != null) Menu.Tick(Time.unscaledDeltaTime);
+            TickAudio(dt);
             if (Mode != GameMode.Playing)
             {
                 // Menu, cot truyen, tam dung: dong ho ngay, bep, khach dung (F-050 AC-2).
@@ -347,7 +353,7 @@ namespace QuanAnHope.Game
                 return;
             }
 
-            // Dong ho ngay chay tu dau ngay ke ca khi quan chua mo (constitution 1.4 muc 2, 6.2).
+            // Dong ho ngay chi chay tu luc Mo quan (constitution 1.7 muc 6.2); Session.Tick bo qua pha Prep.
             Session.Tick(dt * ClockScale);
             if (Session.Phase != seenPhase || SeatSignature() != seenSeats || Session.IsClosedForNewCustomers != seenClosed
                 || Session.BossArrived != seenBoss)
@@ -362,9 +368,10 @@ namespace QuanAnHope.Game
                 if (wasCooking && stove.State == StoveState.Ready)
                 {
                     Log.OnReady(Time.time);
+                    Sfx("chin", "Stove");
                     Say("Món đã chín. Lấy đĩa trống rồi bấm vào bếp để múc.");
                 }
-                else if (!wasBurnt && stove.IsBurnt) Say("Quá lửa! " + stove.Recipe.name + " bị trừ 1 bậc khi múc.");
+                else if (!wasBurnt && stove.IsBurnt) { Sfx("chay_khet", "Stove"); FxSmoke("Stove"); Say("Quá lửa! " + stove.Recipe.name + " bị trừ 1 bậc khi múc."); }
                 else if (!wasWarn && stove.IsOverheating) Say("Bếp bốc khói: múc " + stove.Recipe.name + " ra ngay kẻo quá lửa.");
             }
 
@@ -448,6 +455,7 @@ namespace QuanAnHope.Game
                 return false;
             }
             LastPull = pull;
+            SfxPull(pull, false);
             Say("Thùng " + pull.side.name + " và thùng " + pull.main.name + " đã rơi xuống bàn."
                 + (pull.breakthrough != null ? " Trúng rương đột phá: " + pull.breakthrough.name + "!" : ""));
             return true;
@@ -474,6 +482,7 @@ namespace QuanAnHope.Game
             {
                 case RelicBuyResult.Bought:
                     LastBoughtRelic = offer;
+                    Sfx("mua_relic", "Relic_" + slot);
                     Say("Đã mua " + offer.name + " · còn " + Session.Wallet.Count + " vé.");
                     return true;
                 case RelicBuyResult.NeedDiscard:
@@ -528,6 +537,7 @@ namespace QuanAnHope.Game
             PendingRelicSlot = -1;
             PendingIsBlack = false;
             LastBoughtRelic = pick;
+            Sfx("mua_relic", "Relic_" + slot);
             Say("Vé đen: đã lấy " + pick.name + " (" + RelicKeys.RarityName(pick.rarity) + ").");
             return true;
         }
@@ -544,6 +554,7 @@ namespace QuanAnHope.Game
                 RelicDef pick = slot < Session.BlackRelicOffers.Count ? Session.BlackRelicOffers[slot] : null;
                 if (pick == null || Session.ChooseBlackRelic(slot, id) != RelicBuyResult.Bought) { Say("Không đổi được relic."); return false; }
                 LastBoughtRelic = pick;
+                Sfx("mua_relic", "Relic_" + slot);
                 Say("Đã bỏ " + id + ", lấy " + pick.name + " bằng vé đen.");
                 return true;
             }
@@ -556,6 +567,7 @@ namespace QuanAnHope.Game
                 return false;
             }
             LastBoughtRelic = offer;
+            Sfx("mua_relic", "Relic_" + slot);
             Say("Đã bỏ " + (old != null ? old.name : id) + ", mua " + offer.name + " · còn " + Session.Wallet.Count + " vé.");
             return true;
         }
@@ -577,6 +589,7 @@ namespace QuanAnHope.Game
             Hand = HandKind.Ingredient;
             HeldIngredient = ingredient;
             Log.OnTakeIngredient(Time.time);
+            SfxHand("cam");
             Say("Đang cầm " + HeldName + ".");
             return true;
         }
@@ -592,6 +605,7 @@ namespace QuanAnHope.Game
             }
             if (Hand == HandKind.Empty) return;
             string name = HeldName;
+            SfxHand("dat");
             Hand = HandKind.Empty;
             HeldIngredient = null;
             HeldDish = null;
@@ -622,6 +636,8 @@ namespace QuanAnHope.Game
                 OnBoard = HeldIngredient;
                 Hand = HandKind.Empty;
                 HeldIngredient = null;
+                Sfx("dat", "Board");
+                chopTimer = 0f;
                 Say(OnBoard.name + " đã lên thớt. Giữ chuột trái để sơ chế.");
                 return true;
             }
@@ -631,6 +647,7 @@ namespace QuanAnHope.Game
             Hand = HandKind.Ingredient;
             HeldIngredient = OnBoard;
             OnBoard = null;
+            Sfx("cam", "Board");
             Say("Đang cầm " + HeldName + ". Mang tới bếp.");
             return true;
         }
@@ -639,6 +656,7 @@ namespace QuanAnHope.Game
         public void HoldBoard(float seconds)
         {
             if (!DayRunning || OnBoard == null || OnBoard.prepared) return;
+            SfxChop(seconds);
             if (Session.HoldPrep(seconds)) Say("Đã sơ chế xong " + OnBoard.name + ". Bấm thớt để cầm lên.");
         }
 
@@ -650,6 +668,7 @@ namespace QuanAnHope.Game
         {
             if (!DayRunning) return false;
             if (!Session.Stove.SelectTool(tool)) { Say("Bếp đang nấu, chưa đổi dụng cụ được."); return false; }
+            Sfx("dat", "Stove");
             Say("Đặt " + tool.ToLowerInvariant() + " lên bếp.");
             return true;
         }
@@ -660,6 +679,7 @@ namespace QuanAnHope.Game
             if (Session.Stove.Tool == null) { Say("Chọn dụng cụ trên giá trước: Chảo, Nồi hoặc Vỉ nướng."); return false; }
             if (!Session.Stove.AddPantry(item)) { Say("Bếp đang nấu, chưa cho thêm được."); return false; }
             if (Room != null) Room.OnAddedToStove(null, item);
+            Sfx("cho_vao_bep", "Stove", 0.5f);
             Say("Đã cho " + item + ".");
             return true;
         }
@@ -677,6 +697,7 @@ namespace QuanAnHope.Game
                 string name = HeldIngredient.name;
                 if (!Session.AddToStove(HeldIngredient)) { Say("Bếp không nhận thêm " + name + " lúc này."); return false; }
                 if (Room != null) Room.OnAddedToStove(HeldIngredient, null);
+                Sfx("cho_vao_bep", "Stove");
                 Hand = HandKind.Empty;
                 HeldIngredient = null;
                 Say("Đã cho " + name + " vào " + stove.Tool.ToLowerInvariant() + ".");
@@ -694,7 +715,8 @@ namespace QuanAnHope.Game
                 }
                 Hand = HandKind.Empty;
                 Log.OnPlated(dish);
-                if (dish.tier == 0) Player.Shake(0.15f); // Lac vi: rung camera 0,15 giay (Art Bible muc 11)
+                Sfx("muc", "Stove");
+                if (dish.tier == 0) { Player.Shake(0.15f); Sfx("chay_khet", "Stove", 0.8f); FxSmoke("Stove"); } // Lac vi: rung camera 0,15 giay (Art Bible muc 11)
                 Say(dish.name + ": " + UiKit.DishTierName[dish.tier] + ". Đĩa đã lên quầy chờ.");
                 return true;
             }
@@ -710,6 +732,7 @@ namespace QuanAnHope.Game
             if (!DayRunning) return false;
             if (!Session.Stove.Start()) { Say("Cần 1 nguyên liệu chính và 1 đồ phụ đã sơ chế trong bếp."); return false; }
             Log.OnKnob(Time.time, Session.Stove.Recipe, Session.Recipes, Session.Stove);
+            Sfx("bam", "Knob");
             Say("Đang nấu " + Session.Stove.Recipe.name + "…");
             return true;
         }
@@ -718,6 +741,7 @@ namespace QuanAnHope.Game
         {
             if (!DayRunning || !HandsFree("lấy đĩa")) return false;
             Hand = HandKind.Plate;
+            Sfx("cam", "PlateStack");
             Say("Đang cầm đĩa trống.");
             return true;
         }
@@ -728,6 +752,7 @@ namespace QuanAnHope.Game
             if (Session.Stove.State == StoveState.Empty && Session.Stove.Tool == null) { Say("Bếp đang trống."); return; }
             Session.Stove.Reset();
             Log.OnDiscard();
+            Sfx("dat", "Stove");
             Say("Đã đổ bỏ đồ trên bếp.");
         }
 
@@ -739,6 +764,7 @@ namespace QuanAnHope.Game
             if (!Session.HasDish(dish)) return false;
             Hand = HandKind.Dish;
             HeldDish = dish;
+            SfxHand("cam");
             Say("Đang cầm " + dish.name + " · " + UiKit.DishTierName[dish.tier]
                 + (Session.SeatCount > 1 ? ". Nhìn vào khách gọi món này rồi bấm." : ". Mang ra quầy Góc 1, bấm chuông."));
             return true;
@@ -766,6 +792,7 @@ namespace QuanAnHope.Game
             if (!Session.StoreInFridge(d)) return false;
             Hand = HandKind.Empty;
             HeldDish = null;
+            Sfx("dat", "Fridge");
             Say("Đã cất " + d.name + " vào tủ lạnh.");
             return true;
         }
@@ -788,6 +815,7 @@ namespace QuanAnHope.Game
             switch (r)
             {
                 case ItemBuyResult.Bought:
+                    Sfx("tien", item == ItemSauce ? "Sauce" : item == ItemMachine ? "FoodMachine" : "BlackTicket");
                     Say("Đã mua " + name + " (" + price + "G) · ví còn " + Session.Money + "G.");
                     return true;
                 case ItemBuyResult.Closed:
@@ -821,6 +849,8 @@ namespace QuanAnHope.Game
             if (!Session.UseSauce(d, out r)) return false;
             LastItemEffect = "sauce:" + r;
             if (r == SauceResult.Fail) Player.Shake(0.15f);
+            SfxHand(r == SauceResult.Fail ? "sot_hong" : "sot_tot");
+            FxSauce(r == SauceResult.Fail);
             if (r == SauceResult.Legend)
             {
                 Say("Nước sốt thần thánh: " + d.name + " thành " + Dish.LegendName + " (Huyền thoại, giá ×"
@@ -844,6 +874,7 @@ namespace QuanAnHope.Game
             MachineResult r;
             if (!Session.UseMachine(d, out r)) return false;
             LastItemEffect = "machine:" + r;
+            Sfx(r == MachineResult.Trash ? "chay_khet" : "bam", "FoodMachine");
             if (r == MachineResult.Trash)
             {
                 Hand = HandKind.Empty;
@@ -863,6 +894,7 @@ namespace QuanAnHope.Game
             PullResult pull;
             if (!Session.PullBlack(out pull)) { Say("Giờ này không nhận thùng được."); return false; }
             LastPull = pull;
+            SfxPull(pull, true);
             Say("Vé đen: thùng " + pull.side.name + " và thùng " + pull.main.name + " hàng tốt đã rơi xuống bàn.");
             return true;
         }
@@ -877,6 +909,7 @@ namespace QuanAnHope.Game
             if (Session.Phase == GamePhase.Prep)
             {
                 if (!Session.OpenShop()) return false;
+                Sfx("chuong", "ShopSign", 0.7f);
                 Toast = Session.Boss != null ? BossArrivedText(Session.Boss) : "Mở quán! Khách đầu tiên đã tới.";
                 ClearReactions();
                 Changed();
@@ -885,6 +918,7 @@ namespace QuanAnHope.Game
             if (Session.Phase == GamePhase.Open)
             {
                 if (!Session.CloseEarly()) return false;
+                Sfx("bam", "ShopSign");
                 ClearHands();
                 Toast = "Đã đóng quán. Khách còn lại ra về.";
                 ClearReactions();
@@ -910,6 +944,7 @@ namespace QuanAnHope.Game
         public bool RingBell()
         {
             if (Session.Phase != GamePhase.Open || Session.CurrentCustomer == null) { Say("Chưa có khách. Bấm biển Mở quán trước."); return false; }
+            Sfx("chuong", "Bell");
             return ServeSeat(Session.SeatOf(Session.CurrentCustomer));
         }
 
@@ -929,6 +964,8 @@ namespace QuanAnHope.Game
             PaymentResult paid = Session.ServeSeat(seat, dish);
             if (paid == null) return false;
             Log.OnServed(Time.time, Session, dish);
+            SfxServe(seat, paid, c.isBoss);
+            FxServe(seat, paid, c.isBoss);
 
             Hand = HandKind.Empty;
             HeldDish = null;
@@ -1009,6 +1046,7 @@ namespace QuanAnHope.Game
         public bool NextDay()
         {
             if (!Session.StartNextDay()) return false;
+            if (Session.LastDebtPaid > 0 && Audio != null) Audio.Play("thu_no", HandPosition);
             if (AutoSave)
             {
                 // F-052 AC-1 / AC-3: tu luu dau ngay; thang hoac thua thi xoa ban luu.

@@ -4,10 +4,10 @@
   "4": 750,
   "9": 2900,
   "15": 10500,
-  "22": 32000
+  "22": 36000
  },
  "boss_bonus": 11500,
- "tickets_per_day": 6,
+ "tickets_per_day": 7,
  "rounds": {
   "1": [
    1,
@@ -244,7 +244,7 @@
  "relic_cap": 8,
  "start": {
   "money": 100,
-  "bonus_tickets": 2,
+  "first_day_tickets": 5,
   "relic_shop_from_day": 2
  },
  "set_bonus": {
@@ -327,5 +327,11 @@
   "cook_mult": 1.25,
   "dim": 0.6
  },
- "item_shop_from_day": 4
+ "item_shop_from_day": 4,
+ "bot_timing": {
+  "good_overhead_s": 19,
+  "naive_overhead_s": 30,
+  "pull_s": 4,
+  "fridge_s": 6
+ }
 }

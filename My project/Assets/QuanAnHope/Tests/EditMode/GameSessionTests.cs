@@ -27,12 +27,12 @@ namespace QuanAnHope.Tests
         // ---------- F-005 AC-1 ----------
 
         [Test]
-        public void F010_AC2_AC5_BatDau_100G_Ngay1_8Ve_No750G()
+        public void F010_AC2_AC5_BatDau_100G_Ngay1_5Ve_No750G() // constitution 1.7 muc 3: 5 ve (cu 8)
         {
             GameSession s = NewSession();
             Assert.AreEqual(1, s.Day);
             Assert.AreEqual(100, s.Money);
-            Assert.AreEqual(8, s.Wallet.Count);
+            Assert.AreEqual(5, s.Wallet.Count);
             Assert.AreEqual(GamePhase.Prep, s.Phase);
             Assert.AreEqual(4, s.NextDebt().day);
             Assert.AreEqual(750, s.NextDebt().amount);
@@ -127,7 +127,7 @@ namespace QuanAnHope.Tests
             GameSession s = NewSession(3);
             PullResult pull;
             s.PullCrates(out pull);
-            s.PullCrates(out pull);                       // con 6 ve
+            s.PullCrates(out pull);                       // con 3 ve
             s.OpenShop();
             s.CloseEarly();
 
@@ -135,7 +135,7 @@ namespace QuanAnHope.Tests
 
             Assert.AreEqual(2, s.Day);
             Assert.AreEqual(GamePhase.Prep, s.Phase);
-            Assert.AreEqual(12, s.Wallet.Count, "6 ve thua + 6 ve moi");
+            Assert.AreEqual(3 + TestData.Balance.ticketsPerDay, s.Wallet.Count, "3 ve thua + ve moi ngay");
             Assert.AreEqual(0, s.ServedToday);
             Assert.AreEqual(0, s.IncomeToday);
             Assert.IsNull(s.CurrentCustomer);
@@ -160,7 +160,7 @@ namespace QuanAnHope.Tests
             s.CloseEarly();
             PullResult pull;
             Assert.IsFalse(s.PullCrates(out pull));
-            Assert.AreEqual(8, s.Wallet.Count);
+            Assert.AreEqual(5, s.Wallet.Count);
         }
 
         // ---------- F-005 AC-3 ----------

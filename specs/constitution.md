@@ -1,6 +1,6 @@
 # Constitution — Quán ăn của Hope (tên tạm)
 
-Phiên bản 1.6 · 20/11/2026 · Trạng thái: **cốt truyện 6 chương** (mục 2.1, tranh `CotTruyen_BepNhanPham.zip`). Trước đó 1.5: **khung game** — phòng rộng hơn, khách ăn tại ghế, lưu game theo ngày, hướng dẫn ngày 1, cài đặt (mục 2.1, 6.2, Điều 5). Số cân bằng 1.4 giữ nguyên, thêm một số: thời gian ăn 5 giây (mục 6.2)
+Phiên bản 1.7 · 21/11/2026 · Trạng thái: **cân bằng đo trên game** (Điều 1 cột "đo trên game"; ngày 1 có 5 vé, 7 vé mỗi ngày, nợ ngày 22 là 36.000G; đồng hồ chạy từ lúc mở quán, mục 3, 6.2, 9). Trước đó 1.6: **cốt truyện 6 chương** (mục 2.1, tranh `CotTruyen_BepNhanPham.zip`). Trước đó 1.5: **khung game** — phòng rộng hơn, khách ăn tại ghế, lưu game theo ngày, hướng dẫn ngày 1, cài đặt (mục 2.1, 6.2, Điều 5). Số cân bằng 1.4 giữ nguyên, thêm một số: thời gian ăn 5 giây (mục 6.2)
 
 Đây là nguồn sự thật cao nhất của dự án. Mọi spec, plan, task và dòng code phải tuân theo file này. Khi một spec mâu thuẫn với constitution, constitution thắng; muốn đổi thì sửa constitution trước (tăng số phiên bản, ghi lý do ở mục 9).
 
@@ -15,13 +15,15 @@ Các con số cân bằng nằm ở hai nơi phải luôn khớp nhau: bảng tr
 ### Điều 1 — Độ khó mục tiêu
 Game nằm trong khoảng **trung bình-dễ đến trung bình-khó**. Ba mốc dưới đây là cổng chấp nhận; mọi thay đổi số liệu phải chạy lại mô phỏng và vẫn đạt cả ba:
 
-| Kiểu người chơi | Cách chơi | Mục tiêu | Kết quả mô phỏng v1.0 | Mô phỏng v1.3 (khách gọi món) | **Mô phỏng v1.4** |
-| --- | --- | --- | --- | --- | --- |
-| Không đọc chỉ số | Chọn món có giá to, tỉ lệ to; phục vụ theo thứ tự khách đến | Đi qua **≥ 60%** chặng đường | Đi được trung bình 66% (qua lần trả nợ 1: 100%, lần 2: 86%) | 67% (100%, 87%) | **63%** (qua lần trả nợ 1: 96%, lần 2: 79%) |
-| Chơi tốt, có **≥ 3 món cùng một bộ relic** | Gom bộ, giữ món ngon cho khách khó tính và boss | Thắng **≥ 70%** (phần còn lại do may) | Bộ Chợ Sớm 82%, Sơn Hào 84%, Vườn Nhà 71%; đủ 4 món: 87–97% | 82% (Vườn Nhà 76%, Chợ Sớm 86%, Sơn Hào 85%) | **90%** (Vườn Nhà 98%, Chợ Sớm 85%, Sơn Hào 88%) |
-| Chơi tốt nhưng không gom bộ | Như trên, chỉ mua relic lẻ | Thấp hơn rõ so với người gom bộ | 64% | 56% | **46%** |
+| Kiểu người chơi | Cách chơi | Mục tiêu | Kết quả mô phỏng v1.0 | Mô phỏng v1.3 (khách gọi món) | Mô phỏng v1.4 | **Đo trên game 1.7** (bot C#, 4.000 ván) |
+| --- | --- | --- | --- | --- | --- | --- |
+| Không đọc chỉ số | Chọn món có giá to, tỉ lệ to; phục vụ theo thứ tự khách đến | Đi qua **≥ 60%** chặng đường | Đi được trung bình 66% (qua lần trả nợ 1: 100%, lần 2: 86%) | 67% (100%, 87%) | 63% (qua lần trả nợ 1: 96%, lần 2: 79%) | **75%** (qua lần trả nợ 1: 100%, lần 2: 96%, lần 3: 25%) |
+| Chơi tốt, có **≥ 3 món cùng một bộ relic** | Gom bộ, giữ món ngon cho khách khó tính và boss | Thắng **≥ 70%** (phần còn lại do may) | Bộ Chợ Sớm 82%, Sơn Hào 84%, Vườn Nhà 71%; đủ 4 món: 87–97% | 82% (Vườn Nhà 76%, Chợ Sớm 86%, Sơn Hào 85%) | 90% (Vườn Nhà 98%, Chợ Sớm 85%, Sơn Hào 88%) | **86%** (2.000 ván / bộ: Vườn Nhà 95%, Chợ Sớm 83%, Sơn Hào 77%) |
+| Chơi tốt nhưng không gom bộ | Như trên, chỉ mua relic lẻ | Thấp hơn rõ so với người gom bộ | 64% | 56% | 46% | **37%** |
 
-Số v1.4 phụ thuộc mạnh vào một giả định chưa đo: thời gian đi lại và thao tác cho mỗi món (xem mục 9). Sprint 2 phải đo bằng người thật.
+**Từ 1.7 số đo trên game là chuẩn** (impl plan sprint 7 §4: "game thắng, mô phỏng sửa theo"). Bot C# chơi trên luật thật (`balance/run_bots.ps1`), giờ thao tác mỗi món lấy từ số đo `playtest-log.csv` (mục 9). Mô phỏng Python cùng bộ số cho 78% / 98% / 83%: vẫn lạc quan hơn game vì không mô hình khách giữ ghế (Q-39), chờ ghế của chủ nợ (Q-40) và món khách gọi ngẫu nhiên trên 3 ghế; chỉ dùng để dò hướng.
+
+Số v1.4 phụ thuộc mạnh vào một giả định chưa đo: thời gian đi lại và thao tác cho mỗi món (xem mục 9). Sprint 2 phải đo bằng người thật. Sprint 7 đo được 19 giây / món (người chơi tốt, 47 món vòng 1), sát giả định 20 giây; cần thêm buổi chơi của bạn ở vòng 2–4.
 
 ### Điều 2 — Dữ liệu tách khỏi code
 Mọi tỉ lệ, giá, nợ, hệ số, danh sách relic là dữ liệu (ScriptableObject sinh từ `balance.json` / `relics.json`). Chỉnh cân bằng không được phải sửa code.
@@ -85,7 +87,7 @@ Người dùng duyệt ngày 18/11/2026 khi yêu cầu triển khai `docs/sprint
 | 1 | 1–3 | Ngày 2 mưa lớn → ngày 3 nguyên liệu ít hơn và tệ hơn | Đầu ngày 4: **750G** |
 | 2 | 4–8 | Ngày 8 sét đánh cột điện → mất điện, nấu bằng nến, tầm nhìn giảm | Đầu ngày 9: **2.900G** |
 | 3 | 9–14 | Khách khó tính hơn hẳn; ngày 14 mới biết có kẻ tung tin xấu về quán; ngày 14 là ngày "all-in" | Đầu ngày 15: **10.500G** |
-| 4 | 15–21 | Uy tín phục hồi, mọi thứ bình thường. Ngày 21, đúng **20:00** **chủ nợ** đến (độ dễ tính 5%) và ngồi tới khi được phục vụ | Đầu ngày 22: **32.000G** |
+| 4 | 15–21 | Uy tín phục hồi, mọi thứ bình thường. Ngày 21, đúng **20:00** **chủ nợ** đến (độ dễ tính 5%) và ngồi tới khi được phục vụ | Đầu ngày 22: **36.000G** (1.4–1.6: 32.000G) |
 
 Nợ thu vào **đầu** ngày đến hạn. Không đủ tiền = thua (kết thúc game). Nợ bản 1.3 là 400 / 2.200 / 8.200 / 26.200G; bản 1.4 tăng cả bốn mốc theo yêu cầu của bạn, mức cụ thể chọn bằng mô phỏng (mục 9).
 
@@ -96,10 +98,10 @@ Nợ thu vào **đầu** ngày đến hạn. Không đủ tiền = thua (kết t
 | Loại | Dùng để | Nguồn |
 | --- | --- | --- |
 | Tiền (G) | Mua vật phẩm ở cửa hàng, trả nợ | Bán món ăn, tip, thưởng boss |
-| Vé trắng | Gacha nguyên liệu, mua relic | **6 vé mỗi ngày**, không dùng thì cộng dồn |
+| Vé trắng | Gacha nguyên liệu, mua relic | **7 vé mỗi ngày** (từ ngày 2; 1.4–1.6: 6), không dùng thì cộng dồn |
 | Vé đen | Gacha nguyên liệu cao cấp, hoặc mua relic tốt chắc chắn | Mua ở cửa hàng |
 
-Khởi đầu: **100G** và **2 vé thưởng** (ngày 1 có 8 vé). Cửa hàng relic mở từ **ngày 2** (ngày 1 là ngày làm quen).
+Khởi đầu: **100G**; **ngày 1 có 5 vé** (từ 1.7, yêu cầu của bạn 21/11/2026; trước đó 6 vé + 2 vé thưởng = 8). Cửa hàng relic mở từ **ngày 2** (ngày 1 là ngày làm quen). Dữ liệu: `start.first_day_tickets`.
 
 Vé mỗi ngày tăng từ 3 lên 6 ở bản 1.4 vì thùng nhỏ lại (mục 4.2): một ngày kịp nấu khoảng 8 món, cần 4 vé nguyên liệu, còn lại để mua relic. Đây là số mình thêm để bù, cần bạn xác nhận (Q-22).
 
@@ -347,7 +349,7 @@ Phục vụ tối đa **3 khách cùng lúc**; khách có thể đến lần lư
 
 Không còn số khách cố định mỗi ngày (bản 1.3: 6 / 8 / 5 / 9). Số khách phục vụ được do **thời gian** và **nguyên liệu** quyết định.
 
-- **Đồng hồ:** mỗi ngày bắt đầu lúc 9:00 và chạy liên tục tới 21:00 (8 phút thực), kể cả khi quán chưa mở. HUD hiện giờ. *(Q-21: hay chỉ chạy từ lúc bấm Mở quán?)*
+- **Đồng hồ (từ 1.7):** mỗi ngày đồng hồ **đứng ở 9:00 tới khi bấm Mở quán**, rồi chạy liên tục tới 21:00 (8 phút thực). Gacha, sơ chế, nấu trước khi mở không mất giờ; HUD hiện "9:00 chưa mở quán". Không mở quán thì ngày chưa bắt đầu (không tự hết ngày). Chủ nợ ngày 21 tới lúc 20:00 tính từ lúc mở. (Q-21 đóng: bạn chọn 21/11/2026.)
 - **Khách chỉ đến khi quán mở** (biển Mở quán, mục 6.1). Mở sớm thì có nhiều giờ bán hơn; mở muộn để gacha và nấu sẵn thì mất giờ bán.
 - **Vòng 1 — lần lượt:** mỗi lúc một khách; khách kế tiếp vào **3 giây** sau khi khách trước được phục vụ và ăn xong. Cứ thế tới 21:00.
 - **Từ vòng 2 — nhiều khách:** tối đa 3 khách cùng ngồi; ghế nào trống thì 3 giây sau có khách mới ngồi vào. Cứ thế tới 21:00.
@@ -403,6 +405,8 @@ Vòng 1 không tính giờ. Từ vòng 2, sau một **khoảng an toàn**, độ
 
 Khoảng an toàn ở bản 1.4 gấp 1,5 bản 1.3 (60 / 45 / 50 / +15 giây) vì thời gian nấu cũng gấp 1,5; chưa mô phỏng riêng, cần đo khi làm vòng 2 (sprint 4).
 
+**Đo ở sprint 7 (21/11/2026, bot C# 4.000 ván, bộ số 1.7):** số khách bị giảm dễ tính vì chờ mỗi ngày ở vòng 2–4: người chơi tốt gom bộ **2,6**, chơi tốt không gom bộ **1,8**, không đọc chỉ số **5,1**. Đề xuất của impl plan: người chơi tốt bị 1–2 khách mỗi ngày; số hiện tại nhỉnh hơn một chút. Chưa đổi khoảng an toàn: chờ bạn chọn mức (Q-53).
+
 **Đo ở sprint 4 (16/11/2026, chưa đổi số):** bot "không đọc chỉ số" chơi trên luật thật của game (3 ghế, giờ chờ thật, phục vụ theo thứ tự khách đến, món khách đầu hết thì phục vụ khách kế tiếp), 2.000 ván: khách mất trung bình **9,5 điểm** dễ tính lúc được phục vụ (mô phỏng giả định 8), qua lần trả nợ 2 là **84%** (mô phỏng 79%). Với 90 giây, vòng 2 không khó hơn mô phỏng.
 
 Về tra cứu: mình không tìm được con số công bố chính thức về thời gian chờ của Overcooked, Cook Serve Delicious hay Papa's Pizzeria (các nguồn chỉ mô tả có thanh kiên nhẫn, không ghi giây). Lập luận của bản 1.0 (số cũ, giữ để tra): các con số được đặt theo thời gian nấu khi đó (trung bình 17–19 giây một món): khoảng an toàn 60 giây đủ để nấu liền cho cả 3 khách ở vòng 2; vòng 3 (45 giây) thì khách thứ ba bắt đầu sốt ruột nếu không có món làm sẵn ở quầy chờ hoặc tủ lạnh — dễ hơn các game nấu ăn thông thường như bạn yêu cầu. Cần kiểm lại khi playtest.
@@ -423,6 +427,7 @@ Mô phỏng (mục 9): người chơi không đọc chỉ số vẫn đi đượ
 
 ### 7.1 Luật chung
 - Mỗi ngày (từ ngày 2) cửa hàng hiện **3 relic khác nhau**; giá trả bằng vé trắng.
+- **Từ 1.7 (yêu cầu của bạn 21/11/2026):** trên màn hình không ghi relic nào thuộc bộ combo, relic nào là relic lẻ (thẻ relic chỉ ghi tên, giá, độ hiếm, hiệu ứng; giá relic chỉ ghi số relic đang có). Thưởng bộ vẫn tính như mục 7.2; người chơi tự khám phá. Điều 4 vẫn giữ: giá và hiệu ứng từng relic hiện đủ.
 - Tối đa **8 relic**. Đầy thì phải bỏ một cái để lấy cái mới. (Mô phỏng cho thấy 8 đủ để gom 1 bộ đầy đủ cộng 4 relic lẻ, mà vẫn phải chọn lọc.)
 - Mua bằng **vé đen**: 3 lựa chọn chỉ gồm relic Hiếm trở lên, và ít nhất một cái thuộc bộ bạn đang có nhiều món nhất.
 - Hiệu ứng "x% nâng bậc": mỗi món trong thùng tương ứng có x% được +1 bậc (tối đa bậc 5).
@@ -495,6 +500,7 @@ Mô phỏng: với giá nước sốt 450G, 10% người chơi may mắn mua đ�
 ## 9. Kiểm tra và thay đổi
 
 - Mô phỏng: `balance/sim_balance.py` (4.000 ván mỗi kiểu người chơi). Mọi thay đổi số liệu phải chạy lại và đạt Điều 1.
+- **Đo ở sprint 7 (F-060 AC-1):** `balance/playtest_overhead.py` trên `playtest-log.csv`: phần lớn dòng do test PlayMode ghi lẫn (đã tách: từ 1.7 test ghi vào thư mục tạm, mỗi dòng có cột `phien`). Còn ≤ 6 buổi có thể là người thật, 47 món, toàn vòng 1: trung vị **19 giây** thao tác + đi lại mỗi món (giả định 20). Số này vào `balance.json bot_timing.good_overhead_s = 19`; người không đọc chỉ số chưa có số đo riêng, giữ 30 giây. Cần 3 buổi bạn chơi qua vòng 2 để đo lại.
 - **Giả định thời gian của mô phỏng 1.4 (chưa đo):** ngoài thời gian sơ chế + nấu trong dữ liệu, mỗi món tốn thêm thời gian đi lại, ngắm, mang ra quầy: **20 giây** với người chơi tốt (tranh thủ sơ chế lúc bếp đang nấu), **30 giây** với người không đọc chỉ số. Kết quả rất nhạy với số này: nếu là 26 / 38 giây thì người gom bộ chỉ còn thắng 33% và người không đọc chỉ số đi được 54%. Sprint 2 phải đo bằng người thật (F-014) rồi chỉnh nợ nếu lệch.
 - Mô phỏng đã đơn giản hóa: không mô hình hóa vé đen dùng để mua relic, việc bỏ relic khi đầy chỉ theo điểm ưu tiên, thời gian chờ được quy đổi thành mức giảm độ dễ tính trung bình (−3 điểm cho người nhanh, −8 cho người chậm). Kết quả là chỉ dấu, cần xác nhận bằng playtest.
 - Lịch sử phiên bản:
@@ -506,6 +512,11 @@ Mô phỏng: với giá nước sốt 450G, 10% người chơi may mắn mua đ�
 
   - **1.5 (18/11/2026):** theo yêu cầu của bạn trước sprint 6 ("dựng không gian 3D phòng rộng hơn 1 chút", "thêm hoạt ảnh ăn cho khách hàng và mất 1 khoảng thời gian mới ăn xong") và việc triển khai impl plan sprint 6. (a) Phòng 9,6 × 9,6 m (Điều 5). (b) Khách ăn 5 giây tại ghế (mục 6.2): số mới `day.eat_s = 5` trong dữ liệu. Đo bằng bot C# trên luật thật, 4.000 ván mỗi kiểu: 8 giây làm người không đọc chỉ số tụt từ 67% xuống 61% chặng đường (sát mốc 60% của Điều 1) và người gom bộ từ 60% xuống 53% thắng; **5 giây**: 63% / 52% / chơi tốt không gom bộ 9%. Mô phỏng Python không đổi (63 / 89 / 46%) vì mô phỏng tính số món theo thời gian nấu, không theo ghế. Người gom bộ đã dưới mốc 70% từ sprint 5 (Q-44, chỉnh ở sprint 7). (c) Mục 2.1 khung game: menu, cốt truyện, lưu game, hướng dẫn ngày 1, cài đặt (Q-8). Chọn "tải lại ra y như cũ" cho lưu game.
 
+  - **1.7 (21/11/2026):** theo yêu cầu của bạn trước sprint 7 và triển khai `docs/sprint-7/impl-plan.md` (F-060). (a) **Ngày 1 có 5 vé** (mục 3; `start.first_day_tickets`, bỏ `bonus_tickets`). (b) **Đồng hồ đứng ở 9:00 tới khi mở quán** (mục 6.2; đóng Q-21): gacha, sơ chế, nấu trước khi mở không mất giờ. Bot đo: người chơi tốt tận dụng bằng cách sơ chế sẵn mọi nguyên liệu (nấu sẵn đĩa thì hại: khách gọi món ngẫu nhiên nên đĩa nằm chiếm quầy, bot gom bộ tụt 52% → 27%). (c) Thẻ relic và giá relic không ghi bộ / lẻ (mục 7.1). (d) Chỉnh số theo bot C# trên luật thật (thứ tự nợ → giá gốc → vé → độ dài ngày, `balance/bot_sweep.md`):
+    - Lần 1 — giữ số 1.6 (vé 6, nợ 22 32.000G) với luật (a)(b): không đọc chỉ số 67% / gom bộ thắng 79% / không gom bộ 75%: **trượt** mốc "thấp hơn rõ" (bot gom bộ chỉ đủ vé gom 3 món ở 35% ván).
+    - Lần 2 — chỉ nợ 22 (36.000 / 40.000G): 47% / 12% gom bộ, không gom bộ 49% / 7%: không tách được hai kiểu, gom bộ trượt 70%. Chỉ giá gốc ×0,9: 56% / 52%: không tách. → phải dùng nút thứ ba (vé).
+    - Lần 3 — vé 7 (nợ giữ): 98% / 92%: quá dễ, không tách. Vé 7 + nợ 22 34.000 / 35.000 / **36.000G**: gom bộ 95 / 91 / **85%**, không gom bộ 71 / 55 / **37%**; vé 7 + giá ×0,9: 91% / 56% nhưng bộ Vườn Nhà 98% (trượt AC-5 ≤ 97%).
+    - **Chốt: vé 7 / ngày, nợ ngày 22 36.000G**, giá gốc và ba mốc nợ đầu giữ nguyên. 4.000 ván: 75% / 86% / 37%; từng bộ 77–95%. Test thống kê (Điều 3) xanh.
   - **1.6 (20/11/2026):** theo yêu cầu "sử dụng @CotTruyen_BepNhanPham.zip để làm lại phần cốt truyện". Cốt truyện từ 3 ý mở đầu + 2 kết thành 6 chương; thêm 3 chương giữa ván (đầu ngày 2, ngày mất điện, ngày thu nợ lần 3). Nhân vật mới trong tranh: sếp cũ, kẻ phá đám (tờ rơi "Quán bẩn"), bà cụ khách quen, con gái chủ nợ. Không đổi luật chơi hay số cân bằng.
 
 ### Các điểm mình đã tự diễn giải (cần bạn xác nhận)

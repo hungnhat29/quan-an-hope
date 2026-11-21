@@ -49,6 +49,17 @@ namespace QuanAnHope.Game
             public Color baseColor;
         }
 
+        /// <summary>Mau mua ngoai cua (Art Bible muc 4: ngay 2 mua #9CC7D8, 25% ngoai cua).</summary>
+        public static readonly Color RainColor = UiKit.Hex("#9CC7D8");
+        public const float RainMix = 0.25f;
+        float rain;
+        /// <summary>0 = tanh, 1 = mua: pho ngoai cua pha mau mua 25%.</summary>
+        public float Rain
+        {
+            get { return rain; }
+            set { value = Mathf.Clamp01(value); if (value != rain) { rain = value; if (!float.IsNaN(shownHour)) Apply(shownHour); } }
+        }
+
         readonly List<Part> parts = new List<Part>();
         MaterialPropertyBlock block;
         Func<float> hourSource;
@@ -146,6 +157,8 @@ namespace QuanAnHope.Game
                     case Kind.Far: c = Color.Lerp(lit, bottom, FarHaze); break;
                     default: c = lit; break;
                 }
+                if (rain > 0f && p.kind != Kind.Window && p.kind != Kind.Lantern && p.kind != Kind.Bulb)
+                    c = Color.Lerp(c, RainColor, RainMix * rain);
                 c.a = p.baseColor.a;
                 p.r.GetPropertyBlock(block);
                 block.SetColor(ColorId, c);

@@ -84,6 +84,7 @@ namespace QuanAnHope.Tests
         {
             GameSession s = NewSession();
             Assert.AreEqual("9:00", s.Clock.Text);
+            Assert.IsTrue(s.OpenShop());                 // constitution 1.7 muc 6.2: dong ho chay tu luc mo quan
             s.Tick(Hour * 2);
             Assert.AreEqual("11:00", s.Clock.Text);
         }
@@ -91,12 +92,12 @@ namespace QuanAnHope.Tests
         // ---------- AC-2: chua mo quan ----------
 
         [Test]
-        public void AC2_ChuaMoQuan_GioVanTroi_KhongCoKhach()
+        public void AC2_ChuaMoQuan_GioDung9h_KhongCoKhach() // constitution 1.7 muc 6.2 (cu: gio van troi)
         {
             GameSession s = NewSession();
             s.Tick(Hour * 4);
             Assert.AreEqual(GamePhase.Prep, s.Phase);
-            Assert.AreEqual("13:00", s.Clock.Text);
+            Assert.AreEqual("9:00", s.Clock.Text);
             Assert.IsNull(s.CurrentCustomer);
             Assert.AreEqual(0, s.CustomersToday);
         }
@@ -132,7 +133,8 @@ namespace QuanAnHope.Tests
         {
             GameSession s = NewSession(11);
             PullResult pull;
-            while (s.PullCrates(out pull)) { }           // 8 ve: 16 nguyen lieu chinh
+            s.DebugAddTickets(3);                        // 8 ve: 16 nguyen lieu chinh (ngay 1 chi co 5 ve tu 1.7)
+            while (s.PullCrates(out pull)) { }
             s.OpenShop();
             for (int i = 0; i < 12; i++)
             {
@@ -194,11 +196,11 @@ namespace QuanAnHope.Tests
         // ---------- AC-5: 21:00 khong co khach ----------
 
         [Test]
-        public void AC5_21Gio_ChuaMoQuan_HetNgay()
+        public void AC5_ChuaMoQuan_KhongHetNgay() // constitution 1.7 muc 6.2 (cu: 21:00 chua mo thi het ngay)
         {
             GameSession s = NewSession();
             s.Tick(DaySeconds);
-            Assert.AreEqual(GamePhase.DayEnd, s.Phase);
+            Assert.AreEqual(GamePhase.Prep, s.Phase, "dong ho chua chay: chua toi 21:00");
             Assert.AreEqual(0, s.ServedToday);
         }
 
@@ -222,7 +224,9 @@ namespace QuanAnHope.Tests
         public void AC5_HetNgay_DongHoDung_TickKhongLamGi()
         {
             GameSession s = NewSession();
-            s.Tick(DaySeconds);
+            s.OpenShop();
+            s.Tick(DaySeconds + Eat);
+            if (s.Phase == GamePhase.Open) s.CloseEarly();
             string closed = s.Clock.Text;
             s.Tick(Hour);
             Assert.AreEqual(closed, s.Clock.Text);
@@ -248,10 +252,10 @@ namespace QuanAnHope.Tests
         public void AC7_HetNgay_GhiSoKhach_TienTrongNgay_GioDongQuan()
         {
             GameSession s = NewSession(5);
-            s.Tick(Hour / 2f);                           // 9:30 mo quan
+            s.Tick(Hour / 2f);                           // chua mo quan: dong ho dung o 9:00 (1.7)
             s.OpenShop();
             PaymentResult paid = ServeCurrent(s);        // bot nau khong tinh gio
-            s.Tick(Hour * 2);                            // 11:30, khach thu 2 dang ngoi
+            s.Tick(Hour * 2.5f);                         // 11:30, khach thu 2 dang ngoi
             Assert.IsTrue(s.CloseEarly());
 
             Assert.AreEqual(1, s.ServedToday);
@@ -263,7 +267,9 @@ namespace QuanAnHope.Tests
         public void AC7_SangNgayMoi_DongHoVe9Gio()
         {
             GameSession s = NewSession();
+            s.OpenShop();
             s.Tick(DaySeconds);
+            if (s.Phase == GamePhase.Open) s.CloseEarly();
             Assert.IsTrue(s.StartNextDay());
             Assert.AreEqual("9:00", s.Clock.Text);
             Assert.AreEqual(0, s.CustomersToday);

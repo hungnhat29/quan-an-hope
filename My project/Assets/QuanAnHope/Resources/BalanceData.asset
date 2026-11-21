@@ -14,10 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: QuanAnHope.Data::QuanAnHope.Data.BalanceData
   balance:
     days: 22
-    ticketsPerDay: 6
+    ticketsPerDay: 7
     bossBonus: 11500
     stormDay: 3
     counterSlots: 3
+    botTiming:
+      goodOverheadSeconds: 19
+      naiveOverheadSeconds: 30
+      pullSeconds: 4
+      fridgeSeconds: 6
     payment:
       tipBase: 0.3
       tipPerTier: 0.2
@@ -31,7 +36,7 @@ MonoBehaviour:
     - day: 15
       amount: 10500
     - day: 22
-      amount: 32000
+      amount: 36000
     rounds:
     - round: 1
       firstDay: 1
@@ -135,7 +140,7 @@ MonoBehaviour:
       bossEasy: 5
     start:
       money: 100
-      bonusTickets: 2
+      firstDayTickets: 5
       relicShopFromDay: 2
     day:
       openHour: 9

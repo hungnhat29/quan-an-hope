@@ -277,11 +277,11 @@ namespace QuanAnHope.Tests
             var w = new TicketWallet(TestData.Balance);
             RelicFx fx = Fx("F10");
             w.BeginDay(1, fx);
-            Assert.AreEqual(8, w.Count);
+            Assert.AreEqual(5, w.Count);
             w.BeginDay(2, fx);
-            Assert.AreEqual(14, w.Count);
+            Assert.AreEqual(5 + TestData.Balance.ticketsPerDay, w.Count);
             w.BeginDay(3, fx);
-            Assert.AreEqual(21, w.Count);
+            Assert.AreEqual(5 + 2 * TestData.Balance.ticketsPerDay + 1, w.Count, "ngay 3: +1 ve so cao");
         }
 
         [Test]
@@ -292,7 +292,7 @@ namespace QuanAnHope.Tests
             RelicShopTests.NextDay(s);
             int day2 = s.Wallet.Count;
             RelicShopTests.NextDay(s);
-            Assert.AreEqual(day2 + 6 + 1, s.Wallet.Count);
+            Assert.AreEqual(day2 + TestData.Balance.ticketsPerDay + 1, s.Wallet.Count);
         }
 
         [Test]

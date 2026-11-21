@@ -146,11 +146,21 @@ namespace QuanAnHope.EditorTools
                 bossEasy = Int(customers, "boss_easy"),
             };
 
+            JObject timing = root["bot_timing"] as JObject;
+            if (timing != null)
+                b.botTiming = new BotTimingData
+                {
+                    goodOverheadSeconds = (float)timing.Value<double>("good_overhead_s"),
+                    naiveOverheadSeconds = (float)timing.Value<double>("naive_overhead_s"),
+                    pullSeconds = (float)timing.Value<double>("pull_s"),
+                    fridgeSeconds = (float)timing.Value<double>("fridge_s"),
+                };
+
             JObject start = Obj(root, "start");
             b.start = new StartRules
             {
                 money = Int(start, "money"),
-                bonusTickets = Int(start, "bonus_tickets"),
+                firstDayTickets = Int(start, "first_day_tickets"),
                 relicShopFromDay = Int(start, "relic_shop_from_day"),
             };
 

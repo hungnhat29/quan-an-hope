@@ -53,7 +53,7 @@ namespace QuanAnHope.Tests
             Assert.IsFalse(s.Shop.IsOpen);
             Assert.IsTrue(s.Shop.Offers.All(o => o == null));
             Assert.AreEqual(RelicBuyResult.Closed, s.BuyRelic(0));
-            Assert.AreEqual(8, s.Wallet.Count);
+            Assert.AreEqual(5, s.Wallet.Count);
         }
 
         [Test]

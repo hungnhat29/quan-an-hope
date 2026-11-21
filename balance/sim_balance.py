@@ -19,18 +19,30 @@ if os.environ.get('HOUR_S') and 'day' in B: B['day']['seconds_per_hour']=int(os.
 # + OVERHEAD (di lai trong phong, ngam, mang ra quay, bam chuong). OVERHEAD la GIA DINH cua mo phong,
 # can do lai bang choi thu: nguoi cham 30 giay / mon, nguoi nhanh 20 giay / mon (tranh thu so che luc bep dang nau).
 TIMED='day_seconds' in B
-OVERHEAD={'naive':float(os.environ.get('OVER_NAIVE','30'))}
-OVER_GOOD=float(os.environ.get('OVER_GOOD','20'))
-PULL_S=4.0     # di toi may, nhet ve, thung roi
-FRIDGE_S=6.0   # lay mon tu tu lanh mang ra
+# Sprint 7 (F-060 AC-1): so do nam o balance.json bot_timing (playtest_overhead.py), bien moi truong de thu so khac.
+BT=B.get('bot_timing',{})
+OVERHEAD={'naive':float(os.environ.get('OVER_NAIVE',BT.get('naive_overhead_s',30)))}
+OVER_GOOD=float(os.environ.get('OVER_GOOD',BT.get('good_overhead_s',20)))
+PULL_S=float(BT.get('pull_s',4))       # di toi may, nhet ve, thung roi
+# Constitution 1.7 muc 6.2: dong ho chi chay tu luc Mo quan -> quay thung va nau san truoc khi mo khong mat gio.
+# Nguoi choi tot so che san moi nguyen lieu (khong ton gio so che trong ngay, khong nau san vi chua biet khach goi gi);
+# naive nau san 1 dia (huong dan ngay 1). PREOPEN=0 de ra lai so cua luat cu (dong ho chay tu dau ngay).
+PREOPEN=os.environ.get('PREOPEN','1')!='0'
+def preopen_dishes(style):
+    if not PREOPEN: return 0
+    return 1 if style=='naive' else 0
+def preopen_prep(style):
+    return PREOPEN and style!='naive'
+FRIDGE_S=float(BT.get('fridge_s',6))   # lay mon tu tu lanh mang ra
 RECIPE={x['id']:x for x in RC['recipes']}
 _WORK={}; _AVG={}
 def dish_seconds(style,recipe_id):
-    w=_WORK.get(recipe_id)
+    pre=preopen_prep(style)
+    w=_WORK.get((recipe_id,pre))
     if w is None:
         x=RECIPE.get(recipe_id); T=RC['timing']
-        w=60.0 if x is None else sum(v[1] for v in x['prep'].values())+T['step_s']*len(x['steps'])+x['cook_s']+T['plate_s']
-        _WORK[recipe_id]=w
+        w=60.0 if x is None else (0 if pre else sum(v[1] for v in x['prep'].values()))+T['step_s']*len(x['steps'])+x['cook_s']+T['plate_s']
+        _WORK[(recipe_id,pre)]=w
     return w+OVERHEAD.get(style,OVER_GOOD)
 def avg_dish_seconds(style,rd):
     k=(style,rd)
@@ -156,7 +168,7 @@ def offers(p):
     owned={x['id'] for x in p.relics}; pool=[x for x in RL if x['id'] not in owned]
     return p.r.sample(pool,min(B.get('relic_shop_offers',3),len(pool)))
 def run(style,seed,log=False):
-    p=P(style,seed); r=p.r; reached=0; p.money=B['start']['money']; p.tk=B['start']['bonus_tickets']
+    p=P(style,seed); r=p.r; reached=0; p.money=B['start']['money']; p.tk=B['start']['first_day_tickets']-B['tickets_per_day']
     for day in range(1,B['days']+1):
         rd=round_of(day); f=p.fx()
         if str(day) in B['debt_days']:
@@ -169,7 +181,7 @@ def run(style,seed,log=False):
         if TIMED:
             # Khach khong gioi han: nguoi choi tinh so thung theo so mon kip nau trong ngay.
             cs=B['crate_size']; base=cs['chinh_storm'] if day==B.get('storm_day',3) else cs['chinh']
-            cap_est=int(B['day_seconds']//avg_dish_seconds(style,rd))
+            cap_est=int(B['day_seconds']//avg_dish_seconds(style,rd))+preopen_dishes(style)
             need_pulls=-(-cap_est//max(1,base+int(f.get('chinh_size',0))))
             cust=None
         else:
@@ -230,9 +242,10 @@ def run(style,seed,log=False):
             k+=1; dishes.append((cook(p,day,c[0],[take[0][0]]),c[1]+'__'+take[0][1]))
         if TIMED:
             # Chi nau kip mot so mon truoc 21:00; mon trong tu lanh chi ton cong mang ra.
-            budget=B['day_seconds']-PULL_S*(pulls+nb)-FRIDGE_S*len(p.fridge)
-            kept=[]; used=0.0
+            budget=B['day_seconds']-(0 if PREOPEN else PULL_S*(pulls+nb))-FRIDGE_S*len(p.fridge)
+            kept=[]; used=0.0; free=preopen_dishes(style)
             for d in dishes:
+                if free>0: kept.append(d); free-=1; continue
                 t=dish_seconds(style,d[1])
                 if used+t>budget: break
                 kept.append(d); used+=t

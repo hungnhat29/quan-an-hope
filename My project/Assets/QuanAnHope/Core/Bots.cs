@@ -33,6 +33,8 @@ namespace QuanAnHope.Core
         public int earlyCloses;
         public int legendDishes;
         public int maxSetCount;
+        /// <summary>Bo co nhieu mon nhat luc het van (F-060 AC-5: thang theo tung bo).</summary>
+        public string topSet;
         public int wrongForSeat;
 
         /// <summary>Ngay 21: dau ngay co dia Tuyet hao trong tu lanh khong; gio phuc vu chu no (phut tu 9:00, -1 = khong phuc vu).</summary>
@@ -43,6 +45,14 @@ namespace QuanAnHope.Core
         public int wrongPenalty;
         public int timedServes;
         public int patienceDrop;
+
+        /// <summary>F-060 AC-6 (sprint 7): so khach bi giam de tinh vi cho (giam &gt; 0) va so ngay co tinh gio (vong 2-4).</summary>
+        public int impatientServes;
+        public int timedDays;
+
+        /// <summary>Mon nau san / nguyen lieu so che san truoc khi mo quan (constitution 1.7 muc 6.2).</summary>
+        public int preCooked;
+        public int prePrepped;
 
         /// <summary>Ngay 21 khong phuc vu duoc chu no: vi sao (de ghi bao cao).</summary>
         public string bossMissReason;
@@ -101,7 +111,7 @@ namespace QuanAnHope.Core
         /// <summary>Choi toi dau ngay <paramref name="day"/> (pha Prep) hoac het van. Dung cho test luu / tai (F-052).</summary>
         public static void PlayUntil(GameSession s, BotStyle style, int day)
         {
-            var c = new Ctx { s = s, style = style, timing = style == BotStyle.Naive ? BotTiming.Naive : Good, run = new BotRun { style = style } };
+            var c = new Ctx { s = s, style = style, timing = BotTiming.From(s.Balance, style == BotStyle.Naive), run = new BotRun { style = style } };
             while (s.Phase == GamePhase.Prep && s.Day < day)
             {
                 PlayDay(c);
@@ -115,7 +125,7 @@ namespace QuanAnHope.Core
             {
                 s = s,
                 style = style,
-                timing = style == BotStyle.Naive ? BotTiming.Naive : Good,
+                timing = BotTiming.From(s.Balance, style == BotStyle.Naive),
                 run = new BotRun { style = style },
             };
             LastRun = c.run;
@@ -131,6 +141,7 @@ namespace QuanAnHope.Core
                 PlayDay(c);
                 c.run.served += s.ServedToday;
                 c.run.daysPlayed++;
+                if (Patience.Applies(s.Balance, s.Day)) c.run.timedDays++;
                 int due = s.Balance.DebtDueOn(s.Day + 1);
                 if (due > 0) c.run.moneyBeforeDebt[s.Day + 1] = s.Money;
                 s.StartNextDay();
@@ -138,7 +149,11 @@ namespace QuanAnHope.Core
             c.run.won = s.IsWon;
             c.run.lastDay = s.Day;
             foreach (RelicDef r in s.Relics.Owned)
-                if (!string.IsNullOrEmpty(r.set)) c.run.maxSetCount = Math.Max(c.run.maxSetCount, s.Relics.CountInSet(r.set));
+                if (!string.IsNullOrEmpty(r.set) && s.Relics.CountInSet(r.set) > c.run.maxSetCount)
+                {
+                    c.run.maxSetCount = s.Relics.CountInSet(r.set);
+                    c.run.topSet = r.set;
+                }
             return s.Phase;
         }
 
@@ -166,6 +181,7 @@ namespace QuanAnHope.Core
             if (!c.Good || s.Day >= GoodBlackPullFromDay)
                 while (s.PullBlack(out pull)) Spend(c, c.timing.pullSeconds);
 
+            PreCook(c);
             s.OpenShop();
             int guard = 0;
             while (s.Phase == GamePhase.Open && guard++ < 2000)
@@ -184,7 +200,7 @@ namespace QuanAnHope.Core
             }
             if (s.Phase == GamePhase.Open) { NoteMiss(c, "het luot"); s.CloseEarly(); }
             if (s.IsBossDay && !c.run.bossServed && c.run.bossMissReason == null) NoteMiss(c, "het ngay");
-            if (s.Phase == GamePhase.Prep) s.Tick(s.Clock.DaySeconds);
+            if (s.Phase == GamePhase.Prep && s.OpenShop()) s.CloseEarly();
         }
 
         static void NoteMiss(Ctx c, string what)
@@ -220,12 +236,21 @@ namespace QuanAnHope.Core
             foreach (Recipe r in c.s.Recipes.recipes)
             {
                 if (r.group != "chinh" || r.unlockRound < 1 || r.unlockRound > round) continue;
-                sum += WorkSeconds(c.s, r) + c.timing.overheadSeconds;
+                // nguoi tot so che san truoc khi mo quan (constitution 1.7): mot mon khong con ton gio so che
+                sum += (c.Good ? WorkSeconds(c.s, r) - PrepSeconds(c.s, r) : WorkSeconds(c.s, r)) + c.timing.overheadSeconds;
                 n++;
             }
             v = n > 0 ? sum / n : 60.0;
             avgCache[key] = v;
             return v;
+        }
+
+        static float PrepSeconds(GameSession s, Recipe r)
+        {
+            float prep = 0f;
+            foreach (MainIngredient m in s.Recipes.mains) if (m.id == r.mainId) prep += m.prepSeconds;
+            foreach (SideIngredient p in s.Recipes.sides) if (p.id == r.sideId) prep += p.prepSeconds;
+            return prep;
         }
 
         static float WorkSeconds(GameSession s, Recipe r)
@@ -446,11 +471,13 @@ namespace QuanAnHope.Core
         static void Serve(Ctx c, Customer cu, Dish d)
         {
             GameSession s = c.s;
-            if (s.Fridge.Contains(d)) Spend(c, FridgeSeconds);
+            if (s.Fridge.Contains(d)) Spend(c, c.timing.fridgeSeconds);
             if (!cu.isBoss && Patience.Applies(s.Balance, s.Day))
             {
                 c.run.timedServes++;
-                c.run.patienceDrop += cu.easiness - s.EasinessNow(cu);
+                int drop = cu.easiness - s.EasinessNow(cu);
+                c.run.patienceDrop += drop;
+                if (drop > 0) c.run.impatientServes++;
             }
             PaymentResult p = s.ServeSeat(s.SeatOf(cu), d);
             if (p != null && p.wrongOrder) c.run.wrongPenalty -= p.amount;
@@ -560,6 +587,24 @@ namespace QuanAnHope.Core
 
         // ---------------- nau ----------------
 
+        /// <summary>
+        /// Constitution 1.7 muc 6.2: dong ho chi chay tu luc Mo quan, nen viec lam truoc khi mo khong mat gio (sim_balance.py
+        /// PREOPEN). Nguoi tot so che san moi nguyen lieu trong kho (chua biet khach goi gi nen khong nau san: dia khong ai goi
+        /// se chiem quay cho - do o sprint 7, nau san 2 dia lam bot gom bo tut 52% -> 27%); naive nau 1 mon nhu huong dan ngay 1.
+        /// </summary>
+        static void PreCook(Ctx c)
+        {
+            GameSession s = c.s;
+            if (!c.Good)
+            {
+                if (s.Phase == GamePhase.Prep && CanCook(s) && CookAny(c) != null) c.run.preCooked++;
+                return;
+            }
+            var all = new List<Ingredient>(s.Stock.Items);
+            foreach (Ingredient i in all)
+                if (s.Phase == GamePhase.Prep && !i.prepared && Prepare(s, i)) c.run.prePrepped++;
+        }
+
         /// <summary>Nguyen lieu cho mon: nguoi tot lay cai bac cao nhat, naive lay cai dau tien trong kho.</summary>
         static bool FindPair(Ctx c, Recipe want, out Ingredient main, out Ingredient side)
         {
@@ -644,6 +689,8 @@ namespace QuanAnHope.Core
         static Dish Cook(Ctx c, Recipe recipe, Ingredient main, Ingredient side)
         {
             GameSession s = c.s;
+            // so che san (truoc khi mo quan) thi khong ton gio so che nua
+            float prepTime = (main.prepared ? 0f : main.prepSeconds) + (side.prepared ? 0f : side.prepSeconds);
             if (!Prepare(s, main) || !Prepare(s, side)) return null;
             if (!s.Stove.SelectTool(recipe.tool)) return null;
             foreach (string step in recipe.steps)
@@ -660,7 +707,7 @@ namespace QuanAnHope.Core
             if (!s.PlateDish(out dish)) return null;
 
             CookTiming t = s.Recipes.timing;
-            s.Tick(main.prepSeconds + side.prepSeconds + t.stepSeconds * recipe.steps.Length
+            s.Tick(prepTime + t.stepSeconds * recipe.steps.Length
                 + recipe.cookSeconds + t.plateSeconds + c.timing.overheadSeconds);
             if (s.Phase != GamePhase.Open && s.Phase != GamePhase.Prep) return null;
             AfterPlate(c, dish);
@@ -703,7 +750,7 @@ namespace QuanAnHope.Core
         public int Games { get; private set; }
         int wins, combo3, comboWins, reachedBoss, bossBonus, legend, earlyCloses, wrongForSeat, bossMissed, hadReserve, reserveBonus;
         readonly int[] bossTiers = new int[5];
-        long wrongPenalty, timedServes, patienceDrop;
+        long wrongPenalty, timedServes, patienceDrop, impatient, timedDays, preCooked, prePrepped;
         long days, served, progressSum;
         readonly int[] pass = new int[Marks.Length];
         readonly Dictionary<int, List<int>> money = new Dictionary<int, List<int>>();
@@ -737,6 +784,10 @@ namespace QuanAnHope.Core
             wrongPenalty += r.wrongPenalty;
             timedServes += r.timedServes;
             patienceDrop += r.patienceDrop;
+            impatient += r.impatientServes;
+            timedDays += r.timedDays;
+            preCooked += r.preCooked;
+            prePrepped += r.prePrepped;
             if (r.reachedBossDay && !r.bossServed) bossMissed++;
             if (r.bossServed) bossTiers[r.bossTier]++;
             if (r.bossDayHadReserve) { hadReserve++; if (r.bossBonus > 0) reserveBonus++; }
@@ -815,8 +866,14 @@ namespace QuanAnHope.Core
                 + ", dau ngay 21 co dia Tuyet hao trong tu=" + hadReserve + " (trong do duoc thuong " + reserveBonus + ") |"
                 + " diem de tinh mat vi cho=" + (timedServes > 0 ? (double)patienceDrop / timedServes : 0).ToString("0.0", CultureInfo.InvariantCulture)
                 + " tien phat sai mon / van=" + (Games > 0 ? wrongPenalty / Games : 0)
-                + " mon Hy Vong=" + legend + " dong quan som=" + earlyCloses + " dua dia de trong ghe cho chu no=" + wrongForSeat;
+                + " mon Hy Vong=" + legend + " dong quan som=" + earlyCloses + " dua dia de trong ghe cho chu no=" + wrongForSeat
+                + " | khach bi giam de tinh / ngay (vong 2-4)=" + ImpatientPerDay.ToString("0.0", CultureInfo.InvariantCulture)
+                + " nau san / ngay=" + (days > 0 ? (double)preCooked / days : 0).ToString("0.0", CultureInfo.InvariantCulture)
+                + " so che san / ngay=" + (days > 0 ? (double)prePrepped / days : 0).ToString("0.0", CultureInfo.InvariantCulture);
         }
+
+        /// <summary>F-060 AC-6: so khach bi giam de tinh vi cho moi ngay o vong 2-4.</summary>
+        public double ImpatientPerDay { get { return timedDays > 0 ? (double)impatient / timedDays : 0; } }
 
         /// <summary>Doc dong ket qua cua sim_balance.py (win, pass d4..d22); null neu khong co.</summary>
         public static double[] ParseSim(string simOutput, BotStyle style)

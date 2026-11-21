@@ -702,6 +702,9 @@ namespace QuanAnHope.PlayTests
         [UnityTest]
         public IEnumerator KhachAn_DuaGapMonVoiDan_AnXongRoiGhe()
         {
+            // khung hinh giat (nap shader lan dau) x tua 25 lan co the vuot 5 giay an trong mot khung (L-022): gioi han buoc
+            float maxDt = Time.maximumDeltaTime;
+            Time.maximumDeltaTime = 0.02f;
             yield return Use("Kiosk");
             yield return new WaitForSeconds(1.5f);
             yield return Use("ShopSign");
@@ -718,25 +721,46 @@ namespace QuanAnHope.PlayTests
             P.LookAt(v.ServedSpot.position + new Vector3(0f, 0.5f, 0.3f));
             float stickLow = v.Eating.StickLift, stickHigh = stickLow;
             float left0 = v.Eating.FoodLeft;
+            // Truoc sprint 7 (21/11/2026): "tay cua khach khong di chuyen" -> tay cam dua, di theo dua
+            Assert.IsNotNull(v.Eating.Hand, "co ban tay cam dua");
+            Assert.IsFalse(v.Eating.OriginalArm.activeSelf, "tay vay cua canh an khi dang an");
+            Assert.IsTrue(v.Eating.HoseFacesOutward, "ong tay: mat ngoai huong ra ngoai (khong thay mat trong den)");
+            Vector3 handMin = v.Eating.Hand.position, handMax = handMin;
+            float gripGap = 0f, bendMax = 0f;
             yield return Shot("khach_an_1.png", null, Sprint6);
             float t0 = Time.time;
             while (v.Eating != null && (v.Eating.FoodLeft >= left0 || Time.time - t0 < EatingFx.BitePeriod) && Time.time - t0 < S.Balance.day.eatSeconds)
             {
                 stickLow = Mathf.Min(stickLow, v.Eating.StickLift);
                 stickHigh = Mathf.Max(stickHigh, v.Eating.StickLift);
+                if (v.Eating.Hand != null)
+                {
+                    Vector3 h = v.Eating.Hand.position;
+                    handMin = Vector3.Min(handMin, h);
+                    handMax = Vector3.Max(handMax, h);
+                    gripGap = Mathf.Max(gripGap, Vector3.Distance(h, v.Eating.Grip));
+                    bendMax = Mathf.Max(bendMax, v.Eating.Bend);
+                }
                 yield return null;
             }
             Assert.IsNotNull(v.Eating, "van dang an");
             Assert.Less(v.Eating.FoodLeft, left0, "mon voi dan");
             Assert.Greater(stickHigh - stickLow, 0.5f, "dua gap len xuong");
+            Assert.Less(gripGap, 0.01f, "ban tay luon o diem cam dua");
+            Assert.Greater((handMax - handMin).magnitude, 0.2f, "tay di chuyen theo nhip gap: " + (handMax - handMin));
+            Assert.Greater(bendMax, 0.03f, "ong tay cong theo duong cung khi dua len mieng (Art Bible muc 6, 12)");
             StringAssert.Contains("đang ăn", g.Room.Station("Customer_0").CurrentPrompt);
             yield return Shot("khach_an_2.png", null, Sprint6);
             Time.timeScale = FastForward;
+            GameObject wave = v.Eating.OriginalArm;
             yield return WaitUntil(() => S.Eaters[0] == null, S.Balance.day.eatSeconds + 1f, "an xong");
+            yield return Frames(2);
+            Assert.IsTrue(wave.activeSelf, "an xong: tay vay cua canh hien lai");
             yield return WaitUntil(() => v.LeaveLeft <= 0f, 2f, "roi ghe");
             yield return Frames(2);
             if (S.Seats[0] == null) Assert.IsFalse(v.Model.activeInHierarchy, "an xong roi ghe: khoi khach an");
             Assert.IsNull(v.ServedDish, "dia duoc don");
+            Time.maximumDeltaTime = maxDt;
         }
     }
 }

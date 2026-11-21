@@ -42,6 +42,11 @@ namespace QuanAnHope.Game
             /// <summary>Tam trang da dien (0 cho, 1 vui, 2 gian): doi thi nhay cang / lac dau.</summary>
             public int Mood;
             public float LeaveLeft;
+
+            /// <summary>Bieu cam dang hien (FaceArt.Mood*; null = chu no / an), chop mat (Art Bible muc 12: 0,12 giay moi 3-5 giay).</summary>
+            public string FaceMood;
+            public float BlinkIn = 3f, BlinkLeft;
+            public int Blinks;
         }
 
         // Ba ghe doc quay (x), ti le khach khi ngoi 3 nguoi; vong 1 mot khach giua, co nhu canh cu.
@@ -214,11 +219,14 @@ namespace QuanAnHope.Game
                 }
                 else if (v.Face != null && show)
                 {
-                    // dang an: giu mat theo ket qua phuc vu (vui / gian / cho)
-                    if ((reacting || eatingFace) && outcome == PaymentOutcome.Angry) v.Face.ShowAngry();
-                    else if ((reacting || eatingFace) && outcome == PaymentOutcome.Satisfied) v.Face.ShowHappy();
-                    else v.Face.ShowWaiting();
+                    // sprint 7 (F-062 AC-2): du 6 bieu cam theo bang Art Bible muc 6
+                    Dish ate = s.EatingDish(i);
+                    bool waiting = c != null && !reacting;
+                    string face = FaceArt.CustomerMood(reacting, outcome, ate != null ? ate.tier : (g.LastServedSeat == i && g.LastServed != null ? g.LastServed.tier : 0),
+                        eatingFace && !reacting, waiting && s.IsImpatient(c), waiting && s.PatienceLeft(c) <= 0f);
+                    SetFace(v, face);
                 }
+                if (!show || boss) v.FaceMood = null;
                 int mood = !show ? 0 : (reacting || eatingFace) && outcome == PaymentOutcome.Angry ? 2
                     : (reacting || eatingFace) && (outcome == PaymentOutcome.Satisfied || (boss && bossReact && bonus)) ? 1 : 0;
                 if (mood != v.Mood && v.Model != null)
@@ -237,6 +245,7 @@ namespace QuanAnHope.Game
                     : (g.ServedShowLeft > 0f && g.LastServed != null && g.LastServedSeat == i && s.Balance.day.eatSeconds <= 0f ? g.LastServed : null);
                 if (want != v.ServedFor)
                 {
+                    if (v.Eating != null) v.Eating.Release();
                     if (v.ServedDish != null) Object.Destroy(v.ServedDish);
                     v.ServedDish = null;
                     v.Eating = null;
@@ -254,9 +263,49 @@ namespace QuanAnHope.Game
             }
         }
 
+        /// <summary>Doi mat khach (giu nguyen neu dang hien dung mat; dang chop thi doi ban nham mat).</summary>
+        static void SetFace(SeatView v, string mood)
+        {
+            if (v.FaceMood == mood) return;
+            v.FaceMood = mood;
+            v.Face.Show(FaceArt.Customer(mood, v.BlinkLeft > 0f));
+        }
+
+        /// <summary>Chop mat moi 3-5 giay, nham 0,12 giay (Art Bible muc 12; impl plan F-062 AC-3).</summary>
+        public const float BlinkSeconds = 0.12f;
+
+        void TickBlink(SeatView v, float dt)
+        {
+            if (v.Face == null || v.FaceMood == null || v.Model == null || !v.Model.activeInHierarchy) return;
+            if (v.BlinkLeft > 0f)
+            {
+                v.BlinkLeft -= dt;
+                if (v.BlinkLeft <= 0f) v.Face.Show(FaceArt.Customer(v.FaceMood, false));
+                return;
+            }
+            v.BlinkIn -= dt;
+            if (v.BlinkIn > 0f) return;
+            v.BlinkIn = Random.Range(3f, 5f);
+            if (v.FaceMood == FaceArt.MoodEating) return;   // dang an: mat da nham
+            v.BlinkLeft = BlinkSeconds;
+            v.Blinks++;
+            v.Face.Show(FaceArt.Customer(v.FaceMood, true));
+        }
+
         /// <summary>Dem nguoc hoat anh roi ghe; xong thi an khoi khach.</summary>
         void TickSeats(float dt)
         {
+            GameSession s = g.Session;
+            for (int i = 0; i < seatViews.Length; i++)
+            {
+                SeatView v = seatViews[i];
+                // khach dang cho: mat doi theo gio cho (do mo hoi khi qua khoang an toan, gian khi het kien nhan)
+                Customer c = s != null && i < s.SeatCount && s.Phase == GamePhase.Open ? s.Seats[i] : null;
+                PaymentOutcome o;
+                if (c != null && !c.isBoss && v.FaceMood != null && v.Face != null && !g.IsReacting(i, out o))
+                    SetFace(v, FaceArt.CustomerMood(false, o, 0, false, s.IsImpatient(c), s.PatienceLeft(c) <= 0f));
+                TickBlink(v, dt);
+            }
             for (int i = 0; i < seatViews.Length; i++)
             {
                 SeatView v = seatViews[i];

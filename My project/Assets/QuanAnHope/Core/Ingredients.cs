@@ -80,10 +80,10 @@ namespace QuanAnHope.Core
             this.balance = balance;
         }
 
-        /// <summary>Goi dau moi ngay: ngay 1 nhan ve ngay + ve thuong; cac ngay sau cong don.</summary>
+        /// <summary>Goi dau moi ngay: ngay 1 nhan firstDayTickets (constitution 1.7 muc 3); cac ngay sau cong ticketsPerDay, cong don.</summary>
         public void BeginDay(int day, RelicFx fx = null)
         {
-            if (day == 1) Count = balance.ticketsPerDay + balance.start.bonusTickets;
+            if (day == 1) Count = balance.start.firstDayTickets;
             else Count += balance.ticketsPerDay;
             // Ve so cao: +1 ve vao ngay chia het cho 3 (constitution muc 7.3; sim_balance.py: day % 3 == 0).
             if (fx != null && day % 3 == 0) Count += (int)fx.Get(RelicKeys.TicketEvery3);

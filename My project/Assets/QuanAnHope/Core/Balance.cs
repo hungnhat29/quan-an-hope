@@ -20,6 +20,7 @@ namespace QuanAnHope.Core
 
         /// <summary>So dia quay cho giu duoc (constitution muc 5.1).</summary>
         public int counterSlots;
+        public BotTimingData botTiming = new BotTimingData();
         public PaymentRules payment = new PaymentRules();
         public DebtEntry[] debts = new DebtEntry[0];
         public RoundRange[] rounds = new RoundRange[0];
@@ -293,11 +294,25 @@ namespace QuanAnHope.Core
         public float penaltyBaseShare;
     }
 
+    /// <summary>
+    /// Thoi gian cua bot / mo phong (sprint 7 F-060 AC-1, balance.json bot_timing): GIA DINH ve nguoi choi lay tu so do
+    /// playtest-log.csv, khong phai luat game.
+    /// </summary>
+    [Serializable]
+    public class BotTimingData
+    {
+        public float goodOverheadSeconds;
+        public float naiveOverheadSeconds;
+        public float pullSeconds;
+        public float fridgeSeconds;
+    }
+
     [Serializable]
     public class StartRules
     {
         public int money;
-        public int bonusTickets;
+        /// <summary>So ve trang ngay 1 (constitution 1.7 muc 3: 5 ve); tu ngay 2 moi ngay cong ticketsPerDay.</summary>
+        public int firstDayTickets;
         public int relicShopFromDay;
     }
 }

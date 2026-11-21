@@ -11,10 +11,16 @@ namespace QuanAnHope.Game
     /// Moi mon mot dong trong playtest-log.csv: luc cam nguyen lieu dau, luc vat num, luc chin, luc bam chuong (giay game
     /// tu luc mo game), va phan "thao tac + di lai" = tong - (so che + cho vao + nau + muc) theo du lieu.
     /// Phan tich: python balance/playtest_overhead.py &lt;duong dan csv&gt;.
+    /// Sprint 7 (F-060 AC-1): them cot "phien" (moi lan mo game mot ma) de tach tung buoi choi; test PlayMode ghi vao
+    /// thu muc tam (GameController.PlaytestFolder) nen khong lan vao so do cua nguoi that. File cu (10 cot) doi ten giu lai.
     /// </summary>
     public class PlaytestLog
     {
-        public const string Header = "ngay,gio_game,mon,bac,t_cam_dau,t_vat_num,t_chin,t_bam_chuong,che_bien_s,thao_tac_di_lai_s";
+        public const string Header = "ngay,gio_game,mon,bac,t_cam_dau,t_vat_num,t_chin,t_bam_chuong,che_bien_s,thao_tac_di_lai_s,phien";
+        const string OldHeader = "ngay,gio_game,mon,bac,t_cam_dau,t_vat_num,t_chin,t_bam_chuong,che_bien_s,thao_tac_di_lai_s";
+
+        /// <summary>Ma buoi choi: thoi diem mo game.</summary>
+        public string Session { get; private set; }
 
         class Record
         {
@@ -31,8 +37,20 @@ namespace QuanAnHope.Game
         public PlaytestLog(string folder)
         {
             Path = System.IO.Path.Combine(folder, "playtest-log.csv");
+            Session = System.DateTime.Now.ToString("yyyyMMdd-HHmmss", CultureInfo.InvariantCulture);
             try
             {
+                Directory.CreateDirectory(folder);
+                if (File.Exists(Path))
+                {
+                    string first;
+                    using (var r = new StreamReader(Path)) first = r.ReadLine();
+                    if (first == OldHeader)
+                    {
+                        string keep = System.IO.Path.Combine(folder, "playtest-log-sprint2-6.csv");
+                        if (!File.Exists(keep)) File.Move(Path, keep);
+                    }
+                }
                 if (!File.Exists(Path)) File.WriteAllText(Path, Header + "\n");
             }
             catch (IOException e)
@@ -82,7 +100,7 @@ namespace QuanAnHope.Game
             string row = string.Join(",", new[]
             {
                 s.Day.ToString(), s.Clock.Text, "\"" + dish.name + "\"", dish.tier.ToString(),
-                F(r.firstTake), F(r.knob), F(r.ready), F(now), F(r.work), F(total - r.work),
+                F(r.firstTake), F(r.knob), F(r.ready), F(now), F(r.work), F(total - r.work), Session,
             });
             try
             {

@@ -28,7 +28,7 @@ namespace QuanAnHope.Tests
             bool ok = Gacha(1).TryPull(wallet, 1, out pull);
 
             Assert.IsTrue(ok);
-            Assert.AreEqual(7, wallet.Count, "ngay 1 co 8 ve, tieu 1");
+            Assert.AreEqual(4, wallet.Count, "ngay 1 co 5 ve, tieu 1");
             Assert.AreEqual(3, pull.side.items.Count);
             Assert.AreEqual(2, pull.main.items.Count);
             Assert.IsTrue(pull.side.items.All(i => i.kind == IngredientKind.Side));
@@ -42,7 +42,7 @@ namespace QuanAnHope.Tests
             wallet.BeginDay(1);
             IngredientGacha gacha = Gacha(2);
             PullResult pull;
-            for (int i = 0; i < 8; i++) Assert.IsTrue(gacha.TryPull(wallet, 1, out pull));
+            for (int i = 0; i < 5; i++) Assert.IsTrue(gacha.TryPull(wallet, 1, out pull));
 
             bool ok = gacha.TryPull(wallet, 1, out pull);
 

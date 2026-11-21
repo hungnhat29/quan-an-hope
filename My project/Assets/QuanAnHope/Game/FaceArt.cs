@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using QuanAnHope.Core;
 using UnityEngine;
 
 namespace QuanAnHope.Game
@@ -91,6 +92,157 @@ namespace QuanAnHope.Game
             }
         }
 
+        // =====================================================================
+        // Mat khach (sprint 7 F-062 AC-2, Art Bible muc 6): 6 bieu cam + cho do mo hoi + ban chop mat
+        // =====================================================================
+
+        public const string MoodHappy = "vui", MoodWait = "cho", MoodSweat = "cho_mo_hoi", MoodAngry = "gian",
+            MoodSurprised = "ngac_nhien", MoodSad = "buon", MoodEating = "dang_an";
+
+        public static readonly string[] CustomerMoods = { MoodHappy, MoodWait, MoodSweat, MoodAngry, MoodSurprised, MoodSad, MoodEating };
+
+        /// <summary>
+        /// Mat khach ve theo net cua 3 anh goc (BepNhanPham/Textures/face_*.png, 800 x 500): mat vong rong vien dam ho khe
+        /// 40 do o phia tren huong vao giua mat, ma hong, mieng chu "w". <paramref name="blink"/>: mi nham (chop mat 0,12 giay,
+        /// Art Bible muc 12). Anh vuong 512, dan len tam mat bi keo ngang 1,6 lan nhu mat chu no.
+        /// </summary>
+        public static Texture2D Customer(string mood, bool blink = false)
+        {
+            if (mood == MoodEating) blink = false; // dang an: mat da nham sung suong
+            return Get("Mat_Khach_" + mood + (blink ? "_chop" : ""), p => DrawCustomer(p, mood, blink), 512);
+        }
+
+        /// <summary>
+        /// Chon bieu cam theo bang Art Bible muc 6: vui (dat / vuot yeu cau), ngac nhien (mon Tuyet hao / Huyen thoai),
+        /// buon (thap hon 1 bac), gian (thap hon tu 2 bac, sai mon, hoac cho het kien nhan), cho (do mo hoi khi qua khoang
+        /// an toan), dang an (trong luc an, sau phan ung 0,8 giay).
+        /// </summary>
+        public static string CustomerMood(bool reacting, PaymentOutcome outcome, int dishTier, bool eating, bool impatient, bool exhausted)
+        {
+            if (reacting)
+            {
+                if (outcome == PaymentOutcome.Angry) return MoodAngry;
+                if (outcome == PaymentOutcome.Disappointed) return MoodSad;
+                return dishTier >= 4 ? MoodSurprised : MoodHappy;
+            }
+            if (eating) return MoodEating;
+            if (exhausted) return MoodAngry;
+            return impatient ? MoodSweat : MoodWait;
+        }
+
+        static readonly Vector2 CEyeL = new Vector2(0.30f, 0.57f), CEyeR = new Vector2(0.70f, 0.57f);
+        const float CEyeRx = 0.119f, CEyeRy = 0.21f, CLine = 0.034f;
+        static readonly Color Sweat = UiKit.Hex("#8FC3D6");
+        static readonly Color AngerMark = UiKit.Hex("#E8604F");
+
+        static void DrawCustomer(Painter p, string mood, bool blink)
+        {
+            bool closedHappy = mood == MoodEating;
+            float k = mood == MoodSurprised ? 1.12f : 1f;
+            if (mood != MoodAngry)
+            {
+                float b = mood == MoodEating ? 1.25f : 1f;
+                p.Ellipse(new Vector2(0.12f, 0.27f), 0.075f * b, 0.07f * b, Blush);
+                p.Ellipse(new Vector2(0.88f, 0.27f), 0.075f * b, 0.07f * b, Blush);
+            }
+
+            foreach (Vector2 c in new[] { CEyeL, CEyeR })
+            {
+                bool left = c.x < 0.5f;
+                float rx = CEyeRx * k, ry = CEyeRy * k;
+                if (closedHappy)
+                {
+                    // mat cong len (^ ^) sung suong khi an
+                    var arc = new Vector2[9];
+                    for (int i = 0; i < arc.Length; i++)
+                    {
+                        float a = Mathf.Lerp(200f, -20f, i / (arc.Length - 1f)) * Mathf.Deg2Rad;
+                        arc[i] = c + new Vector2(Mathf.Cos(a) * rx * 0.8f, Mathf.Sin(a) * ry * 0.45f - 0.03f);
+                    }
+                    p.Stroke(arc, CLine, Ink);
+                    continue;
+                }
+                if (blink)
+                {
+                    // mi nham: duong cong xuong nhe ngang tam mat
+                    p.Stroke(new[] { c + new Vector2(-rx, 0.01f), c + new Vector2(-rx * 0.5f, -0.025f), c + new Vector2(0f, -0.035f),
+                        c + new Vector2(rx * 0.5f, -0.025f), c + new Vector2(rx, 0.01f) }, CLine, Ink);
+                    continue;
+                }
+                p.Ellipse(c, rx, ry, EyeWhite);
+                p.EllipseRing(c, rx, ry, CLine, Ink, left ? 60f : 120f, 20f);
+                Vector2 pupil = Vector2.zero; float pr = 0f;
+                switch (mood)
+                {
+                    case MoodWait: case MoodSweat: pupil = new Vector2(0.0625f, -0.04f); pr = 1f; break;
+                    case MoodSurprised: pupil = Vector2.zero; pr = 0.7f; break;
+                    case MoodSad: pupil = new Vector2(left ? 0.02f : -0.02f, -0.08f); pr = 1f; break;
+                }
+                if (pr > 0f) p.Ellipse(c + pupil, 0.025f * pr, 0.04f * pr, Ink);
+            }
+
+            // long may
+            switch (mood)
+            {
+                case MoodAngry:
+                    p.Stroke(new[] { new Vector2(0.16f, 0.785f), new Vector2(0.41f, 0.66f) }, 0.04f, Ink);
+                    p.Stroke(new[] { new Vector2(0.84f, 0.785f), new Vector2(0.59f, 0.66f) }, 0.04f, Ink);
+                    // gan gian do (tam giac = nguy hiem, Art Bible muc 5)
+                    p.Stroke(new[] { new Vector2(0.9f, 0.96f), new Vector2(0.905f, 0.92f), new Vector2(0.88f, 0.885f) }, 0.024f, AngerMark);
+                    p.Stroke(new[] { new Vector2(0.97f, 0.89f), new Vector2(0.955f, 0.84f), new Vector2(0.92f, 0.82f) }, 0.024f, AngerMark);
+                    break;
+                case MoodSad:
+                    p.Stroke(new[] { new Vector2(0.19f, 0.79f), new Vector2(0.40f, 0.86f) }, 0.032f, Ink);
+                    p.Stroke(new[] { new Vector2(0.81f, 0.79f), new Vector2(0.60f, 0.86f) }, 0.032f, Ink);
+                    break;
+                case MoodSurprised:
+                    p.Stroke(new[] { new Vector2(0.20f, 0.87f), new Vector2(0.30f, 0.915f), new Vector2(0.40f, 0.87f) }, 0.03f, Ink);
+                    p.Stroke(new[] { new Vector2(0.60f, 0.87f), new Vector2(0.70f, 0.915f), new Vector2(0.80f, 0.87f) }, 0.03f, Ink);
+                    break;
+            }
+
+            // mieng
+            switch (mood)
+            {
+                case MoodWait: case MoodSweat:
+                    p.Stroke(new[] { new Vector2(0.435f, 0.31f), new Vector2(0.565f, 0.31f) }, CLine, Ink);
+                    break;
+                case MoodAngry:
+                    p.Stroke(new[] { new Vector2(0.43f, 0.255f), new Vector2(0.465f, 0.305f), new Vector2(0.5f, 0.26f),
+                        new Vector2(0.535f, 0.305f), new Vector2(0.57f, 0.255f) }, CLine, Ink);
+                    break;
+                case MoodSurprised:
+                    p.Ellipse(new Vector2(0.5f, 0.29f), 0.042f, 0.08f, Ink);
+                    p.Ellipse(new Vector2(0.5f, 0.285f), 0.026f, 0.052f, MouthRed);
+                    break;
+                case MoodSad:
+                    p.Stroke(new[] { new Vector2(0.44f, 0.265f), new Vector2(0.47f, 0.295f), new Vector2(0.5f, 0.305f),
+                        new Vector2(0.53f, 0.295f), new Vector2(0.56f, 0.265f) }, CLine, Ink);
+                    // giot nuoc mat nho duoi mat trai
+                    WaterDrop(p, new Vector2(0.235f, 0.33f), 0.6f);
+                    break;
+                case MoodEating:
+                    // ma phong, mieng nhai (o tron nho)
+                    p.Ellipse(new Vector2(0.5f, 0.31f), 0.04f, 0.05f, Ink);
+                    p.Ellipse(new Vector2(0.5f, 0.305f), 0.024f, 0.03f, MouthRed);
+                    break;
+                default: // vui: chu w
+                    p.Stroke(new[] { new Vector2(0.435f, 0.37f), new Vector2(0.465f, 0.33f), new Vector2(0.5f, 0.37f),
+                        new Vector2(0.535f, 0.33f), new Vector2(0.565f, 0.37f) }, 0.03f, Ink);
+                    break;
+            }
+            if (mood == MoodSweat) WaterDrop(p, new Vector2(0.875f, 0.74f), 1f);
+        }
+
+        /// <summary>Giot nuoc (mo hoi / nuoc mat): xanh nhat, vien muc, dau nhon o tren.</summary>
+        static void WaterDrop(Painter p, Vector2 c, float s)
+        {
+            var pts = new[] { c + new Vector2(0f, 0.075f * s), c + new Vector2(0.026f * s, 0.005f * s), c + new Vector2(0.022f * s, -0.03f * s),
+                c + new Vector2(0f, -0.045f * s), c + new Vector2(-0.022f * s, -0.03f * s), c + new Vector2(-0.026f * s, 0.005f * s) };
+            p.Polygon(pts, Ink, 0.012f);
+            p.Polygon(pts, Sweat, 0f);
+        }
+
         /// <summary>Hat hieu ung: "khoi" (khoi xam gap khuc), "hoi" (net hoi trang), "tim", "tim_vang", "lap_lanh".</summary>
         public static Texture2D Fx(string kind)
         {
@@ -110,11 +262,11 @@ namespace QuanAnHope.Game
             return m;
         }
 
-        static Texture2D Get(string name, Action<Painter> draw)
+        static Texture2D Get(string name, Action<Painter> draw, int size = Size)
         {
             Texture2D t;
             if (textures.TryGetValue(name, out t) && t != null) return t;
-            var p = new Painter(Size);
+            var p = new Painter(size);
             draw(p);
             t = p.ToTexture(name);
             textures[name] = t;
@@ -242,6 +394,21 @@ namespace QuanAnHope.Game
                 case "tim_vang":
                     Heart(p, new Vector2(0.5f, 0.5f), 0.36f, Gold);
                     break;
+                case "xoay_vang":
+                {
+                    // vong xoay vang (nuoc sot than thanh, Art Bible muc 11)
+                    var pts = new Vector2[24];
+                    for (int i = 0; i < pts.Length; i++)
+                    {
+                        float t = i / (pts.Length - 1f);
+                        float a = t * Mathf.PI * 3f;
+                        float r = 0.08f + 0.3f * t;
+                        pts[i] = new Vector2(0.5f + Mathf.Cos(a) * r, 0.5f + Mathf.Sin(a) * r);
+                    }
+                    p.Stroke(pts, 0.11f, Ink);
+                    p.Stroke(pts, 0.065f, Gold);
+                    break;
+                }
                 default:
                     Sparkle(p, new Vector2(0.5f, 0.5f), 0.42f, Color.white);
                     break;
@@ -541,7 +708,11 @@ namespace QuanAnHope.Game
         float sizeFactor = 1f;
         MeshRenderer quad;
         float blinkIn = -1f, blink = 1f;
-        const float BlinkSeconds = 0.14f;
+        /// <summary>So lan da chop (test).</summary>
+        public int Blinks { get; private set; }
+        /// <summary>Art Bible muc 12: chop mat 0,12 giay, ngau nhien moi 3-5 giay (impl plan sprint 7 F-062 AC-3).</summary>
+        public const float BlinkSeconds = 0.12f;
+        public const float BlinkMin = 3f, BlinkMax = 5f;
 
         /// <summary>Chop mat (nep mat theo chieu doc) - 20/11: nguyen lieu song nhu nhan vat cot truyen. Tat cho anh test on dinh.</summary>
         public static bool Blinking = true;
@@ -590,13 +761,13 @@ namespace QuanAnHope.Game
             transform.position = anchor.position + dir * worldDepth;
             transform.rotation = c.rotation;
 
-            // chop mat: moi 2,5-6 giay nep doc trong 0,14 giay (muot)
+            // chop mat: moi 3-5 giay nep doc trong 0,12 giay (Art Bible muc 12)
             float y = 1f;
             if (Blinking)
             {
-                if (blinkIn < 0f) blinkIn = UnityEngine.Random.Range(1.5f, 5f);
+                if (blinkIn < 0f) blinkIn = UnityEngine.Random.Range(0.5f, BlinkMax);
                 blinkIn -= Time.deltaTime;
-                if (blinkIn <= 0f && blinkIn > -1f) { blink = 0f; blinkIn = UnityEngine.Random.Range(2.5f, 6f); }
+                if (blinkIn <= 0f && blinkIn > -1f) { blink = 0f; Blinks++; blinkIn = UnityEngine.Random.Range(BlinkMin, BlinkMax); }
                 if (blink < 1f)
                 {
                     blink = Mathf.Min(1f, blink + Time.deltaTime / BlinkSeconds);

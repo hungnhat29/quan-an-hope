@@ -176,7 +176,8 @@ namespace QuanAnHope.Game
     }
 
     /// <summary>
-    /// The dung truoc be relic (F-020 AC-6; constitution Dieu 4, Dieu 9; Art Bible muc 13): ten · gia · do hiem · hieu ung · bo.
+    /// The dung truoc be relic (F-020 AC-6; constitution Dieu 4, Dieu 9; Art Bible muc 13): ten · gia · do hiem · hieu ung.
+    /// Khong ghi bo combo / relic le (yeu cau 21/11/2026, constitution 1.7 muc 7.1).
     /// Vien the theo mau do hiem.
     /// </summary>
     public class RelicCard : MonoBehaviour
@@ -217,8 +218,8 @@ namespace QuanAnHope.Game
             meta.text = (viaBlack ? "Vé đen" : r.price + " vé") + " · " + RelicKeys.RarityName(r.rarity);
             effect.text = RelicText.Effect(r)
                 + (RelicText.IsActiveNow(r) ? "" : "\n<color=#E8604F><size=46>có tác dụng từ ngày 4</size></color>");
-            if (string.IsNullOrEmpty(r.set)) setLine.text = "Relic lẻ";
-            else setLine.text = "Bộ " + RelicKeys.SetName(r.set) + " · đang có " + inv.CountInSet(r.set) + "/" + inv.SetSize(r.set);
+            // Yeu cau 21/11/2026: khong hien relic nao thuoc bo combo, relic nao la relic le (nguoi choi tu kham pha).
+            setLine.text = "";
             if (pending) setLine.text = "<color=#E8604F>Bấm relic trên giá để bỏ</color>";
         }
 

@@ -8,7 +8,11 @@ namespace QuanAnHope.Game
     /// Hoat anh khach an (constitution 1.5 muc 6.2: khach an xong mon moi roi ghe).
     /// Doi dua gap tu dia len mieng theo nhip, mon tren dia voi dan theo tung mieng, khach nhai (than nhun),
     /// an xong dia trong. Tien do lay tu Core (GameSession.EatProgress) nen hinh luon khop luat.
+    /// Tay khach cam dua (yeu cau 21/11/2026 "tay cua khach khong di chuyen"): tay vay (ArmWave) an di, thay bang tay
+    /// ong cao su cong (Art Bible muc 6, 12: khong khuyu, cong theo duong cung): vai co dinh tren than, ban tay bam
+    /// diem cam cua dua; gan thi ong cong nhieu, xa thi gian thang. Chay sau Lively (LateUpdate, thu tu 100) de vai theo than tho.
     /// </summary>
+    [DefaultExecutionOrder(100)]
     public class EatingFx : MonoBehaviour
     {
         /// <summary>So mieng gap trong mot lan an (mon voi theo bac thang de nhin ro).</summary>
@@ -27,6 +31,48 @@ namespace QuanAnHope.Game
         Transform sticks;
         Vector3 modelScale;
         float t;
+
+        // ---- tay cam dua (ong cao su) ----
+        /// <summary>Diem cam tren dua: tu tam dua len phia dau tren (dua dai 0,34 m).</summary>
+        public const float GripUp = 0.14f;
+        const int HoseRings = 14;
+        const int HoseSides = 12;
+        GameObject arm, armHand;            // tay vay cua canh (an khi dang an)
+        Vector3 shoulderLocal;               // vai trong khung khoi khach (vong dau cua ong tay)
+        float armLocalRadius = 0.09f, outlineLocal = 0.028f, handLocalSize = 0.36f, armLocalLength = 0.8f;
+        Transform eatArm, hand;
+        Mesh hose, hoseOutline;
+        Vector3[] hoseVerts, outlineVerts;
+        Vector3 bendPoint;
+
+        /// <summary>Ban tay dang cam dua (null neu khoi khach khong co tay hoac da an xong).</summary>
+        public Transform Hand { get { return hand != null && hand.gameObject.activeInHierarchy ? hand : null; } }
+        /// <summary>Diem cam tren dua (the gioi).</summary>
+        public Vector3 Grip { get { return sticks.position + sticks.up * GripUp; } }
+        /// <summary>Vai (the gioi).</summary>
+        public Vector3 Shoulder { get { return model.TransformPoint(shoulderLocal); } }
+        /// <summary>Do cong cua ong tay: khoang cach diem giua duong cong toi duong thang vai - tay (m).</summary>
+        public float Bend { get; private set; }
+        /// <summary>
+        /// Mat ngoai ong tay huong ra ngoai (test): phap tuyen tam giac dau (cach Unity tinh, Cross(b - a, c - a)) cung chieu
+        /// voi huong tu truc ong ra dinh. Nguoc chieu = thay mat trong mau toi va vien phu len.
+        /// </summary>
+        public bool HoseFacesOutward
+        {
+            get
+            {
+                if (hose == null) return false;
+                Vector3[] v = hose.vertices; int[] t = hose.triangles;
+                Vector3 c = Vector3.zero;
+                for (int i = 0; i < HoseSides; i++) c += v[i];
+                c /= HoseSides;
+                Vector3 n = Vector3.Cross(v[t[1]] - v[t[0]], v[t[2]] - v[t[0]]);
+                return Vector3.Dot(n, v[t[0]] - c) > 0f;
+            }
+        }
+
+        /// <summary>Tay vay goc cua khoi khach (an khi dang an, hien lai khi an xong).</summary>
+        public GameObject OriginalArm { get { return arm; } }
 
         /// <summary>Phan mon con lai tren dia luc nay (1 = nguyen, 0 = da an het).</summary>
         public float FoodLeft { get; private set; }
@@ -54,8 +100,158 @@ namespace QuanAnHope.Game
                 fx.foodScale.Add(child.localScale);
             }
             fx.BuildSticks();
+            fx.BuildArm();
             fx.Apply(0f);
             return fx;
+        }
+
+        /// <summary>
+        /// Tay vay cua khoi khach (ArmWave + HandWave) la tay gan dia; vai = tam vong dau cua ong tay (hinh that, L-016),
+        /// do dai ong = do dai ong goc. Ong moi dung cung vat lieu va vien muc cua ong goc.
+        /// </summary>
+        void BuildArm()
+        {
+            if (model == null) return;
+            Transform a = model.Find("ArmWave"), h = model.Find("HandWave");
+            if (a == null || h == null) return;
+            arm = a.gameObject;
+            armHand = h.gameObject;
+            var mf = a.GetComponent<MeshFilter>();
+            Mesh m = mf != null ? mf.sharedMesh : null;
+            if (m != null && m.isReadable && m.vertexCount >= 2 * HoseSides)
+            {
+                // BuildNhaHang.BuildTube: moi vong 12 dinh, vong dau quanh diem dau (vai), vong cuoi quanh co tay
+                Vector3[] v = m.vertices;
+                Vector3 c = Vector3.zero, end = Vector3.zero;
+                for (int i = 0; i < HoseSides; i++) c += v[i];
+                for (int i = v.Length - HoseSides; i < v.Length; i++) end += v[i];
+                c /= HoseSides;
+                end /= HoseSides;
+                armLocalRadius = Mathf.Max(0.02f, (v[0] - c).magnitude);
+                shoulderLocal = model.InverseTransformPoint(a.TransformPoint(c));
+                // do dai theo duong ong (cong cac doan giua tam vong)
+                float len = 0f;
+                Vector3 prev = c;
+                for (int r = 1; r < v.Length / HoseSides; r++)
+                {
+                    Vector3 cr = Vector3.zero;
+                    for (int k = 0; k < HoseSides; k++) cr += v[r * HoseSides + k];
+                    cr /= HoseSides;
+                    len += (cr - prev).magnitude;
+                    prev = cr;
+                }
+                armLocalLength = Mathf.Max(0.3f, len);
+            }
+            else shoulderLocal = model.InverseTransformPoint(a.GetComponent<Renderer>().bounds.center);
+            Transform ol = a.Find("Outline");
+            Material outlineMat = ol != null ? ol.GetComponent<Renderer>().sharedMaterial : null;
+            Mesh om = ol != null ? ol.GetComponent<MeshFilter>().sharedMesh : null;
+            if (om != null && om.isReadable && om.vertexCount >= HoseSides && m != null && m.isReadable)
+                outlineLocal = Mathf.Max(0f, (om.vertices[0] - m.vertices[0]).magnitude);
+            handLocalSize = h.localScale.x;
+
+            // dat o goc canh: dinh tinh bang toa do the gioi, khong phu thuoc ti le / goc cua khoi khach
+            eatArm = new GameObject("TayCamDua").transform;
+            eatArm.SetParent(null, false);
+            hose = NewHose("OngTay", a.GetComponent<Renderer>().sharedMaterial, out hoseVerts);
+            if (outlineMat != null) hoseOutline = NewHose("Outline", outlineMat, out outlineVerts);
+            hand = Toon.Prim(PrimitiveType.Sphere, eatArm, "BanTay", Vector3.zero, Vector3.one, Color.white, Toon.OutlineSmall).transform;
+            Renderer hr = h.GetComponent<Renderer>();
+            if (hr != null) hand.GetComponent<Renderer>().sharedMaterial = hr.sharedMaterial;
+        }
+
+        Mesh NewHose(string name, Material mat, out Vector3[] verts)
+        {
+            var go = new GameObject(name);
+            go.transform.SetParent(eatArm, false);
+            var mesh = new Mesh { name = name };
+            mesh.MarkDynamic();
+            verts = new Vector3[HoseRings * HoseSides];
+            var tris = new int[(HoseRings - 1) * HoseSides * 6];
+            int t = 0;
+            for (int i = 0; i < HoseRings - 1; i++)
+                for (int k = 0; k < HoseSides; k++)
+                {
+                    int a0 = i * HoseSides + k, a1 = i * HoseSides + (k + 1) % HoseSides;
+                    int b0 = a0 + HoseSides, b1 = a1 + HoseSides;
+                    // mat ngoai quay ra ngoai: phap tuyen Cross(b - a, c - a) huong tu truc ong ra (HoseFacesOutward, test KhachAn_*).
+                    // Thu tu nguoc (nhu BuildTube trong khung khoi khach) cho ong mau den: thay mat trong + vien phu len (anh 21/11).
+                    tris[t++] = a0; tris[t++] = a1; tris[t++] = b0;
+                    tris[t++] = a1; tris[t++] = b1; tris[t++] = b0;
+                }
+            mesh.vertices = verts;
+            mesh.triangles = tris;
+            go.AddComponent<MeshFilter>().sharedMesh = mesh;
+            var r = go.AddComponent<MeshRenderer>();
+            r.sharedMaterial = mat;
+            r.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+            return mesh;
+        }
+
+        /// <summary>
+        /// Ong tay Bezier bac hai vai -> ban tay; diem dieu khien lech ra ngoai than va xuong de ong dai bang ong goc
+        /// (gan thi cong nhieu, xa qua thi thang va gian). Khong khuyu (Art Bible muc 6, 12).
+        /// </summary>
+        void PoseArm(bool holding)
+        {
+            if (eatArm == null) return;
+            eatArm.gameObject.SetActive(holding);
+            arm.SetActive(!holding);
+            armHand.SetActive(!holding);
+            if (!holding) return;
+
+            float k = model.lossyScale.x;
+            float len = armLocalLength * k;
+            Vector3 s = Shoulder;
+            Vector3 target = Grip;
+            Vector3 d = target - s;
+            float dist = d.magnitude;
+            Vector3 dir = dist > 1e-5f ? d / dist : Vector3.down;
+            Vector3 pole = model.TransformDirection(new Vector3(Mathf.Sign(shoulderLocal.x), -0.7f, 0.15f));
+            pole -= dir * Vector3.Dot(pole, dir);
+            pole = pole.sqrMagnitude > 1e-6f ? pole.normalized : Vector3.down;
+            // cung parabol: do dai ~ dist + 8/3 * h^2 / dist  =>  h = sqrt(3/8 * dist * (len - dist))
+            float h = dist < len ? Mathf.Sqrt(0.375f * dist * (len - dist)) : 0f;
+            Bend = h;
+            bendPoint = (s + target) * 0.5f + pole * h;
+            Vector3 ctrl = (s + target) * 0.5f + pole * (2f * h);   // diem dieu khien Bezier: dinh cung = 1/2 do lech
+
+            Matrix4x4 toLocal = eatArm.worldToLocalMatrix;
+            float r = armLocalRadius * k, ro = r + outlineLocal * k;
+            FillHose(hose, hoseVerts, s, ctrl, target, r, toLocal);
+            if (hoseOutline != null) FillHose(hoseOutline, outlineVerts, s, ctrl, target, ro, toLocal);
+
+            float pk = 1f / Mathf.Max(1e-4f, eatArm.lossyScale.x);
+            hand.position = target;
+            hand.localScale = Vector3.one * handLocalSize * 0.6f * k * pk;
+        }
+
+        static void FillHose(Mesh mesh, Vector3[] verts, Vector3 a, Vector3 c, Vector3 b, float radius, Matrix4x4 toLocal)
+        {
+            Vector3 normal = Vector3.zero;
+            for (int i = 0; i < HoseRings; i++)
+            {
+                float u = i / (float)(HoseRings - 1);
+                Vector3 p = (1 - u) * (1 - u) * a + 2 * (1 - u) * u * c + u * u * b;
+                Vector3 tan = (2 * (1 - u) * (c - a) + 2 * u * (b - c));
+                tan = tan.sqrMagnitude > 1e-10f ? tan.normalized : Vector3.up;
+                if (i == 0)
+                {
+                    normal = Vector3.Cross(tan, Vector3.up);
+                    if (normal.sqrMagnitude < 1e-4f) normal = Vector3.Cross(tan, Vector3.right);
+                }
+                normal = (normal - tan * Vector3.Dot(normal, tan)).normalized;   // khung di theo ong, khong xoan
+                Vector3 bin = Vector3.Cross(tan, normal);
+                for (int k = 0; k < HoseSides; k++)
+                {
+                    float ang = k / (float)HoseSides * Mathf.PI * 2f;
+                    Vector3 w = p + (normal * Mathf.Cos(ang) + bin * Mathf.Sin(ang)) * radius;
+                    verts[i * HoseSides + k] = toLocal.MultiplyPoint3x4(w);
+                }
+            }
+            mesh.vertices = verts;
+            mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
         }
 
         void BuildSticks()
@@ -68,7 +264,7 @@ namespace QuanAnHope.Game
                     new Vector3(0.014f, 0.34f, 0.014f), Chopstick, 0.006f, new Vector3(0f, 0f, i == 0 ? 4f : -4f));
         }
 
-        void Update()
+        void LateUpdate()
         {
             t += Time.deltaTime;
             Apply(t);
@@ -110,6 +306,7 @@ namespace QuanAnHope.Game
                 sticks.position = dish.position + new Vector3(0.2f, 0.03f, 0f);
                 sticks.rotation = Quaternion.Euler(0f, 0f, 90f);
             }
+            PoseArm(FoodLeft > 0f);
 
             // Khach nhai: than nhun nhe khi dua toi mieng (Lively nhun muot; khong co Lively thi nhun truc tiep).
             if (model != null)
@@ -131,6 +328,18 @@ namespace QuanAnHope.Game
             if (l != null) l.Chew = 0f;
             else if (model != null) model.localScale = modelScale;
             if (sticks != null) Destroy(sticks.gameObject);
+            if (eatArm != null) Destroy(eatArm.gameObject);
+            if (hose != null) Destroy(hose);
+            if (hoseOutline != null) Destroy(hoseOutline);
+            // khong bat lai tay goc o day: khi ca canh dang huy, SetActive bao loi; RoomView goi Release() truoc khi xoa dia
+        }
+
+        /// <summary>Tra tay vay goc cho khoi khach (goi truoc khi xoa dia an).</summary>
+        public void Release()
+        {
+            if (arm != null) arm.SetActive(true);
+            if (armHand != null) armHand.SetActive(true);
+            if (eatArm != null) eatArm.gameObject.SetActive(false);
         }
     }
 

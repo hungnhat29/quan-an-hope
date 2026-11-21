@@ -55,13 +55,13 @@ namespace QuanAnHope.Tests
         public void AC1_TienTe_VaLichNo() // constitution muc 2, 3
         {
             Assert.AreEqual(22, balance.days);
-            Assert.AreEqual(6, balance.ticketsPerDay);
+            Assert.AreEqual(7, balance.ticketsPerDay); // sprint 7 F-060 (cu: 6)
             Assert.AreEqual(100, balance.start.money);
-            Assert.AreEqual(2, balance.start.bonusTickets);
+            Assert.AreEqual(5, balance.start.firstDayTickets);
             Assert.AreEqual(2, balance.start.relicShopFromDay);
             Assert.AreEqual(11500, balance.bossBonus);
             CollectionAssert.AreEqual(new[] { 4, 9, 15, 22 }, balance.debts.Select(d => d.day).ToArray());
-            CollectionAssert.AreEqual(new[] { 750, 2900, 10500, 32000 }, balance.debts.Select(d => d.amount).ToArray());
+            CollectionAssert.AreEqual(new[] { 750, 2900, 10500, 36000 }, balance.debts.Select(d => d.amount).ToArray());
         }
 
         [Test]

@@ -17,3 +17,5 @@ Ghi chú 15/11: 4 dòng [~] của 14/11 về số đã vào game (F-010, F-011);
 Ký hiệu: [x] xong · [~] đã vào constitution 1.4 và kế hoạch, chưa vào game · [ ] chưa làm
 
 - [x] 2026-11-16 | "dùng @specs/ và @docs/ và @.dev-memory/ để không phải đọc lại dự án và triển khai @docs/sprint-5/impl-plan.md sau khi triển khai xong hãy double-check lại với @specs/ ban đầu để kiểm tra có bị lệch không và chạy giả lập để kiểm tra lỗi" | → specs/sprint-5/spec.md, .dev-memory/acceptance/2026-11-16-sprint-5.md
+- [x] 2026-11-21 | "trước khi bắt đầu sprint 7 hãy chỉnh sửa 1 chút: animation ăn của khách (tay không di chuyển); không hiển thị relic nào trong combo / relic thường; ngày 1 chỉ có 5 vé và khi nào mở quán thì đồng hồ mới chạy từ 9h; và triển khai docs/sprint-7/impl-plan.md, double-check với specs/, chạy giả lập" | → specs/sprint-7/spec.md, constitution 1.7, .dev-memory/acceptance/2026-11-21-sprint-7.md
+- [x] 2026-11-21 | "end sprint 7, commit và push lên github" | → .dev-memory/RETRO-sprint-7.md, commit Sprint 7

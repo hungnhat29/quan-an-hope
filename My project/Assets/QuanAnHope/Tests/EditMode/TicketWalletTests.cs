@@ -7,11 +7,11 @@ namespace QuanAnHope.Tests
     public class TicketWalletTests
     {
         [Test]
-        public void AC1_Ngay1_Co8Ve()
+        public void AC1_Ngay1_Co5Ve() // constitution 1.7 muc 3 (cu: 8 ve)
         {
             var wallet = new TicketWallet(TestData.Balance);
             wallet.BeginDay(1);
-            Assert.AreEqual(8, wallet.Count, "6 ve moi ngay + 2 ve thuong");
+            Assert.AreEqual(5, wallet.Count, "ngay 1 chi co 5 ve");
         }
 
         [Test]
@@ -23,10 +23,10 @@ namespace QuanAnHope.Tests
             Assert.IsTrue(wallet.TrySpend());
 
             wallet.BeginDay(2);
-            Assert.AreEqual(12, wallet.Count, "con 6 ve thua + 6 ve moi");
+            Assert.AreEqual(3 + TestData.Balance.ticketsPerDay, wallet.Count, "con 3 ve thua + ve moi ngay");
 
             wallet.BeginDay(3);
-            Assert.AreEqual(18, wallet.Count);
+            Assert.AreEqual(3 + 2 * TestData.Balance.ticketsPerDay, wallet.Count);
         }
 
         [Test]
@@ -34,7 +34,7 @@ namespace QuanAnHope.Tests
         {
             var wallet = new TicketWallet(TestData.Balance);
             wallet.BeginDay(1);
-            for (int i = 0; i < 8; i++) Assert.IsTrue(wallet.TrySpend());
+            for (int i = 0; i < 5; i++) Assert.IsTrue(wallet.TrySpend());
 
             Assert.IsFalse(wallet.TrySpend());
             Assert.AreEqual(0, wallet.Count);

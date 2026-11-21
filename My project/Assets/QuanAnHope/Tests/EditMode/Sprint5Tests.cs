@@ -394,15 +394,15 @@ namespace QuanAnHope.Tests
         }
 
         [Test]
-        public void F043_AC5_QuanChuaMo_ChuNoDoiNgoaiCua_VaoNgayKhiMo()
+        public void F043_AC5_QuanChuaMo_DongHoDung_ChuNoChuaToi() // constitution 1.7 muc 6.2 (cu: chu no doi ngoai cua)
         {
             GameSession s = Day(21);
             s.Tick(BossAt + 30f);
             Assert.AreEqual(GamePhase.Prep, s.Phase);
-            Assert.IsTrue(s.BossWaiting);
-            Assert.IsTrue(s.OpenShop());
-            Assert.IsNotNull(s.Boss, "vao ngay khi mo quan");
+            Assert.IsFalse(s.BossArrived, "dong ho chua chay: chua toi 20:00");
             Assert.IsFalse(s.BossWaiting);
+            Assert.IsTrue(s.OpenShop());
+            Assert.IsNull(s.Boss, "mo quan luc 9:00: chu no chua toi");
         }
 
         [Test]
@@ -410,7 +410,7 @@ namespace QuanAnHope.Tests
         {
             GameSession never = Day(21);
             never.Tick(B.DaySeconds() + 1f);
-            Assert.AreEqual(GamePhase.DayEnd, never.Phase);
+            Assert.AreEqual(GamePhase.Prep, never.Phase, "khong mo quan thi ngay chua bat dau (1.7)");
             Assert.IsFalse(never.BossServed);
 
             GameSession early = Day21Open();
@@ -452,16 +452,17 @@ namespace QuanAnHope.Tests
         }
 
         [Test]
-        public void F044_AC1_AC2_DauNgay22_Thu32000_DuThiThang()
+        public void F044_AC1_AC2_DauNgay22_ThuNo_DuThiThang() // no 22 doc tu du lieu (sprint 7: 36.000G)
         {
-            GameSession ok = Day(21, 32000);
+            int due = B.DebtDueOn(22);
+            GameSession ok = Day(21, due);
             ok.OpenShop(); ok.CloseEarly(); ok.StartNextDay();
             Assert.AreEqual(22, ok.Day);
-            Assert.AreEqual(32000, ok.LastDebtPaid);
+            Assert.AreEqual(due, ok.LastDebtPaid);
             Assert.AreEqual(GamePhase.Cleared, ok.Phase);
             Assert.IsTrue(ok.IsWon);
 
-            GameSession poor = Day(21, 31999);
+            GameSession poor = Day(21, due - 1);
             poor.OpenShop(); poor.CloseEarly(); poor.StartNextDay();
             Assert.AreEqual(GamePhase.Lost, poor.Phase);
             Assert.IsFalse(poor.IsWon);

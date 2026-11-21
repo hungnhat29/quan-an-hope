@@ -17,7 +17,9 @@ PREP_X = 3.0     # so che: 0,5-3 giay -> 1,5-9 giay
 COOK_X = 1.5     # nau: 8-20 giay -> 12-30 giay
 
 # ---- no: "tang so tien no" (chon bang mo phong, xem constitution 1.4 muc 2 va muc 9)
-DEBT = {"4": 750, "9": 2900, "15": 10500, "22": 32000}
+DEBT = {"4": 750, "9": 2900, "15": 10500, "22": 36000}
+# sprint 7 F-060 (21/11/2026): no 22 32.000 -> 36.000G cung ve 6 -> 7 / ngay (chon bang bot C# tren luat that,
+# balance/bot_sweep.md; constitution 1.7 muc 9)
 BOSS_BONUS = 11500
 
 B = load('balance.json')
@@ -36,7 +38,7 @@ B['day'] = {"open_hour": 9, "close_hour": 21, "seconds_per_hour": 40, "boss_hour
 # boss_day (sprint 5): constitution muc 2 "Ngay 21, dung 20:00 chu no den"
 B['day_seconds'] = (21 - 9) * 40
 # Thung nho lai (2 chinh) nen can nhieu ve hon de du nguyen lieu cho ca ngay va con ve mua relic: 3 -> 6 ve / ngay
-B["tickets_per_day"] = 6
+B["tickets_per_day"] = 7  # sprint 7 F-060: 6 -> 7 (ngay 1 van 5 ve, start.first_day_tickets)
 B["relic_shop_offers"] = 3  # constitution 7.1: moi ngay 3 relic khac nhau (sprint 3)
 # ---- sprint 4 (vong 2): so co san o constitution 1.4, dua vao du lieu theo Dieu 2
 # 6.1 / 6.2: vong 1 mot ghe (khach lan luot), tu vong 2 toi da 3 khach cung ngoi
@@ -47,6 +49,12 @@ B["patience"] = {"from_round": 2, "safe_s": {"2": 90, "3": 70, "4": 75}, "drop_e
 B["blackout"] = {"day": 8, "cook_mult": 1.25, "dim": 0.6}
 # 8: cua hang vat pham (may gacha do an, nuoc sot, ve den) mo tu ngay 4
 B["item_shop_from_day"] = 4
+# ---- truoc sprint 7 (yeu cau 21/11/2026, constitution 1.7 muc 3): "ngay 1 chi co 5 ve" (cu: 6 ve ngay + 2 ve thuong = 8)
+B["start"] = {"money": 100, "first_day_tickets": 5, "relic_shop_from_day": 2}
+# ---- sprint 7 F-060 AC-1: thoi gian cua bot / mo phong (GIA DINH ve nguoi choi, khong phai luat game) lay tu so do
+# playtest-log.csv (balance/playtest_overhead.py): nguoi choi tot 19 giay / mon (do, 47 mon vong 1), nguoi khong doc
+# chi so 30 giay (chua co so do rieng, giu gia dinh), di quay may 4 giay, lay mon tu tu lanh 6 giay.
+B["bot_timing"] = {"good_overhead_s": 19, "naive_overhead_s": 30, "pull_s": 4, "fridge_s": 6}
 save('balance.json', B)
 
 R = load('recipes.json')

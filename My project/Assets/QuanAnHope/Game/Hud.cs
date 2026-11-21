@@ -183,11 +183,25 @@ namespace QuanAnHope.Game
             GameSession s = g.Session;
             string text = s.Clock.Text;
             bool late = s.Clock.Hour >= s.Balance.day.closeHour - 1;
-            string shown = s.Day + text + late;
+            bool closed = s.Phase == GamePhase.Prep;
+            string shown = s.Day + text + late + closed;
             if (shown == shownClock) return;
             shownClock = shown;
-            day.text = "Ngày " + s.Day + " · " + (late ? "<color=#" + ColorUtility.ToHtmlStringRGB(UiKit.Coral) + ">" + text + "</color>" : text);
+            day.text = "Ngày " + s.Day + " · " + (late ? "<color=#" + ColorUtility.ToHtmlStringRGB(UiKit.Coral) + ">" + text + "</color>" : text)
+                + (closed ? " <size=70%>chưa mở quán</size>" : "");
         }
+
+        /// <summary>Dong xu bay tu diem trong phong ve o Vi (Art Bible muc 11: khach vui / tip).</summary>
+        public CoinFly FlyCoin(Vector3 world)
+        {
+            Camera cam = g.Player != null ? g.Player.Cam : null;
+            Vector3 sp = cam != null ? cam.WorldToScreenPoint(world) : new Vector3(Screen.width * 0.5f, Screen.height * 0.5f, 1f);
+            if (sp.z < 0f) sp = new Vector3(Screen.width * 0.5f, Screen.height * 0.4f, 1f);
+            LastCoin = CoinFly.Play((RectTransform)Canvas, money.rectTransform, sp);
+            return LastCoin;
+        }
+
+        public CoinFly LastCoin { get; private set; }
 
         /// <summary>Moi khung hinh: dong ho, goi y cua do dang nhin, con tro chuot.</summary>
         public void Tick()

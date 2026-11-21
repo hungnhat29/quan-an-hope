@@ -346,6 +346,12 @@ namespace QuanAnHope.Core
             Phase = GamePhase.Prep;
         }
 
+        /// <summary>Them ve trang (test, cua so go loi).</summary>
+        public void DebugAddTickets(int count)
+        {
+            Wallet.Restore(Wallet.Count + count);
+        }
+
         public void DebugAddMoney(int amount)
         {
             Money += amount;
@@ -541,13 +547,15 @@ namespace QuanAnHope.Core
         }
 
         /// <summary>
-        /// Thoi gian troi (constitution 1.4 muc 2, 6.2): dong ho chay tu dau ngay; khi quan mo va ghe trong,
+        /// Thoi gian troi (constitution 1.7 muc 6.2): dong ho dung o 9:00 toi khi bam Mo quan (gacha, so che, nau truoc
+        /// khi mo khong mat gio); khi quan mo va ghe trong,
         /// khach ke tiep vao sau <see cref="DayRules.nextCustomerSeconds"/> giay; toi 21:00 khong nhan khach moi,
         /// khong con ai ngoi thi het ngay.
         /// </summary>
         public void Tick(float seconds)
         {
             if (!DayIsRunning || seconds <= 0f) return;
+            if (Phase == GamePhase.Prep) return;   // chua mo quan: dong ho chua chay (yeu cau 21/11/2026)
 
             float before = Clock.Elapsed;
             Clock.Advance(seconds);
@@ -818,6 +826,22 @@ namespace QuanAnHope.Core
 
         /// <summary>Nguoi khong doc chi so (sim_balance.py OVERHEAD['naive']).</summary>
         public static readonly BotTiming Naive = new BotTiming { pullSeconds = 4f, overheadSeconds = 30f };
+
+        /// <summary>Lay mon tu tu lanh mang ra.</summary>
+        public float fridgeSeconds = 6f;
+
+        /// <summary>Sprint 7 (F-060 AC-1): gio cua bot theo so do trong du lieu (balance.json bot_timing); thieu du lieu thi dung so cu.</summary>
+        public static BotTiming From(Balance b, bool naive)
+        {
+            BotTimingData d = b != null ? b.botTiming : null;
+            float over = d == null ? 0f : naive ? d.naiveOverheadSeconds : d.goodOverheadSeconds;
+            return new BotTiming
+            {
+                pullSeconds = d != null && d.pullSeconds > 0f ? d.pullSeconds : 4f,
+                overheadSeconds = over > 0f ? over : naive ? 30f : 20f,
+                fridgeSeconds = d != null && d.fridgeSeconds > 0f ? d.fridgeSeconds : 6f,
+            };
+        }
     }
 
     /// <summary>
@@ -908,8 +932,8 @@ namespace QuanAnHope.Core
                 }
                 s.ServeSeat(s.SeatOf(target), s.Counter.Dishes[index]);
             }
-            // Khong mo duoc quan (vd da qua 21:00): cho het gio.
-            if (s.Phase == GamePhase.Prep) s.Tick(s.Clock.DaySeconds);
+            // Khong mo duoc quan: dong quan luon (dong ho chi chay sau khi mo, constitution 1.7 muc 6.2).
+            if (s.Phase == GamePhase.Prep && s.OpenShop()) s.CloseEarly();
         }
 
         /// <summary>

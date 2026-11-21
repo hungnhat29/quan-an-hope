@@ -1,15 +1,16 @@
 # STATE
-Cập nhật: 2026-11-21 (sprint 6 đóng, đã commit + push)
+Cập nhật: 2026-11-21 (sprint 7 ĐÓNG, đã commit + push)
 Ngày làm việc: 2026-11-21
-Pha: SPRINT 6 ĐÓNG (người dùng yêu cầu kết thúc 21/11), đã commit + push main
-Task: sửa trước sprint (phòng 9,6 m; khách ăn 5 giây) + F-050..F-055 DONE; ngày 7 "người mới chơi 15 phút" chưa làm (cần người thật)
-Thêm 19/11: trời đổi màu theo giờ (SkyCycle); cốt truyện vẽ lại: dải truyện ngang, bối cảnh nhiều lớp có thị sai, nhân vật SDF (InkShape/InkCanvas/Puppet/StoryStage/StoryComic), cài PrimeTween 1.5.3
-Thêm 20/11: cốt truyện theo CotTruyen_BepNhanPham.zip (ComicBook, tools/cot-truyen, 6 chương, constitution 1.6)
-Thêm 20/11: khách + nguyên liệu chuyển động mượt (CharacterMotion.cs)
-Kiểm: EditMode 286/286 (+1 Explicit), PlayMode 29/29, mô phỏng 63/89/46% không đổi, bot C# 4.000 ván: naive 0% (chặng 63%) / nocombo 9% / smart 52%, build Windows chạy 15 giây không lỗi (vào menu)
-Báo cáo: .dev-memory/acceptance/2026-11-18-sprint-6.md · Spec: specs/sprint-6/spec.md · Constitution 1.6 · Ảnh: docs/sprint-6/ui/
-Bước tiếp theo: sprint 7 (docs/sprint-7/impl-plan.md); người dùng trả lời Q-45 (luật ăn + cân bằng), Q-46 (tên game); Q-48 đã đóng, Art Bible §12 còn ghi "trên 2"
-Chờ người dùng: Q-20, Q-39..Q-47, Q-49..Q-52
+Pha: SPRINT 7 ĐÓNG (người dùng yêu cầu 21/11), tổng kết .dev-memory/RETRO-sprint-7.md
+Bước tiếp theo: sprint 8 (docs/sprint-8/impl-plan.md); người dùng trả lời Q-53..Q-57, chơi thử bản build, bài Blender
+Task: 3 sửa trước sprint (tay khách cầm đũa, ẩn bộ/lẻ relic, ngày 1 5 vé + đồng hồ từ lúc mở quán) + F-060..F-063 DONE; F-060 AC-1 và F-063 CẦN NGƯỜI KIỂM
+Constitution 1.7 · Spec: specs/sprint-7/spec.md · Ảnh: docs/sprint-7/ui/ · Bot: balance/bot_report.md, balance/bot_sweep.md
+Số mới: start.first_day_tickets 5, tickets_per_day 7, nợ 22 36.000G, bot_timing (good 19 s / naive 30 s)
+Bot 4.000 ván: naive chặng 75% / gom bộ (đủ 3 món) thắng 86% / không gom bộ 37%; khách bị giảm dễ tính / ngày vòng 2-4: 2,6 (gom bộ)
+Kiểm: EditMode 296/296 (+2 Explicit), PlayMode 37/37, build Windows chạy 15 giây không lỗi
+Âm thanh: tools/am-thanh/make_audio.py -> Resources/Audio (27 file); GameAudio.cs + GameControllerAudio.cs
+Quét phương án cân bằng: powershell -NoProfile -ExecutionPolicy Bypass -File balance/run_sweep.ps1 -Sweep "ten|d22=36000|tickets=7;..." [-Games 1000]
+Chờ người dùng: Q-20, Q-22, Q-39..Q-47, Q-49..Q-57
 Repo: https://github.com/hungnhat29/quan-an-hope (private), nhánh main
 Lệnh test (đóng Unity Editor trước): "D:\Unity\6000.6.9f1\Editor\Unity.exe" -batchmode -projectPath "My project" -runTests -testPlatform EditMode -testResults "<abs>\TestResults.xml" -logFile "<abs>\test.log"  → đọc TestResults.xml (PowerShell: gọi bằng & , không Start-Process vì đường dẫn có dấu cách)
 Bot 3 kiểu (F-045): powershell -NoProfile -ExecutionPolicy Bypass -File balance/run_bots.ps1 [-Games n] → balance/bot_report.md, balance/sim_report.txt
