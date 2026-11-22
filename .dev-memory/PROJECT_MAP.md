@@ -74,3 +74,11 @@ Cập nhật: 2026-11-18
 - PlaytestLog: cột phien, GameController.PlaytestFolder (test ghi thư mục tạm); balance/playtest_overhead.py tách buổi
 - Editor/ModelTestTools.cs: menu "Cảnh thử model Blender", "Gắn ToonFlat + Outline"; docs/blender/01-ca-chua.md; docs/CREDITS.md
 - Tests PlayMode: Sprint7PlayTests.cs (namespace QuanAnHope.PlayTests), ảnh docs/sprint-7/ui
+
+## Sprint 8 (21/11) — Blender đợt 1 + sửa trước sprint (constitution 1.8, specs/sprint-8/spec.md)
+- Blender 5.3 ở D:\Blender\blender.exe. SourceArt/Blender/scripts/build_models.py (bmesh, toạ độ viết theo Unity qua U()) -> models/*.blend + Resources/Models/{Ingredients,Kitchen}/*.fbx; render_previews.py -> preview/. README trong SourceArt/Blender
+- Game/ModelLibrary.cs (Resources/Models, vật liệu M_Toon_RRGGBB -> Toon.Mat, viền shader Resources/Shaders/OutlineNormal, FacePoint "Face", Swap ẩn khối cũ). Nối ở IngredientModels.Build, RoomView.BuildTool (ToolModel), CrateView, chồng đĩa, EmptyPlate, thớt cảnh. Editor/ModelChecker.cs (menu Kiểm model Blender) + Tests/EditMode/Sprint8ModelTests
+- Core: RelicShop IsFreeDay/FreePicked/FreeDone/Price(slot)/Reroll/RerollCost, GameSession.RerollShop (RerollResult), ArrivalGap (day.arrival), EatingPayment(seat); Balance.relicReroll/freeRelic, DayRules.arrival*
+- Game: Sprint8Room.cs (partial RoomView: đèn trần + công tắc LightSwitch, LightAt/NightFactor, TickLights thay ScreenTint; nút RelicReroll; ẩn quầy vật phẩm, RefreshOwnedItems; PrepFx); PrepFx.cs (dao + động tác sơ chế theo loại); TabMenu.cs (GameMode.Tab); GameControllerSprint8.cs (LightsOn, RerollRelics, OpenTab/CloseTab, DiscardRelic, TicketLine); CustomerLooks.cs (6 kiểu khách); Lively: WalkIn/WalkOut/Pivot/EatMood; RoomViewRound2: DoorPath, EatingFace, WalkCustomers (test tắt); Tutorial: bài học theo sự kiện (Lesson, LessonId)
+- Tests: EditMode Sprint8Tests (lõi), Sprint8ModelTests; PlayMode Sprint8PlayTests (ảnh docs/sprint-8/ui). tools/so_sanh_truoc_sau.py (ảnh trước/sau F-071 AC-4)
+- Quét bot thêm khoá: gapk, gapmin, safe (+giây mọi vòng), s2/s3/s4

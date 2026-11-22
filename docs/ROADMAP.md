@@ -70,6 +70,8 @@ Bot C# chạy 4.000 ván mỗi kiểu trên chính logic game, đối chiếu `s
 ### Sprint 8 — Blender đợt 1: nguyên liệu và đồ vật (27/12–2/1)
 22 nguyên liệu (10 phụ, 8 chính, 4 đột phá) rồi nồi, chảo, vỉ, thùng, đĩa, chuông. Thay khối ghép bằng prefab; logic không đổi.
 
+**Làm sớm 21/11/2026** (bạn yêu cầu): dựng bằng script Blender (`SourceArt/Blender/`): 6 nguyên liệu vòng 1 × nguyên + sơ chế, chảo, nồi, vỉ, thớt, dao, đĩa, 2 thùng, rương đột phá. Còn lại sang sprint 9/11: 16 nguyên liệu vòng 2–4 + đột phá, chuông. Cùng đợt: sửa trước sprint (đèn + công tắc, relic ngày 2 miễn phí + đổi hàng, bảng Tab, khách đi vào/ra, 6 kiểu khách, dao + động tác sơ chế, nhịp khách theo ngày, hướng dẫn theo sự kiện) — constitution 1.8, `specs/sprint-8/spec.md`.
+
 ### Sprint 9 — Blender đợt 2: nhân vật (3–9/1)
 Một thân khách dùng chung + mặt 2D, Hope, chủ nợ; 3 animation tối thiểu. Trễ thì giữ nhân vật khối cầu.
 

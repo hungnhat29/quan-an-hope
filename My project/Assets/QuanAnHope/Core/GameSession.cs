@@ -74,6 +74,11 @@ namespace QuanAnHope.Core
         /// <summary>Khach dang an o tung ghe (null = khong ai an). Khach dang an khong goi mon, khong nhan dia.</summary>
         public IReadOnlyList<Customer> Eaters { get { return eaters; } }
 
+        PaymentResult[] eatingPayments = new PaymentResult[0];
+
+        /// <summary>Ket qua tra tien cua khach dang an o ghe nay (null neu khong ai an): mat luc an theo ket qua (sprint 8 F-074).</summary>
+        public PaymentResult EatingPayment(int seat) { return seat >= 0 && seat < eatingPayments.Length && eaters[seat] != null ? eatingPayments[seat] : null; }
+
         /// <summary>Dia khach o ghe nay dang an (null neu khong ai an).</summary>
         public Dish EatingDish(int seat) { return seat >= 0 && seat < eatingDishes.Length ? eatingDishes[seat] : null; }
 
@@ -319,6 +324,7 @@ namespace QuanAnHope.Core
             seats = new Customer[n];
             seatTimers = new float[n];
             eaters = new Customer[n];
+            eatingPayments = new PaymentResult[n];
             eatingDishes = new Dish[n];
             eatTimers = new float[n];
             for (int i = 0; i < n; i++) seatTimers[i] = -1f;
@@ -493,6 +499,21 @@ namespace QuanAnHope.Core
             return Shop.Buy(slot, Wallet, Relics, discardId);
         }
 
+        /// <summary>
+        /// Doi hang cua hang relic bang tien (constitution 1.8 muc 7.1): tru <see cref="RelicShop.RerollCost"/>, ba be bay ba relic
+        /// khac han. Khong du tien, cua hang dong, ngay mien phi da lay relic, hoac khong con relic khac thi khong doi.
+        /// </summary>
+        public RerollResult RerollShop()
+        {
+            if (!DayIsRunning || !Shop.IsOpen || Shop.FreeDone) return RerollResult.Closed;
+            int cost = Shop.RerollCost;
+            if (Money < cost) return RerollResult.NotEnoughMoney;
+            if (Shop.RerollPoolSize(Relics) == 0) return RerollResult.NoneLeft;
+            if (!Shop.Reroll(Relics)) return RerollResult.Closed;
+            Money -= cost;
+            return RerollResult.Rerolled;
+        }
+
         /// <summary>Lenh go loi "cho toi relic X" (impl plan sprint 3 muc 5; chi goi tu Editor).</summary>
         public bool DebugGiveRelic(string id)
         {
@@ -578,15 +599,25 @@ namespace QuanAnHope.Core
                     FreeSeat(i, Math.Max(0f, left));
                 }
 
+                float gap = ArrivalGap;
                 for (int i = 0; i < seats.Length; i++)
                 {
                     if (seats[i] != null || seatTimers[i] < 0f) continue;
-                    float arrivesAt = before + seatTimers[i];
+                    float readyAt = before + seatTimers[i];
                     seatTimers[i] -= seconds;
                     if (seatTimers[i] > 0f) continue;
+                    // constitution 1.8 muc 6.2: tu vong 2 hai khach lien nhau vao cach nhau it nhat ArrivalGap giay
+                    float arrivesAt = Math.Max(readyAt, lastArrivalAt + gap);
+                    if (arrivesAt > Clock.Elapsed + 1e-4f)
+                    {
+                        if (arrivesAt < Clock.DaySeconds) { seatTimers[i] = 0f; continue; }   // doi luot
+                        seatTimers[i] = -1f;
+                        continue;
+                    }
                     if (arrivesAt < Clock.DaySeconds)
                     {
                         SeatCustomer(i);
+                        lastArrivalAt = arrivesAt;
                         // vao giua buoc Tick: chi tinh phan thoi gian sau khi ngoi
                         seats[i].waitedSeconds = Math.Max(0f, Clock.Elapsed - arrivesAt);
                     }
@@ -597,9 +628,27 @@ namespace QuanAnHope.Core
             if (IsClosedForNewCustomers && CurrentCustomer == null && !AnyoneEating && !(Phase == GamePhase.Open && BossWaiting)) EndDay();
         }
 
+        // Gio (giay tu luc mo quan) khach thuong gan nhat vao ghe; -vo cung dau ngay.
+        float lastArrivalAt = float.NegativeInfinity;
+
+        /// <summary>
+        /// Khoang cach toi thieu giua hai khach lien nhau hom nay (constitution 1.8 muc 6.2): tu vong arrivalFromRound la
+        /// max(arrivalMinGap, arrivalGapK / ngay) giay - ngay cang muon khach den cang day. 0 = khong gioi han (vong 1).
+        /// </summary>
+        public float ArrivalGap
+        {
+            get
+            {
+                DayRules d = Balance.day;
+                if (d.arrivalGapK <= 0f || d.arrivalFromRound <= 0 || Round < d.arrivalFromRound) return 0f;
+                return Math.Max(d.arrivalMinGap, d.arrivalGapK / Math.Max(1, Day));
+            }
+        }
+
         void SeatCustomer(int seat)
         {
             seatTimers[seat] = -1f;
+            lastArrivalAt = Clock.Elapsed;
             CustomersToday++;
             Customer c = NextCustomer();
             c.number = CustomersToday;
@@ -708,6 +757,7 @@ namespace QuanAnHope.Core
                 // Khach an tai ghe (constitution 1.5 muc 6.2); an xong moi roi ghe (Tick).
                 eaters[seat] = c;
                 eatingDishes[seat] = dish;
+                eatingPayments[seat] = payment;
                 eatTimers[seat] = Balance.day.eatSeconds;
                 seatTimers[seat] = -1f;
             }
@@ -800,6 +850,7 @@ namespace QuanAnHope.Core
             BossArrived = false;
             BossServed = false;
             bossSeated = false;
+            lastArrivalAt = float.NegativeInfinity;
             Clock.Reset();
         }
 
@@ -949,10 +1000,11 @@ namespace QuanAnHope.Core
             for (int i = 0; i < s.Shop.Offers.Count; i++)
             {
                 RelicDef o = s.Shop.Offers[i];
-                if (o == null || o.price > s.Wallet.Count) continue;
+                if (o == null || s.Shop.Price(i) > s.Wallet.Count) continue;
                 if (best < 0 || o.price > s.Shop.Offers[best].price) best = i;
             }
-            if (best < 0 || s.Rng.NextDouble() >= BuyChance) return false;
+            // ngay relic mien phi (constitution 1.8): ai cung lay
+            if (best < 0 || (!s.Shop.IsFreeDay && s.Rng.NextDouble() >= BuyChance)) return false;
 
             string discard = null;
             if (s.Relics.IsFull)

@@ -175,6 +175,18 @@ namespace QuanAnHope.EditorTools
                 nextCustomerSeconds = Float(day, "next_customer_s"),
                 eatSeconds = Float(day, "eat_s"),
             };
+            // sprint 8 (constitution 1.8): nhip khach tu vong 2; thieu khoa = khong gioi han nhu 1.7
+            JObject arrival = day["arrival"] as JObject;
+            if (arrival != null)
+            {
+                b.day.arrivalFromRound = Int(arrival, "from_round");
+                b.day.arrivalGapK = Float(arrival, "gap_k_s");
+                b.day.arrivalMinGap = Float(arrival, "min_gap_s");
+            }
+            JObject reroll = root["relic_reroll"] as JObject;
+            if (reroll != null) b.relicReroll = new RelicRerollRules { baseCost = Int(reroll, "base"), step = Int(reroll, "step") };
+            JObject free = root["relic_free_day"] as JObject;
+            if (free != null) b.freeRelic = new FreeRelicRules { day = Int(free, "day"), rarity = Str(free, "rarity"), picks = Int(free, "picks") };
 
             b.relicCap = Int(root, "relic_cap");
             b.relicShopOffers = Int(root, "relic_shop_offers");

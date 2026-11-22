@@ -89,7 +89,7 @@ namespace QuanAnHope.Tests
         public void Vong2_MotKhachAn_HaiGheKiaVanPhucVuDuoc()
         {
             GameSession s = OpenDay(4);
-            s.Tick(B.day.nextCustomerSeconds + 0.01f);
+            s.Tick(2f * s.ArrivalGap + 0.01f);   // 1.8: khach vao cach nhau ArrivalGap
             Assert.AreEqual(3, s.Seats.Count(c => c != null));
             ServeRight(s, 1);
             Assert.IsNotNull(s.Eaters[1]);

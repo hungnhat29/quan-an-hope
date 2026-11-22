@@ -45,6 +45,11 @@ namespace QuanAnHope.Tests
                 else if (k == "tickets") b.ticketsPerDay = (int)v;
                 else if (k == "first") b.start.firstDayTickets = (int)v;
                 else if (k == "boss") b.bossBonus = (int)v;
+                // sprint 8 (constitution 1.8 muc 6.2, 6.6): nhip khach tu vong 2 va khoang an toan
+                else if (k == "gapk") b.day.arrivalGapK = (float)v;
+                else if (k == "gapmin") b.day.arrivalMinGap = (float)v;
+                else if (k == "safe") for (int r = 0; r < b.patience.safeSecondsByRound.Length; r++) { if (b.patience.safeSecondsByRound[r] > 0f) b.patience.safeSecondsByRound[r] += (float)v; }
+                else if (k.StartsWith("s") && k.Length == 2 && char.IsDigit(k[1])) b.patience.safeSecondsByRound[k[1] - '1'] = (float)v;
                 else throw new ArgumentException("khong biet khoa " + k);
             }
             return b;

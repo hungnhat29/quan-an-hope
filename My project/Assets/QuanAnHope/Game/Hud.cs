@@ -149,7 +149,7 @@ namespace QuanAnHope.Game
         {
             GameSession s = g.Session;
             // Menu, cot truyen: HUD an (man ngoai phong, Dieu 5); tam dung van thay so lieu phia sau.
-            bool visible = g.Mode == GameMode.Playing || g.Mode == GameMode.Paused;
+            bool visible = g.Mode == GameMode.Playing || g.Mode == GameMode.Paused || g.Mode == GameMode.Tab;
             Canvas.gameObject.SetActive(visible);
             if (!visible) { overlayShown = false; return; }
             string line = g.Tutorial != null ? g.Tutorial.Line : null;

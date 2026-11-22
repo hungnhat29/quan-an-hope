@@ -55,6 +55,18 @@ B["start"] = {"money": 100, "first_day_tickets": 5, "relic_shop_from_day": 2}
 # playtest-log.csv (balance/playtest_overhead.py): nguoi choi tot 19 giay / mon (do, 47 mon vong 1), nguoi khong doc
 # chi so 30 giay (chua co so do rieng, giu gia dinh), di quay may 4 giay, lay mon tu tu lanh 6 giay.
 B["bot_timing"] = {"good_overhead_s": 19, "naive_overhead_s": 30, "pull_s": 4, "fridge_s": 6}
+# ---- sprint 8 (yeu cau 21/11/2026, constitution 1.8) ----
+SPRINT8_GAP_K, SPRINT8_MIN_GAP = 100, 6
+SPRINT8_SAFE = {"2": 120, "3": 100, "4": 105}
+# 6.2 "ngay 4 vong 2 ma 1 giay da 3 nguoi vao cung luc": tu vong 2 hai khach lien nhau vao cach nhau it nhat
+# max(min_gap_s, gap_k_s / ngay) giay (toc do khach den ti le thuan voi ngay). So chon bang bot C# (balance/bot_sweep.md).
+B['day']['arrival'] = {"from_round": 2, "gap_k_s": SPRINT8_GAP_K, "min_gap_s": SPRINT8_MIN_GAP}
+# 6.6 "noi them thoi gian cho": khoang an toan moi vong (chon bang bot C#)
+B["patience"]["safe_s"] = SPRINT8_SAFE
+# 7.1 doi hang cua hang relic bang tien: 50G, moi lan sau trong ngay +25G (ban tra loi 21/11)
+B["relic_reroll"] = {"base": 50, "step": 25}
+# 7.1 ngay 2 relic mien phi: ca 3 be (ke ca sau doi hang) gia 0, chi relic Thuong, lay 1 (ban tra loi 21/11)
+B["relic_free_day"] = {"day": 2, "rarity": "thuong", "picks": 1}
 save('balance.json', B)
 
 R = load('recipes.json')

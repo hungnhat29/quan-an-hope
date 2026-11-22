@@ -60,8 +60,8 @@ namespace QuanAnHope.Tests
             Assert.AreEqual(3, Day(9).Round);
             Assert.AreEqual(4, Day(15).Round);
             Assert.AreEqual(3, Day(9).SeatCount);
-            Assert.AreEqual(70f, Day(9).SafeSeconds, 1e-4);
-            Assert.AreEqual(75f, Day(15).SafeSeconds, 1e-4);
+            Assert.AreEqual(B.patience.safeSecondsByRound[2], Day(9).SafeSeconds, 1e-4);   // 1.8: so trong du lieu
+            Assert.AreEqual(B.patience.safeSecondsByRound[3], Day(15).SafeSeconds, 1e-4);
         }
 
         [Test]

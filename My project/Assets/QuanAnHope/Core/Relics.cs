@@ -205,6 +205,14 @@ namespace QuanAnHope.Core
         }
     }
 
+    public enum RerollResult
+    {
+        Rerolled,
+        Closed,
+        NotEnoughMoney,
+        NoneLeft,
+    }
+
     public enum RelicBuyResult
     {
         Bought,
@@ -243,16 +251,52 @@ namespace QuanAnHope.Core
             return day >= balance.start.relicShopFromDay;
         }
 
+        /// <summary>Ngay dang bay (de biet ngay mien phi).</summary>
+        public int Day { get; private set; }
+
+        /// <summary>Hom nay la ngay relic mien phi (constitution 1.8 muc 7.1: ngay 2, chi relic Thuong, lay 1).</summary>
+        public bool IsFreeDay { get { return balance.freeRelic != null && balance.freeRelic.day > 0 && Day == balance.freeRelic.day; } }
+
+        /// <summary>So relic da lay mien phi hom nay.</summary>
+        public int FreePicked { get; private set; }
+
+        /// <summary>So lan doi hang hom nay (gia lan sau tang them step).</summary>
+        public int RerollsToday { get; private set; }
+
+        /// <summary>Gia doi hang lan ke tiep (tien G).</summary>
+        public int RerollCost { get { return balance.relicReroll.baseCost + balance.relicReroll.step * RerollsToday; } }
+
+        /// <summary>Gia bang ve cua be <paramref name="slot"/> hom nay (0 vao ngay mien phi); 0 neu be trong.</summary>
+        public int Price(int slot)
+        {
+            if (slot < 0 || slot >= offers.Length || offers[slot] == null) return 0;
+            return IsFreeDay ? 0 : offers[slot].price;
+        }
+
+        bool Allowed(RelicDef r)
+        {
+            return !IsFreeDay || string.IsNullOrEmpty(balance.freeRelic.rarity) || r.rarity == balance.freeRelic.rarity;
+        }
+
         /// <summary>Dau ngay: bay hang moi (ngay chua mo thi ba be trong).</summary>
         public void Restock(int day, RelicInventory inventory)
         {
+            Day = day;
+            FreePicked = 0;
+            RerollsToday = 0;
             IsOpen = OpensOn(day);
             offers = new RelicDef[balance.relicShopOffers];
             if (!IsOpen) return;
+            Fill(inventory, null);
+        }
 
+        /// <summary>Rut ba relic chua co (khong lap, giong random.sample cua mo phong), bo qua cac relic trong <paramref name="exclude"/>.</summary>
+        void Fill(RelicInventory inventory, ICollection<RelicDef> exclude)
+        {
             var pool = new List<RelicDef>();
-            foreach (RelicDef r in balance.relics) if (!inventory.Has(r.id)) pool.Add(r);
-            // Rut khong lap (giong random.sample cua mo phong).
+            foreach (RelicDef r in balance.relics)
+                if (!inventory.Has(r.id) && Allowed(r) && (exclude == null || !exclude.Contains(r))) pool.Add(r);
+            offers = new RelicDef[balance.relicShopOffers];
             for (int i = 0; i < offers.Length && pool.Count > 0; i++)
             {
                 int k = rng.NextInt(0, pool.Count - 1);
@@ -260,6 +304,32 @@ namespace QuanAnHope.Core
                 pool.RemoveAt(k);
             }
         }
+
+        /// <summary>So relic co the bay khi doi hang (khac ba relic dang bay, chua co tren gia).</summary>
+        public int RerollPoolSize(RelicInventory inventory)
+        {
+            int n = 0;
+            foreach (RelicDef r in balance.relics)
+                if (!inventory.Has(r.id) && Allowed(r) && Array.IndexOf(offers, r) < 0) n++;
+            return n;
+        }
+
+        /// <summary>
+        /// Doi hang (constitution 1.8 muc 7.1): ba be bay ba relic khac han ba relic dang bay. Tien do GameSession tru.
+        /// False neu cua hang dong, da lay relic mien phi, hoac khong con relic khac de bay.
+        /// </summary>
+        public bool Reroll(RelicInventory inventory)
+        {
+            if (!IsOpen || FreeDone || RerollPoolSize(inventory) == 0) return false;
+            var shown = new List<RelicDef>();
+            foreach (RelicDef r in offers) if (r != null) shown.Add(r);
+            Fill(inventory, shown);
+            RerollsToday++;
+            return true;
+        }
+
+        /// <summary>Ngay mien phi va da lay du so relic duoc lay: cac be con lai dong.</summary>
+        public bool FreeDone { get { return IsFreeDay && FreePicked >= Math.Max(1, balance.freeRelic.picks); } }
 
         public void Close()
         {
@@ -269,6 +339,9 @@ namespace QuanAnHope.Core
         /// <summary>Tai game (F-052): bay lai dung ba relic da bay dau ngay (khong rut lai).</summary>
         internal void Restore(int day, IList<RelicDef> shown)
         {
+            Day = day;
+            FreePicked = 0;
+            RerollsToday = 0;
             IsOpen = OpensOn(day);
             offers = new RelicDef[balance.relicShopOffers];
             if (!IsOpen) return;
@@ -284,15 +357,22 @@ namespace QuanAnHope.Core
             if (!IsOpen) return RelicBuyResult.Closed;
             if (slot < 0 || slot >= offers.Length || offers[slot] == null) return RelicBuyResult.Empty;
             RelicDef relic = offers[slot];
-            if (wallet.Count < relic.price) return RelicBuyResult.NotEnoughTickets;
+            int price = Price(slot);
+            if (wallet.Count < price) return RelicBuyResult.NotEnoughTickets;
             if (inventory.IsFull)
             {
                 if (discardId == null || !inventory.Has(discardId)) return RelicBuyResult.NeedDiscard;
                 inventory.Remove(discardId);
             }
-            wallet.TrySpend(relic.price);
+            if (price > 0) wallet.TrySpend(price);
             inventory.Add(relic);
             offers[slot] = null;
+            if (IsFreeDay)
+            {
+                // ngay mien phi chi duoc lay picks cai: cac be con lai dong toi het ngay
+                FreePicked++;
+                if (FreeDone) for (int i = 0; i < offers.Length; i++) offers[i] = null;
+            }
             return RelicBuyResult.Bought;
         }
 
@@ -300,7 +380,7 @@ namespace QuanAnHope.Core
         public int Missing(int slot, TicketWallet wallet)
         {
             if (slot < 0 || slot >= offers.Length || offers[slot] == null) return 0;
-            return Math.Max(0, offers[slot].price - wallet.Count);
+            return Math.Max(0, Price(slot) - wallet.Count);
         }
 
         /// <summary>Do hiem duoc ban bang ve den (constitution muc 7.1: "chi gom relic Hiem tro len").</summary>

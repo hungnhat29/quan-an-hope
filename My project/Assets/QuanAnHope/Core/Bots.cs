@@ -307,7 +307,8 @@ namespace QuanAnHope.Core
                 RelicDef o = s.Shop.Offers[i];
                 if (o == null) continue;
                 int sc = Score(c, o, false);
-                if (sc <= 0 || o.price > budget || o.price > s.Wallet.Count) continue;
+                int price = s.Shop.Price(i);
+                if (sc <= 0 || price > budget || price > s.Wallet.Count) continue;
                 string discard = null;
                 if (s.Relics.IsFull)
                 {
@@ -319,8 +320,10 @@ namespace QuanAnHope.Core
                     }
                     discard = worst.id;
                 }
-                if (s.BuyRelic(i, discard) == RelicBuyResult.Bought) budget -= o.price;
+                if (s.BuyRelic(i, discard) == RelicBuyResult.Bought) budget -= price;
             }
+            // ngay relic mien phi (constitution 1.8 muc 7.1): nguoi that luon lay mot cai, ke ca khi khong hop bo
+            if (s.Shop.IsFreeDay && !s.Shop.FreeDone && slots.Count > 0 && !s.Relics.IsFull) s.BuyRelic(slots[0]);
         }
 
         // ---------------- cua hang vat pham (sim_balance.py run() muc shop) ----------------

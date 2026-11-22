@@ -20,6 +20,16 @@ namespace QuanAnHope.Tests
             return s;
         }
 
+        /// <summary>Khoang an toan vong 2 trong du lieu (constitution 1.8 muc 6.6).</summary>
+        static float Safe { get { return B.patience.safeSecondsByRound[1]; } }
+
+        /// <summary>Cho toi khi du 3 ghe co khach (constitution 1.8 muc 6.2: tu vong 2 khach vao cach nhau ArrivalGap giay).</summary>
+        static void Fill(GameSession s)
+        {
+            s.Tick(2f * s.ArrivalGap + 0.01f);
+            Assert.AreEqual(3, Seated(s));
+        }
+
         static int Seated(GameSession s)
         {
             return s.Seats.Count(c => c != null);
@@ -41,10 +51,13 @@ namespace QuanAnHope.Tests
         {
             GameSession s = OpenDay(4);
             Assert.AreEqual(1, Seated(s));
-            s.Tick(Gap - 0.01f);
+            float gap = System.Math.Max(Gap, s.ArrivalGap);
+            s.Tick(gap - 0.01f);
             Assert.AreEqual(1, Seated(s));
             s.Tick(0.02f);
-            Assert.AreEqual(3, Seated(s), "ghe trong: 3 giay sau co khach moi (muc 6.2)");
+            Assert.AreEqual(2, Seated(s), "1.8: khach thu hai vao sau ArrivalGap (muc 6.2)");
+            s.Tick(s.ArrivalGap);
+            Assert.AreEqual(3, Seated(s));
             Assert.AreEqual(3, s.CustomersToday);
         }
 
@@ -52,7 +65,7 @@ namespace QuanAnHope.Tests
         public void F030_AC1_GheVuaTrong_3GiaySauCoKhachMoi()
         {
             GameSession s = OpenDay(4);
-            s.Tick(Gap + 0.01f);
+            Fill(s);
             Customer middle = s.Seats[1];
             s.Counter.TryPlace(TestData.DishOf(middle.orderId, 2));
             Assert.IsNotNull(s.ServeSeat(1, s.Counter.Dishes[0]));
@@ -63,8 +76,8 @@ namespace QuanAnHope.Tests
             Assert.IsNull(s.Eaters[1], "an xong roi ghe");
             s.Tick(Gap - 0.01f);
             Assert.IsNull(s.Seats[1]);
-            s.Tick(0.02f);
-            Assert.IsNotNull(s.Seats[1]);
+            s.Tick(s.ArrivalGap);
+            Assert.IsNotNull(s.Seats[1], "ghe trong: sau 3 giay va du khoang cach giua hai khach thi co khach moi");
             Assert.AreNotSame(middle, s.Seats[1]);
         }
 
@@ -82,7 +95,7 @@ namespace QuanAnHope.Tests
         public void F030_AC2_MoiKhach_CoDoDeTinh_MonGoi_GioCho()
         {
             GameSession s = OpenDay(4);
-            s.Tick(Gap + 0.01f);
+            Fill(s);
             foreach (Customer c in s.Seats)
             {
                 Assert.IsNotNull(c.orderId);
@@ -99,7 +112,7 @@ namespace QuanAnHope.Tests
         public void F030_AC3_PhucVuKhachGiua_DungMon_TraTienTheoKhachGiua()
         {
             GameSession s = OpenDay(4, 3);
-            s.Tick(Gap + 0.01f);
+            Fill(s);
             Customer left = s.Seats[0], middle = s.Seats[1], right = s.Seats[2];
             s.Counter.TryPlace(TestData.DishOf(middle.orderId, 3));
             PaymentResult expected = Payment.Settle(B, 2, s.EasinessNow(middle), 3, s.Relics.Effects);
@@ -115,7 +128,7 @@ namespace QuanAnHope.Tests
         public void F030_AC3_DiaKhacMonKhachDoGoi_LaSaiMon()
         {
             GameSession s = OpenDay(4, 5);
-            s.Tick(Gap + 0.01f);
+            Fill(s);
             Customer c = s.Seats[2];
             string other = s.BookRecipes().First(r => r.id != c.orderId).id;
             s.Counter.TryPlace(TestData.DishOf(other, 4));
@@ -139,7 +152,7 @@ namespace QuanAnHope.Tests
         public void F030_AC4_Sau21Gio_KhongThemKhach_PhucVuHetThiHetNgay()
         {
             GameSession s = OpenDay(4);
-            s.Tick(Gap + 0.01f);
+            Fill(s);
             s.Tick(B.DaySeconds());
             Assert.AreEqual(GamePhase.Open, s.Phase);
             Assert.IsTrue(s.IsClosedForNewCustomers);
@@ -159,12 +172,13 @@ namespace QuanAnHope.Tests
         [Test]
         public void F031_AC1_Vong2_An90Giay_Giam1Diem3Giay_ToiDa20()
         {
-            Assert.AreEqual(90f, Patience.SafeSeconds(B, 4, RelicFx.None), 1e-4);
-            Assert.AreEqual(0, Patience.Drop(B, 4, 90f, RelicFx.None));
-            Assert.AreEqual(0, Patience.Drop(B, 4, 92.9f, RelicFx.None));
-            Assert.AreEqual(1, Patience.Drop(B, 4, 93f, RelicFx.None));
-            Assert.AreEqual(10, Patience.Drop(B, 4, 120f, RelicFx.None));
-            Assert.AreEqual(20, Patience.Drop(B, 4, 150f, RelicFx.None));
+            Assert.AreEqual(Safe, Patience.SafeSeconds(B, 4, RelicFx.None), 1e-4);
+            Assert.Greater(Safe, 90f, "1.8: noi them thoi gian cho");
+            Assert.AreEqual(0, Patience.Drop(B, 4, Safe, RelicFx.None));
+            Assert.AreEqual(0, Patience.Drop(B, 4, Safe + 2.9f, RelicFx.None));
+            Assert.AreEqual(1, Patience.Drop(B, 4, Safe + 3f, RelicFx.None));
+            Assert.AreEqual(10, Patience.Drop(B, 4, Safe + 30f, RelicFx.None));
+            Assert.AreEqual(20, Patience.Drop(B, 4, Safe + 60f, RelicFx.None));
             Assert.AreEqual(20, Patience.Drop(B, 4, 1000f, RelicFx.None));
         }
 
@@ -173,8 +187,8 @@ namespace QuanAnHope.Tests
         {
             GameSession s = OpenDay(4);
             Customer c = s.Seats[0];
-            s.Tick(120f);
-            Assert.AreEqual(120f, c.waitedSeconds, 1e-3);
+            s.Tick(Safe + 30f);
+            Assert.AreEqual(Safe + 30f, c.waitedSeconds, 1e-3);
             Assert.AreEqual(System.Math.Max(1, c.easiness - 10), s.EasinessNow(c));
             Assert.Less(s.PatienceLeft(c), 0.5f);
         }
@@ -184,9 +198,10 @@ namespace QuanAnHope.Tests
         {
             Assert.AreEqual(0, Patience.Drop(B, 1, 5000f, RelicFx.None));
             Assert.AreEqual(0, Patience.Drop(B, 3, 5000f, RelicFx.None));
-            Assert.AreEqual(110f, Patience.SafeSeconds(B, 8, RelicFx.None), 1e-4);
-            Assert.AreEqual(0, Patience.Drop(B, 8, 110f, RelicFx.None));
-            Assert.AreEqual(1, Patience.Drop(B, 8, 113f, RelicFx.None));
+            float dark = Safe + B.patience.blackoutExtraSeconds;
+            Assert.AreEqual(dark, Patience.SafeSeconds(B, 8, RelicFx.None), 1e-4);
+            Assert.AreEqual(0, Patience.Drop(B, 8, dark, RelicFx.None));
+            Assert.AreEqual(1, Patience.Drop(B, 8, dark + 3f, RelicFx.None));
 
             GameSession s = OpenDay(1);
             Customer c = s.CurrentCustomer;
@@ -200,7 +215,7 @@ namespace QuanAnHope.Tests
         {
             GameSession s = OpenDay(4, 7);
             Customer c = s.Seats[0];
-            s.Tick(150f); // -20 diem
+            s.Tick(Safe + 60f); // -20 diem
             int now = s.EasinessNow(c);
             Assert.AreEqual(System.Math.Max(1, c.easiness - 20), now);
             s.Counter.TryPlace(TestData.DishOf(c.orderId, 3));
@@ -215,11 +230,11 @@ namespace QuanAnHope.Tests
         {
             var inv = new RelicInventory(B);
             inv.Add(B.relics.Single(r => r.id == "F3"));
-            Assert.AreEqual(126f, Patience.SafeSeconds(B, 4, inv.Effects), 1e-3);
+            Assert.AreEqual(Safe * 1.4f, Patience.SafeSeconds(B, 4, inv.Effects), 1e-3);
             var inv2 = new RelicInventory(B);
             inv2.Add(B.relics.Single(r => r.id == "F7"));
-            Assert.AreEqual(144f, Patience.SafeSeconds(B, 4, inv2.Effects), 1e-3);
-            Assert.AreEqual(0, Patience.Drop(B, 4, 140f, inv2.Effects));
+            Assert.AreEqual(Safe * 1.6f, Patience.SafeSeconds(B, 4, inv2.Effects), 1e-3);
+            Assert.AreEqual(0, Patience.Drop(B, 4, Safe * 1.6f - 4f, inv2.Effects));
         }
 
         [Test]

@@ -158,7 +158,7 @@ namespace QuanAnHope.PlayTests
             g.Hud.OverlayButton.onClick.Invoke();
             yield return null;
             Assert.AreEqual(2, S.Day);
-            Assert.IsFalse(g.Tutorial.Active, "huong dan chi ngay 1");
+            Assert.AreNotEqual(Tutorial.Day1, g.Tutorial.LessonId, "10 buoc huong dan chi ngay 1 (sprint 8: ngay 2 co bai relic rieng)");
             int money2 = S.Money, tickets2 = S.Wallet.Count;
             string offers2 = string.Join(",", S.Shop.Offers.Select(r => r == null ? "-" : r.id).ToArray());
 

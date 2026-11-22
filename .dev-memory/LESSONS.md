@@ -3,7 +3,7 @@
 ## Quy tac dang ap dung
 - [L-014] Tinh nang co hien thi: viet "kich ban 10 giay" (dung dau, nhin gi, bam gi, thay gi) cho nguoi dung duyet TRUOC khi code; cho constitution im lang ve vong choi cot loi thi hoi, khong tu mac dinh (P2) [sprint 1: lam lai UI 2D->3D, them goi mon]
 - [L-013] Spec co hinh phai co bang "muc Art Bible -> lam o dau" va moi thao tac co AC "nguoi choi thay gi" (hinh + chuyen dong) (P2/P6) [sprint 1: thieu mat, thieu animation]
-- [L-015] Test moi phai chay thay DO mot lan truoc khi viet code, ke ca do vi chua bien dich (P4) [count 3: sprint 1 bo 8 test goi mon; sprint 3 viet Core relic truoc test; sprint 6 viet luat an + luu/tai truoc test]
+- [L-015] Test moi phai chay thay DO mot lan truoc khi viet code, ke ca do vi chua bien dich (P4) [count 4: sprint 1, 3, 6; sprint 8 viet RelicShop/ArrivalGap truoc Sprint8Tests]
 - [L-011] Khong chay thu ban build voi -screen-fullscreen 0 / -screen-width: Unity luu vao registry, lan sau nguoi dung mo len thanh cua so (nguoi dung bao 14/11). Chay thu khong co co man hinh (P6)
 - [L-012] Doi luat ghep mon / khach phai dua vao sim_balance.py va chay lai Dieu 1 truoc khi code; luat goi mon lam nguoi choi gioi tu 83% xuong 59% neu mo phong thieu 3 khach cung ngoi + ngoai le chu no (P2)
 - [L-010] Doc ket qua test Unity: grep result="[A-Za-z()]*" vi that bai ghi "Failed(Child)"; khong in dong ket qua = coi la DO (P6)
@@ -16,6 +16,7 @@
 - [L-036] Them bien / ham vao file C# lon (FaceArt, RoomView, BalanceImporter): grep ten truoc khi dat (trung 'bt', 'mood', 'Drop' -> 3 lan loi bien dich, moi lan mat 1 luot Unity ~2 phut) (P4) [count 3, sprint 7]
 - [L-016] (gop L-009) Hinh dat trong/tren do vat 3D, tam anh quay ve camera (day ra bang ban kinh bao): lay kich thuoc tu hinh that (Renderer.bounds), khong tu so uoc luong; test hinh hoc phai do theo hinh that (P4) [count 2: sprint 2 PanSpec; sprint 5 nap noi bi vanh che, mu chu no qua to]
 - [L-020] Truoc khi ket luan "can bang lech": kiem bot co lam dieu nguoi that se lam voi luat moi khong; dem ly do that bai (dong quan som, khong phuc vu chu no) trong BotRun (P6) [count 3: sprint 4, 5, 7 (dong ho dung truoc khi mo: nau san 2 dia lam bot tut 52->27%, so che san moi dung)]
+- [L-039] Doi tuong se bat / tat (SetActive) thi luu tham chieu luc dung; GetComponentInParent/Find bo qua doi tuong da an -> null (P4) [sprint 8: NRE o SetUp lam do ca 49 test PlayMode]
 <!-- max 15 lines: [L-id] rule (phase) -->
 
 ## Nhat ky
@@ -93,3 +94,9 @@
 - L-005 | trigger: anh khach_an_2 cho thay ong tay mau den (test vi tri tay xanh) | goc: chieu tam giac nguoc -> thay mat trong + vo vien phu len | count 8
 - L-037 | trigger: doan "cha lat guong" lam nguyen nhan, sua theo doan, chay lai van den | sai: sua theo gia thuyet chua kiem | quy tac: loi hinh: viet phep kiem do duoc (HoseFacesOutward) truoc, de no DO, roi moi sua | count 1
 - L-022 | trigger: KhachAn_* chay rieng thi khach an xong ngay khung dau (khung giat x tua 25 > 5 giay an) | sua: Time.maximumDeltaTime 0,02 trong test, dat lai 1/3 o SetUp | count 4
+
+### 2026-11-21 sprint 8
+- L-039 | trigger: 49/49 PlayMode do o SetUp (NullReference RefreshOwnedItems) | sai: sauceTag.GetComponentInParent<Canvas>() sau khi canvas da SetActive(false) | goc: GetComponentInParent mac dinh bo qua doi tuong khong active | quy tac: luu tham chieu luc dung, hoac GetComponentInParent(true) | kiem: chay PlayMode 1 test truoc khi chay ca bo | count 1
+- L-040 | trigger: F073 do thoi gian di vao 0,15 giay | sai: do thoi gian sau Shot() (Shot ton vai khung = vai giay game o toc do tua 25x) | goc: dong ho bat dau sai cho | quy tac: test do thoi luong ghi Time.time ngay sau thao tac, chup anh khong chen giua | count 1
+- L-015 count 4: viet code loi (RelicShop, ArrivalGap) truoc test Sprint8Tests
+- L-002 count 7: heredoc python dai trong Bash loi "unexpected EOF" -> ghi script bang Write

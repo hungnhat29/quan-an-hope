@@ -457,9 +457,27 @@ namespace QuanAnHope.Game
         /// </summary>
         public static Transform Build(Transform parent, string id, bool prepared, Color? tint, float tintAmount, out float boundRadius)
         {
-            List<Part> parts = Parts(id, prepared);
             var root = new GameObject(prepared ? "Hinh_SoChe" : "Hinh").transform;
             root.SetParent(parent, false);
+
+            // Sprint 8 F-070 / F-071: co model Blender (Resources/Models/Ingredients/SM_NL_<id>[_SoChe]) thi dung, khong thi ghep khoi.
+            System.Func<Color, Color> recolor = null;
+            if (tint.HasValue) recolor = c => Color.Lerp(c, tint.Value, tintAmount);
+            GameObject model = ModelLibrary.TryInstantiate("Ingredients", ModelLibrary.IngredientName(id, prepared), root, Big, recolor);
+            if (model != null)
+            {
+                Bounds mb = ModelLibrary.LocalBounds(model, root);
+                Transform face = ModelLibrary.FacePoint(model);
+                var tam = new GameObject("TamHinh").transform;
+                tam.SetParent(root, false);
+                tam.localPosition = face != null ? root.InverseTransformPoint(face.position) : mb.center;
+                // ban kinh = nua canh lon nhat cua hop bao tinh tu tam mat (than tron: goc hop bao xa hon be mat ~can 3 lan, L-016)
+                Vector3 hi = mb.max - tam.localPosition, lo = tam.localPosition - mb.min;
+                boundRadius = 1.1f * Mathf.Max(Mathf.Max(hi.x, lo.x), Mathf.Max(Mathf.Max(hi.y, lo.y), Mathf.Max(hi.z, lo.z)));
+                return root;
+            }
+
+            List<Part> parts = Parts(id, prepared);
 
             Bounds b = new Bounds();
             bool first = true;

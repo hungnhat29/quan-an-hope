@@ -36,6 +36,7 @@ namespace QuanAnHope.PlayTests
         public IEnumerator LoadScene()
         {
             GameController.ChaptersByDefault = false;   // trang chuong giua van: chi test rieng bat
+            RoomView.WalkCustomers = false;              // sprint 8: khach di bo tu cua; kich ban cu cho khach ngoi ngay (test F-073 bat lai)
             Time.maximumDeltaTime = 1f / 3f;            // mac dinh Unity (test truoc co the doi)
             // so do thoi gian cua test khong lan vao playtest-log.csv cua nguoi that (sprint 7 F-060 AC-1)
             GameController.PlaytestFolder = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "QuanAnHope_TestLog");
@@ -56,6 +57,7 @@ namespace QuanAnHope.PlayTests
             Time.timeScale = 1f;
             if (g != null) g.ClockScale = 1f;
             GameController.ChaptersByDefault = true;
+            RoomView.WalkCustomers = true;
         }
 
         PlayerController P { get { return g.Player; } }
@@ -395,9 +397,11 @@ namespace QuanAnHope.PlayTests
         {
             ItemView v = item.GetComponent<ItemView>();
             Assert.IsNotNull(v, item.name + " khong phai nguyen lieu");
-            Renderer body = item.GetComponentsInChildren<Renderer>().First(r => r.name == "Than");
+            Renderer body = item.GetComponentsInChildren<Renderer>().First(r => r.name == "Than" || r.name.StartsWith("SM_NL_"));
             // Ban kinh mat cau bao than (khong dung hop AABB: khoi bi xoay thi AABB phinh to hon khoi that).
-            float radius = Vector3.Scale(body.localBounds.extents, body.transform.lossyScale).magnitude;
+            // Sprint 8: model Blender la mot mesh tron (khong phai khoi hop) -> ban kinh = nua canh lon nhat.
+            Vector3 ext = Vector3.Scale(body.localBounds.extents, body.transform.lossyScale);
+            float radius = body.name == "Than" ? ext.magnitude : Mathf.Max(ext.x, Mathf.Max(ext.y, ext.z));
             float d = Vector3.Distance(v.Face.transform.position, body.bounds.center);
             Assert.GreaterOrEqual(d, radius * 0.98f, "mat cua " + item.name + " lot vao trong than");
         }
@@ -620,6 +624,9 @@ namespace QuanAnHope.PlayTests
             c.renderMode = RenderMode.ScreenSpaceCamera;
             c.worldCamera = cam;
             c.planeDistance = 0.12f;
+            // sprint 8: bang Tab (man ngoai phong) nam tren HUD
+            Canvas tab = g.Tab != null && g.Tab.Shown ? g.Tab.Canvas : null;
+            if (tab != null) { tab.renderMode = RenderMode.ScreenSpaceCamera; tab.worldCamera = cam; tab.planeDistance = 0.11f; }
             Canvas.ForceUpdateCanvases();
             yield return null;
             Canvas.ForceUpdateCanvases();
@@ -630,6 +637,7 @@ namespace QuanAnHope.PlayTests
             cam.targetTexture = null;
             RenderTexture.active = null;
             c.renderMode = RenderMode.ScreenSpaceOverlay;
+            if (tab != null) tab.renderMode = RenderMode.ScreenSpaceOverlay;
 
             string dir = Path.GetFullPath(Path.Combine(Application.dataPath, "..", "..", "docs", sprint, "ui"));
             string path = Path.Combine(dir, fileName);
@@ -933,7 +941,9 @@ namespace QuanAnHope.PlayTests
                 {
                     Assert.AreEqual(ColorUtility.ToHtmlStringRGB(UiKit.IngredientTier[2]), ColorUtility.ToHtmlStringRGB(v.DiscColor), "de bac dung mau");
                     Assert.AreEqual("Mat_NguyenLieu_2", v.Face.Texture.name);
-                    Assert.GreaterOrEqual(v.PartCount, round1 ? 3 : 2, x.name);
+                    // sprint 8 F-071: nguyen lieu vong 1 la model Blender (mot mesh nhieu vat lieu); con lai van ghep khoi
+                    bool model = v.GetComponentsInChildren<MeshFilter>().Any(f => f.name.StartsWith("SM_NL_"));
+                    Assert.GreaterOrEqual(v.PartCount, model ? 1 : round1 ? 3 : 2, x.name);
                     AssertFaceOutside(v.gameObject);
                 }
                 Assert.IsTrue(views[1].ShowsPrepared);
@@ -1055,6 +1065,9 @@ namespace QuanAnHope.PlayTests
 
             yield return EndDayEarly();
             Assert.AreEqual(2, S.Day);
+            // constitution 1.8: ngay 2 relic mien phi (test rieng F077); kich ban mua bang ve chay o ngay 3
+            yield return EndDayEarly();
+            Assert.AreEqual(3, S.Day);
 
             // AC-2, AC-6: 3 relic khac nhau tren be, the ghi ten / gia / do hiem / hieu ung
             Assert.AreEqual(3, S.Shop.Offers.Select(o => o.id).Distinct().Count());
@@ -1217,7 +1230,8 @@ namespace QuanAnHope.PlayTests
             yield return PullAndWait("Kiosk", 2);
             yield return Use("ShopSign");
             Assert.AreEqual(GamePhase.Open, S.Phase);
-            yield return WaitUntil(() => S.Seats.All(c => c != null), S.Balance.day.nextCustomerSeconds + 2f, "ba ghe co khach (F-030 AC-1)");
+            // constitution 1.8 muc 6.2: tu vong 2 khach vao cach nhau ArrivalGap giay
+            yield return WaitUntil(() => S.Seats.All(c => c != null), 2f * S.ArrivalGap + S.Balance.day.nextCustomerSeconds + 2f, "ba ghe co khach (F-030 AC-1)");
             yield return null;
 
             // AC-2: ba khach, ba bong bong
@@ -1230,7 +1244,8 @@ namespace QuanAnHope.PlayTests
                 StringAssert.Contains("Dễ tính " + S.EasinessNow(c) + "%", g.Room.BubbleText(i));
                 StringAssert.Contains("Gọi: " + c.orderName, g.Room.BubbleText(i));
                 Assert.IsTrue(v.Patience.gameObject.activeInHierarchy, "thanh kien nhan (F-031)");
-                Assert.Greater(g.Room.BubblePatience(i), 0.9f, "khach vua ngoi: thanh gan day");
+                // 1.8: khach vao cach nhau ArrivalGap nen khach dau da cho ~2 khoang; van trong khoang an toan (mau bac ha)
+                Assert.Greater(g.Room.BubblePatience(i), 0.5f, "khach moi ngoi: thanh con nhieu");
                 Assert.AreEqual(UiKit.Mint, g.Room.BubblePatienceColor(i));
             }
             Assert.Less(g.Room.SeatViews[0].Bubble.transform.position.x, g.Room.SeatViews[2].Bubble.transform.position.x);
@@ -1357,21 +1372,26 @@ namespace QuanAnHope.PlayTests
         {
             yield return ToDay(4, 3000);
             int money = S.Money;
-            StringAssert.Contains("Nước sốt thần thánh</b> 450G", g.Room.ItemSignText);
-            StringAssert.Contains("Hỏng 12% · Giữ 18%\n+1 bậc 50% · +2 bậc 20%", g.Room.ItemSignText, "Dieu 4: hien ti le nuoc sot");
-            StringAssert.Contains("Vé đen</b> 700G", g.Room.ItemSignText);
-            StringAssert.Contains("Tươi 62% · Xuất sắc 30% · Hiếm 8%", g.Room.ItemSignText, "Dieu 4: hien ti le ve den");
-            StringAssert.Contains("800G", g.Room.MachineSignText);
-            StringAssert.DoesNotContain("%", g.Room.MachineSignText, "Dieu 4: may gacha do an giau ti le");
-            yield return WalkTo(new Vector3(1.2f, 0f, -0.5f));
-            yield return Shot("goc2_quay_vat_pham.png", g.Room.Station("Sauce").WorldCenter + new Vector3(0.2f, 0.55f, 0f), Sprint4);
+            // sprint 8 F-078: quay vat pham trong phong bo, mua o bang Tab -> Cua hang (gia + ti le van hien, Dieu 4)
+            Assert.IsTrue(g.OpenTab(TabMenu.Page.Shop));
+            string sauceLine = g.Tab.ShopLines[GameController.ItemSauce].text, blackLine = g.Tab.ShopLines[GameController.ItemBlack].text;
+            StringAssert.Contains("Nước sốt thần thánh</b> · 450G", sauceLine);
+            StringAssert.Contains("hỏng 12% · giữ 18% · +1 bậc 50% · +2 bậc 20%", sauceLine, "Dieu 4: hien ti le nuoc sot");
+            StringAssert.Contains("Vé đen</b> · 700G", blackLine);
+            StringAssert.Contains("Tươi 62% · Xuất sắc 30% · Hiếm 8%", blackLine, "Dieu 4: hien ti le ve den");
+            StringAssert.Contains("800G", g.Tab.ShopLines[GameController.ItemMachine].text);
+            StringAssert.DoesNotContain("%", g.Tab.ShopLines[GameController.ItemMachine].text, "Dieu 4: may gacha do an giau ti le");
 
-            yield return Use("Sauce");
+            g.Tab.BuyButtons[GameController.ItemSauce].onClick.Invoke();
             Assert.AreEqual(money - 450, S.Money);
             Assert.AreEqual(1, S.Items.Sauces);
-            StringAssert.Contains("495G", g.Room.Station("Sauce").CurrentPrompt, "lan mua sau +45G");
-            yield return Use("BlackTicket");
+            StringAssert.Contains("495G", g.Tab.ShopLines[GameController.ItemSauce].text, "lan mua sau +45G");
+            g.Tab.BuyButtons[GameController.ItemBlack].onClick.Invoke();
+            g.CloseTab();
+            yield return null;
             Assert.AreEqual(money - 450 - 700, S.Money);
+            yield return WalkTo(new Vector3(1.2f, 0f, -0.5f));
+            yield return Shot("goc2_quay_vat_pham.png", g.Room.Station("Sauce").WorldCenter + new Vector3(0.2f, 0.55f, 0f), Sprint4);
             Assert.AreEqual(1, S.Items.BlackTickets);
             StringAssert.Contains("1 vé đen", HudText("HUD_Phai"));
 
@@ -1395,10 +1415,15 @@ namespace QuanAnHope.PlayTests
             StringAssert.StartsWith("Nước sốt: " + d.name, g.Toast);
             StringAssert.StartsWith("sauce:", g.LastItemEffect);
 
-            // May gacha do an: bam lan dau thi mua, cam dia bam thi quay
+            // May gacha do an: mua o bang Tab (sprint 8), may hien o Goc 2; cam dia bam thi quay
             int before = S.Money;
-            yield return Use("FoodMachine");
+            Assert.IsFalse(g.Room.MachineShown, "chua mua thi may chua hien");
+            Assert.IsTrue(g.OpenTab(TabMenu.Page.Shop));
+            g.Tab.BuyButtons[GameController.ItemMachine].onClick.Invoke();
+            g.CloseTab();
+            yield return null;
             Assert.IsTrue(S.Items.HasMachine);
+            Assert.IsTrue(g.Room.MachineShown);
             Assert.AreEqual(before - 800, S.Money);
             StringAssert.Contains("3/3 lượt", g.Room.MachineSignText);
             Assert.AreSame(d, g.HeldDish, "mua may khong lam roi dia");
@@ -1428,6 +1453,7 @@ namespace QuanAnHope.PlayTests
             yield return ToDay(8, 3000);
             Assert.IsTrue(S.IsBlackout);
             Assert.IsTrue(g.Room.BlackoutShown);
+            g.Room.SnapLights();   // sprint 8: den chinh doi muot ~0,25 giay
             Assert.AreEqual(normal * (1f - S.Balance.blackout.dim), g.Room.MainLightIntensity, 1e-4, "phong toi 60%");
             Assert.IsTrue(g.Room.Candles.Count >= 4 && g.Room.Candles.All(c => c.activeInHierarchy), "nen quanh bep va quay");
 
@@ -1616,7 +1642,7 @@ namespace QuanAnHope.PlayTests
         {
             yield return StartAt(9, 5000, BotRelicsDay9);
             Assert.IsTrue(S.Relics.IsFull);
-            yield return Use("BlackTicket");
+            Assert.IsTrue(g.BuyItem(GameController.ItemBlack), "sprint 8: mua ve den o bang Tab");
             Assert.AreEqual(1, S.Items.BlackTickets);
             int white = S.Wallet.Count;
 
@@ -1647,7 +1673,9 @@ namespace QuanAnHope.PlayTests
         public IEnumerator F041_TuNgay9_NuocSotHien4PhanTram_MonHyVong()
         {
             yield return StartAt(9, 3000, BotRelicsDay9);
-            StringAssert.Contains("Huyền thoại 4%", g.Room.ItemSignText, "Dieu 4: hien ti le Huyen thoai tu ngay 9");
+            Assert.IsTrue(g.OpenTab(TabMenu.Page.Shop));
+            StringAssert.Contains("Huyền thoại 4%", g.Tab.ShopLines[GameController.ItemSauce].text, "Dieu 4: hien ti le Huyen thoai tu ngay 9");
+            g.CloseTab();
             Recipe r = S.Lookup.Find("ca_hoi", "ot_chuong");
             var legend = new Dish { recipeId = r.id, name = r.name, baseName = r.baseName, tier = 5 };
             Assert.IsTrue(S.Counter.TryPlace(legend));

@@ -58,6 +58,30 @@ namespace QuanAnHope.Core
         public SauceRules sauce = new SauceRules();
         public MachineRules machine = new MachineRules();
         public PricedItemRules blackTicket = new PricedItemRules();
+
+        // ---------- sprint 8 (constitution 1.8) ----------
+
+        /// <summary>Doi hang cua hang relic bang tien (muc 7.1): gia lan dau, moi lan sau trong ngay cong them step.</summary>
+        public RelicRerollRules relicReroll = new RelicRerollRules();
+
+        /// <summary>Ngay cua hang relic mien phi (muc 7.1): chi relic do hiem nay, lay toi da picks cai.</summary>
+        public FreeRelicRules freeRelic = new FreeRelicRules();
+    }
+
+    [Serializable]
+    public class RelicRerollRules
+    {
+        public int baseCost;
+        public int step;
+    }
+
+    [Serializable]
+    public class FreeRelicRules
+    {
+        /// <summary>0 = khong co ngay mien phi.</summary>
+        public int day;
+        public string rarity;
+        public int picks;
     }
 
     /// <summary>Thoi gian cho (constitution muc 6.6).</summary>
@@ -198,6 +222,14 @@ namespace QuanAnHope.Core
 
         /// <summary>Khach an xong mon sau bay nhieu giay thuc roi moi roi ghe (constitution 1.5 muc 6.2). 0 = roi ghe ngay.</summary>
         public float eatSeconds;
+
+        /// <summary>
+        /// Nhip khach tu vong <see cref="arrivalFromRound"/> (constitution 1.8 muc 6.2): hai khach lien nhau vao cach nhau it nhat
+        /// max(arrivalMinGap, arrivalGapK / ngay) giay. arrivalGapK = 0: khong gioi han (ban 1.7).
+        /// </summary>
+        public int arrivalFromRound;
+        public float arrivalGapK;
+        public float arrivalMinGap;
     }
 
     /// <summary>No phai tra vao dau ngay <see cref="day"/>.</summary>

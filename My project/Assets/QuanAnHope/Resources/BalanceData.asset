@@ -150,6 +150,9 @@ MonoBehaviour:
       bossDay: 21
       nextCustomerSeconds: 3
       eatSeconds: 5
+      arrivalFromRound: 2
+      arrivalGapK: 100
+      arrivalMinGap: 6
     relicCap: 8
     relicShopOffers: 3
     relics:
@@ -399,9 +402,9 @@ MonoBehaviour:
       fromRound: 2
       safeSecondsByRound:
       - 0
-      - 90
-      - 70
-      - 75
+      - 120
+      - 100
+      - 105
       dropEverySeconds: 3
       maxDrop: 20
       blackoutExtraSeconds: 20
@@ -443,6 +446,13 @@ MonoBehaviour:
       price: 700
       step: 120
       max: 5
+    relicReroll:
+      baseCost: 50
+      step: 25
+    freeRelic:
+      day: 2
+      rarity: thuong
+      picks: 1
   recipes:
     timing:
       stepSeconds: 0.5

@@ -210,12 +210,12 @@ namespace QuanAnHope.Game
             return card;
         }
 
-        public void Show(RelicDef r, RelicInventory inv, bool pending, bool viaBlack = false)
+        public void Show(RelicDef r, RelicInventory inv, bool pending, bool viaBlack = false, bool free = false)
         {
             gameObject.SetActive(true);
             frame.color = RelicArt.RarityColor(r.rarity);
             title.text = r.name;
-            meta.text = (viaBlack ? "Vé đen" : r.price + " vé") + " · " + RelicKeys.RarityName(r.rarity);
+            meta.text = (viaBlack ? "Vé đen" : free ? "<color=#E8604F>Miễn phí</color>" : r.price + " vé") + " · " + RelicKeys.RarityName(r.rarity);
             effect.text = RelicText.Effect(r)
                 + (RelicText.IsActiveNow(r) ? "" : "\n<color=#E8604F><size=46>có tác dụng từ ngày 4</size></color>");
             // Yeu cau 21/11/2026: khong hien relic nao thuoc bo combo, relic nao la relic le (nguoi choi tu kham pha).

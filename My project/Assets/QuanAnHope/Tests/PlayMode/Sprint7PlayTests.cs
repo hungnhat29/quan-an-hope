@@ -237,7 +237,7 @@ namespace QuanAnHope.PlayTests
             Color night = ScreenTint.TintFor(21.5f);
             Assert.AreEqual(0.2f, night.a, 1e-4);
             Assert.AreEqual(UiKit.Hex("#C9B3F0").b, night.b, 1e-3, "sau 21h tim nhat");
-            Assert.IsNotNull(g.Tint);
+            Assert.IsNull(g.Tint, "sprint 8 B-01: bo lop phu anh toan man hinh, mau theo gio nhan vao den chinh");
 
             Assert.IsFalse(g.Room.Rain.Raining, "ngay 1 khong mua");
             Color dry = g.Room.Sky.ColorOf("MatDuong");

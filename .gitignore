@@ -44,3 +44,6 @@ __pycache__/
 
 # Cong cu xuat truyen tranh
 /tools/cot-truyen/node_modules/
+
+# Blender: ban sao luu tu dong
+*.blend1

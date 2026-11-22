@@ -145,6 +145,7 @@ namespace QuanAnHope.Game
             BuildShopName();
             BuildSway();
             BuildSkyCycle();
+            BuildSprint8();
 
             handAnchor = Toon.Empty(g.Player.Cam.transform, "Tay", new Vector3(0.3f, -0.26f, 0.55f)).transform;
         }
@@ -604,8 +605,20 @@ namespace QuanAnHope.Game
             // Chong dia trong va quay cho 3 o tren quay phai (constitution muc 5.1).
             GameObject stack = Toon.Empty(goc4, "ChongDia", new Vector3(3.45f, 1.1f, 3.15f));
             for (int i = 0; i < 5; i++)
-                Toon.Prim(PrimitiveType.Cylinder, stack.transform, "Dia" + i, new Vector3(0f, 0.015f + 0.032f * i, 0f), new Vector3(0.38f, 0.025f, 0.38f),
+            {
+                GameObject d = Toon.Prim(PrimitiveType.Cylinder, stack.transform, "Dia" + i, new Vector3(0f, 0.015f + 0.032f * i, 0f), new Vector3(0.38f, 0.025f, 0.38f),
                     PlateWhite, Toon.OutlineSmall);
+                // Sprint 8 F-072: dia Blender (goc o day dia)
+                GameObject slot = Toon.Empty(stack.transform, "ChoDia" + i, new Vector3(0f, 0.0025f + 0.032f * i, 0f));
+                ModelLibrary.Swap(slot.transform, new[] { d }, "Kitchen", "SM_Dia", Toon.OutlineSmall * 0.6f);
+            }
+            // Thot cua canh (khoi hop) -> model Blender
+            Transform board = goc4.Find("PrepLeft/CuttingBoard");
+            if (board != null)
+            {
+                GameObject at = Toon.Empty(goc4, "ThotModel", new Vector3(-2.75f, 1.10f, 3.1f));
+                ModelLibrary.Swap(at.transform, new[] { board.gameObject }, "Kitchen", "SM_Thot", Toon.OutlineSmall);
+            }
             Register(Interactable.Add(stack, "PlateStack", new Vector3(0f, 0.08f, 0f), new Vector3(0.45f, 0.25f, 0.45f),
                 () => "Lấy đĩa trống", () => g.TakePlate()));
 
@@ -627,10 +640,18 @@ namespace QuanAnHope.Game
         }
 
         /// <summary>Mo hinh dung cu: chao (dia + can), noi nho, vi nuong (khung + nan).</summary>
+        /// <summary>Ten model Blender cua dung cu (Art Bible muc 14: SM_ + ten khong dau).</summary>
+        public static string ToolModel(string tool)
+        {
+            return tool == "Chảo" ? "SM_Chao" : tool == "Nồi" ? "SM_Noi" : "SM_ViNuong";
+        }
+
         static GameObject BuildTool(Transform parent, string tool, Vector3 spot, string prefix, float scale = 1f)
         {
             GameObject t = Toon.Empty(parent, prefix + tool, spot);
             t.transform.localScale = Vector3.one * scale;
+            // Sprint 8 F-072: model Blender cung kich thuoc goc (scale 1 = tren gia), thieu file thi ghep khoi.
+            if (ModelLibrary.TryInstantiate("Kitchen", ToolModel(tool), t.transform, Toon.OutlineSmall * 0.6f) != null) return t;
             if (tool == "Chảo")
             {
                 Toon.Prim(PrimitiveType.Cylinder, t.transform, "Long", new Vector3(0f, 0.03f, 0f), new Vector3(0.36f, 0.06f, 0.36f), Steel, Toon.OutlineSmall);
@@ -1053,7 +1074,9 @@ namespace QuanAnHope.Game
             }
             if (!s.Shop.OpensOn(s.Day)) return "Cửa hàng relic mở từ ngày " + s.Balance.start.relicShopFromDay;
             RelicDef r = slot < s.Shop.Offers.Count ? s.Shop.Offers[slot] : null;
-            if (r == null) return "Bệ trống · đã bán hôm nay";
+            if (r == null) return s.Shop.FreeDone ? "Hôm nay đã lấy relic miễn phí" : "Bệ trống · đã bán hôm nay";
+            if (s.Shop.IsFreeDay && g.PendingRelicSlot != slot)
+                return "Lấy miễn phí · " + r.name + " (chỉ được lấy 1)" + (s.Relics.IsFull ? " · giá đầy, phải bỏ 1 relic" : "");
             if (g.PendingRelicSlot == slot) return "Bấm lại để huỷ mua " + r.name;
             int missing = s.Shop.Missing(slot, s.Wallet);
             if (missing > 0) return r.name + " · thiếu " + missing + " vé";
@@ -1093,7 +1116,9 @@ namespace QuanAnHope.Game
             shopSign.text = black
                 ? "Vé đen\n<size=70>chọn 1 trong 3 relic Hiếm trở lên</size>"
                 : opens
-                ? "Cửa hàng relic\n<size=70>" + s.Shop.Slots + " relic hôm nay · trả bằng vé trắng</size>"
+                ? (s.Shop.IsFreeDay
+                    ? "Relic miễn phí hôm nay\n<size=70>chọn 1 trong " + s.Shop.Slots + " · nút Đổi hàng: " + s.Shop.RerollCost + "G</size>"
+                    : "Cửa hàng relic\n<size=70>" + s.Shop.Slots + " relic · trả bằng vé · Đổi hàng: " + s.Shop.RerollCost + "G</size>")
                 : "Cửa hàng relic\n<size=80>mở từ ngày " + s.Balance.start.relicShopFromDay + "</size>";
 
             // Relic vua mua bay tu be len gia (kich ban 10 giay, impl plan sprint 3): nho vi tri be truoc khi xoa.
@@ -1113,8 +1138,8 @@ namespace QuanAnHope.Game
                     pedestalRelics[i] = r != null ? RelicArt.Create(pedestalSpots[i], r, ShopRelicScale) : null;
                     pedestalShown[i] = key;
                 }
-                if (r != null) cards[i].Show(r, inv, g.PendingRelicSlot == i, black);
-                else cards[i].ShowEmpty(opens ? "Đã bán" : "Mở từ ngày " + s.Balance.start.relicShopFromDay);
+                if (r != null) cards[i].Show(r, inv, g.PendingRelicSlot == i, black, !black && s.Shop.IsFreeDay);
+                else cards[i].ShowEmpty(!opens ? "Mở từ ngày " + s.Balance.start.relicShopFromDay : s.Shop.FreeDone ? "Đã lấy relic miễn phí" : "Đã bán");
             }
 
             for (int i = 0; i < shelfSpots.Count; i++)
@@ -1237,6 +1262,7 @@ namespace QuanAnHope.Game
             RefreshItemShop();
             RefreshBook();
             RefreshHand();
+            RefreshSprint8();
         }
 
         void RefreshHand()
@@ -1289,6 +1315,7 @@ namespace QuanAnHope.Game
             TickOverheat();
             for (int i = 0; i < seatViews.Length; i++) UpdateBubble(i);
             TickSeats(dt);
+            TickSprint8(dt);
             foreach (CrateView c in crates.Values) c.Tick(dt);
             foreach (ItemView i in items.Values) if (i != null) i.Tick(dt);
         }
@@ -1462,6 +1489,10 @@ namespace QuanAnHope.Game
             Toon.Prim(PrimitiveType.Cube, go.transform, "ThanhSau", new Vector3(0f, 0.06f, Size.y * 0.5f), new Vector3(Size.x, 0.12f, 0.03f), wood, Toon.OutlineSmall);
             Toon.Prim(PrimitiveType.Cube, go.transform, "ThanhTrai", new Vector3(-Size.x * 0.5f, 0.045f, 0f), new Vector3(0.03f, 0.09f, Size.y), wood, Toon.OutlineSmall);
             Toon.Prim(PrimitiveType.Cube, go.transform, "ThanhPhai", new Vector3(Size.x * 0.5f, 0.045f, 0f), new Vector3(0.03f, 0.09f, Size.y), wood, Toon.OutlineSmall);
+            // Sprint 8 F-072: thung / ruong Blender (cung kich thuoc 0,55 x 0,46 m, thanh truoc 7 cm, sau 12 cm)
+            var prims = new List<GameObject>();
+            foreach (Transform ch in go.transform) prims.Add(ch.gameObject);
+            ModelLibrary.Swap(go.transform, prims, "Kitchen", breakthrough ? "SM_RuongDotPha" : first.kind == IngredientKind.Main ? "SM_ThungChinh" : "SM_ThungPhu", Toon.OutlineSmall * 0.6f);
             c.ItemRoot = Toon.Empty(go.transform, "Mon", new Vector3(0f, 0.045f, 0f)).transform;
 
             Canvas label = UiKit.WorldCanvas(go.transform, "Nhan", new Vector3(0f, 0.06f, -Size.y * 0.5f - 0.02f), Quaternion.identity, new Vector2(500f, 100f));
@@ -1552,7 +1583,8 @@ namespace QuanAnHope.Game
         public static GameObject EmptyPlate(Transform parent)
         {
             GameObject go = Toon.Empty(parent, "DiaTrong", Vector3.zero);
-            Toon.Prim(PrimitiveType.Cylinder, go.transform, "Dia", new Vector3(0f, 0.015f, 0f), new Vector3(0.36f, 0.03f, 0.36f), UiKit.Hex("#FFFFFF"), Toon.OutlineSmall);
+            GameObject d = Toon.Prim(PrimitiveType.Cylinder, go.transform, "Dia", new Vector3(0f, 0.015f, 0f), new Vector3(0.36f, 0.03f, 0.36f), UiKit.Hex("#FFFFFF"), Toon.OutlineSmall);
+            ModelLibrary.Swap(go.transform, new[] { d }, "Kitchen", "SM_Dia", Toon.OutlineSmall * 0.6f);
             return go;
         }
 

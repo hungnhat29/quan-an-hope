@@ -23,6 +23,189 @@ namespace QuanAnHope.Game
         float leave = -1f, leaveSeconds = 0.5f;
         float chew, chewTarget;
 
+        // ---------- sprint 8 F-073: di vao / di ra (yeu cau 21/11 "khong can qua nhanh") ----------
+        /// <summary>Toc do di (m/giay the gioi).</summary>
+        public const float WalkSpeed = 0.9f;
+        public const float TurnSeconds = 0.35f;
+
+        /// <summary>Diem chan cua khoi (toa do cua chinh khoi): xoay / co gian quanh diem nay. Khoi khach cua canh: (0, 0, SeatZ).</summary>
+        public Vector3 Pivot;
+
+        enum Walk { None, In, Out }
+        Walk walk;
+        Vector3[] path;            // toa do cha, tinh tu cho ngoi (offset cua diem chan)
+        float walkT, walkLength, walkSeconds, turnFrom;
+        Vector3 walkOffset;
+        float yaw;
+
+        /// <summary>Dang di vao ghe (chua ngoi).</summary>
+        public bool WalkingIn { get { return walk == Walk.In; } }
+        /// <summary>Dang di ra cua.</summary>
+        public bool WalkingOut { get { return walk == Walk.Out; } }
+        /// <summary>Da ra khoi cua (an khoi duoc).</summary>
+        public bool GoneOut { get; private set; }
+        public int WalkIns { get; private set; }
+
+        /// <summary>Thoi gian di het duong (giay) voi do dai the gioi <paramref name="worldLength"/>.</summary>
+        public static float WalkTime(float worldLength) { return Mathf.Max(0.5f, worldLength / WalkSpeed); }
+
+        /// <summary>Bat dau di tu cua vao ghe: <paramref name="worldPath"/> la cac diem the gioi (ngoai cua -> cua), diem cuoi la cho ngoi.</summary>
+        public void WalkIn(Vector3[] worldPath)
+        {
+            BeginWalk(worldPath, false);
+            walk = Walk.In;
+            WalkIns++;
+            arrive = 1f;
+        }
+
+        /// <summary>Dung day, quay lung, di ra cua theo <paramref name="worldPath"/> (cua -> ngoai cua).</summary>
+        public void WalkOut(Vector3[] worldPath)
+        {
+            BeginWalk(worldPath, true);
+            walk = Walk.Out;
+            leave = -1f;
+        }
+
+        /// <summary>Tong thoi gian cua lan di ra (de RoomView giu khoi tren man hinh).</summary>
+        public float WalkOutSeconds { get { return TurnSeconds + walkSeconds; } }
+        /// <summary>Thoi gian cua lan di vao.</summary>
+        public float WalkInSeconds { get { return walkSeconds; } }
+
+        void BeginWalk(Vector3[] worldPath, bool outward)
+        {
+            if (!hasRest) CaptureRest();
+            Transform parent = transform.parent;
+            Vector3 seat = SeatParent();
+            var pts = new System.Collections.Generic.List<Vector3>();
+            if (outward) pts.Add(Vector3.zero);
+            foreach (Vector3 w in worldPath) pts.Add((parent != null ? parent.InverseTransformPoint(w) : w) - seat);
+            if (!outward) pts.Add(Vector3.zero);
+            for (int i = 0; i < pts.Count; i++) pts[i] = new Vector3(pts[i].x, 0f, pts[i].z);
+            path = pts.ToArray();
+            walkLength = 0f;
+            float world = 0f;
+            for (int i = 1; i < path.Length; i++)
+            {
+                walkLength += (path[i] - path[i - 1]).magnitude;
+                world += (parent != null ? parent.TransformVector(path[i] - path[i - 1]) : path[i] - path[i - 1]).magnitude;
+            }
+            walkSeconds = WalkTime(world);
+            walkT = 0f;
+            turnFrom = yaw;
+            GoneOut = false;
+            walkOffset = outward ? Vector3.zero : path[0];
+            if (!outward) yaw = YawAlong(path[0], path.Length > 1 ? path[1] : Vector3.zero, yaw);
+            Apply();
+        }
+
+        /// <summary>Diem chan cua khoi luc ngoi (toa do cha).</summary>
+        Vector3 SeatParent()
+        {
+            return restPos + restRot * Vector3.Scale(restScale, Pivot);
+        }
+
+        static float YawAlong(Vector3 from, Vector3 to, float fallback)
+        {
+            Vector3 d = to - from;
+            d.y = 0f;
+            if (d.sqrMagnitude < 1e-6f) return fallback;
+            // mat khoi khach huong -z (nhin Hope): yaw = 0 khi di theo -z
+            return Mathf.Atan2(-d.x, -d.z) * Mathf.Rad2Deg;
+        }
+
+        Vector3 PointAt(float dist, out Vector3 dir)
+        {
+            dir = Vector3.zero;
+            for (int i = 1; i < path.Length; i++)
+            {
+                Vector3 seg = path[i] - path[i - 1];
+                float l = seg.magnitude;
+                if (dist <= l || i == path.Length - 1)
+                {
+                    dir = seg;
+                    return path[i - 1] + seg * (l > 1e-5f ? Mathf.Clamp01(dist / l) : 1f);
+                }
+                dist -= l;
+            }
+            return path.Length > 0 ? path[path.Length - 1] : Vector3.zero;
+        }
+
+        float stepPhase;
+
+        /// <summary>Buoc di: offset vi tri, nhun buoc, quay mat theo huong di (cuoi duong vao: quay ve Hope).</summary>
+        void TickWalk(float dt, ref float up, ref float sx, ref float sy, ref float rz)
+        {
+            if (walk == Walk.None || path == null || path.Length < 2)
+            {
+                if (GoneOut) { sx = sy = 0.01f; }
+                return;
+            }
+            walkT += dt;
+            float turn = walk == Walk.Out ? TurnSeconds : 0f;
+            float moveT = walkT - turn;
+            if (walk == Walk.Out && moveT < 0f)
+            {
+                // dung day + quay lung truoc khi di
+                float k = Mathf.SmoothStep(0f, 1f, walkT / TurnSeconds);
+                Vector3 d0;
+                PointAt(0.001f, out d0);
+                yaw = Mathf.LerpAngle(turnFrom, YawAlong(Vector3.zero, d0, turnFrom), k);
+                up += Mathf.Sin(k * Mathf.PI) * 0.06f;
+                return;
+            }
+            float frac = walkSeconds > 0f ? Mathf.Clamp01(moveT / walkSeconds) : 1f;
+            Vector3 dir;
+            walkOffset = PointAt(frac * walkLength, out dir);
+            float targetYaw = YawAlong(Vector3.zero, dir, yaw);
+            yaw = Mathf.LerpAngle(yaw, targetYaw, 1f - Mathf.Exp(-dt * 10f));
+            // nhun buoc: 2,2 buoc / giay, bat len khi chan roi dat (|sin|), nghieng nhe trai phai
+            stepPhase += dt * 2.2f * Mathf.PI;
+            float bounce = Mathf.Abs(Mathf.Sin(stepPhase));
+            up += bounce * 0.07f;
+            sy *= 1f + (bounce - 0.5f) * 0.06f;
+            sx *= 1f - (bounce - 0.5f) * 0.03f;
+            rz += Mathf.Sin(stepPhase) * 4f;
+            if (walk == Walk.Out && frac > 0.85f)
+            {
+                // khuat ngoai cua: thu nho dan
+                float s = Mathf.Lerp(1f, 0.01f, (frac - 0.85f) / 0.15f);
+                sx *= s; sy *= s;
+            }
+            if (frac >= 1f)
+            {
+                if (walk == Walk.In)
+                {
+                    walk = Walk.None;
+                    walkOffset = Vector3.zero;
+                    yaw = 0f;
+                    // ngoi xuong: nen roi bat lai (lo xo tat dan)
+                    arrive = 0.45f;
+                }
+                else
+                {
+                    walk = Walk.None;
+                    GoneOut = true;
+                    sx = sy = 0.01f;
+                }
+            }
+        }
+
+        /// <summary>Dung moi chuyen dong di (khach moi thay khach dang ra cung ghe).</summary>
+        public void StopWalk()
+        {
+            walk = Walk.None;
+            walkOffset = Vector3.zero;
+            yaw = 0f;
+            GoneOut = false;
+            Apply();
+        }
+
+        // ---------- sprint 8 F-074: an theo ket qua ----------
+        public enum EatMood { Happy, Delighted, Sad, Angry }
+        /// <summary>Kieu an: vui (mac dinh), rat vui (Tuyet hao: thinh thoang nhay), buon (cui dau, nhai cham), gian (nhai cham, lac dau ngat quang).</summary>
+        public EatMood Eating = EatMood.Happy;
+        float moodClock;
+
         /// <summary>Do nhun khi nhai (0..1), EatingFx dat theo do gan mieng cua dua.</summary>
         public float Chew { set { chewTarget = Mathf.Clamp01(value); } }
         public bool Leaving { get { return leave >= 0f; } }
@@ -51,6 +234,7 @@ namespace QuanAnHope.Game
         }
 
         float bobAmp = 0.02f;
+        float walkDt;
 
         void CaptureRest()
         {
@@ -66,6 +250,11 @@ namespace QuanAnHope.Game
             if (!hasRest) CaptureRest();
             leave = -1f;
             arrive = 0f;
+            walk = Walk.None;
+            walkOffset = Vector3.zero;
+            yaw = 0f;
+            GoneOut = false;
+            Eating = EatMood.Happy;
             chew = chewTarget = 0f;
             Apply();
         }
@@ -95,15 +284,20 @@ namespace QuanAnHope.Game
             hop = Mathf.Min(1f, hop + dt / HopSeconds);
             shake = Mathf.Min(1f, shake + dt / ShakeSeconds);
             if (leave >= 0f) leave = Mathf.Min(1f, leave + dt / leaveSeconds);
+            // an theo ket qua (F-074): gian lac dau moi 1,6 giay; Tuyet hao nhay cang moi 1,8 giay
+            moodClock += dt;
+            if (chewTarget > 0.01f && Eating == EatMood.Angry && moodClock > 1.6f) { moodClock = 0f; Shake(); }
+            else if (chewTarget > 0.01f && Eating == EatMood.Delighted && moodClock > 1.8f) { moodClock = 0f; Hop(); }
             // nhai: bam theo dua muot (khong nhay bac)
             chew = Mathf.Lerp(chew, chewTarget, 1f - Mathf.Exp(-dt * 14f));
+            walkDt = dt;
             Apply();
         }
 
         void Apply()
         {
             float t = clock + phase;
-            float up = 0f, sx = 1f, sy = 1f, rz = 0f, ry = 0f;
+            float up = 0f, sx = 1f, sy = 1f, rz = 0f, ry = 0f, rx = 0f;
 
             // tho: than co gian 2,5% chu ky 2,4 giay (ngang gian nguoc chieu de giu the tich)
             float breath = Mathf.Sin(t * Mathf.PI * 2f / 2.4f) * 0.025f;
@@ -151,8 +345,10 @@ namespace QuanAnHope.Game
             // nhai: nhun theo nhip 2,2 lan/giay, muot
             if (chew > 0.001f)
             {
-                float c = (0.5f + 0.5f * Mathf.Sin(t * Mathf.PI * 2f * 2.2f)) * chew * 0.045f;
+                bool slow = Eating == EatMood.Sad || Eating == EatMood.Angry;
+                float c = (0.5f + 0.5f * Mathf.Sin(t * Mathf.PI * 2f * (slow ? 1.1f : 2.2f))) * chew * 0.045f;
                 sy *= 1f - c; sx *= 1f + c * 0.5f;
+                if (Eating == EatMood.Sad) rx += 9f * chew;    // cui dau
             }
 
             // roi ghe: bat len (anticipation), roi thu nho bay len (ease-in-back)
@@ -165,9 +361,15 @@ namespace QuanAnHope.Game
                 sx *= s; sy *= s;
             }
 
-            transform.localPosition = restPos + Vector3.up * up;
-            transform.localScale = new Vector3(restScale.x * sx, restScale.y * sy, restScale.z * sx);
-            transform.localRotation = restRot * Quaternion.Euler(0f, ry, rz);
+            TickWalk(walkDt, ref up, ref sx, ref sy, ref rz);
+            walkDt = 0f;
+
+            // xoay / co gian quanh diem chan (Pivot) de khoi khach dung tai cho khi quay mat (sprint 8)
+            Vector3 scale = new Vector3(restScale.x * sx, restScale.y * sy, restScale.z * sx);
+            Quaternion rot = restRot * Quaternion.Euler(rx, yaw + ry, rz);
+            transform.localScale = scale;
+            transform.localRotation = rot;
+            transform.localPosition = SeatParent() + walkOffset + Vector3.up * up - rot * Vector3.Scale(scale, Pivot);
         }
     }
 

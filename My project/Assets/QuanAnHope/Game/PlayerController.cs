@@ -37,6 +37,9 @@ namespace QuanAnHope.Game
         /// <summary>Bam Esc (F-050 AC-2: mo menu tam dung). Khong ai nghe thi Esc nha chuot nhu cu.</summary>
         public event Action EscapePressed;
 
+        /// <summary>Phim Tab: bang relic + cua hang (sprint 8 F-078).</summary>
+        public event Action TabPressed;
+
         /// <summary>Dao truc doc cua chuot (F-054 AC-2).</summary>
         public bool InvertY;
 
@@ -148,6 +151,7 @@ namespace QuanAnHope.Game
                 if (kb.dKey.isPressed || kb.rightArrowKey.isPressed) move.x += 1f;
                 if (kb.aKey.isPressed || kb.leftArrowKey.isPressed) move.x -= 1f;
                 if (kb.escapeKey.wasPressedThisFrame) OnEscape();
+                if (kb.tabKey.wasPressedThisFrame && TabPressed != null) TabPressed();
             }
             if (mouse == null) return;
 
@@ -173,6 +177,7 @@ namespace QuanAnHope.Game
             if (SimulateInput) return;
             Keyboard kb = Keyboard.current;
             if (kb != null && kb.escapeKey.wasPressedThisFrame) OnEscape();
+            if (kb != null && kb.tabKey.wasPressedThisFrame && TabPressed != null) TabPressed();
         }
 
         void OnEscape()

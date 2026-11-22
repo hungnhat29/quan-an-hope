@@ -35,8 +35,9 @@ namespace QuanAnHope.Game
 
         void InitAmbient()
         {
-            Tint = ScreenTint.Create(() => Session != null ? Session.Clock.HourOfDay : 9f, () => Mode == GameMode.Playing || Mode == GameMode.Paused);
-            Tint.transform.SetParent(transform, false);
+            // Sprint 8 B-01: bo lop phu anh mau toan man hinh (lam nhat mau, cuoi ngay tim). Mau theo gio nay nhan vao den chinh
+            // (RoomView.TickLights, Art Bible muc 10 "doi gio = doi mau / cuong do cua den").
+            Tint = null;
         }
 
         /// <summary>Mua ngay 2 ngoai cua: vet mua + pho nhuom mau mua.</summary>

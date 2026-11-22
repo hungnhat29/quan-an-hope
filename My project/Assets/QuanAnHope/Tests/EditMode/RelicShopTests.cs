@@ -83,7 +83,7 @@ namespace QuanAnHope.Tests
                 GameSession s = NewSession(seed);
                 s.DebugGiveRelic("V1");
                 s.Relics.Remove("V1"); // da bo thi quay lai ro rut
-                NextDay(s);
+                NextDay(s); NextDay(s); // ngay 3: ngay 2 relic mien phi (constitution 1.8 muc 7.1)
                 foreach (RelicDef o in s.Shop.Offers) seen.Add(o.id);
             }
             Assert.AreEqual(22, seen.Count);
@@ -92,8 +92,8 @@ namespace QuanAnHope.Tests
         [Test]
         public void AC3_DuVe_MuaTruDungVe_LenGia_BeTrongToiHetNgay()
         {
-            GameSession s = NewSession(5);
-            NextDay(s);
+            GameSession s = NewSession(5, 4);
+            NextDay(s); NextDay(s); // ngay 3: ngay 2 relic mien phi (constitution 1.8 muc 7.1)
             int before = s.Wallet.Count;
             RelicDef offer = s.Shop.Offers[1];
             Assert.AreEqual(RelicBuyResult.Bought, s.BuyRelic(1));
@@ -103,7 +103,8 @@ namespace QuanAnHope.Tests
             Assert.AreEqual(RelicBuyResult.Empty, s.BuyRelic(1));
             Assert.IsNotNull(s.Shop.Offers[0]);
 
-            // hang moi vao dau ngay sau
+            // hang moi vao dau ngay sau (ngay 4 thu no dau tien: du tien de khong thua)
+            s.DebugAddMoney(5000);
             NextDay(s);
             Assert.IsTrue(s.Shop.Offers.All(o => o != null));
         }
@@ -112,7 +113,7 @@ namespace QuanAnHope.Tests
         public void AC4_ThieuVe_KhongMua_BaoThieuMayVe()
         {
             GameSession s = NewSession(7);
-            NextDay(s);
+            NextDay(s); NextDay(s); // ngay 3: ngay 2 relic mien phi (constitution 1.8 muc 7.1)
             int slot = Enumerable.Range(0, 3).OrderByDescending(i => s.Shop.Offers[i].price).First();
             RelicDef offer = s.Shop.Offers[slot];
             while (s.Wallet.Count > offer.price - 1) Assert.IsTrue(s.Wallet.TrySpend());
@@ -129,7 +130,7 @@ namespace QuanAnHope.Tests
             GameSession s = NewSession(11);
             foreach (string id in new[] { "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8" }) Assert.IsTrue(s.DebugGiveRelic(id));
             Assert.IsTrue(s.Relics.IsFull);
-            NextDay(s);
+            NextDay(s); NextDay(s); // ngay 3: ngay 2 relic mien phi (constitution 1.8 muc 7.1)
             for (int i = 0; i < 20; i++) s.Wallet.BeginDay(2); // du ve
             int tickets = s.Wallet.Count;
             RelicDef offer = s.Shop.Offers[0];

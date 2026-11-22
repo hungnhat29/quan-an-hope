@@ -47,6 +47,11 @@ namespace QuanAnHope.Game
             public string FaceMood;
             public float BlinkIn = 3f, BlinkLeft;
             public int Blinks;
+
+            /// <summary>Sprint 8 F-073: khach da duoc cho di vao (moi khach mot lan); dang di vao thi an bong bong.</summary>
+            public Customer Arrived;
+            public bool WalkingShown;
+            public Lively Motion;
         }
 
         // Ba ghe doc quay (x), ti le khach khi ngoi 3 nguoi; vong 1 mot khach giua, co nhu canh cu.
@@ -75,7 +80,8 @@ namespace QuanAnHope.Game
                     v.Model.transform.localRotation = Quaternion.identity;
                     v.Model.transform.localScale = Vector3.one;
                     v.Face = v.Model.GetComponent<FaceSwap>();
-                    Lively.On(v.Model);   // tho, dung dua, nhay vao ghe, nhai, roi ghe muot (20/11)
+                    v.Motion = Lively.On(v.Model);   // tho, dung dua, nhai, di vao / di ra (20/11, sprint 8)
+                    v.Motion.Pivot = new Vector3(0f, 0f, SeatZ);
                     Toon.BlobShadow(v.Model.transform, "Bong", new Vector3(0f, 0.01f, SeatZ), 1.4f);
                     v.BossLook = BuildBossLook(v.Model.transform);
                     // dau khach cua canh: tam (0; 2,2; SeatZ), ban kinh 0,6 m -> mieng o mat truoc, thap hon tam
@@ -193,17 +199,40 @@ namespace QuanAnHope.Game
                 PaymentOutcome outcome;
                 bool reacting = g.IsReacting(i, out outcome);
                 bool eatingFace = eater != null && c == null;
-                // An xong roi ghe: khoi khach thu nho bay len roi moi an (LeaveFx).
+                // An xong roi ghe (sprint 8 F-073): dung day, quay lung, di ra cua roi moi an khoi khach.
                 if (v.EaterShown != null && eater != v.EaterShown && c == null && s.Phase == GamePhase.Open)
                 {
-                    v.LeaveLeft = LeaveFx.Seconds;
-                    LeaveFx.Play(v.Model);
+                    if (WalkCustomers && v.Motion != null && v.Model != null && v.Model.activeInHierarchy)
+                    {
+                        v.Motion.WalkOut(DoorPath(i, true));
+                        v.LeaveLeft = v.Motion.WalkOutSeconds + 0.05f;
+                    }
+                    else
+                    {
+                        v.LeaveLeft = LeaveFx.Seconds;
+                        LeaveFx.Play(v.Model);
+                    }
                 }
                 v.EaterShown = eater;
-                if (c != null || eater != null || s.Phase != GamePhase.Open) { v.LeaveLeft = 0f; LeaveFx.Stop(v.Model); }
+                if (c != null || eater != null || s.Phase != GamePhase.Open)
+                {
+                    v.LeaveLeft = 0f;
+                    LeaveFx.Stop(v.Model);
+                    if (v.Motion != null && (v.Motion.WalkingOut || v.Motion.GoneOut)) v.Motion.StopWalk();
+                }
                 bool leaving = v.LeaveLeft > 0f;
                 bool show = i < s.SeatCount && (c != null || reacting || eater != null || leaving);
                 if (v.Model != null) v.Model.SetActive(show);
+                // Khach moi (sprint 8 F-073, F-080): mac kieu khach roi di tu ngoai cua vao ghe
+                if (c != null && !ReferenceEquals(c, v.Arrived))
+                {
+                    v.Arrived = c;
+                    if (v.Model != null) CustomerLooks.Apply(v.Model, c.isBoss ? -1 : CustomerLooks.LookFor(c.number, s.Day));
+                    if (v.Motion != null && v.Model != null && v.Model.activeInHierarchy && WalkCustomers) v.Motion.WalkIn(DoorPath(i, false));
+                }
+                if (c == null && eater == null && !(v.LeaveLeft > 0f)) v.Arrived = null;
+                bool walkingIn = v.Motion != null && v.Motion.WalkingIn;
+                v.WalkingShown = walkingIn;
                 v.Hit.enabled = c != null || eater != null;
                 bool bonus;
                 bool bossReact = g.IsBossReaction(i, out bonus);
@@ -224,10 +253,21 @@ namespace QuanAnHope.Game
                     bool waiting = c != null && !reacting;
                     string face = FaceArt.CustomerMood(reacting, outcome, ate != null ? ate.tier : (g.LastServedSeat == i && g.LastServed != null ? g.LastServed.tier : 0),
                         eatingFace && !reacting, waiting && s.IsImpatient(c), waiting && s.PatienceLeft(c) <= 0f);
+                    // sprint 8 F-074: suot luc an giu mat theo ket qua (sai mon / thap 2 bac: gian; thap 1 bac: buon)
+                    if (eatingFace && !reacting) face = EatingFace(s.EatingPayment(i));
                     SetFace(v, face);
                 }
                 if (!show || boss) v.FaceMood = null;
+                // sprint 8 F-074: dang an thi lay ket qua cua khach dang an (khong lay phan ung 0,8 giay da het)
+                PaymentResult ateResult = eatingFace ? s.EatingPayment(i) : null;
+                if (ateResult != null && !reacting) outcome = ateResult.outcome;
+                if (v.Motion != null)
+                    v.Motion.Eating = ateResult == null ? Lively.EatMood.Happy
+                        : ateResult.wrongOrder || ateResult.outcome == PaymentOutcome.Angry ? Lively.EatMood.Angry
+                        : ateResult.outcome == PaymentOutcome.Disappointed ? Lively.EatMood.Sad
+                        : ate4(s, i) ? Lively.EatMood.Delighted : Lively.EatMood.Happy;
                 int mood = !show ? 0 : (reacting || eatingFace) && outcome == PaymentOutcome.Angry ? 2
+                    : (reacting || eatingFace) && outcome == PaymentOutcome.Disappointed ? 3
                     : (reacting || eatingFace) && (outcome == PaymentOutcome.Satisfied || (boss && bossReact && bonus)) ? 1 : 0;
                 if (mood != v.Mood && v.Model != null)
                 {
@@ -236,7 +276,7 @@ namespace QuanAnHope.Game
                     else if (l != null && mood == 2) l.Shake();
                 }
                 v.Mood = mood;
-                v.Bubble.gameObject.SetActive(c != null && !reacting);
+                v.Bubble.gameObject.SetActive(c != null && !reacting && !walkingIn);
                 v.ShownText = null;
                 UpdateBubble(i);
 
@@ -260,6 +300,48 @@ namespace QuanAnHope.Game
                         }
                     }
                 }
+            }
+        }
+
+        /// <summary>Test: tat di bo (khach hien ngay tai ghe nhu sprint 7) de cac kich ban cu khong phai cho.</summary>
+        public static bool WalkCustomers = true;
+
+        static bool ate4(GameSession s, int seat)
+        {
+            Dish d = s.EatingDish(seat);
+            return d != null && d.tier >= 4;
+        }
+
+        /// <summary>Mat khach trong luc an theo ket qua (sprint 8 F-074).</summary>
+        public static string EatingFace(PaymentResult r)
+        {
+            if (r == null) return FaceArt.MoodEating;
+            if (r.wrongOrder || r.outcome == PaymentOutcome.Angry) return FaceArt.MoodAngry;
+            if (r.outcome == PaymentOutcome.Disappointed) return FaceArt.MoodSad;
+            return FaceArt.MoodEating;
+        }
+
+        /// <summary>
+        /// Duong di cua khach (the gioi): ngoai pho -> cua Goc 1 -> ghe (vao) hoac nguoc lai (ra). Cua lech ve phia ghe (trong
+        /// nua rong cua 1,5 m) de khach ghe ben di cheo ngan.
+        /// </summary>
+        Vector3[] DoorPath(int seat, bool outward)
+        {
+            float x = seatViews[seat].Pivot.localPosition.x;
+            float dx = Mathf.Clamp(x * 0.4f, -0.9f, 0.9f);
+            Vector3 door = goc1.TransformPoint(new Vector3(dx, 0f, 3.95f));
+            Vector3 street = goc1.TransformPoint(new Vector3(dx, 0f, 5.2f));
+            return outward ? new[] { door, street } : new[] { street, door };
+        }
+
+        /// <summary>Moi khung hinh: khach vua ngoi xong thi hien bong bong (F-073 AC-1).</summary>
+        void TickWalkers(float dt)
+        {
+            for (int i = 0; i < seatViews.Length; i++)
+            {
+                SeatView v = seatViews[i];
+                if (v == null || v.Motion == null) continue;
+                if (v.WalkingShown && !v.Motion.WalkingIn) { RefreshSeats(); return; }
             }
         }
 
@@ -643,7 +725,7 @@ namespace QuanAnHope.Game
             ItemView.HideTier = s.IsBlackout;
             if (dark == blackoutShown) return;
             blackoutShown = dark;
-            if (mainLight != null && mainIntensity >= 0f) mainLight.intensity = mainIntensity * (dark ? 1f - s.Balance.blackout.dim : 1f);
+            // muc sang den chinh: TickLights (sprint 8 F-076) tinh ca mat dien, gio va den tran
             foreach (GameObject c in candles) c.SetActive(dark);
             // Ve lai nguyen lieu de an / hien mau bac.
             foreach (CrateView cv in crates.Values) if (cv != null) Object.Destroy(cv.gameObject);

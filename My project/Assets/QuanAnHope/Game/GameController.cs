@@ -15,6 +15,8 @@ namespace QuanAnHope.Game
         Story,
         Playing,
         Paused,
+        /// <summary>Bang Tab: relic + cua hang (sprint 8 F-078), dong ho dung nhu tam dung.</summary>
+        Tab,
     }
 
     public enum HandKind
@@ -155,6 +157,7 @@ namespace QuanAnHope.Game
             Room = new RoomView(this, GameObject.Find(RoomRootName).transform);
             Hud = new Hud(this);
             Menu = new MenuView(this);
+            InitTab();
             Tutorial = new Tutorial(this);
             ShowMainMenu();
         }
@@ -167,6 +170,7 @@ namespace QuanAnHope.Game
         public void ShowMainMenu()
         {
             Mode = GameMode.Menu;
+            if (Tab != null) Tab.Hide();
             if (Tutorial != null) Tutorial.Stop();
             ClearHands();
             Player.HoldCamera(MenuCameraPosition, MenuCameraRotation);
@@ -210,7 +214,7 @@ namespace QuanAnHope.Game
             }
             UseSession(loaded);
             AutoSave = true;
-            if (Tutorial != null) Tutorial.Begin(Session.Day == 1 && Settings.TutorialForNewGame(Mathf.Max(0, GameSettings.GamesStarted - 1)));
+            if (Tutorial != null) Tutorial.Begin(Settings.TutorialForNewGame(Mathf.Max(0, GameSettings.GamesStarted - 1)));
             Toast = "Chơi tiếp từ đầu ngày " + Session.Day + ".";
             EnterPlaying();
             return true;
@@ -230,6 +234,7 @@ namespace QuanAnHope.Game
         void OnEscape()
         {
             if (Mode == GameMode.Playing) Pause();
+            else if (Mode == GameMode.Tab) CloseTab();
             else if (Mode == GameMode.Paused)
             {
                 if (Menu.SettingsShown) Menu.CloseSettings();
@@ -319,6 +324,8 @@ namespace QuanAnHope.Game
             PendingIsBlack = false;
             bossReactSeat = -1;
             LastBoughtRelic = null;
+            ResetSprint8();
+            ticketsAtDayEnd = -1;
             if (Player != null) Player.Teleport(Vector3.zero, 0f);
             Changed();
         }
@@ -488,7 +495,7 @@ namespace QuanAnHope.Game
                 case RelicBuyResult.NeedDiscard:
                     PendingRelicSlot = slot;
                     Say("Giá relic đầy " + Session.Relics.Capacity + "/" + Session.Relics.Capacity
-                        + ": bấm một relic trên giá để bỏ, hoặc bấm lại bệ / chuột phải để huỷ.");
+                        + ": nhấn Tab (hoặc bấm relic trên giá) để chọn relic bỏ; bấm lại bệ / chuột phải để huỷ.");
                     return false;
                 case RelicBuyResult.NotEnoughTickets:
                     Say("Thiếu " + Session.Shop.Missing(slot, Session.Wallet) + " vé để mua " + offer.name + ".");
@@ -530,7 +537,7 @@ namespace QuanAnHope.Game
             {
                 PendingRelicSlot = slot;
                 PendingIsBlack = true;
-                Say("Giá relic đầy " + Session.Relics.Capacity + "/" + Session.Relics.Capacity + ": bấm một relic trên giá để bỏ, lấy " + pick.name + ".");
+                Say("Giá relic đầy " + Session.Relics.Capacity + "/" + Session.Relics.Capacity + ": nhấn Tab (hoặc bấm relic trên giá) để chọn relic bỏ, lấy " + pick.name + ".");
                 return false;
             }
             if (r != RelicBuyResult.Bought) return false;
@@ -656,6 +663,7 @@ namespace QuanAnHope.Game
         public void HoldBoard(float seconds)
         {
             if (!DayRunning || OnBoard == null || OnBoard.prepared) return;
+            NotePrepHold();
             SfxChop(seconds);
             if (Session.HoldPrep(seconds)) Say("Đã sơ chế xong " + OnBoard.name + ". Bấm thớt để cầm lên.");
         }
@@ -1045,7 +1053,9 @@ namespace QuanAnHope.Game
 
         public bool NextDay()
         {
+            NoteDayEndTickets();
             if (!Session.StartNextDay()) return false;
+            ResetSprint8();
             if (Session.LastDebtPaid > 0 && Audio != null) Audio.Play("thu_no", HandPosition);
             if (AutoSave)
             {
@@ -1075,7 +1085,9 @@ namespace QuanAnHope.Game
             else if (Session.LastDebtPaid > 0 && Session.Phase == GamePhase.Prep)
                 Toast = "Chủ nợ đã thu " + Session.LastDebtPaid + "G. Vòng " + Session.Round + ": tối đa " + Session.SeatCount
                     + " khách cùng ngồi, khách chờ lâu sẽ khó tính hơn; quầy vật phẩm mở ở Góc 2.";
-            else Toast = null;
+            else if (Session.Phase == GamePhase.Prep && Session.Shop.IsFreeDay)
+                Toast = "Ngày " + Session.Day + ": cửa hàng relic ở Góc 3 cho chọn 1 relic miễn phí · " + TicketLine() + ".";
+            else Toast = Session.Phase == GamePhase.Prep ? TicketLine() : null;
             ClearReactions();
             Changed();
             if (Menu != null && (Session.Phase == GamePhase.Lost || Session.IsWon)) PlayEnding();

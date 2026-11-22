@@ -1,6 +1,6 @@
 # Constitution — Quán ăn của Hope (tên tạm)
 
-Phiên bản 1.7 · 21/11/2026 · Trạng thái: **cân bằng đo trên game** (Điều 1 cột "đo trên game"; ngày 1 có 5 vé, 7 vé mỗi ngày, nợ ngày 22 là 36.000G; đồng hồ chạy từ lúc mở quán, mục 3, 6.2, 9). Trước đó 1.6: **cốt truyện 6 chương** (mục 2.1, tranh `CotTruyen_BepNhanPham.zip`). Trước đó 1.5: **khung game** — phòng rộng hơn, khách ăn tại ghế, lưu game theo ngày, hướng dẫn ngày 1, cài đặt (mục 2.1, 6.2, Điều 5). Số cân bằng 1.4 giữ nguyên, thêm một số: thời gian ăn 5 giây (mục 6.2)
+Phiên bản 1.8 · 21/11/2026 · Trạng thái: **sprint 8** (relic ngày 2 miễn phí + đổi hàng bằng tiền, bảng Tab relic / cửa hàng, nhịp khách tăng theo ngày từ vòng 2, nới giờ chờ; mục 2.1, 6.2, 6.6, 7.1, 8, Điều 9). Trước đó 1.7: **cân bằng đo trên game** (Điều 1 cột "đo trên game"; ngày 1 có 5 vé, 7 vé mỗi ngày, nợ ngày 22 là 36.000G; đồng hồ chạy từ lúc mở quán, mục 3, 6.2, 9). Trước đó 1.6: **cốt truyện 6 chương** (mục 2.1, tranh `CotTruyen_BepNhanPham.zip`). Trước đó 1.5: **khung game** — phòng rộng hơn, khách ăn tại ghế, lưu game theo ngày, hướng dẫn ngày 1, cài đặt (mục 2.1, 6.2, Điều 5). Số cân bằng 1.4 giữ nguyên, thêm một số: thời gian ăn 5 giây (mục 6.2)
 
 Đây là nguồn sự thật cao nhất của dự án. Mọi spec, plan, task và dòng code phải tuân theo file này. Khi một spec mâu thuẫn với constitution, constitution thắng; muốn đổi thì sửa constitution trước (tăng số phiên bản, ghi lý do ở mục 9).
 
@@ -15,11 +15,11 @@ Các con số cân bằng nằm ở hai nơi phải luôn khớp nhau: bảng tr
 ### Điều 1 — Độ khó mục tiêu
 Game nằm trong khoảng **trung bình-dễ đến trung bình-khó**. Ba mốc dưới đây là cổng chấp nhận; mọi thay đổi số liệu phải chạy lại mô phỏng và vẫn đạt cả ba:
 
-| Kiểu người chơi | Cách chơi | Mục tiêu | Kết quả mô phỏng v1.0 | Mô phỏng v1.3 (khách gọi món) | Mô phỏng v1.4 | **Đo trên game 1.7** (bot C#, 4.000 ván) |
-| --- | --- | --- | --- | --- | --- | --- |
-| Không đọc chỉ số | Chọn món có giá to, tỉ lệ to; phục vụ theo thứ tự khách đến | Đi qua **≥ 60%** chặng đường | Đi được trung bình 66% (qua lần trả nợ 1: 100%, lần 2: 86%) | 67% (100%, 87%) | 63% (qua lần trả nợ 1: 96%, lần 2: 79%) | **75%** (qua lần trả nợ 1: 100%, lần 2: 96%, lần 3: 25%) |
-| Chơi tốt, có **≥ 3 món cùng một bộ relic** | Gom bộ, giữ món ngon cho khách khó tính và boss | Thắng **≥ 70%** (phần còn lại do may) | Bộ Chợ Sớm 82%, Sơn Hào 84%, Vườn Nhà 71%; đủ 4 món: 87–97% | 82% (Vườn Nhà 76%, Chợ Sớm 86%, Sơn Hào 85%) | 90% (Vườn Nhà 98%, Chợ Sớm 85%, Sơn Hào 88%) | **86%** (2.000 ván / bộ: Vườn Nhà 95%, Chợ Sớm 83%, Sơn Hào 77%) |
-| Chơi tốt nhưng không gom bộ | Như trên, chỉ mua relic lẻ | Thấp hơn rõ so với người gom bộ | 64% | 56% | 46% | **37%** |
+| Kiểu người chơi | Cách chơi | Mục tiêu | Kết quả mô phỏng v1.0 | Mô phỏng v1.3 (khách gọi món) | Mô phỏng v1.4 | Đo trên game 1.7 (bot C#, 4.000 ván) | **Đo trên game 1.8** (bot C#, 4.000 ván) |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Không đọc chỉ số | Chọn món có giá to, tỉ lệ to; phục vụ theo thứ tự khách đến | Đi qua **≥ 60%** chặng đường | Đi được trung bình 66% (qua lần trả nợ 1: 100%, lần 2: 86%) | 67% (100%, 87%) | 63% (qua lần trả nợ 1: 96%, lần 2: 79%) | 75% (qua lần trả nợ 1: 100%, lần 2: 96%, lần 3: 25%) | **80%** (100%, 99%, 39%) |
+| Chơi tốt, có **≥ 3 món cùng một bộ relic** | Gom bộ, giữ món ngon cho khách khó tính và boss | Thắng **≥ 70%** (phần còn lại do may) | Bộ Chợ Sớm 82%, Sơn Hào 84%, Vườn Nhà 71%; đủ 4 món: 87–97% | 82% (Vườn Nhà 76%, Chợ Sớm 86%, Sơn Hào 85%) | 90% (Vườn Nhà 98%, Chợ Sớm 85%, Sơn Hào 88%) | 86% (2.000 ván / bộ: Vườn Nhà 95%, Chợ Sớm 83%, Sơn Hào 77%) | **87%** (đủ 3 món: 88%; quét 1.000 ván / bộ: Vườn Nhà 95%, Chợ Sớm 82%, Sơn Hào 80%) |
+| Chơi tốt nhưng không gom bộ | Như trên, chỉ mua relic lẻ | Thấp hơn rõ so với người gom bộ | 64% | 56% | 46% | 37% | **34%** |
 
 **Từ 1.7 số đo trên game là chuẩn** (impl plan sprint 7 §4: "game thắng, mô phỏng sửa theo"). Bot C# chơi trên luật thật (`balance/run_bots.ps1`), giờ thao tác mỗi món lấy từ số đo `playtest-log.csv` (mục 9). Mô phỏng Python cùng bộ số cho 78% / 98% / 83%: vẫn lạc quan hơn game vì không mô hình khách giữ ghế (Q-39), chờ ghế của chủ nợ (Q-40) và món khách gọi ngẫu nhiên trên 3 ghế; chỉ dùng để dò hướng.
 
@@ -60,6 +60,7 @@ Thông tin của một thứ hiện **trên chính thứ đó trong phòng**, kh
 - Công thức và giá bán theo bậc: trang của quyển sách ở Góc 3. Độ dễ tính và món khách gọi: bong bóng trên đầu khách. Đĩa món: nằm trên quầy chờ, viền đĩa theo màu bậc.
 - **HUD chỉ hiện con số và thông tin ngắn:** ngày, tiền, nợ, vé, tâm ngắm, gợi ý tương tác của đồ đang nhìn, thứ đang cầm, thông báo một dòng. HUD không có nút bấm.
 - Màn kết thúc ngày, qua vòng, thua là màn ngoài phòng (Điều 5) nên được dùng nút.
+- **Bảng Tab (từ 1.8, yêu cầu của bạn 21/11/2026):** nhấn Tab mở bảng ngoài phòng (đồng hồ dừng như menu tạm dừng), hai thẻ: **Relic** (mọi relic đang có, bỏ relic) và **Cửa hàng** (máy gacha đồ ăn, vé đen, nước sốt: giá, số đang có, tỉ lệ theo Điều 4). Bảng này được dùng nút. Đồ đã mua mới hiện ở Góc 2 (máy gacha, lọ sốt, khe vé đen); không còn quầy vật phẩm bày sẵn.
 
 ---
 
@@ -78,6 +79,7 @@ Người dùng duyệt ngày 18/11/2026 khi yêu cầu triển khai `docs/sprint
 - **Cốt truyện (từ 1.6, 20/11/2026):** 6 trang truyện tranh vẽ sẵn (`CotTruyen_BepNhanPham.zip`, mỗi khung 6 lớp giấy có thị sai). **Chương 1** khi Chơi mới (bị đuổi việc, gặp chủ nợ, nhận quán, giấy nợ) rồi vào ngày 1. **Chương 2–4** chiếu ở đầu ngày: ngày 2 (bão, kho trống), ngày mất điện (`blackout.day`), ngày chủ nợ thu lần 3 (tin đồn bị lật tẩy, danh tiếng trở lại). Thắng → **Chương 5–6** (món cuối cho chủ nợ, xé giấy nợ, gả con gái). Thua → tranh ghi rõ thiếu bao nhiêu ở lần trả nợ nào (tranh khối, chưa có trang vẽ), rồi màn thua có nút Chơi lại. Khung tự sang sau nhịp khung + thời gian đọc; bấm để qua sớm, giữ để bỏ qua. Lời kể dưới trang và chữ trên tranh đều là TextMeshPro (Điều 6); số ngày, số tiền lấy từ dữ liệu (Điều 2). Cài đặt "Hiệu ứng truyện": Đầy đủ / Giảm / Tắt.
 - **Lưu game:** tự lưu **đầu mỗi ngày** (sau khi thu nợ, phát vé): ngày, tiền, vé trắng, vé đen, relic, ba relic đang bày, tủ lạnh, nước sốt, máy gacha, số lần đã mua, và trạng thái ngẫu nhiên (seed + số lần đã rút). Chơi tiếp → về đúng đầu ngày đã lưu. **Tải lại thì ngày đó ra y như lần trước** (gacha, khách, cửa hàng): không "lưu rồi quay lại" để chọn kết quả tốt. Thắng hoặc thua thì xoá bản lưu. Chỉ có một bản lưu.
 - **Hướng dẫn ngày 1:** ván đầu tiên, ngày 1: một dòng chỉ dẫn trên HUD + mũi tên nổi trên đồ vật kế tiếp (máy nhét vé → thùng → thớt → giá dụng cụ → sách → bếp → núm → chồng đĩa → biển Mở quán → khách / chuông). Làm đúng bước thì sang bước sau, không chặn việc khác. Tắt / bật trong Cài đặt; chưa chọn thì ván thứ hai trở đi tắt.
+- **Hướng dẫn theo sự kiện (từ 1.8):** cùng công tắc với hướng dẫn ngày 1, mỗi bài hiện một lần mỗi ván: trời tối lần đầu (bật đèn), ngày 2 (relic miễn phí, đổi hàng, Tab), ngày mở cửa hàng vật phẩm (Tab → Cửa hàng, nhiều khách + thanh kiên nhẫn, quá lửa, tủ lạnh), ngày mất điện, ngày chủ nợ. Chơi tiếp từ bản lưu vẫn có bài của ngày đó.
 - **Cài đặt:** âm lượng tổng, nhạc, hiệu ứng (0–100); độ nhạy chuột (mặc định 0,1°/điểm ảnh, Art Bible §9) và đảo trục dọc; toàn màn hình (mặc định) / cửa sổ, độ phân giải; lưu qua các lần mở.
 
 ### Lịch 22 ngày
@@ -352,7 +354,7 @@ Không còn số khách cố định mỗi ngày (bản 1.3: 6 / 8 / 5 / 9). S�
 - **Đồng hồ (từ 1.7):** mỗi ngày đồng hồ **đứng ở 9:00 tới khi bấm Mở quán**, rồi chạy liên tục tới 21:00 (8 phút thực). Gacha, sơ chế, nấu trước khi mở không mất giờ; HUD hiện "9:00 chưa mở quán". Không mở quán thì ngày chưa bắt đầu (không tự hết ngày). Chủ nợ ngày 21 tới lúc 20:00 tính từ lúc mở. (Q-21 đóng: bạn chọn 21/11/2026.)
 - **Khách chỉ đến khi quán mở** (biển Mở quán, mục 6.1). Mở sớm thì có nhiều giờ bán hơn; mở muộn để gacha và nấu sẵn thì mất giờ bán.
 - **Vòng 1 — lần lượt:** mỗi lúc một khách; khách kế tiếp vào **3 giây** sau khi khách trước được phục vụ và ăn xong. Cứ thế tới 21:00.
-- **Từ vòng 2 — nhiều khách:** tối đa 3 khách cùng ngồi; ghế nào trống thì 3 giây sau có khách mới ngồi vào. Cứ thế tới 21:00.
+- **Từ vòng 2 — nhiều khách:** tối đa 3 khách cùng ngồi; ghế nào trống thì 3 giây sau có khách mới ngồi vào, **nhưng (từ 1.8) hai khách liền nhau vào cách nhau ít nhất `max(6, 100 / ngày)` giây** (`day.arrival`): ngày 4 là 25 giây, ngày 8 là 12,5 giây, từ ngày 17 trở đi 6 giây — tốc độ khách đến tăng theo ngày (yêu cầu của bạn 21/11/2026: "ngày 4 vòng 2 mà 1 giây đã 3 người vào cùng lúc sẽ bị ngợp"). Mở quán: chỉ khách đầu vào ngay. Cứ thế tới 21:00.
 - **Khách ăn (từ 1.5):** phục vụ xong, khách **ngồi ăn tại ghế 5 giây** (`day.eat_s`) rồi mới rời ghế; tiền và tip trả ngay lúc nhận món. Khách đang ăn không gọi món, không nhận đĩa khác. "Ghế trống" ở các dòng trên và dưới tính từ lúc khách ăn xong (khách mới vào 3 giây sau đó); chủ nợ đang đợi ghế thì vào ngay khi khách ăn xong.
 - **21:00:** không nhận khách mới. Khách đang ngồi vẫn được phục vụ; phục vụ xong người cuối và người đó ăn xong (hoặc không còn ai ngồi) thì hết ngày.
 - **Hết nguyên liệu và hết vé** khi còn khách: bấm biển để đóng quán sớm (mục 6.1).
@@ -398,12 +400,14 @@ Vòng 1 không tính giờ. Từ vòng 2, sau một **khoảng an toàn**, độ
 
 | Vòng | Khoảng an toàn |
 | --- | --- |
-| 2 | 90 giây |
-| 3 | 70 giây |
-| 4 | 75 giây |
+| 2 | **120 giây** (1.7: 90) |
+| 3 | **100 giây** (1.7: 70) |
+| 4 | **105 giây** (1.7: 75) |
 | Ngày 8 (mất điện) | +20 giây so với vòng 2 |
 
 Khoảng an toàn ở bản 1.4 gấp 1,5 bản 1.3 (60 / 45 / 50 / +15 giây) vì thời gian nấu cũng gấp 1,5; chưa mô phỏng riêng, cần đo khi làm vòng 2 (sprint 4).
+
+**Từ 1.8 (yêu cầu của bạn 21/11/2026 "nới thêm thời gian chờ", Q-53):** khoảng an toàn chọn bằng bot C# cùng nhịp khách mới (mục 6.2): +30 giây mỗi vòng. Bot C# 4.000 ván (bộ số 1.8): khách bị giảm dễ tính vì chờ mỗi ngày ở vòng 2–4: người chơi tốt gom bộ **1,3** (1.7: 2,6), không gom bộ 0,9, không đọc chỉ số 2,6 (1.7: 5,1) — đạt đề xuất 1–2 (Q-53). Quét 1.000 ván (`balance/bot_sweep.md`): +15 giây cho 1,6; k = 80 / 120 hay tối thiểu 8 giây đều đạt Điều 1, chênh ≤ 2 điểm.
 
 **Đo ở sprint 7 (21/11/2026, bot C# 4.000 ván, bộ số 1.7):** số khách bị giảm dễ tính vì chờ mỗi ngày ở vòng 2–4: người chơi tốt gom bộ **2,6**, chơi tốt không gom bộ **1,8**, không đọc chỉ số **5,1**. Đề xuất của impl plan: người chơi tốt bị 1–2 khách mỗi ngày; số hiện tại nhỉnh hơn một chút. Chưa đổi khoảng an toàn: chờ bạn chọn mức (Q-53).
 
@@ -427,6 +431,8 @@ Mô phỏng (mục 9): người chơi không đọc chỉ số vẫn đi đượ
 
 ### 7.1 Luật chung
 - Mỗi ngày (từ ngày 2) cửa hàng hiện **3 relic khác nhau**; giá trả bằng vé trắng.
+- **Ngày 2 miễn phí (từ 1.8, yêu cầu của bạn 21/11/2026):** cả 3 bệ giá 0 vé (kể cả sau khi đổi hàng) nhưng chỉ lấy được **1** relic; ngày này chỉ bày relic **Thường** (không bày relic quá mạnh). Lấy xong thì 2 bệ còn lại đóng tới hết ngày. Dữ liệu: `relic_free_day`.
+- **Đổi hàng (từ 1.8):** nút Đổi hàng ở Góc 3: trả **50G** (mỗi lần sau trong ngày **+25G**, đầu ngày về 50G) để 3 bệ bày 3 relic **khác hẳn** 3 relic đang bày (và chưa có trên giá). Dữ liệu: `relic_reroll`.
 - **Từ 1.7 (yêu cầu của bạn 21/11/2026):** trên màn hình không ghi relic nào thuộc bộ combo, relic nào là relic lẻ (thẻ relic chỉ ghi tên, giá, độ hiếm, hiệu ứng; giá relic chỉ ghi số relic đang có). Thưởng bộ vẫn tính như mục 7.2; người chơi tự khám phá. Điều 4 vẫn giữ: giá và hiệu ứng từng relic hiện đủ.
 - Tối đa **8 relic**. Đầy thì phải bỏ một cái để lấy cái mới. (Mô phỏng cho thấy 8 đủ để gom 1 bộ đầy đủ cộng 4 relic lẻ, mà vẫn phải chọn lọc.)
 - Mua bằng **vé đen**: 3 lựa chọn chỉ gồm relic Hiếm trở lên, và ít nhất một cái thuộc bộ bạn đang có nhiều món nhất.
@@ -491,6 +497,8 @@ Mỗi bộ có một món **1 vé nhưng là mảnh quan trọng của combo** (
 | Nước sốt thần thánh | Ngày 4 (qua vòng 1) | 450G, mỗi lần mua sau +45G | Giữ tối đa 20 |
 | Vé đen | Ngày 4 | 700G, mỗi lần mua sau +120G | Giữ tối đa 5 |
 
+Từ 1.8 mua ở **bảng Tab → Cửa hàng** (Điều 9); đồ đã mua mới hiện ở Góc 2.
+
 Mô phỏng: với giá nước sốt 450G, 10% người chơi may mắn mua được chai đầu từ ngày 4–5, một phần tư mua được trước ngày 7, trung vị là ngày 8 — khớp yêu cầu "mua được tầm ngày 5 nếu nhân phẩm tốt".
 
 **Boss cuối:** phục vụ chủ nợ ngày 21 món **Tuyệt hảo hoặc Huyền thoại** → nhận thưởng **11.500G** (ngoài tiền món). Mô phỏng: nếu bỏ khoản thưởng này thì không ai trả nổi khoản nợ cuối (tỉ lệ thắng 0%) — tức là phải thắng boss cuối mới thắng game. Đây là chủ ý: món Tuyệt hảo giữ trong tủ lạnh cho ngày 21 là mục tiêu chiến thuật của cả vòng 4.
@@ -517,6 +525,7 @@ Mô phỏng: với giá nước sốt 450G, 10% người chơi may mắn mua đ�
     - Lần 2 — chỉ nợ 22 (36.000 / 40.000G): 47% / 12% gom bộ, không gom bộ 49% / 7%: không tách được hai kiểu, gom bộ trượt 70%. Chỉ giá gốc ×0,9: 56% / 52%: không tách. → phải dùng nút thứ ba (vé).
     - Lần 3 — vé 7 (nợ giữ): 98% / 92%: quá dễ, không tách. Vé 7 + nợ 22 34.000 / 35.000 / **36.000G**: gom bộ 95 / 91 / **85%**, không gom bộ 71 / 55 / **37%**; vé 7 + giá ×0,9: 91% / 56% nhưng bộ Vườn Nhà 98% (trượt AC-5 ≤ 97%).
     - **Chốt: vé 7 / ngày, nợ ngày 22 36.000G**, giá gốc và ba mốc nợ đầu giữ nguyên. 4.000 ván: 75% / 86% / 37%; từng bộ 77–95%. Test thống kê (Điều 3) xanh.
+  - **1.8 (21/11/2026):** theo yêu cầu của bạn trước sprint 8 và triển khai `docs/sprint-8/impl-plan.md` (spec `specs/sprint-8/spec.md`). (a) **Relic ngày 2 miễn phí** (chỉ relic Thường, lấy 1, kể cả sau đổi hàng) và **đổi hàng 50G +25G / lần** (mục 7.1; bạn trả lời 21/11). (b) **Bảng Tab** relic + cửa hàng; bỏ quầy vật phẩm bày sẵn, đồ mua mới hiện ở Góc 2 (Điều 9, mục 8). (c) **Nhịp khách từ vòng 2:** hai khách liền nhau cách ít nhất max(6, 100 / ngày) giây (mục 6.2). (d) **Khoảng an toàn +30 giây** (120 / 100 / 105, mục 6.6; đóng Q-53). (e) Hướng dẫn theo sự kiện (mục 2.1). Số chọn bằng bot C# (bạn chọn "mình chọn bằng bot"): 80% / 87% / 34%, Điều 1 đạt; ván 1.7 với luật (a)(b) nhưng nhịp + giờ chờ cũ: 78% / 89% / 36%. Mô phỏng Python không mô hình (a)(c) nên không chạy lại. Hình, đèn, khách đi bộ, dao, model Blender không đổi luật.
   - **1.6 (20/11/2026):** theo yêu cầu "sử dụng @CotTruyen_BepNhanPham.zip để làm lại phần cốt truyện". Cốt truyện từ 3 ý mở đầu + 2 kết thành 6 chương; thêm 3 chương giữa ván (đầu ngày 2, ngày mất điện, ngày thu nợ lần 3). Nhân vật mới trong tranh: sếp cũ, kẻ phá đám (tờ rơi "Quán bẩn"), bà cụ khách quen, con gái chủ nợ. Không đổi luật chơi hay số cân bằng.
 
 ### Các điểm mình đã tự diễn giải (cần bạn xác nhận)

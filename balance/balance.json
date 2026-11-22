@@ -301,7 +301,12 @@
   "boss_hour": 20,
   "boss_day": 21,
   "next_customer_s": 3,
-  "eat_s": 5
+  "eat_s": 5,
+  "arrival": {
+   "from_round": 2,
+   "gap_k_s": 100,
+   "min_gap_s": 6
+  }
  },
  "day_seconds": 480,
  "relic_shop_offers": 3,
@@ -314,9 +319,9 @@
  "patience": {
   "from_round": 2,
   "safe_s": {
-   "2": 90,
-   "3": 70,
-   "4": 75
+   "2": 120,
+   "3": 100,
+   "4": 105
   },
   "drop_every_s": 3,
   "max_drop": 20,
@@ -333,5 +338,14 @@
   "naive_overhead_s": 30,
   "pull_s": 4,
   "fridge_s": 6
+ },
+ "relic_reroll": {
+  "base": 50,
+  "step": 25
+ },
+ "relic_free_day": {
+  "day": 2,
+  "rarity": "thuong",
+  "picks": 1
  }
 }
