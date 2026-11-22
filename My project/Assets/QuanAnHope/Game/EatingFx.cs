@@ -149,15 +149,41 @@ namespace QuanAnHope.Game
             if (om != null && om.isReadable && om.vertexCount >= HoseSides && m != null && m.isReadable)
                 outlineLocal = Mathf.Max(0f, (om.vertices[0] - m.vertices[0]).magnitude);
             handLocalSize = h.localScale.x;
+            Material hoseMat = a.GetComponent<Renderer>().sharedMaterial;
+            Renderer hr = h.GetComponent<Renderer>();
+            Material handMat = hr != null ? hr.sharedMaterial : null;
+
+            // Sprint 9 F-080 AC-6: nhan vat Blender -> an tay TayPhai cua rig (khong phai khoi cu da tat), vai = xuong Arm_R,
+            // do dai = vai -> ban tay cua rig, ong cung mau ao rig (chu no: vest).
+            CharacterRig rig = null;
+            foreach (CharacterRig cr in model.GetComponentsInChildren<CharacterRig>(false)) { rig = cr; break; }
+            if (rig != null && rig.EatingArm != null)
+            {
+                arm = rig.EatingArm;
+                armHand = rig.EatingArm;
+                Transform sh = null, wr = null;
+                foreach (Transform t in rig.GetComponentsInChildren<Transform>(true))
+                {
+                    if (t.name == "Arm_R") sh = t;
+                    else if (t.name == "Hand_R") wr = t;
+                }
+                if (sh != null) shoulderLocal = model.InverseTransformPoint(sh.position);
+                // do dai ong giu theo ong tay cu (~0,85 m): ong cao su dai hon xuong de cong thanh cung khi dua len mieng
+                if (sh != null && wr != null) armLocalLength = Mathf.Max(armLocalLength, model.InverseTransformVector(wr.position - sh.position).magnitude * 1.3f);
+                bool boss = rig.ModelName == CharacterRig.Boss;
+                armLocalRadius = boss ? 0.1f : 0.09f;
+                handLocalSize = boss ? 0.3f : 0.28f;
+                hoseMat = rig.ShirtMaterial;
+                handMat = Toon.Mat(Color.white);
+            }
 
             // dat o goc canh: dinh tinh bang toa do the gioi, khong phu thuoc ti le / goc cua khoi khach
             eatArm = new GameObject("TayCamDua").transform;
             eatArm.SetParent(null, false);
-            hose = NewHose("OngTay", a.GetComponent<Renderer>().sharedMaterial, out hoseVerts);
+            hose = NewHose("OngTay", hoseMat, out hoseVerts);
             if (outlineMat != null) hoseOutline = NewHose("Outline", outlineMat, out outlineVerts);
             hand = Toon.Prim(PrimitiveType.Sphere, eatArm, "BanTay", Vector3.zero, Vector3.one, Color.white, Toon.OutlineSmall).transform;
-            Renderer hr = h.GetComponent<Renderer>();
-            if (hr != null) hand.GetComponent<Renderer>().sharedMaterial = hr.sharedMaterial;
+            if (handMat != null) hand.GetComponent<Renderer>().sharedMaterial = handMat;
         }
 
         Mesh NewHose(string name, Material mat, out Vector3[] verts)

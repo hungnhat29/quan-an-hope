@@ -119,7 +119,7 @@ namespace QuanAnHope.PlayTests
             yield return null;
             Lively l = v.Motion;
             Assert.IsTrue(l.WalkingIn, "khach moi di tu cua vao");
-            Assert.That(l.WalkInSeconds, Is.InRange(2f, 3.5f), "di vao 2-3,5 giay (khong qua nhanh)");
+            Assert.That(l.WalkInSeconds, Is.InRange(3f, 6.5f), "sprint 9 B-05: di tu via he vao 3-6,5 giay (khong qua nhanh)");
             Vector3 seat = v.Pivot.position;
             float startDist = Vector3.Distance(Flat(v.Model.transform.TransformPoint(l.Pivot)), Flat(seat));
             Assert.Greater(startDist, 1.2f, "bat dau o ngoai cua");
@@ -127,7 +127,7 @@ namespace QuanAnHope.PlayTests
             yield return Shot("f073_khach_dang_vao.png", seat + Vector3.up * 1.6f, Sprint8);
             while (l.WalkingIn && Time.time - started < 10f) yield return null;
             Assert.IsFalse(l.WalkingIn);
-            Assert.That(Time.time - started, Is.InRange(1.8f, 4.5f), "ngoi xuong sau khoang thoi gian di");
+            Assert.That(Time.time - started, Is.InRange(2.8f, 7.5f), "ngoi xuong sau khoang thoi gian di");
             yield return null;
             Assert.Less(Vector3.Distance(Flat(v.Model.transform.TransformPoint(l.Pivot)), Flat(seat)), 0.05f, "ngoi dung ghe");
             Assert.IsTrue(v.Bubble.gameObject.activeSelf, "ngoi xong hien bong bong goi mon");
@@ -138,11 +138,12 @@ namespace QuanAnHope.PlayTests
             var dish = new Dish { recipeId = r.id, name = r.name, baseName = r.baseName, tier = 3 };
             S.Fridge.TryStore(dish);
             Assert.IsNotNull(S.ServeSeat(0, dish));
-            yield return WaitUntil(() => l.WalkingOut, S.Balance.day.eatSeconds + 3f, "an xong thi di ra");
+            // sprint 9 B-05: khach di ra la ban sao rieng (v.Leaver) de khach sau vao ngay ma nguoi cu van di het via he
+            yield return WaitUntil(() => v.Leaver != null && v.Leaver.WalkingOut, S.Balance.day.eatSeconds + 3f, "an xong thi di ra");
+            Lively leaver = v.Leaver;
             yield return new WaitForSeconds(0.6f);
             yield return Shot("f073_khach_di_ra.png", seat + Vector3.up * 1.6f, Sprint8);
-            // ra khoi cua (thu nho, an) - vong 1 khach sau vao 3 giay sau khi an xong nen khoi co the duoc dung lai ngay
-            yield return WaitUntil(() => l.GoneOut || !v.Model.activeSelf || l.WalkingIn, 6f, "ra khoi cua");
+            yield return WaitUntil(() => leaver == null || leaver.GoneOut, 12f, "ra khoi cua");
         }
 
         static Vector3 Flat(Vector3 p) { return new Vector3(p.x, 0f, p.z); }
@@ -150,9 +151,9 @@ namespace QuanAnHope.PlayTests
         [UnityTest]
         public IEnumerator F080_SauKieuKhach_KhacHinhBong_TayCungMauAo()
         {
-            Assert.AreEqual(6, CustomerLooks.Count);
+            Assert.AreEqual(7, CustomerLooks.Count, "sprint 9: them kieu Anh tho (Toc_Ngan)");
             var looks = Enumerable.Range(1, 12).Select(n => CustomerLooks.LookFor(n, 4)).ToList();
-            Assert.AreEqual(6, looks.Distinct().Count(), "12 khach dau ngay du 6 kieu");
+            Assert.AreEqual(7, looks.Distinct().Count(), "12 khach dau ngay du 7 kieu");
             for (int i = 1; i < looks.Count; i++) Assert.AreNotEqual(looks[i - 1], looks[i], "hai khach lien nhau khac kieu");
             // bay 6 kieu ra 3 ghe, chup anh
             yield return ToDay(4, 2000);
@@ -394,7 +395,7 @@ namespace QuanAnHope.PlayTests
             Assert.IsNotNull(any.GetComponentsInChildren<MeshFilter>().FirstOrDefault(f => f.name.StartsWith("SM_NL_")), "nguyen lieu vong 1 dung model Blender");
             Material m = any.GetComponentsInChildren<MeshRenderer>().First(r => r.name.StartsWith("SM_NL_")).sharedMaterial;
             Assert.AreEqual("BepNhanPham/ToonFlat", m.shader.name, "AC-4: ToonFlat");
-            Assert.IsTrue(any.GetComponentsInChildren<MeshRenderer>().Any(r => r.sharedMaterial != null && r.sharedMaterial.shader.name == "BepNhanPham/OutlineNormal"), "AC-4: vien");
+            Assert.IsTrue(any.GetComponentsInChildren<MeshRenderer>().Any(r => r.sharedMaterial != null && r.sharedMaterial.shader.name == BepNhanPham.OutlineMesh.ShaderName), "AC-4: vien (sprint 9 B-03: OutlinePx)");
             Vector3 crates = g.Room.Station("Kiosk").WorldCenter + new Vector3(0f, -0.3f, 0f);
             yield return Shot("f071_sau_thung_nguyen_lieu.png", any.transform.position, Sprint8);
             yield return WalkTo(new Vector3(0f, 0f, 1.2f));

@@ -3,7 +3,7 @@
 ## Quy tac dang ap dung
 - [L-014] Tinh nang co hien thi: viet "kich ban 10 giay" (dung dau, nhin gi, bam gi, thay gi) cho nguoi dung duyet TRUOC khi code; cho constitution im lang ve vong choi cot loi thi hoi, khong tu mac dinh (P2) [sprint 1: lam lai UI 2D->3D, them goi mon]
 - [L-013] Spec co hinh phai co bang "muc Art Bible -> lam o dau" va moi thao tac co AC "nguoi choi thay gi" (hinh + chuyen dong) (P2/P6) [sprint 1: thieu mat, thieu animation]
-- [L-015] Test moi phai chay thay DO mot lan truoc khi viet code, ke ca do vi chua bien dich (P4) [count 4: sprint 1, 3, 6; sprint 8 viet RelicShop/ArrivalGap truoc Sprint8Tests]
+- [L-015] Test moi phai chay thay DO mot lan truoc khi viet code, ke ca do vi chua bien dich (P4) [count 5: sprint 1, 3, 6, 8; sprint 9 viet Blender + rig + vien truoc Sprint9Tests, chi 4 test do]
 - [L-011] Khong chay thu ban build voi -screen-fullscreen 0 / -screen-width: Unity luu vao registry, lan sau nguoi dung mo len thanh cua so (nguoi dung bao 14/11). Chay thu khong co co man hinh (P6)
 - [L-012] Doi luat ghep mon / khach phai dua vao sim_balance.py va chay lai Dieu 1 truoc khi code; luat goi mon lam nguoi choi gioi tu 83% xuong 59% neu mo phong thieu 3 khach cung ngoi + ngoai le chu no (P2)
 - [L-010] Doc ket qua test Unity: grep result="[A-Za-z()]*" vi that bai ghi "Failed(Child)"; khong in dong ket qua = coi la DO (P6)
@@ -13,7 +13,7 @@
 - [L-002] Trong Bash tool cua may nay, heredoc nhieu dong co dau nhay don bi loi cu phap; ghi script .py bang Write vao scratchpad roi chay (moi pha) [count 6: sprint 3-6; them: khong de "cat > file" khong co heredoc, lenh treo cho stdin]
 - [L-004] Chay Unity batchmode: dong Editor truoc; -testResults va -logFile dung duong dan tuyet doi kieu Windows (P4)
 - [L-001] Chạy sim_balance.py phải đặt PYTHONUTF8=1 (Windows mặc định cp1258, lỗi đọc JSON tiếng Việt) (P4/P6)
-- [L-036] Them bien / ham vao file C# lon (FaceArt, RoomView, BalanceImporter): grep ten truoc khi dat (trung 'bt', 'mood', 'Drop' -> 3 lan loi bien dich, moi lan mat 1 luot Unity ~2 phut) (P4) [count 3, sprint 7]
+- [L-036] Them bien / ham vao file C# lon (FaceArt, RoomView, BalanceImporter, Tutorial): grep ten (ca thuoc tinh lan bien cuc bo cua ham dang sua) truoc khi dat (P4) [count 5: sprint 7 x3; sprint 9 'Note' trung thuoc tinh Tutorial.Note, 'want' trung bien trong RefreshSeats]
 - [L-016] (gop L-009) Hinh dat trong/tren do vat 3D, tam anh quay ve camera (day ra bang ban kinh bao): lay kich thuoc tu hinh that (Renderer.bounds), khong tu so uoc luong; test hinh hoc phai do theo hinh that (P4) [count 2: sprint 2 PanSpec; sprint 5 nap noi bi vanh che, mu chu no qua to]
 - [L-020] Truoc khi ket luan "can bang lech": kiem bot co lam dieu nguoi that se lam voi luat moi khong; dem ly do that bai (dong quan som, khong phuc vu chu no) trong BotRun (P6) [count 3: sprint 4, 5, 7 (dong ho dung truoc khi mo: nau san 2 dia lam bot tut 52->27%, so che san moi dung)]
 - [L-039] Doi tuong se bat / tat (SetActive) thi luu tham chieu luc dung; GetComponentInParent/Find bo qua doi tuong da an -> null (P4) [sprint 8: NRE o SetUp lam do ca 49 test PlayMode]
@@ -100,3 +100,10 @@
 - L-040 | trigger: F073 do thoi gian di vao 0,15 giay | sai: do thoi gian sau Shot() (Shot ton vai khung = vai giay game o toc do tua 25x) | goc: dong ho bat dau sai cho | quy tac: test do thoi luong ghi Time.time ngay sau thao tac, chup anh khong chen giua | count 1
 - L-015 count 4: viet code loi (RelicShop, ArrivalGap) truoc test Sprint8Tests
 - L-002 count 7: heredoc python dai trong Bash loi "unexpected EOF" -> ghi script bang Write
+- L-036 count 5 (22/11 sprint 9): ham tinh Note() trung thuoc tinh Note cua Tutorial; bien 'want' trung bien da co trong RefreshSeats -> 2 luot Unity
+- L-015 count 5 (22/11 sprint 9): Blender + CharacterRig + OutlineMesh viet truoc Sprint9Tests; 11/15 test xanh ngay lan dau (khong co bang chung do)
+- L-041 | trigger: test doc anh mat FaceArt bang GetPixels -> 'not readable' | nguyen nhan: Texture2D.Apply(false, true) bo du lieu CPU | quy tac: test doc anh sinh luc chay qua RenderTexture (Graphics.Blit + ReadPixels) | count 1
+- L-042 | trigger: shader dùng UNITY_MATRIX_P / _ScreenParams trong URP: viền không hiện ở ảnh test | nguyên nhân: ma trận chiếu built-in bị lật / không đúng khi vẽ ra render texture | quy tắc: shader CG trong URP chỉ dùng UNITY_MATRIX_VP, unity_MatrixV, _WorldSpaceCameraPos; luôn có test đo điểm ảnh thật (L-005) | count 1
+- L-043 | trigger: sửa file .cs bằng PowerShell Get-Content -Raw / Set-Content | sai: tiếng Việt thành mã rác (đọc cp1258), test so chuỗi đỏ | quy tắc: sửa file bằng Python io.open(encoding='utf-8') hoặc Edit tool, không dùng Get-Content/Set-Content cho file UTF-8 | count 1
+- L-044 | trigger: FBX nhân vật có xương (không bake transform) + Unity Bake Axis Conversion | sai: model quay ngược 180°, clip khoá node gốc nên xoay lúc nhập bị ghi đè | quy tắc: test hướng (Face ở -z) kể cả sau SampleAnimation; sửa bằng node chứa xoay ở runtime | count 1
+

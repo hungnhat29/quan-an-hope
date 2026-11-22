@@ -106,11 +106,46 @@ namespace QuanAnHope.Game
         /// 40 do o phia tren huong vao giua mat, ma hong, mieng chu "w". <paramref name="blink"/>: mi nham (chop mat 0,12 giay,
         /// Art Bible muc 12). Anh vuong 512, dan len tam mat bi keo ngang 1,6 lan nhu mat chu no.
         /// </summary>
-        public static Texture2D Customer(string mood, bool blink = false)
+        public static Texture2D Customer(string mood, bool blink = false, int face = 0)
         {
             if (mood == MoodEating) blink = false; // dang an: mat da nham sung suong
-            return Get("Mat_Khach_" + mood + (blink ? "_chop" : ""), p => DrawCustomer(p, mood, blink), 512);
+            face = ((face % CustomerFaces) + CustomerFaces) % CustomerFaces;
+            FaceStyle st = Styles[face];
+            return Get("Mat_Khach_" + mood + (blink ? "_chop" : "") + (face > 0 ? "_k" + face : ""), p => DrawCustomer(p, mood, blink, st), 512);
         }
+
+        // ---------------- sprint 9 B-06: 8 kieu mat (yeu cau 22/11 "nhieu khuon mat khac nhau, dua vao art bible") ----------------
+        // Moi kieu giu quy cach Art Bible muc 6 (mat vong tron rong vien dam ho khe 40 do phia tren huong vao giua mat, khong
+        // trong den / dom sang tru "Cho"; mieng chu "w" khi vui). Khac nhau o: co va khoang cach mat, long may, ma (tron / dep /
+        // tan nhang), long mi, rau mep, not ruoi, do rong mieng.
+
+        public const int CustomerFaces = 8;
+
+        public struct FaceStyle
+        {
+            public string name;
+            public float eye, spread, tall, mouth;
+            /// <summary>0 khong, 1 cung ngan, 2 thang day.</summary>
+            public int brow;
+            /// <summary>0 ma tron, 1 ma dep rong, 2 tan nhang, 3 khong ma.</summary>
+            public int cheek;
+            public bool lashes, mustache, mole;
+        }
+
+        public static readonly FaceStyle[] Styles =
+        {
+            new FaceStyle { name = "Tròn hiền", eye = 1f, spread = 0f, tall = 1f, mouth = 1f },
+            new FaceStyle { name = "Mắt to mi cong", eye = 1.14f, spread = -0.03f, tall = 1.04f, mouth = 0.9f, cheek = 1, lashes = true },
+            new FaceStyle { name = "Mắt nhỏ tàn nhang", eye = 0.84f, spread = 0.035f, tall = 0.95f, mouth = 1f, brow = 1, cheek = 2 },
+            new FaceStyle { name = "Râu mép", eye = 0.95f, spread = 0.01f, tall = 1f, mouth = 1.1f, brow = 2, cheek = 3, mustache = true },
+            new FaceStyle { name = "Nốt ruồi", eye = 0.92f, spread = 0.02f, tall = 1f, mouth = 1.25f, cheek = 0, mole = true },
+            new FaceStyle { name = "Mắt dài", eye = 1.02f, spread = -0.01f, tall = 1.15f, mouth = 0.95f, brow = 1, cheek = 2, lashes = true },
+            new FaceStyle { name = "Má hây", eye = 0.96f, spread = 0.025f, tall = 0.98f, mouth = 0.8f, brow = 1, cheek = 1 },
+            new FaceStyle { name = "Ông chú", eye = 1.08f, spread = -0.02f, tall = 0.94f, mouth = 1.05f, brow = 2, cheek = 0, mustache = true },
+        };
+
+        static readonly Color Freckle = UiKit.Hex("#C98E5A");
+        static readonly Color MustacheBrown = UiKit.Hex("#6B4A3A");
 
         /// <summary>
         /// Chon bieu cam theo bang Art Bible muc 6: vui (dat / vuot yeu cau), ngac nhien (mon Tuyet hao / Huyen thoai),
@@ -135,21 +170,33 @@ namespace QuanAnHope.Game
         static readonly Color Sweat = UiKit.Hex("#8FC3D6");
         static readonly Color AngerMark = UiKit.Hex("#E8604F");
 
-        static void DrawCustomer(Painter p, string mood, bool blink)
+        static void DrawCustomer(Painter p, string mood, bool blink, FaceStyle st)
         {
             bool closedHappy = mood == MoodEating;
             float k = mood == MoodSurprised ? 1.12f : 1f;
-            if (mood != MoodAngry)
+            if (mood != MoodAngry && st.cheek != 3)
             {
                 float b = mood == MoodEating ? 1.25f : 1f;
-                p.Ellipse(new Vector2(0.12f, 0.27f), 0.075f * b, 0.07f * b, Blush);
-                p.Ellipse(new Vector2(0.88f, 0.27f), 0.075f * b, 0.07f * b, Blush);
+                if (st.cheek == 2)
+                {
+                    // tan nhang: 3 cham nho moi ben
+                    foreach (float sx in new[] { 0.12f, 0.88f })
+                        for (int i = 0; i < 3; i++)
+                            p.Disc(new Vector2(sx + (i - 1) * 0.035f, 0.28f + (i == 1 ? 0.02f : 0f)), 0.012f, Freckle);
+                }
+                else
+                {
+                    float wx = st.cheek == 1 ? 1.35f : 1f, wy = st.cheek == 1 ? 0.7f : 1f;
+                    p.Ellipse(new Vector2(0.12f, 0.27f), 0.075f * b * wx, 0.07f * b * wy, Blush);
+                    p.Ellipse(new Vector2(0.88f, 0.27f), 0.075f * b * wx, 0.07f * b * wy, Blush);
+                }
             }
 
-            foreach (Vector2 c in new[] { CEyeL, CEyeR })
+            foreach (Vector2 c0 in new[] { CEyeL, CEyeR })
             {
-                bool left = c.x < 0.5f;
-                float rx = CEyeRx * k, ry = CEyeRy * k;
+                bool left = c0.x < 0.5f;
+                Vector2 c = c0 + new Vector2(left ? -st.spread : st.spread, 0f);
+                float rx = CEyeRx * k * st.eye, ry = CEyeRy * k * st.eye * st.tall;
                 if (closedHappy)
                 {
                     // mat cong len (^ ^) sung suong khi an
@@ -171,6 +218,15 @@ namespace QuanAnHope.Game
                 }
                 p.Ellipse(c, rx, ry, EyeWhite);
                 p.EllipseRing(c, rx, ry, CLine, Ink, left ? 60f : 120f, 20f);
+                if (st.lashes)
+                {
+                    // hai soi mi cong ra phia ngoai (khong cham khe ho phia tren)
+                    float sgn = left ? -1f : 1f;
+                    Vector2 o = c + new Vector2(sgn * rx * 0.92f, ry * 0.35f);
+                    p.Stroke(new[] { o, o + new Vector2(sgn * 0.035f, 0.03f) }, 0.016f, Ink);
+                    Vector2 o2 = c + new Vector2(sgn * rx * 0.75f, ry * 0.65f);
+                    p.Stroke(new[] { o2, o2 + new Vector2(sgn * 0.03f, 0.04f) }, 0.016f, Ink);
+                }
                 Vector2 pupil = Vector2.zero; float pr = 0f;
                 switch (mood)
                 {
@@ -180,6 +236,24 @@ namespace QuanAnHope.Game
                 }
                 if (pr > 0f) p.Ellipse(c + pupil, 0.025f * pr, 0.04f * pr, Ink);
             }
+
+            // long may rieng cua kieu mat (bieu cam co long may rieng thi khong ve)
+            if (mood != MoodAngry && mood != MoodSad && mood != MoodSurprised && st.brow > 0)
+                foreach (Vector2 c0 in new[] { CEyeL, CEyeR })
+                {
+                    bool left = c0.x < 0.5f;
+                    Vector2 c = c0 + new Vector2(left ? -st.spread : st.spread, CEyeRy * st.eye * st.tall + 0.06f);
+                    if (st.brow == 1)
+                        p.Stroke(new[] { c + new Vector2(-0.06f, -0.01f), c + new Vector2(0f, 0.012f), c + new Vector2(0.06f, -0.01f) }, 0.026f, Ink);
+                    else
+                        p.Stroke(new[] { c + new Vector2(-0.075f, 0f), c + new Vector2(0.075f, 0f) }, 0.045f, Ink);
+                }
+            if (st.mustache)
+            {
+                p.Ellipse(new Vector2(0.462f, 0.415f), 0.045f, 0.022f, MustacheBrown);
+                p.Ellipse(new Vector2(0.538f, 0.415f), 0.045f, 0.022f, MustacheBrown);
+            }
+            if (st.mole) p.Disc(new Vector2(0.64f, 0.26f), 0.012f, Ink);
 
             // long may
             switch (mood)
@@ -205,34 +279,37 @@ namespace QuanAnHope.Game
             switch (mood)
             {
                 case MoodWait: case MoodSweat:
-                    p.Stroke(new[] { new Vector2(0.435f, 0.31f), new Vector2(0.565f, 0.31f) }, CLine, Ink);
+                    p.Stroke(new[] { new Vector2(MX(0.435f, st), 0.31f), new Vector2(MX(0.565f, st), 0.31f) }, CLine, Ink);
                     break;
                 case MoodAngry:
-                    p.Stroke(new[] { new Vector2(0.43f, 0.255f), new Vector2(0.465f, 0.305f), new Vector2(0.5f, 0.26f),
-                        new Vector2(0.535f, 0.305f), new Vector2(0.57f, 0.255f) }, CLine, Ink);
+                    p.Stroke(new[] { new Vector2(MX(0.43f, st), 0.255f), new Vector2(MX(0.465f, st), 0.305f), new Vector2(MX(0.5f, st), 0.26f),
+                        new Vector2(MX(0.535f, st), 0.305f), new Vector2(MX(0.57f, st), 0.255f) }, CLine, Ink);
                     break;
                 case MoodSurprised:
-                    p.Ellipse(new Vector2(0.5f, 0.29f), 0.042f, 0.08f, Ink);
-                    p.Ellipse(new Vector2(0.5f, 0.285f), 0.026f, 0.052f, MouthRed);
+                    p.Ellipse(new Vector2(MX(0.5f, st), 0.29f), 0.042f, 0.08f, Ink);
+                    p.Ellipse(new Vector2(MX(0.5f, st), 0.285f), 0.026f, 0.052f, MouthRed);
                     break;
                 case MoodSad:
-                    p.Stroke(new[] { new Vector2(0.44f, 0.265f), new Vector2(0.47f, 0.295f), new Vector2(0.5f, 0.305f),
-                        new Vector2(0.53f, 0.295f), new Vector2(0.56f, 0.265f) }, CLine, Ink);
+                    p.Stroke(new[] { new Vector2(MX(0.44f, st), 0.265f), new Vector2(MX(0.47f, st), 0.295f), new Vector2(MX(0.5f, st), 0.305f),
+                        new Vector2(MX(0.53f, st), 0.295f), new Vector2(MX(0.56f, st), 0.265f) }, CLine, Ink);
                     // giot nuoc mat nho duoi mat trai
-                    WaterDrop(p, new Vector2(0.235f, 0.33f), 0.6f);
+                    WaterDrop(p, new Vector2(MX(0.235f, st), 0.33f), 0.6f);
                     break;
                 case MoodEating:
                     // ma phong, mieng nhai (o tron nho)
-                    p.Ellipse(new Vector2(0.5f, 0.31f), 0.04f, 0.05f, Ink);
-                    p.Ellipse(new Vector2(0.5f, 0.305f), 0.024f, 0.03f, MouthRed);
+                    p.Ellipse(new Vector2(MX(0.5f, st), 0.31f), 0.04f, 0.05f, Ink);
+                    p.Ellipse(new Vector2(MX(0.5f, st), 0.305f), 0.024f, 0.03f, MouthRed);
                     break;
                 default: // vui: chu w
-                    p.Stroke(new[] { new Vector2(0.435f, 0.37f), new Vector2(0.465f, 0.33f), new Vector2(0.5f, 0.37f),
-                        new Vector2(0.535f, 0.33f), new Vector2(0.565f, 0.37f) }, 0.03f, Ink);
+                    p.Stroke(new[] { new Vector2(MX(0.435f, st), 0.37f), new Vector2(MX(0.465f, st), 0.33f), new Vector2(MX(0.5f, st), 0.37f),
+                        new Vector2(MX(0.535f, st), 0.33f), new Vector2(MX(0.565f, st), 0.37f) }, 0.03f, Ink);
                     break;
             }
             if (mood == MoodSweat) WaterDrop(p, new Vector2(0.875f, 0.74f), 1f);
         }
+
+        /// <summary>Co gian do rong mieng quanh giua mat theo kieu mat.</summary>
+        static float MX(float x, FaceStyle st) { return 0.5f + (x - 0.5f) * st.mouth; }
 
         /// <summary>Giot nuoc (mo hoi / nuoc mat): xanh nhat, vien muc, dau nhon o tren.</summary>
         static void WaterDrop(Painter p, Vector2 c, float s)

@@ -466,8 +466,56 @@ namespace QuanAnHope.Game
         /// <summary>So lieu cong thuc (de biet cach nau). GameController gan luc tao ban.</summary>
         public static RecipeBook Book;
 
+        public const string Group = "Dishes";
+
+        /// <summary>Co model Blender cho mon chinh nay (sprint 9 B-04).</summary>
+        public static bool HasModel(string mainId) { return ModelLibrary.Has(Group, "SM_Mon_" + mainId); }
+
+        /// <summary>
+        /// Sprint 9 B-04 (yeu cau 22/11 "mon an ro rang hon nua"): mon dung model Blender - mon chinh da nau to o giua
+        /// (SM_Mon_&lt;chinh&gt;), mot cum do phu da nau canh ben (SM_Kem_&lt;phu&gt;). Kich thuoc model theo long dia ban kinh 0,1 m;
+        /// <paramref name="radius"/> khac (chao, noi) thi phong theo. Lac vi (chay) pha mau xam nau nhu khoi cu (F-013 AC-6).
+        /// </summary>
+        static GameObject BuildModel(Transform parent, string mainId, string sideId, string method, bool burnt, float radius, Vector3 center)
+        {
+            GameObject root = Toon.Empty(parent, "MonAn", center);
+            float k = radius / 0.1f;
+            System.Func<Color, Color> fix = c =>
+            {
+                if (sideId == "ca_chua" && Mathf.Abs(c.r - 0.69f) < 0.02f && Mathf.Abs(c.g - 0.44f) < 0.02f) c = UiKit.Hex("#C8553D"); // sot ca chua
+                // Lac vi: chay xem nhu khoi cu (F-013 AC-6): ngai nau roi pha 60% mau than
+                if (burnt) c = Color.Lerp(Color.Lerp(c, UiKit.Hex("#9A5A2C"), 0.3f) * 0.96f, UiKit.Hex("#3A2E28"), 0.6f);
+                c.a = 1f;
+                return c;
+            };
+            GameObject main = ModelLibrary.TryInstantiate(Group, "SM_Mon_" + mainId, root.transform, Toon.OutlineSmall, fix);
+            main.name = "MonChinh";
+            main.transform.localPosition = new Vector3(-0.012f, 0f, 0.006f) * k;
+            main.transform.localScale = Vector3.one * k;
+            GameObject side = ModelLibrary.TryInstantiate(Group, "SM_Kem_" + sideId, root.transform, Toon.OutlineSmall, fix);
+            if (side != null)
+            {
+                side.name = "DoPhu";
+                side.transform.localPosition = new Vector3(0.078f, 0.002f, -0.05f) * k;
+                side.transform.localScale = Vector3.one * k * 1.15f;
+            }
+            if (method == "nướng")
+            {
+                // F-040 AC-4: 3 vet nuong cheo tren mieng nuong (giu ten VetNuong nhu hinh khoi)
+                Bounds mb = ModelLibrary.LocalBounds(main, root.transform);
+                for (int n = 0; n < 3; n++)
+                    Toon.Prim(PrimitiveType.Cube, root.transform, "VetNuong", new Vector3(mb.center.x + (n - 1) * 0.022f * k, mb.max.y + 0.001f, mb.center.z),
+                        new Vector3(0.006f * k, 0.003f, 0.06f * k), UiKit.Hex(burnt ? "#2B2321" : "#4A2E1E"), 0f, new Vector3(0f, 40f, 0f));
+            }
+            Transform face = ModelLibrary.FacePoint(main);
+            Vector3 c0 = face != null ? root.transform.InverseTransformPoint(face.position) : new Vector3(0f, 0.04f * k, 0f);
+            Toon.Empty(root.transform, "TamMon", new Vector3(c0.x, Mathf.Max(0.03f * k, c0.y), c0.z * 0.3f));
+            return root;
+        }
+
         public static GameObject Build(Transform parent, string mainId, string sideId, string method, bool burnt, float radius, float pieceScale, Vector3 center)
         {
+            if (HasModel(mainId)) return BuildModel(parent, mainId, sideId, method, burnt, radius, center);
             GameObject root = Toon.Empty(parent, "MonAn", center);
             System.Func<Color, Color> fix = c =>
             {

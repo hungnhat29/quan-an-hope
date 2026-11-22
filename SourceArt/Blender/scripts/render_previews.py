@@ -56,9 +56,11 @@ def render(blend):
 
 
 def main():
+    import sys
+    argv = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
     done = []
     for f in sorted(os.listdir(MODELS)):
-        if f.endswith(".blend"):
+        if f.endswith(".blend") and (not argv or any(f.startswith(a) for a in argv)):
             p = render(os.path.join(MODELS, f))
             if p:
                 done.append(p)
@@ -80,7 +82,7 @@ def main():
             start = ((cy + y) * cols * w + cx) * 4
             px[start:start + w * 4] = row
     sheet.pixels = px
-    sheet.filepath_raw = os.path.join(OUT, "_tong_hop.png")
+    sheet.filepath_raw = os.path.join(OUT, "_tong_hop" + ("_" + "_".join(argv) if argv else "") + ".png")
     sheet.file_format = 'PNG'
     sheet.save()
     print("TONG HOP", sheet.filepath_raw)

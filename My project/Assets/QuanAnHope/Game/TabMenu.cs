@@ -14,16 +14,17 @@ namespace QuanAnHope.Game
     /// </summary>
     public class TabMenu
     {
-        public enum Page { Relic, Shop }
+        /// <summary>Sprint 9 B-07 AC-3: them the Guide ("Cach choi") doc lai moi giai thich.</summary>
+        public enum Page { Relic, Shop, Guide }
 
         static readonly Vector2 Center = new Vector2(0.5f, 0.5f), Top = new Vector2(0.5f, 1f), TopLeft = new Vector2(0f, 1f);
         const int Rows = 4;
 
         readonly GameController g;
         readonly GameObject root;
-        readonly RectTransform relicList, shopList;
-        readonly TextMeshProUGUI header, note;
-        readonly Button relicTab, shopTab;
+        readonly RectTransform relicList, shopList, guideBox;
+        readonly TextMeshProUGUI header, note, guideText;
+        readonly Button relicTab, shopTab, guideTab;
         string confirmId;
 
         public Page Current { get; private set; }
@@ -32,6 +33,9 @@ namespace QuanAnHope.Game
         public bool Shown { get { return root.activeSelf; } }
         public string HeaderText { get { return header.text; } }
         public string NoteText { get { return note.text; } }
+        /// <summary>Chu cua the Cach choi (test).</summary>
+        public TextMeshProUGUI GuideLabel { get { return guideText; } }
+        public Button GuideTab { get { return guideTab; } }
 
         /// <summary>Nut "Bo" cua tung relic dang hien (test), theo id.</summary>
         public readonly Dictionary<string, Button> DiscardButtons = new Dictionary<string, Button>();
@@ -59,13 +63,18 @@ namespace QuanAnHope.Game
             Image card = UiKit.Panel(dim, "The", Center, Vector2.zero, new Vector2(1020f, 620f), UiKit.Cream);
             relicTab = UiKit.Button(card.transform, "Tab_Relic", TopLeft, new Vector2(28f, -20f), new Vector2(220f, 52f), "Relic", UiKit.Lilac, () => Show(Page.Relic), 22f);
             shopTab = UiKit.Button(card.transform, "Tab_CuaHang", TopLeft, new Vector2(262f, -20f), new Vector2(220f, 52f), "Cửa hàng", UiKit.Mustard, () => Show(Page.Shop), 22f);
+            guideTab = UiKit.Button(card.transform, "Tab_CachChoi", TopLeft, new Vector2(496f, -20f), new Vector2(220f, 52f), "Cách chơi", UiKit.Coral, () => Show(Page.Guide), 22f);
             ((RectTransform)relicTab.transform).pivot = TopLeft;
             ((RectTransform)shopTab.transform).pivot = TopLeft;
+            ((RectTransform)guideTab.transform).pivot = TopLeft;
             UiKit.Button(card.transform, "Btn_Dong", new Vector2(1f, 1f), new Vector2(-28f, -20f), new Vector2(170f, 52f), "Đóng (Tab)", UiKit.Mint, () => g.CloseTab(), 20f)
                 .transform.GetComponent<RectTransform>().pivot = new Vector2(1f, 1f);
             header = UiKit.Label(card.transform, "TieuDe", Top, new Vector2(0f, -88f), new Vector2(960f, 40f), "", 24f);
             relicList = UiKit.Box(card.transform, "DanhSachRelic", Top, new Vector2(0f, -136f), new Vector2(960f, 420f));
             shopList = UiKit.Box(card.transform, "DanhSachCuaHang", Top, new Vector2(0f, -136f), new Vector2(960f, 420f));
+            guideBox = UiKit.Box(card.transform, "CachChoi", Top, new Vector2(0f, -86f), new Vector2(960f, 470f));
+            guideText = UiKit.Text(guideBox, "", 18f, TextAlignmentOptions.TopLeft, 12f);
+            guideText.lineSpacing = 6f;
             note = UiKit.Label(card.transform, "GhiChu", new Vector2(0.5f, 0f), new Vector2(0f, 14f), new Vector2(960f, 40f), "", 16f);
             root.SetActive(false);
         }
@@ -90,10 +99,18 @@ namespace QuanAnHope.Game
             if (!root.activeSelf || g.Session == null) return;
             relicList.gameObject.SetActive(Current == Page.Relic);
             shopList.gameObject.SetActive(Current == Page.Shop);
+            guideBox.gameObject.SetActive(Current == Page.Guide);
+            header.gameObject.SetActive(Current != Page.Guide);
             relicTab.interactable = Current != Page.Relic;
             shopTab.interactable = Current != Page.Shop;
+            guideTab.interactable = Current != Page.Guide;
             if (Current == Page.Relic) BuildRelics();
-            else BuildShop();
+            else if (Current == Page.Shop) BuildShop();
+            else
+            {
+                guideText.text = GuideText.Sheet(g.Session.Balance, g.Session.Day);
+                note.text = "Số liệu theo ngày hiện tại · Tab / Esc để đóng";
+            }
         }
 
         // ---------------- the Relic ----------------

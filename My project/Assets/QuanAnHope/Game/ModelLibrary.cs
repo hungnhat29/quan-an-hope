@@ -16,8 +16,7 @@ namespace QuanAnHope.Game
         public const string FaceNode = "Face";
 
         static readonly Dictionary<string, GameObject> cache = new Dictionary<string, GameObject>();
-        static readonly Dictionary<float, Material> outlineMats = new Dictionary<float, Material>();
-        static readonly Regex HexInName = new Regex("([0-9A-Fa-f]{6})");
+                static readonly Regex HexInName = new Regex("([0-9A-Fa-f]{6})");
 
         /// <summary>Tat model (test so sanh truoc / sau: chup anh hinh ghep khoi).</summary>
         public static bool Disabled;
@@ -53,8 +52,10 @@ namespace QuanAnHope.Game
             go.transform.localPosition = Vector3.zero;
             go.transform.localRotation = Quaternion.identity;
             foreach (Collider c in go.GetComponentsInChildren<Collider>()) Object.Destroy(c);
-            var renderers = new List<MeshRenderer>(go.GetComponentsInChildren<MeshRenderer>());
-            foreach (MeshRenderer r in renderers)
+            var renderers = new List<Renderer>();
+            foreach (Renderer r in go.GetComponentsInChildren<Renderer>(true))
+                if (r is MeshRenderer || r is SkinnedMeshRenderer) renderers.Add(r);
+            foreach (Renderer r in renderers)
             {
                 Material[] src = r.sharedMaterials;
                 var mats = new Material[src.Length];
@@ -81,28 +82,15 @@ namespace QuanAnHope.Game
             return m.HasProperty("_Color") ? m.color : Color.white;
         }
 
-        static void AddHull(MeshRenderer r, float width)
+        /// <summary>Vien muc theo diem anh (sprint 9 B-03): ban sao phap tuyen lam muot, shader OutlinePx (ca mesh co xuong).</summary>
+        static void AddHull(Renderer r, float width)
         {
-            MeshFilter f = r.GetComponent<MeshFilter>();
-            if (f == null || f.sharedMesh == null) return;
-            var o = new GameObject("Outline");
-            o.transform.SetParent(r.transform, false);
-            o.AddComponent<MeshFilter>().sharedMesh = f.sharedMesh;
-            var hr = o.AddComponent<MeshRenderer>();
-            hr.sharedMaterial = OutlineMat(width);
-            hr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-            hr.receiveShadows = false;
+            BepNhanPham.OutlineMesh.Attach(r, width);
         }
 
         public static Material OutlineMat(float width)
         {
-            Material m;
-            if (outlineMats.TryGetValue(width, out m) && m != null) return m;
-            m = new Material(Shader.Find("BepNhanPham/OutlineNormal")) { name = "M_OutlineNormal_" + width };
-            m.SetColor("_Color", UiKit.Ink);
-            m.SetFloat("_Width", width);
-            outlineMats[width] = m;
-            return m;
+            return BepNhanPham.OutlineMesh.Material(width);
         }
 
         /// <summary>Diem mat cua model (empty "Face", AC-5); null neu khong co.</summary>

@@ -352,6 +352,7 @@ namespace QuanAnHope.Game
             if (Session == null) return;
             float dt = Time.deltaTime;
             if (Menu != null) Menu.Tick(Time.unscaledDeltaTime);
+            if (Room != null) Room.TickAlways();
             TickAudio(dt);
             if (Mode != GameMode.Playing)
             {
@@ -385,7 +386,8 @@ namespace QuanAnHope.Game
             for (int i = 0; i < reactionLeft.Length; i++)
             {
                 if (reactionLeft[i] <= 0f) continue;
-                reactionLeft[i] -= dt;
+                // sprint 9: mot khung cham (ve anh mat lan dau) khong duoc nuot het 0,8 giay phan ung
+                reactionLeft[i] -= Mathf.Min(dt, 0.25f);
                 if (reactionLeft[i] <= 0f) Changed();
             }
             if (ServedShowLeft > 0f)

@@ -1,14 +1,21 @@
 {
-  "name": "QuanAnHope.Editor",
-  "rootNamespace": "QuanAnHope.EditorTools",
-  "references": ["QuanAnHope.Core", "QuanAnHope.Data", "QuanAnHope.Game"],
-  "includePlatforms": ["Editor"],
-  "excludePlatforms": [],
-  "allowUnsafeCode": false,
-  "overrideReferences": false,
-  "precompiledReferences": [],
-  "autoReferenced": true,
-  "defineConstraints": [],
-  "versionDefines": [],
-  "noEngineReferences": false
+    "name": "QuanAnHope.Editor",
+    "rootNamespace": "QuanAnHope.EditorTools",
+    "references": [
+        "QuanAnHope.Core",
+        "QuanAnHope.Data",
+        "QuanAnHope.Game",
+        "BepNhanPham.Runtime"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

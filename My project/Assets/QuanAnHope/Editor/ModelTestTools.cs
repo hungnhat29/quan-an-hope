@@ -93,37 +93,34 @@ namespace QuanAnHope.EditorTools
             return n;
         }
 
+        /// <summary>Vien muc theo diem anh (sprint 9 B-03): ban sao phap tuyen lam muot + shader OutlinePx, khong phong to.</summary>
         static void AddOutline(Transform t, Mesh mesh, float width, bool saveAssets)
         {
             Transform old = t.Find("Outline");
             if (old != null) Object.DestroyImmediate(old.gameObject);
             var o = new GameObject("Outline");
             o.transform.SetParent(t, false);
-            o.AddComponent<MeshFilter>().sharedMesh = mesh;
+            Mesh sm = BepNhanPham.OutlineMesh.Build(mesh);
+            if (saveAssets && AssetDatabase.Contains(mesh))
+                AssetDatabase.CreateAsset(sm, MaterialFolder + "/Vien_" + mesh.name + ".asset");
+            o.AddComponent<MeshFilter>().sharedMesh = sm;
             var r = o.AddComponent<MeshRenderer>();
-            r.sharedMaterial = OutlineMaterial(saveAssets);
+            r.sharedMaterial = OutlineMaterial(width, saveAssets);
             r.shadowCastingMode = ShadowCastingMode.Off;
-            // vo nguoc phong to them 2 x do day vien theo khung bao that cua mesh (L-016)
-            Vector3 size = Vector3.Scale(mesh.bounds.size, t.lossyScale);
-            Vector3 k = new Vector3(1f + 2f * width / Mathf.Max(size.x, 0.01f), 1f + 2f * width / Mathf.Max(size.y, 0.01f), 1f + 2f * width / Mathf.Max(size.z, 0.01f));
-            o.transform.localScale = k;
-            // phong to quanh tam khung bao, khong quanh goc (goc o chan vat, Art Bible muc 14)
-            o.transform.localPosition = Vector3.Scale(mesh.bounds.center, Vector3.one - k);
         }
 
         static Material outline;
 
-        static Material OutlineMaterial(bool saveAssets)
+        static Material OutlineMaterial(float width, bool saveAssets)
         {
-            string path = MaterialFolder + "/M_Outline.mat";
+            string path = MaterialFolder + "/M_OutlinePx.mat";
             if (saveAssets)
             {
                 Material m = AssetDatabase.LoadAssetAtPath<Material>(path);
                 if (m != null) return m;
             }
             if (!saveAssets && outline != null) return outline;
-            var mat = new Material(Shader.Find("BepNhanPham/Outline")) { name = "M_Outline" };
-            mat.SetColor("_Color", Hex("#2B2321"));
+            Material mat = BepNhanPham.OutlineMesh.NewMaterial(width);
             if (saveAssets) AssetDatabase.CreateAsset(mat, path);
             else outline = mat;
             return mat;

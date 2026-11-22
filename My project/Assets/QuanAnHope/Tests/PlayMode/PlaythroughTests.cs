@@ -82,6 +82,8 @@ namespace QuanAnHope.PlayTests
                 d.y = 0f;
                 float dist = d.magnitude;
                 if (dist < 0.06f) break;
+                // dich sat goc tuong (MinX / MaxZ): than nguoi choi ban kinh 0,3 m co the dung cach 0,1-0,25 m, coi la toi
+                if (sinceProgress > 2f && dist < 0.25f) break;
                 if (dist < best - 0.01f) { best = dist; sinceProgress = 0f; }
                 Vector3 local = Quaternion.Euler(0f, -P.Yaw, 0f) * d;
                 float step = Mathf.Max(0.0001f, P.MoveSpeed * Mathf.Max(Time.deltaTime, 0.001f));
@@ -89,7 +91,8 @@ namespace QuanAnHope.PlayTests
                 yield return null;
                 t += Time.deltaTime;
                 sinceProgress += Time.deltaTime;
-                Assert.Less(sinceProgress, 4f, "Bi ket khi di toi " + dest + ", dang o " + P.transform.position);
+                Assert.Less(sinceProgress, 4f, "Bi ket khi di toi " + dest + ", dang o " + P.transform.position + " | mode " + g.Mode + " pha " + S.Phase
+                    + " input " + P.InputEnabled + " overlay " + g.ShowsOverlay + " gio " + S.Clock.Text + " dt " + Time.deltaTime + " move " + P.SimulatedMove);
                 Assert.Less(t, 60f, "Di qua lau toi " + dest);
             }
             P.SimulatedMove = Vector2.zero;

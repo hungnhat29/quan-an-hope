@@ -31,6 +31,9 @@ namespace QuanAnHope.Game
         GameObject toastBox, promptBox, heldBox;
 
         GameObject overlay;
+        Image overlayDim;
+        RectTransform overlayCard;
+        bool finaleShown;
         TextMeshProUGUI overlayTitle, overlayBody;
         Button overlayButton, overlayMenuButton;
         bool overlayShown;
@@ -38,6 +41,8 @@ namespace QuanAnHope.Game
         // F-053: dong huong dan ngay 1
         GameObject tutorialBox;
         TextMeshProUGUI tutorialText;
+        GameObject noteBox;
+        TextMeshProUGUI noteText;
 
         public Hud(GameController controller)
         {
@@ -107,6 +112,12 @@ namespace QuanAnHope.Game
             tutorialBox = tb.gameObject;
             tutorialText = UiKit.Text(tb.transform, "", 18f);
             tutorialBox.SetActive(false);
+            // Sprint 9 B-07: o giai thich ngay duoi dong huong dan (ti le, bac, do de tinh), nen kem, chu >= 14 px (Art Bible muc 13)
+            Image nb = UiKit.Panel(Canvas, "GiaiThich", Top, new Vector2(0f, -146f), new Vector2(760f, 64f), UiKit.Cream, false);
+            nb.raycastTarget = false;
+            noteBox = nb.gameObject;
+            noteText = UiKit.Text(nb.transform, "", 15f);
+            noteBox.SetActive(false);
 
             clickToPlay = UiKit.Label(Canvas, "BamDeChoi", Center, new Vector2(0f, 60f), new Vector2(500f, 40f), "Bấm chuột vào màn hình để điều khiển", 20f);
             clickToPlay.color = UiKit.Cream;
@@ -120,8 +131,10 @@ namespace QuanAnHope.Game
             var img = dim.gameObject.AddComponent<Image>();
             img.color = new Color(UiKit.Ink.r, UiKit.Ink.g, UiKit.Ink.b, 0.72f);
             overlay = dim.gameObject;
+            overlayDim = img;
 
             Image card = UiKit.Panel(dim, "The", Center, Vector2.zero, new Vector2(600f, 360f), UiKit.Cream);
+            overlayCard = (RectTransform)card.transform;
             overlayTitle = UiKit.Label(card.transform, "TieuDe", Top, new Vector2(0f, -22f), new Vector2(560f, 56f), "", 36f);
             overlayBody = UiKit.Label(card.transform, "NoiDung", Center, new Vector2(0f, 6f), new Vector2(560f, 176f), "", UiKit.NumberFontSize);
             overlayBody.lineSpacing = -22f;
@@ -142,6 +155,17 @@ namespace QuanAnHope.Game
         public Button OverlayButton { get { return overlayButton; } }
         public Button OverlayMenuButton { get { return overlayMenuButton; } }
         public string TutorialText { get { return tutorialBox.activeSelf ? tutorialText.text : null; } }
+        /// <summary>Dong giai thich dang hien (B-07), null neu khong co.</summary>
+        public string TutorialNote { get { return noteBox != null && noteBox.activeSelf ? noteText.text : null; } }
+        public TextMeshProUGUI TutorialNoteLabel { get { return noteText; } }
+
+        void RefreshNote()
+        {
+            if (noteBox == null) return;
+            string note = g.Tutorial != null && g.Mode == GameMode.Playing && !overlayShown ? g.Tutorial.Note : null;
+            if (note != null && noteText.text != note) noteText.text = note;
+            if ((note != null) != noteBox.activeSelf) noteBox.SetActive(note != null);
+        }
         public string OverlayTitle { get { return overlay.activeSelf ? overlayTitle.text : null; } }
         public string OverlayBody { get { return overlay.activeSelf ? overlayBody.text : null; } }
 
@@ -155,6 +179,7 @@ namespace QuanAnHope.Game
             string line = g.Tutorial != null ? g.Tutorial.Line : null;
             tutorialBox.SetActive(line != null && g.Mode == GameMode.Playing);
             if (line != null) tutorialText.text = line;
+            RefreshNote();
             DebtEntry debt = s.NextDebt();
             RefreshClock();
             money.text = "Ví <size=26>" + s.Money + "G</size>\n"
@@ -209,7 +234,8 @@ namespace QuanAnHope.Game
             RefreshClock();
             string line = g.Tutorial != null ? g.Tutorial.Line : null;
             if (line != null && tutorialText.text != line) tutorialText.text = line;
-            if ((line != null) != tutorialBox.activeSelf) tutorialBox.SetActive(line != null);
+            if ((line != null && !overlayShown) != tutorialBox.activeSelf) tutorialBox.SetActive(line != null && !overlayShown);
+            RefreshNote();
             Interactable focus = g.Player.Focus;
             bool show = focus != null && !overlayShown;
             promptBox.SetActive(show);
@@ -227,6 +253,17 @@ namespace QuanAnHope.Game
             if (show != overlayShown) PlayerController.SetCursorLocked(!show);
             overlayShown = show;
             overlay.SetActive(show);
+            // Sprint 9 F-082 AC-2: man thang dung canh Hope + chu no + con gai o quay Goc 1 phia sau the (the ha xuong, nen nhat)
+            bool finale = show && s.IsWon;
+            if (finale != finaleShown && g.Room != null)
+            {
+                finaleShown = finale;
+                g.Room.ShowFinale(finale);
+                if (finale) g.Player.HoldCamera(GameController.MenuCameraPosition, GameController.MenuCameraRotation);
+                else if (g.Mode == GameMode.Playing) g.Player.ReleaseCamera();
+            }
+            overlayDim.color = new Color(UiKit.Ink.r, UiKit.Ink.g, UiKit.Ink.b, finale ? 0.25f : 0.72f);
+            overlayCard.anchoredPosition = finale ? new Vector2(310f, -150f) : Vector2.zero;
             if (!show) return;
             overlay.transform.SetAsLastSibling();
             bool final = s.Phase != GamePhase.DayEnd;

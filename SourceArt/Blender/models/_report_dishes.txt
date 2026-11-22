@@ -1,0 +1,4 @@
+SM_Mon_heo	Dishes	692	3
+SM_Mon_tom	Dishes	772	3
+SM_Mon_tom_hum	Dishes	904	3
+SM_Kem_ot_chuong	Dishes	204	3

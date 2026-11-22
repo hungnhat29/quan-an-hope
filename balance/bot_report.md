@@ -1,4 +1,4 @@
-# Bot C# tren luat that — 4000 van moi kieu (69 giay)
+# Bot C# tren luat that — 4000 van moi kieu (61 giay)
 
 ```
 naive  win=0.01 progress=0.80 pass(d4,d9,d15,d22)=[1.0, 0.99, 0.39, 0.01] combo3+=0.12 win|combo=0.02

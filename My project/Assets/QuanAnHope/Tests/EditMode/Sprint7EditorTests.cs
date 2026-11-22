@@ -25,9 +25,9 @@ namespace QuanAnHope.Tests
                 Assert.AreEqual(tomato.r, m.GetColor("_Color").r, 1e-3, "giu mau Base Color cua FBX");
                 Transform outline = go.transform.Find("Outline");
                 Assert.IsNotNull(outline, "co lop vien");
-                Assert.AreEqual("BepNhanPham/Outline", outline.GetComponent<MeshRenderer>().sharedMaterial.shader.name);
-                // vien 0,018 m moi ben quanh qua 0,1 m: ti le 1 + 2 * 0,018 / 0,1 = 1,36
-                Assert.AreEqual(1.36f, outline.localScale.x, 1e-3);
+                // sprint 9 B-03: vien theo diem anh (shader OutlinePx), ban sao phap tuyen lam muot, khong phong to
+                Assert.AreEqual("BepNhanPham/OutlinePx", outline.GetComponent<MeshRenderer>().sharedMaterial.shader.name);
+                Assert.AreEqual(1f, outline.localScale.x, 1e-3);
                 Assert.AreEqual(1, ModelTestTools.ApplyToon(go, false), "gan lan hai khong nhan doi vien");
                 int outlines = 0;
                 foreach (Transform t in go.transform) if (t.name == "Outline") outlines++;

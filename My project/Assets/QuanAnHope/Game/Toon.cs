@@ -12,9 +12,8 @@ namespace QuanAnHope.Game
         public const float OutlineBig = 0.028f;   // nhan vat, may lon
         public const float OutlineSmall = 0.018f; // dao cu nho
 
-        static Shader toonShader, outlineShader, alphaShader;
+        static Shader toonShader, alphaShader;
         static readonly Dictionary<Color, Material> toonMats = new Dictionary<Color, Material>();
-        static Material outlineMat;
         static Material shadowMat;
 
         static Shader ToonShader { get { return toonShader != null ? toonShader : (toonShader = Shader.Find("BepNhanPham/ToonFlat")); } }
@@ -27,18 +26,6 @@ namespace QuanAnHope.Game
             m.SetColor("_Color", c);
             toonMats[c] = m;
             return m;
-        }
-
-        static Material OutlineMat
-        {
-            get
-            {
-                if (outlineMat != null) return outlineMat;
-                if (outlineShader == null) outlineShader = Shader.Find("BepNhanPham/Outline");
-                outlineMat = new Material(outlineShader) { name = "M_Outline_Runtime" };
-                outlineMat.SetColor("_Color", UiKit.Ink);
-                return outlineMat;
-            }
         }
 
         /// <summary>
@@ -64,19 +51,14 @@ namespace QuanAnHope.Game
             return go;
         }
 
+        /// <summary>
+        /// Vien muc (sprint 9 B-03): ban sao phap tuyen lam muot + shader OutlinePx, do day theo diem anh man hinh
+        /// (thay ban sao phong to theo met bi lech / qua day khi nhin gan). Vat nho hon nguong chi tiet khong co vien.
+        /// </summary>
         static void AddOutline(GameObject go, Vector3 size, float outline)
         {
-            var o = new GameObject("Outline");
-            o.transform.SetParent(go.transform, false);
-            o.AddComponent<MeshFilter>().sharedMesh = go.GetComponent<MeshFilter>().sharedMesh;
-            var r = o.AddComponent<MeshRenderer>();
-            r.sharedMaterial = OutlineMat;
-            r.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
-            r.receiveShadows = false;
-            o.transform.localScale = new Vector3(
-                1f + 2f * outline / Mathf.Max(size.x, 0.01f),
-                1f + 2f * outline / Mathf.Max(size.y, 0.01f),
-                1f + 2f * outline / Mathf.Max(size.z, 0.01f));
+            if (!BepNhanPham.OutlineMesh.Wants(size, outline)) return;
+            BepNhanPham.OutlineMesh.Attach(go.GetComponent<MeshRenderer>(), outline);
         }
 
         /// <summary>Doi mau than cua mot khoi da tao (khong dong vao vien).</summary>

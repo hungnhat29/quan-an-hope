@@ -646,16 +646,21 @@ namespace QuanAnHope.PlayTests
             Assert.IsNotNull(l, "khach co Lively");
             yield return new WaitForSeconds(Lively.ArriveSeconds + 0.1f);
 
-            float min = 9f, max = -9f, jump = 0f, prev = l.ScaleY;
+            // sprint 9 F-080/F-081: khach la nhan vat co xuong -> tho / dung dua do clip Cho (xuong Spine co gian, dau nghieng)
+            Transform spine = v.Rig != null ? v.Rig.GetComponentsInChildren<Transform>(true).First(x => x.name == "Spine") : null;
+            Transform headB = v.Rig != null ? v.Rig.Head : null;
+            System.Func<float> scaleY = () => spine != null ? spine.localScale.y : l.ScaleY;
+            System.Func<float> tilt = () => headB != null ? Mathf.DeltaAngle(0f, headB.localEulerAngles.z) + Mathf.DeltaAngle(0f, headB.localEulerAngles.x) : Mathf.DeltaAngle(0f, v.Model.transform.localEulerAngles.z);
+            float min = 9f, max = -9f, jump = 0f, prev = scaleY();
             float rotMin = 999f, rotMax = -999f;
             for (float t = 0f; t < 2.6f; t += Time.deltaTime)
             {
                 yield return null;
-                float y = l.ScaleY;
+                float y = scaleY();
                 min = Mathf.Min(min, y); max = Mathf.Max(max, y);
                 jump = Mathf.Max(jump, Mathf.Abs(y - prev) / Mathf.Max(Time.deltaTime, 1e-3f) / 60f);
                 prev = y;
-                float z = Mathf.DeltaAngle(0f, v.Model.transform.localEulerAngles.z);
+                float z = tilt();
                 rotMin = Mathf.Min(rotMin, z); rotMax = Mathf.Max(rotMax, z);
             }
             Assert.Greater(max - min, 0.03f, "khach tho (co gian than)");
@@ -680,15 +685,20 @@ namespace QuanAnHope.PlayTests
             Assert.Less(hJump, 0.02f, "nguyen lieu khong giat");
 
             // duong cong nhay o toc do that (khach dang ngoi cho): len cao roi ve, muot
-            float baseY = v.Model.transform.localPosition.y, peak = baseY;
+            // sprint 9: co rig thi nhay cang la clip Vui (xuong Hips bat len); khong rig thi khoi nhay nhu cu
+            Transform hipsB = v.Rig != null ? v.Rig.GetComponentsInChildren<Transform>(true).First(x => x.name == "Hips") : null;
+            System.Func<float> hopY = () => hipsB != null ? hipsB.position.y : v.Model.transform.localPosition.y;
+            float hopSeconds = v.Rig != null ? v.Rig.ClipLength(CharacterRig.ClipHappy) : Lively.HopSeconds;
+            float baseY = hopY(), peak = baseY;
             l.Hop();
-            for (float t = 0f; t < Lively.HopSeconds + 0.05f; t += Time.deltaTime)
+            for (float t = 0f; t < hopSeconds + 0.05f; t += Time.deltaTime)
             {
                 yield return null;
-                peak = Mathf.Max(peak, v.Model.transform.localPosition.y);
+                peak = Mathf.Max(peak, hopY());
             }
+            yield return null;
             Assert.Greater(peak - baseY, 0.1f, "nhay cang len cao: base " + baseY + " peak " + peak + " active " + v.Model.activeInHierarchy + " scaleY " + l.ScaleY + " ts " + Time.timeScale);
-            Assert.AreEqual(baseY, v.Model.transform.localPosition.y, 0.02f, "nhay xong ve cho cu");
+            Assert.AreEqual(baseY, hopY(), 0.12f, "nhay xong ve cho cu (rig: con nhun +-3% cua clip Cho)");
             // phuc vu: vui thi nhay cang, gian thi lac dau (dien ngay luc doi mat)
             int hops = l.HopCount, shakes = l.ShakeCount;
             yield return ServeOne();

@@ -49,9 +49,23 @@ namespace QuanAnHope.Game
         /// <summary>Thoi gian di het duong (giay) voi do dai the gioi <paramref name="worldLength"/>.</summary>
         public static float WalkTime(float worldLength) { return Mathf.Max(0.5f, worldLength / WalkSpeed); }
 
+        /// <summary>
+        /// Co nhan vat Blender co xuong (sprint 9 F-081): tho, dung dua, nhay cang, lac dau, nhun buoc do clip cua rig lam;
+        /// Lively chi con di theo duong, quay mat, ngoi xuong.
+        /// </summary>
+        public bool Rigged;
+
+        /// <summary>Toc do tung doan duong (m/giay the gioi); null = <see cref="WalkSpeed"/> (sprint 9 B-05: via he nhanh hon trong phong).</summary>
+        float[] segSpeeds;
+        float[] segSeconds;
+
+        /// <summary>Dang buoc (khong tinh luc dung day quay lung).</summary>
+        public bool Moving { get { return walk != Walk.None && (walk == Walk.In || walkT >= TurnSeconds); } }
+
         /// <summary>Bat dau di tu cua vao ghe: <paramref name="worldPath"/> la cac diem the gioi (ngoai cua -> cua), diem cuoi la cho ngoi.</summary>
-        public void WalkIn(Vector3[] worldPath)
+        public void WalkIn(Vector3[] worldPath, float[] speeds = null)
         {
+            segSpeeds = speeds;
             BeginWalk(worldPath, false);
             walk = Walk.In;
             WalkIns++;
@@ -59,11 +73,13 @@ namespace QuanAnHope.Game
         }
 
         /// <summary>Dung day, quay lung, di ra cua theo <paramref name="worldPath"/> (cua -> ngoai cua).</summary>
-        public void WalkOut(Vector3[] worldPath)
+        public void WalkOut(Vector3[] worldPath, float[] speeds = null)
         {
+            segSpeeds = speeds;
             BeginWalk(worldPath, true);
             walk = Walk.Out;
             leave = -1f;
+            arrive = 1f;   // ban sao di ra (sprint 9) bat OnEnable -> khong nhay vao ghe lai
         }
 
         /// <summary>Tong thoi gian cua lan di ra (de RoomView giu khoi tren man hinh).</summary>
@@ -83,13 +99,17 @@ namespace QuanAnHope.Game
             for (int i = 0; i < pts.Count; i++) pts[i] = new Vector3(pts[i].x, 0f, pts[i].z);
             path = pts.ToArray();
             walkLength = 0f;
-            float world = 0f;
+            walkSeconds = 0f;
+            segSeconds = new float[Mathf.Max(0, path.Length - 1)];
             for (int i = 1; i < path.Length; i++)
             {
                 walkLength += (path[i] - path[i - 1]).magnitude;
-                world += (parent != null ? parent.TransformVector(path[i] - path[i - 1]) : path[i] - path[i - 1]).magnitude;
+                float world = (parent != null ? parent.TransformVector(path[i] - path[i - 1]) : path[i] - path[i - 1]).magnitude;
+                float speed = segSpeeds != null && i - 1 < segSpeeds.Length && segSpeeds[i - 1] > 0f ? segSpeeds[i - 1] : WalkSpeed;
+                segSeconds[i - 1] = world / speed;
+                walkSeconds += segSeconds[i - 1];
             }
-            walkSeconds = WalkTime(world);
+            walkSeconds = Mathf.Max(0.5f, walkSeconds);
             walkT = 0f;
             turnFrom = yaw;
             GoneOut = false;
@@ -132,6 +152,21 @@ namespace QuanAnHope.Game
 
         float stepPhase;
 
+        /// <summary>Quang duong (toa do cha) da di sau <paramref name="moveT"/> giay, theo toc do tung doan.</summary>
+        float DistanceAt(float moveT)
+        {
+            float dist = 0f;
+            for (int i = 0; i < segSeconds.Length; i++)
+            {
+                float l = (path[i + 1] - path[i]).magnitude;
+                if (moveT <= segSeconds[i] || i == segSeconds.Length - 1)
+                    return dist + l * (segSeconds[i] > 1e-5f ? Mathf.Clamp01(moveT / segSeconds[i]) : 1f);
+                moveT -= segSeconds[i];
+                dist += l;
+            }
+            return dist;
+        }
+
         /// <summary>Buoc di: offset vi tri, nhun buoc, quay mat theo huong di (cuoi duong vao: quay ve Hope).</summary>
         void TickWalk(float dt, ref float up, ref float sx, ref float sy, ref float rz)
         {
@@ -155,22 +190,20 @@ namespace QuanAnHope.Game
             }
             float frac = walkSeconds > 0f ? Mathf.Clamp01(moveT / walkSeconds) : 1f;
             Vector3 dir;
-            walkOffset = PointAt(frac * walkLength, out dir);
+            walkOffset = PointAt(DistanceAt(moveT), out dir);
             float targetYaw = YawAlong(Vector3.zero, dir, yaw);
             yaw = Mathf.LerpAngle(yaw, targetYaw, 1f - Mathf.Exp(-dt * 10f));
-            // nhun buoc: 2,2 buoc / giay, bat len khi chan roi dat (|sin|), nghieng nhe trai phai
+            // nhun buoc: 2,2 buoc / giay, bat len khi chan roi dat (|sin|), nghieng nhe trai phai (rig: clip Di lam viec nay)
             stepPhase += dt * 2.2f * Mathf.PI;
-            float bounce = Mathf.Abs(Mathf.Sin(stepPhase));
-            up += bounce * 0.07f;
-            sy *= 1f + (bounce - 0.5f) * 0.06f;
-            sx *= 1f - (bounce - 0.5f) * 0.03f;
-            rz += Mathf.Sin(stepPhase) * 4f;
-            if (walk == Walk.Out && frac > 0.85f)
+            if (!Rigged)
             {
-                // khuat ngoai cua: thu nho dan
-                float s = Mathf.Lerp(1f, 0.01f, (frac - 0.85f) / 0.15f);
-                sx *= s; sy *= s;
+                float bounce = Mathf.Abs(Mathf.Sin(stepPhase));
+                up += bounce * 0.07f;
+                sy *= 1f + (bounce - 0.5f) * 0.06f;
+                sx *= 1f - (bounce - 0.5f) * 0.03f;
+                rz += Mathf.Sin(stepPhase) * 4f;
             }
+            // sprint 9 B-05: khong thu nho o cuoi duong ra nua; diem cuoi da khuat sau tuong (re trai / phai doc via he)
             if (frac >= 1f)
             {
                 if (walk == Walk.In)
@@ -271,8 +304,11 @@ namespace QuanAnHope.Game
         public int HopCount { get; private set; }
         public int ShakeCount { get; private set; }
 
-        public void Hop() { hop = 0f; HopCount++; }
-        public void Shake() { shake = 0f; ShakeCount++; }
+        /// <summary>Phan ung (true = vui / nhay cang, false = gian / lac dau): rig choi clip Vui / Gian (sprint 9 F-081 AC-2).</summary>
+        public event System.Action<bool> Reacted;
+
+        public void Hop() { hop = 0f; HopCount++; if (Reacted != null) Reacted(true); }
+        public void Shake() { shake = 0f; ShakeCount++; if (Reacted != null) Reacted(false); }
         public void Leave(float seconds) { leaveSeconds = Mathf.Max(0.05f, seconds); leave = 0f; }
         public void CancelLeave() { leave = -1f; Apply(); }
 
@@ -299,12 +335,15 @@ namespace QuanAnHope.Game
             float t = clock + phase;
             float up = 0f, sx = 1f, sy = 1f, rz = 0f, ry = 0f, rx = 0f;
 
-            // tho: than co gian 2,5% chu ky 2,4 giay (ngang gian nguoc chieu de giu the tich)
-            float breath = Mathf.Sin(t * Mathf.PI * 2f / 2.4f) * 0.025f;
-            sy += breath; sx -= breath * 0.5f;
-            // dung dua nhe trai phai, nhun len xuong theo nhip tho (thay Bob)
-            rz += Mathf.Sin(t * Mathf.PI * 2f / 3.3f) * 2.2f;
-            up += (Mathf.Sin(t * Mathf.PI * 2f / 2.4f - 0.8f) * 0.5f + 0.5f) * Mathf.Min(bobAmp, 0.04f);
+            if (!Rigged)
+            {
+                // tho: than co gian 2,5% chu ky 2,4 giay (ngang gian nguoc chieu de giu the tich)
+                float breath = Mathf.Sin(t * Mathf.PI * 2f / 2.4f) * 0.025f;
+                sy += breath; sx -= breath * 0.5f;
+                // dung dua nhe trai phai, nhun len xuong theo nhip tho (thay Bob)
+                rz += Mathf.Sin(t * Mathf.PI * 2f / 3.3f) * 2.2f;
+                up += (Mathf.Sin(t * Mathf.PI * 2f / 2.4f - 0.8f) * 0.5f + 0.5f) * Mathf.Min(bobAmp, 0.04f);
+            }
 
             // nhay vao ghe: roi tu tren xuong (ease-in), cham ghe thi nen 12% roi bat lai (lo xo tat dan)
             if (arrive < 1f)
@@ -328,7 +367,7 @@ namespace QuanAnHope.Game
             }
 
             // nhay cang khi vui: nen chuan bi -> bat len (gian) -> roi -> nen cham dat
-            if (hop < 1f)
+            if (hop < 1f && !Rigged)
             {
                 float k = hop;
                 float air = k > 0.15f && k < 0.75f ? Mathf.Sin((k - 0.15f) / 0.6f * Mathf.PI) : 0f;
@@ -339,7 +378,7 @@ namespace QuanAnHope.Game
             }
 
             // lac dau khi gian: quay trai phai tat dan
-            if (shake < 1f)
+            if (shake < 1f && !Rigged)
                 ry += Mathf.Sin(shake * Mathf.PI * 5f) * 12f * (1f - shake);
 
             // nhai: nhun theo nhip 2,2 lan/giay, muot

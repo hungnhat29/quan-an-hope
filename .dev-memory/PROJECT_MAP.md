@@ -82,3 +82,14 @@ Cập nhật: 2026-11-18
 - Game: Sprint8Room.cs (partial RoomView: đèn trần + công tắc LightSwitch, LightAt/NightFactor, TickLights thay ScreenTint; nút RelicReroll; ẩn quầy vật phẩm, RefreshOwnedItems; PrepFx); PrepFx.cs (dao + động tác sơ chế theo loại); TabMenu.cs (GameMode.Tab); GameControllerSprint8.cs (LightsOn, RerollRelics, OpenTab/CloseTab, DiscardRelic, TicketLine); CustomerLooks.cs (6 kiểu khách); Lively: WalkIn/WalkOut/Pivot/EatMood; RoomViewRound2: DoorPath, EatingFace, WalkCustomers (test tắt); Tutorial: bài học theo sự kiện (Lesson, LessonId)
 - Tests: EditMode Sprint8Tests (lõi), Sprint8ModelTests; PlayMode Sprint8PlayTests (ảnh docs/sprint-8/ui). tools/so_sanh_truoc_sau.py (ảnh trước/sau F-071 AC-4)
 - Quét bot thêm khoá: gapk, gapmin, safe (+giây mọi vòng), s2/s3/s4
+
+## Sprint 9 (22/11) — viền, món Blender, nhân vật có xương (constitution 1.9, specs/sprint-9/spec.md)
+- Viền: Resources/Shaders/OutlinePx.shader (độ dày điểm ảnh, chỉ dùng UNITY_MATRIX_VP + camera; KHÔNG dùng UNITY_MATRIX_P — lật khi vẽ ra RT) + BepNhanPham/Scripts/OutlineMesh.cs (Build/Smoothed/Attach/Material/Wants). Dùng ở Toon.AddOutline, ModelLibrary.AddHull, BuildNhaHang.AddOutline (lưu asset Vien_*), ModelTestTools
+- Món: SourceArt/Blender/scripts/build_dishes.py -> Resources/Models/Dishes (SM_Mon_<chinh>, SM_Kem_<phu>, SM_De_<Com|MiY|Bun|BanhMi>); PanView.DishFood.BuildModel (VetNuong cho nướng), RoomView.BuildBase dùng SM_De_*
+- Nhân vật: build_characters.py -> Resources/Models/Characters (SK_Khach, SK_ChuNo: 14 xương Root/Hips/Spine/Head/Arm|Forearm|Hand|Leg|Foot_L/R, clip Cho/Vui/Gian/VayChao/Di(/NgacNhien); SM_Hope, SM_ConGai tĩnh). Editor/ModelImportSettings.cs (Read/Write, Legacy anim). Unity nhập ngược 180 độ -> CharacterRig.Orient (ImportYaw)
+- Game/CharacterRig.cs (Create/Orient/SetLook/SetShirt/Play/Stepped/BakedBounds, Face/Mieng/Head/EatingArm). RoomViewRound2.BuildRigs (khối cũ tắt Renderer, chóm mặt gắn xương đầu, chủ nợ rig riêng + quad MatChuNo), SpawnLeaver (bản sao đi ra), DoorPath(seat, outward, side, out speeds), StreetZ/StreetX/tốc độ
+- Lively: Rigged, Reacted (event), Moving, tốc độ từng đoạn; CustomerLooks: 7 kiểu, Seed/ShirtFor/FaceFor/SideFor, RigOf; FaceArt.Customer(mood, blink, face) 8 FaceStyle
+- Hướng dẫn: Game/GuideText.cs (số từ dữ liệu), Tutorial Step.note + Explain(), Hud ô GiaiThich (TutorialNote), TabMenu.Page.Guide "Cách chơi"
+- Game/Sprint9Room.cs: Hope menu chính (TickAlways), ShowFinale (màn thắng), PrewarmFaces
+- Tests: EditMode Sprint9Tests; PlayMode Sprint9PlayTests (ảnh docs/sprint-9/ui; b03_do_vien_debug.png = ảnh đo viền)
+

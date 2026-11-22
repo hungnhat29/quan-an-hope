@@ -1,11 +1,11 @@
 # STATE
-Cập nhật: 2026-11-22 (sprint 8 ACCEPTED, đã commit + push)
+Cập nhật: 2026-11-22 (sprint 9 ACCEPTED, đã commit + push)
 Ngày làm việc: 2026-11-21/22
-Pha: sprint 8 ACCEPTED 22/11 (người dùng: "end sprint 8") — báo cáo .dev-memory/acceptance/2026-11-21-sprint-8.md
-Bước tiếp theo: Q-58..Q-64 còn mở; 5 AC CẦN NGƯỜI KIỂM chưa có phản hồi riêng; sprint 9 (nhân vật Blender, 16 nguyên liệu còn lại)
-Constitution 1.8 · Spec: specs/sprint-8/spec.md · Ảnh: docs/sprint-8/ui/ · Blender: SourceArt/Blender (README)
-Kiểm: EditMode 317/317 (+2 Explicit), PlayMode 49/49, build Windows 15 giây không lỗi; bot 4.000 ván 80% / 87% / 34%, khách giảm dễ tính / ngày 1,3
-Blender: "D:\Blender\blender.exe" -b --factory-startup -P SourceArt/Blender/scripts/build_models.py (rồi render_previews.py)
+Pha: P0 — sprint 9 ACCEPTED 22/11; chờ giao sprint 10
+Bước tiếp theo: bắt đầu sprint 10 khi bạn giao; Q-58..Q-69 mở
+Constitution 1.9 · Spec: specs/sprint-9/spec.md · Ảnh: docs/sprint-9/ui/ · Blender: SourceArt/Blender (README; build_models / build_dishes / build_characters)
+Kiểm: EditMode 333/333 (+2 Explicit), PlayMode 57/57, build Windows 245 MB không lỗi; bot 4.000 ván 80% / 87% / 34% (luật không đổi)
+Blender: "D:\Blender\blender.exe" -b --factory-startup -P SourceArt/Blender/scripts/<build_models|build_dishes|build_characters>.py (rồi render_previews.py -- tiền_tố)
 Ảnh trước/sau: python tools/so_sanh_truoc_sau.py (sau PlayMode, rồi git checkout -- docs/sprint-2..7/ui theo L-018)
 Quét bot sprint 8 thêm khoá: gapk, gapmin, safe, s2/s3/s4
 Repo: https://github.com/hungnhat29/quan-an-hope (private), nhánh main

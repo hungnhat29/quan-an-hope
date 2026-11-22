@@ -45,6 +45,8 @@ namespace BepNhanPham
             EnsureFolder(RootPath + "/Prefabs");
             groups.Clear();
             mats.Clear();
+            outlineMeshes.Clear();
+            outlineMats.Clear();
             faceObject = null;
             meshCount = 0;
 
@@ -261,17 +263,7 @@ namespace BepNhanPham
             go.transform.localEulerAngles = euler;
             go.transform.localScale = scale;
             SetRenderer(go.GetComponent<MeshRenderer>(), GetMat(false, hex, tex, tx, ty));
-            if (outline > 0f)
-            {
-                var o = new GameObject("Outline");
-                o.transform.SetParent(go.transform, false);
-                o.AddComponent<MeshFilter>().sharedMesh = go.GetComponent<MeshFilter>().sharedMesh;
-                SetRenderer(o.AddComponent<MeshRenderer>(), outlineMat);
-                o.transform.localScale = new Vector3(
-                    1f + 2f * outline / Mathf.Max(size.x, 0.01f),
-                    1f + 2f * outline / Mathf.Max(size.y, 0.01f),
-                    1f + 2f * outline / Mathf.Max(size.z, 0.01f));
-            }
+            if (outline > 0f) AddOutline(go, go.GetComponent<MeshFilter>().sharedMesh, size, outline);
             return go;
         }
 
@@ -312,11 +304,36 @@ namespace BepNhanPham
             SetRenderer(go.AddComponent<MeshRenderer>(), GetMat(false, hex, "", 1f, 1f));
             if (outline > 0f)
             {
-                var o = new GameObject("Outline");
-                o.transform.SetParent(go.transform, false);
-                o.AddComponent<MeshFilter>().sharedMesh = BuildTube(points, radius + outline, name + "_Outline");
-                SetRenderer(o.AddComponent<MeshRenderer>(), outlineMat);
+                Mesh tm = go.GetComponent<MeshFilter>().sharedMesh;
+                AddOutline(go, tm, tm.bounds.size, outline);
             }
+        }
+
+        // Vien muc (sprint 9 B-03): ban sao phap tuyen lam muot (luu thanh asset) + shader OutlinePx, do day theo diem anh.
+        static readonly Dictionary<Mesh, Mesh> outlineMeshes = new Dictionary<Mesh, Mesh>();
+        static readonly Dictionary<float, Material> outlineMats = new Dictionary<float, Material>();
+
+        static void AddOutline(GameObject go, Mesh src, Vector3 size, float outline)
+        {
+            if (src == null || !OutlineMesh.Wants(size, outline)) return;
+            Mesh sm;
+            if (!outlineMeshes.TryGetValue(src, out sm))
+            {
+                sm = OutlineMesh.Build(src);
+                AssetDatabase.CreateAsset(sm, GenPath + "/Vien_" + (meshCount++) + "_" + src.name + ".asset");
+                outlineMeshes[src] = sm;
+            }
+            Material m;
+            if (!outlineMats.TryGetValue(outline, out m))
+            {
+                m = OutlineMesh.NewMaterial(outline);
+                AssetDatabase.CreateAsset(m, GenPath + "/" + m.name + ".mat");
+                outlineMats[outline] = m;
+            }
+            var o = new GameObject("Outline");
+            o.transform.SetParent(go.transform, false);
+            o.AddComponent<MeshFilter>().sharedMesh = sm;
+            SetRenderer(o.AddComponent<MeshRenderer>(), m);
         }
 
         // Mieng chom cau om lay mat truoc cua dau, de dan anh khuon mat 2D len.

@@ -22,15 +22,29 @@ namespace QuanAnHope.EditorTools
             public int triangles, materials;
             public Bounds bounds;
             public bool hasFace;
+            /// <summary>Sprint 9: so xuong va ten clip (nhan vat SK_).</summary>
+            public int bones;
+            public readonly List<string> clips = new List<string>();
             public readonly List<string> errors = new List<string>();
             public bool Ok { get { return errors.Count == 0; } }
         }
 
-        /// <summary>Ngan sach tam giac theo nhom (Art Bible muc 14): nguyen lieu 600, do vat nho 800.</summary>
-        public static int Budget(string group) { return group == "Ingredients" ? 600 : 800; }
+        /// <summary>Ngan sach tam giac (Art Bible muc 14): nguyen lieu 600, do vat nho 800, mon an 1.500, khach 6.000, chu no 8.000.</summary>
+        public static int Budget(string group) { return group == "Ingredients" ? 600 : group == "Dishes" ? 1500 : group == "Characters" ? 6000 : 800; }
 
-        /// <summary>Kich thuoc lon nhat hop ly (m): nguyen lieu &lt; 0,25 m; do bep &lt; 1,2 m (thot 1 m). Nho hon 1 cm = sai ti le.</summary>
-        static float MaxSize(string group) { return group == "Ingredients" ? 0.25f : 1.2f; }
+        public static int Budget(string group, string name) { return name == "SK_ChuNo" ? 8000 : Budget(group); }
+
+        /// <summary>Kich thuoc lon nhat hop ly (m): nguyen lieu / mon &lt; 0,25 m; do bep &lt; 1,2 m; nhan vat &lt; 3,6 m. Nho hon 1 cm = sai ti le.</summary>
+        static float MaxSize(string group) { return group == "Ingredients" || group == "Dishes" ? 0.25f : group == "Characters" ? 3.6f : 1.2f; }
+
+        /// <summary>Xuong toi thieu / toi da cho nhan vat co xuong (Art Bible muc 14: 12-16).</summary>
+        public const int MinBones = 12, MaxBones = 16;
+
+        /// <summary>Clip bat buoc (impl plan sprint 9 F-081): moi nhan vat co xuong + rieng khach / chu no.</summary>
+        public static string[] RequiredClips(string name)
+        {
+            return name == "SK_ChuNo" ? new[] { "Cho", "Gian", "Di", "NgacNhien" } : new[] { "Cho", "Vui", "Gian", "VayChao", "Di" };
+        }
 
         public static List<Result> CheckAll()
         {
@@ -47,24 +61,36 @@ namespace QuanAnHope.EditorTools
             r.group = Path.GetFileName(Path.GetDirectoryName(path));
             var go = AssetDatabase.LoadAssetAtPath<GameObject>(path);
             if (go == null) { r.errors.Add("không nạp được"); return r; }
-            if (!r.name.StartsWith("SM_")) r.errors.Add("tên phải bắt đầu SM_ (Art Bible §14)");
+            bool character = r.group == "Characters";
+            bool skinned = r.name.StartsWith("SK_");
+            if (!r.name.StartsWith("SM_") && !(character && skinned)) r.errors.Add("tên phải bắt đầu SM_ (nhân vật có xương: SK_) (Art Bible §14)");
 
             bool first = true;
             var mats = new HashSet<string>();
+            var meshes = new List<KeyValuePair<Transform, Mesh>>();
+            var rends = new List<Renderer>();
             foreach (MeshFilter f in go.GetComponentsInChildren<MeshFilter>(true))
+                if (f.sharedMesh != null) { meshes.Add(new KeyValuePair<Transform, Mesh>(f.transform, f.sharedMesh)); rends.Add(f.GetComponent<MeshRenderer>()); }
+            foreach (SkinnedMeshRenderer sk in go.GetComponentsInChildren<SkinnedMeshRenderer>(true))
+                if (sk.sharedMesh != null) { meshes.Add(new KeyValuePair<Transform, Mesh>(sk.transform, sk.sharedMesh)); rends.Add(sk); }
+            var boneSet = new HashSet<Transform>();
+            foreach (SkinnedMeshRenderer sk in go.GetComponentsInChildren<SkinnedMeshRenderer>(true))
+                foreach (Transform b in sk.bones) if (b != null) boneSet.Add(b);
+            r.bones = boneSet.Count;
+            for (int k = 0; k < meshes.Count; k++)
             {
-                Mesh m = f.sharedMesh;
-                if (m == null) continue;
+                Transform ft = meshes[k].Key;
+                Mesh m = meshes[k].Value;
                 r.triangles += m.triangles.Length / 3;
-                var mr = f.GetComponent<MeshRenderer>();
+                Renderer mr = rends[k];
                 int matCount = mr != null ? mr.sharedMaterials.Length : 0;
-                if (matCount > 3) r.errors.Add(f.name + ": " + matCount + " vật liệu (tối đa 3)");
+                if (matCount > 3) r.errors.Add(ft.name + ": " + matCount + " vật liệu (tối đa 3)");
                 if (mr != null) foreach (Material mm in mr.sharedMaterials) if (mm != null) mats.Add(mm.name);
                 Bounds mb = m.bounds;
                 for (int i = 0; i < 8; i++)
                 {
                     Vector3 c = mb.center + Vector3.Scale(mb.extents, new Vector3((i & 1) == 0 ? -1 : 1, (i & 2) == 0 ? -1 : 1, (i & 4) == 0 ? -1 : 1));
-                    Vector3 p = go.transform.InverseTransformPoint(f.transform.TransformPoint(c));
+                    Vector3 p = go.transform.InverseTransformPoint(ft.TransformPoint(c));
                     if (first) { r.bounds = new Bounds(p, Vector3.zero); first = false; }
                     else r.bounds.Encapsulate(p);
                 }
@@ -73,13 +99,26 @@ namespace QuanAnHope.EditorTools
             foreach (Transform t in go.GetComponentsInChildren<Transform>(true))
                 if (t.name == "Face") r.hasFace = true;
 
-            if (r.triangles > Budget(r.group)) r.errors.Add(r.triangles + " tam giác > " + Budget(r.group));
+            if (r.triangles > Budget(r.group, r.name)) r.errors.Add(r.triangles + " tam giác > " + Budget(r.group, r.name));
+            if (skinned)
+            {
+                if (r.bones < MinBones || r.bones > MaxBones) r.errors.Add(r.bones + " xương (cần " + MinBones + "–" + MaxBones + ")");
+                foreach (Object o in AssetDatabase.LoadAllAssetsAtPath(path))
+                {
+                    var clip = o as AnimationClip;
+                    if (clip == null || clip.name.StartsWith("__preview__")) continue;
+                    int bar = clip.name.LastIndexOf('|');
+                    r.clips.Add(bar >= 0 ? clip.name.Substring(bar + 1) : clip.name);
+                }
+                foreach (string c in RequiredClips(r.name)) if (!r.clips.Contains(c)) r.errors.Add("thiếu động tác " + c);
+            }
             float size = Mathf.Max(r.bounds.size.x, Mathf.Max(r.bounds.size.y, r.bounds.size.z));
             if (size < 0.01f || size > MaxSize(r.group)) r.errors.Add("kích thước " + size.ToString("0.000") + " m: sai tỉ lệ (1 đơn vị = 1 m)");
             if (Mathf.Abs(r.bounds.min.y) > 0.002f) r.errors.Add("đáy ở y = " + r.bounds.min.y.ToString("0.000") + " (gốc phải ở đáy)");
             if (r.bounds.min.x > 0.001f || r.bounds.max.x < -0.001f || r.bounds.min.z > 0.001f || r.bounds.max.z < -0.001f)
                 r.errors.Add("gốc nằm ngoài hình");
-            if (r.group == "Ingredients" && !r.hasFace) r.errors.Add("thiếu empty Face");
+            if ((r.group == "Ingredients" || character || r.name.StartsWith("SM_Mon_")) && !r.hasFace) r.errors.Add("thiếu empty Face");
+            if (!character)
             foreach (Transform t in go.GetComponentsInChildren<Transform>(true))
                 if (t != go.transform && (Mathf.Abs(t.localScale.x - 1f) > 1e-3f || Quaternion.Angle(t.localRotation, Quaternion.identity) > 0.5f))
                     r.errors.Add(t.name + " còn scale / xoay chưa áp (Ctrl+A trước khi xuất)");
@@ -96,6 +135,7 @@ namespace QuanAnHope.EditorTools
                 sb.Append(r.Ok ? "  ✔ " : "  ✘ ").Append(r.group).Append('/').Append(r.name)
                   .Append(" · ").Append(r.triangles).Append(" tam giác · ").Append(r.materials).Append(" vật liệu · ")
                   .Append(r.bounds.size.ToString("0.000")).Append(" m");
+                if (r.bones > 0) sb.Append(" · ").Append(r.bones).Append(" xương · ").Append(string.Join(",", r.clips));
                 if (!r.Ok) { bad++; sb.Append(" · ").Append(string.Join("; ", r.errors)); }
                 sb.Append('\n');
             }

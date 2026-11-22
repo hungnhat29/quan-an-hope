@@ -1558,6 +1558,16 @@ namespace QuanAnHope.Game
         static void BuildBase(Transform plate, string baseName)
         {
             Vector3 at = new Vector3(-0.075f, 0.03f, 0.06f);
+            // sprint 9 B-04: de mon bang model Blender (com up, to mi Y, to bun, banh mi), dat phia sau mon chinh
+            string baseModel = baseName == "Mì Ý" ? "SM_De_MiY" : baseName == "Bún" ? "SM_De_Bun" : baseName == "Bánh mì" ? "SM_De_BanhMi" : "SM_De_Com";
+            GameObject bm = ModelLibrary.TryInstantiate(DishFood.Group, baseModel, plate, Toon.OutlineSmall);
+            if (bm != null)
+            {
+                bm.name = "DeMon";
+                bm.transform.localPosition = new Vector3(-0.06f, 0.026f, 0.075f);
+                bm.transform.localScale = Vector3.one * 0.95f;
+                return;
+            }
             switch (baseName)
             {
                 case "Mì Ý":
@@ -1605,7 +1615,9 @@ namespace QuanAnHope.Game
             // F-013 AC-5: dia co dung hinh mon vua thay trong dung cu (cung DishFood) + de mon; Lac vi = chay xem (AC-6)
             string method = null;
             if (book != null) foreach (MainIngredient m in book.mains) if (m.id == mainId) method = m.method;
-            GameObject food = DishFood.Build(go.transform, mainId, sideId, method, tier == 0, 0.1f, 1.1f, new Vector3(0.04f, 0.03f, -0.035f));
+            // sprint 9 B-04: mon model Blender to hon, gan giua long dia (mon chinh >= 45% duong kinh long dia)
+            Vector3 foodAt = DishFood.HasModel(mainId) ? new Vector3(0.012f, 0.03f, -0.025f) : new Vector3(0.04f, 0.03f, -0.035f);
+            GameObject food = DishFood.Build(go.transform, mainId, sideId, method, tier == 0, 0.1f, 1.1f, foodAt);
             Transform center = food.transform.Find("TamMon");
             FaceBillboard.Create(go.transform, center != null ? center : food.transform, FaceArt.Dish(tier), 0.17f, 0.1f, "MatMon");
             if (fx) DishFx.Create(go.transform, tier, null);

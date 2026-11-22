@@ -21,6 +21,8 @@ namespace QuanAnHope.Game
             public Func<bool> done;
             /// <summary>&gt; 0: buoc chi de doc, tu sang sau bay nhieu giay.</summary>
             public float readSeconds;
+            /// <summary>Sprint 9 B-07: dong giai thich di kem (ti le, bac, do de tinh...), so lay tu du lieu luc hien.</summary>
+            public Func<string> note;
         }
 
         public class Lesson
@@ -53,6 +55,17 @@ namespace QuanAnHope.Game
         public Step Current { get { return lesson != null && !Finished ? lesson.steps[Index] : null; } }
         public GameObject Arrow { get { return arrow; } }
         public string LessonId { get { return lesson != null ? lesson.id : null; } }
+
+        /// <summary>Dong giai thich cua buoc dang hien (B-07); null neu buoc khong co.</summary>
+        public string Note
+        {
+            get
+            {
+                if (!Enabled || lesson == null || Finished) return null;
+                Step st = lesson.steps[Index];
+                return st.note != null ? st.note() : null;
+            }
+        }
         public bool HasFinished(string id) { return finished.Contains(id); }
         public IEnumerable<Lesson> Lessons { get { return lessons; } }
 
@@ -81,9 +94,11 @@ namespace QuanAnHope.Game
             Add(d1, "Đi tới máy nhét vé ở Góc 2 (bên phải quầy) và bấm để quay nguyên liệu.",
                 () => Station("Kiosk"),
                 () => S().Stock.Count > 0 || S().Stove.State != StoveState.Empty || S().Counter.Dishes.Count > 0);
+            Explain(d1, () => GuideText.RatesNote(S().Balance, S().Day));
             Add(d1, "Lấy một nguyên liệu trong thùng vừa rơi xuống.",
                 FirstCrateItem,
                 () => g.Hand == HandKind.Ingredient || g.OnBoard != null || S().Stove.Added.Count > 0 || S().Counter.Dishes.Count > 0);
+            Explain(d1, GuideText.IngredientTiersNote);
             Add(d1, "Đặt lên thớt ở Góc 4 rồi giữ chuột trái tới khi thanh đầy (sơ chế: dao thái, trứng gõ thớt…).",
                 () => Station("Board"),
                 () => (g.OnBoard != null && g.OnBoard.prepared) || (g.HeldIngredient != null && g.HeldIngredient.prepared)
@@ -94,21 +109,26 @@ namespace QuanAnHope.Game
             Add(d1, "Nhìn quyển sách ở Góc 3: các bước của món và giá theo bậc.",
                 () => Station("BookNext"),
                 () => lookedAtBook || S().Stove.Added.Count > 0 || S().Stove.State == StoveState.Cooking || S().Counter.Dishes.Count > 0);
+            Explain(d1, GuideText.BookNote);
             Add(d1, "Cho nguyên liệu đã sơ chế và gia vị vào bếp đúng thứ tự trong sách.",
                 () => Station("Stove"),
                 () => S().Stove.Added.Count > 0 || S().Stove.State == StoveState.Cooking || S().Stove.State == StoveState.Ready || S().Counter.Dishes.Count > 0);
+            Explain(d1, () => GuideText.DishNote(S().Balance));
             Add(d1, "Vặn núm bếp để bắt đầu nấu.",
                 () => Station("Knob"),
                 () => S().Stove.State == StoveState.Cooking || S().Stove.State == StoveState.Ready || S().Counter.Dishes.Count > 0 || g.Hand == HandKind.Dish);
+            Explain(d1, () => GuideText.DishNote(S().Balance));
             Add(d1, "Món chín: lấy đĩa trống ở chồng đĩa rồi bấm vào bếp để múc.",
                 () => S().Stove.State == StoveState.Ready && g.Hand == HandKind.Plate ? Station("Stove") : Station("PlateStack"),
                 () => S().Counter.Dishes.Count > 0 || g.Hand == HandKind.Dish || S().ServedToday > 0);
             Add(d1, "Bấm biển Mở quán ở Góc 1 để đón khách.",
                 () => Station("ShopSign"),
                 () => S().Phase == GamePhase.Open || S().ServedToday > 0);
+            Explain(d1, () => GuideText.EasinessNote(S().Balance));
             Add(d1, "Cầm đĩa đúng món khách gọi tới khách (hoặc bấm chuông) để phục vụ.",
                 () => g.Hand == HandKind.Dish ? Station("Customer_0") : Station("Bell"),
                 () => S().ServedToday > 0);
+            Explain(d1, () => GuideText.EasinessNote(S().Balance) + " " + GuideText.PaymentNote(S().Balance));
 
             // ---------- troi toi: bat den (F-076) ----------
             Lesson night = NewLesson(Night, () => S().Phase == GamePhase.Open && !S().IsBlackout && !g.LightsOn
@@ -132,6 +152,7 @@ namespace QuanAnHope.Game
                 null, () => g.Tab != null && g.TabShopViews > shopViewsAtStart);
             Add(r2, "Vòng 2: tối đa 3 khách, vào cách nhau vài chục giây. Thanh dưới bong bóng là kiên nhẫn: chờ quá lâu khách khó tính hơn.",
                 () => S().Phase == GamePhase.Open ? Station("Customer_1") : Station("ShopSign"), () => S().ServedToday >= 2, 30f);
+            Explain(r2, () => GuideText.PatienceNote(S().Balance, S().Day) + " Nhấn Tab → Cách chơi để xem lại mọi bảng.");
             Add(r2, "Bếp bốc khói là sắp quá lửa: múc ngay, để quá lâu món bị trừ 1 bậc.", () => Station("Stove"), () => false, 9f);
             Add(r2, "Tủ lạnh trên tường Góc 4 giữ món qua đêm: cầm đĩa rồi bấm tủ (để dành món ngon cho khách khó tính).",
                 () => Station("Fridge"), () => S().Fridge.Dishes.Count > 0, 12f);
@@ -151,6 +172,12 @@ namespace QuanAnHope.Game
             var l = new Lesson { id = id, when = when, day = day };
             lessons.Add(l);
             return l;
+        }
+
+        /// <summary>Gan dong giai thich cho buoc vua them (B-07 AC-1).</summary>
+        static void Explain(Lesson l, Func<string> note)
+        {
+            if (l.steps.Count > 0) l.steps[l.steps.Count - 1].note = note;
         }
 
         static void Add(Lesson l, string text, Func<Interactable> target, Func<bool> done, float readSeconds = 0f)
