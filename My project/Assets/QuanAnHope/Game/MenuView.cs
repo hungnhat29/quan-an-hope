@@ -153,6 +153,10 @@ namespace QuanAnHope.Game
         public Button ComicMotionButton { get { return comicMotion; } }
         public Button PaperMotionButton { get { return paperMotion; } }
 
+        /// <summary>F-110 AC-1: nut Ngon ngu / Language.</summary>
+        public Button LanguageButton { get { return language; } }
+        Button language;
+
         void BuildSettings()
         {
             RectTransform dim = UiKit.Stretch(Canvas, "CaiDat");
@@ -160,9 +164,9 @@ namespace QuanAnHope.Game
             img.color = new Color(UiKit.Ink.r, UiKit.Ink.g, UiKit.Ink.b, 0.72f);
             settings = dim.gameObject;
             // sau sprint 10 (yeu cau 23/11/2026): huong dan di chuyen chuyen tu HUD vao Cai dat -> the rong them cot Dieu khien
-            Image card = UiKit.Panel(dim, "The", Center, Vector2.zero, new Vector2(SettingsW, 700f), UiKit.Cream);
+            Image card = UiKit.Panel(dim, "The", Center, Vector2.zero, new Vector2(SettingsW, SettingsH), UiKit.Cream);
             Transform cardT = card.transform;
-            RectTransform leftCol = UiKit.Box(cardT, "CotCaiDat", new Vector2(0f, 1f), Vector2.zero, new Vector2(760f, 700f));
+            RectTransform leftCol = UiKit.Box(cardT, "CotCaiDat", new Vector2(0f, 1f), Vector2.zero, new Vector2(760f, SettingsH));
             Transform c = leftCol;
             UiKit.Label(c, "TieuDe", Top, new Vector2(0f, -20f), new Vector2(700f, 50f), "Cài đặt", 34f);
             BuildControls(cardT);
@@ -195,10 +199,17 @@ namespace QuanAnHope.Game
                 g.Settings.paperMotion = (g.Settings.paperMotion + 1) % PaperKit.MotionNames.Length;
                 Changed();
             });
+            // F-110 AC-1 (yeu cau 25/11/2026): nhan hai thu tieng de nguoi khong doc tieng Viet van tim thay
+            language = ToggleRow(c, "NgonNgu", "Ngôn ngữ / Language", y -= 54f, () =>
+            {
+                g.Settings.language = (Lang.Current + 1) % Lang.Names.Length;
+                Changed();
+            });
             SettingsDoneButton = UiKit.Button(cardT, "Btn_Xong", Bottom, new Vector2(0f, 18f), new Vector2(260f, 54f), "Xong", UiKit.Coral, () => CloseSettings(), 24f);
         }
 
         const float SettingsW = 1180f;
+        const float SettingsH = 760f;   // F-110: them dong Ngon ngu (truoc 700)
 
         /// <summary>Phim dieu khien (truoc o dong chu trang goc duoi HUD).</summary>
         public static readonly string[][] Controls =
@@ -329,6 +340,7 @@ namespace QuanAnHope.Game
             UiKit.SetLabel(tutorial, !s.tutorialChosen ? "Tự động (ván đầu)" : s.tutorial ? "Bật" : "Tắt");
             UiKit.SetLabel(comicMotion, GameSettings.ComicMotionNames[Mathf.Clamp(s.comicMotion, 0, GameSettings.ComicMotionNames.Length - 1)]);
             UiKit.SetLabel(paperMotion, PaperKit.MotionNames[Mathf.Clamp(s.paperMotion, 0, PaperKit.MotionNames.Length - 1)]);
+            UiKit.SetLabel(language, Lang.Names[Lang.Current]);
         }
 
         void Changed(bool screen = false)

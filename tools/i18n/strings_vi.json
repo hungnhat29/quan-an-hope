@@ -1,0 +1,7387 @@
+[
+ {
+  "vi": "Món Hy Vọng",
+  "src": [
+   "Core/Cooking.cs:363"
+  ]
+ },
+ {
+  "vi": "món ngon nhất của quán",
+  "src": [
+   "Core/Customers.cs:24"
+  ]
+ },
+ {
+  "vi": "Vườn Nhà",
+  "src": [
+   "Core/Relics.cs:61"
+  ]
+ },
+ {
+  "vi": "Chợ Sớm",
+  "src": [
+   "Core/Relics.cs:62"
+  ]
+ },
+ {
+  "vi": "Sơn Hào",
+  "src": [
+   "Core/Relics.cs:63"
+  ]
+ },
+ {
+  "vi": "Thường",
+  "src": [
+   "Core/Relics.cs:72"
+  ]
+ },
+ {
+  "vi": "Hiếm",
+  "src": [
+   "Core/Relics.cs:73",
+   "Game/UiKit.cs:35"
+  ]
+ },
+ {
+  "vi": "Huyền thoại",
+  "src": [
+   "Core/Relics.cs:74",
+   "Game/UiKit.cs:36"
+  ]
+ },
+ {
+  "vi": "Đồ phụ: {0} nâng bậc",
+  "src": [
+   "Core/Relics.cs:461"
+  ]
+ },
+ {
+  "vi": "Đồ phụ: ",
+  "src": [
+   "Core/Relics.cs:461",
+   "Core/Relics.cs:465"
+  ]
+ },
+ {
+  "vi": " nâng bậc",
+  "src": [
+   "Core/Relics.cs:461",
+   "Core/Relics.cs:462"
+  ]
+ },
+ {
+  "vi": "Nguyên liệu chính: {0} nâng bậc",
+  "src": [
+   "Core/Relics.cs:462"
+  ]
+ },
+ {
+  "vi": "Nguyên liệu chính: ",
+  "src": [
+   "Core/Relics.cs:462",
+   "Core/Relics.cs:466"
+  ]
+ },
+ {
+  "vi": "Đồ phụ bậc 0 được quay lại 1 lần",
+  "src": [
+   "Core/Relics.cs:463"
+  ]
+ },
+ {
+  "vi": "Nguyên liệu chính bậc 0 được quay lại 1 lần",
+  "src": [
+   "Core/Relics.cs:464"
+  ]
+ },
+ {
+  "vi": "Đồ phụ: {0} nhảy lên bậc 4",
+  "src": [
+   "Core/Relics.cs:465"
+  ]
+ },
+ {
+  "vi": " nhảy lên bậc 4",
+  "src": [
+   "Core/Relics.cs:465",
+   "Core/Relics.cs:466"
+  ]
+ },
+ {
+  "vi": "Nguyên liệu chính: {0} nhảy lên bậc 4",
+  "src": [
+   "Core/Relics.cs:466"
+  ]
+ },
+ {
+  "vi": "Đồ phụ tối thiểu bậc {0}",
+  "src": [
+   "Core/Relics.cs:467"
+  ]
+ },
+ {
+  "vi": "Đồ phụ tối thiểu bậc ",
+  "src": [
+   "Core/Relics.cs:467"
+  ]
+ },
+ {
+  "vi": "Nguyên liệu chính tối thiểu bậc {0}",
+  "src": [
+   "Core/Relics.cs:468"
+  ]
+ },
+ {
+  "vi": "Nguyên liệu chính tối thiểu bậc ",
+  "src": [
+   "Core/Relics.cs:468"
+  ]
+ },
+ {
+  "vi": "Mọi đồ phụ +{0}",
+  "src": [
+   "Core/Relics.cs:469"
+  ]
+ },
+ {
+  "vi": "{0} bậc",
+  "src": [
+   "Core/Relics.cs:469",
+   "Core/Relics.cs:470",
+   "Game/Sprint12Room.cs:170"
+  ]
+ },
+ {
+  "vi": "Mọi đồ phụ +",
+  "src": [
+   "Core/Relics.cs:469"
+  ]
+ },
+ {
+  "vi": " bậc",
+  "src": [
+   "Core/Relics.cs:469",
+   "Core/Relics.cs:470",
+   "Game/Sprint12Room.cs:170"
+  ]
+ },
+ {
+  "vi": "Mọi nguyên liệu chính +{0}",
+  "src": [
+   "Core/Relics.cs:470"
+  ]
+ },
+ {
+  "vi": "Mọi nguyên liệu chính +",
+  "src": [
+   "Core/Relics.cs:470"
+  ]
+ },
+ {
+  "vi": "Thùng đồ phụ {0}",
+  "src": [
+   "Core/Relics.cs:471"
+  ]
+ },
+ {
+  "vi": "{0} món",
+  "src": [
+   "Core/Relics.cs:471",
+   "Core/Relics.cs:472",
+   "Core/Relics.cs:475"
+  ]
+ },
+ {
+  "vi": "Thùng đồ phụ ",
+  "src": [
+   "Core/Relics.cs:471"
+  ]
+ },
+ {
+  "vi": " món",
+  "src": [
+   "Core/Relics.cs:471",
+   "Core/Relics.cs:472",
+   "Core/Relics.cs:475"
+  ]
+ },
+ {
+  "vi": "Thùng chính {0}",
+  "src": [
+   "Core/Relics.cs:472"
+  ]
+ },
+ {
+  "vi": "Thùng chính ",
+  "src": [
+   "Core/Relics.cs:472"
+  ]
+ },
+ {
+  "vi": "Thùng đột phá +{0}",
+  "src": [
+   "Core/Relics.cs:473",
+   "Core/Relics.cs:475"
+  ]
+ },
+ {
+  "vi": "Thùng đột phá +",
+  "src": [
+   "Core/Relics.cs:473",
+   "Core/Relics.cs:475"
+  ]
+ },
+ {
+  "vi": "Đột phá bậc 5 +{0}",
+  "src": [
+   "Core/Relics.cs:474"
+  ]
+ },
+ {
+  "vi": "Mọi món đột phá bậc 5",
+  "src": [
+   "Core/Relics.cs:474"
+  ]
+ },
+ {
+  "vi": "Đột phá bậc 5 +",
+  "src": [
+   "Core/Relics.cs:474"
+  ]
+ },
+ {
+  "vi": "Điểm món +{0}",
+  "src": [
+   "Core/Relics.cs:476"
+  ]
+ },
+ {
+  "vi": "Điểm món +",
+  "src": [
+   "Core/Relics.cs:476"
+  ]
+ },
+ {
+  "vi": "{0} món thành Lạc vị",
+  "src": [
+   "Core/Relics.cs:477"
+  ]
+ },
+ {
+  "vi": " món thành Lạc vị",
+  "src": [
+   "Core/Relics.cs:477"
+  ]
+ },
+ {
+  "vi": "Món không bao giờ dưới Dở",
+  "src": [
+   "Core/Relics.cs:478"
+  ]
+ },
+ {
+  "vi": "Huyền thoại khi nấu +{0}",
+  "src": [
+   "Core/Relics.cs:479"
+  ]
+ },
+ {
+  "vi": "Huyền thoại khi nấu +",
+  "src": [
+   "Core/Relics.cs:479"
+  ]
+ },
+ {
+  "vi": "Tiền bán món +{0}",
+  "src": [
+   "Core/Relics.cs:481"
+  ]
+ },
+ {
+  "vi": "Tiền bán món +",
+  "src": [
+   "Core/Relics.cs:481"
+  ]
+ },
+ {
+  "vi": "{0} vé trắng mỗi 3 ngày",
+  "src": [
+   "Core/Relics.cs:482"
+  ]
+ },
+ {
+  "vi": " vé trắng mỗi 3 ngày",
+  "src": [
+   "Core/Relics.cs:482"
+  ]
+ },
+ {
+  "vi": "Tủ lạnh +{0}",
+  "src": [
+   "Core/Relics.cs:483"
+  ]
+ },
+ {
+  "vi": "{0} ô",
+  "src": [
+   "Core/Relics.cs:483"
+  ]
+ },
+ {
+  "vi": "Tủ lạnh +",
+  "src": [
+   "Core/Relics.cs:483"
+  ]
+ },
+ {
+  "vi": " ô",
+  "src": [
+   "Core/Relics.cs:483",
+   "Game/RoomViewRound2.cs:591"
+  ]
+ },
+ {
+  "vi": "món không tụt bậc",
+  "src": [
+   "Core/Relics.cs:484"
+  ]
+ },
+ {
+  "vi": "Thời gian chờ an toàn +{0}",
+  "src": [
+   "Core/Relics.cs:485"
+  ]
+ },
+ {
+  "vi": "Thời gian chờ an toàn +",
+  "src": [
+   "Core/Relics.cs:485"
+  ]
+ },
+ {
+  "vi": "Tỉ lệ hỏng nước sốt −{0}",
+  "src": [
+   "Core/Relics.cs:486"
+  ]
+ },
+ {
+  "vi": "{0} điểm",
+  "src": [
+   "Core/Relics.cs:486"
+  ]
+ },
+ {
+  "vi": "Tỉ lệ hỏng nước sốt −",
+  "src": [
+   "Core/Relics.cs:486"
+  ]
+ },
+ {
+  "vi": " điểm",
+  "src": [
+   "Core/Relics.cs:486"
+  ]
+ },
+ {
+  "vi": "đầu ngày {0}: {1}",
+  "src": [
+   "Core/Story.cs:66"
+  ]
+ },
+ {
+  "vi": "đầu ngày ",
+  "src": [
+   "Core/Story.cs:66"
+  ]
+ },
+ {
+  "vi": "Sáng thứ Hai, Hope bị đuổi việc ngay giữa văn phòng.",
+  "src": [
+   "Core/Story.cs:69"
+  ]
+ },
+ {
+  "vi": "Cả sự nghiệp gói gọn trong một thùng các-tông. …và thế là hết.",
+  "src": [
+   "Core/Story.cs:70"
+  ]
+ },
+ {
+  "vi": "Về tới quán ăn cũ, Hope thấy chủ nợ đã đứng chờ trước cửa.",
+  "src": [
+   "Core/Story.cs:71"
+  ]
+ },
+ {
+  "vi": "Thay vì siết nợ, chủ nợ đưa Hope chùm chìa khóa: \"Quán này giờ là của cậu. Nấu đi.\"",
+  "src": [
+   "Core/Story.cs:72"
+  ]
+ },
+ {
+  "vi": "Giấy nợ: {0}",
+  "src": [
+   "Core/Story.cs:73"
+  ]
+ },
+ {
+  "vi": "{0}. Thiếu một đồng là tôi lấy lại quán.",
+  "src": [
+   "Core/Story.cs:73"
+  ]
+ },
+ {
+  "vi": "Giấy nợ: ",
+  "src": [
+   "Core/Story.cs:73"
+  ]
+ },
+ {
+  "vi": ". Thiếu một đồng là tôi lấy lại quán.",
+  "src": [
+   "Core/Story.cs:73"
+  ]
+ },
+ {
+  "vi": "Ngày 2, bão đổ bộ. Sấm nổ ngay trên mái quán.",
+  "src": [
+   "Core/Story.cs:87"
+  ]
+ },
+ {
+  "vi": "Mái dột tứ tung, Hope đội nồi hứng nước: \"Quán ơi, đừng sập nha…\"",
+  "src": [
+   "Core/Story.cs:88"
+  ]
+ },
+ {
+  "vi": "Ngày 3, kho gần như trống trơn.",
+  "src": [
+   "Core/Story.cs:89"
+  ]
+ },
+ {
+  "vi": "Ít nguyên liệu thì nấu thật khéo!",
+  "src": [
+   "Core/Story.cs:90"
+  ]
+ },
+ {
+  "vi": "Bà cụ khách quen húp một thìa: \"Ngon quá cháu ơi!\" Ngoài cửa sổ, trời đã tạnh.",
+  "src": [
+   "Core/Story.cs:91"
+  ]
+ },
+ {
+  "vi": "Ngày {0}, 19 giờ 02: sét đánh cột điện. PHỤT!",
+  "src": [
+   "Core/Story.cs:96"
+  ]
+ },
+ {
+  "vi": "Ngày ",
+  "src": [
+   "Core/Story.cs:96",
+   "Core/Story.cs:105",
+   "Core/Story.cs:108",
+   "Core/Story.cs:109"
+  ]
+ },
+ {
+  "vi": ", 19 giờ 02: sét đánh cột điện. PHỤT!",
+  "src": [
+   "Core/Story.cs:96"
+  ]
+ },
+ {
+  "vi": "Cả quán tối om… chỉ còn mấy đôi mắt nhìn nhau.",
+  "src": [
+   "Core/Story.cs:97"
+  ]
+ },
+ {
+  "vi": "Hope thắp nến: bếp vẫn phải đỏ lửa!",
+  "src": [
+   "Core/Story.cs:98"
+  ]
+ },
+ {
+  "vi": "Không điện, quán vẫn đông khách.",
+  "src": [
+   "Core/Story.cs:99"
+  ]
+ },
+ {
+  "vi": "Khách còn khen: \"Lãng mạn ghê!\"",
+  "src": [
+   "Core/Story.cs:100"
+  ]
+ },
+ {
+  "vi": "Ngày {0}, có kẻ dán tờ rơi khắp phố: \"Quán bẩn!!\"",
+  "src": [
+   "Core/Story.cs:105"
+  ]
+ },
+ {
+  "vi": ", có kẻ dán tờ rơi khắp phố: \"Quán bẩn!!\"",
+  "src": [
+   "Core/Story.cs:105"
+  ]
+ },
+ {
+  "vi": "Mấy ngày liền, quán vắng tanh.",
+  "src": [
+   "Core/Story.cs:106"
+  ]
+ },
+ {
+  "vi": "Nhưng máy quay của quán đã ghi lại tất cả. \"Bắt được rồi nhé!\"",
+  "src": [
+   "Core/Story.cs:107"
+  ]
+ },
+ {
+  "vi": "Ngày {0}, kẻ phá đám bị lật tẩy trước mặt mọi người.",
+  "src": [
+   "Core/Story.cs:108"
+  ]
+ },
+ {
+  "vi": ", kẻ phá đám bị lật tẩy trước mặt mọi người.",
+  "src": [
+   "Core/Story.cs:108"
+  ]
+ },
+ {
+  "vi": "Ngày {0}, danh tiếng của quán trở lại!",
+  "src": [
+   "Core/Story.cs:109"
+  ]
+ },
+ {
+  "vi": ", danh tiếng của quán trở lại!",
+  "src": [
+   "Core/Story.cs:109"
+  ]
+ },
+ {
+  "vi": "Ngày {0}, hạn chót. Chủ nợ đứng ở cửa: \"Một món. Tuyệt hảo.\"",
+  "src": [
+   "Core/Story.cs:123"
+  ]
+ },
+ {
+  "vi": ", hạn chót. Chủ nợ đứng ở cửa: \"Một món. Tuyệt hảo.\"",
+  "src": [
+   "Core/Story.cs:123"
+  ]
+ },
+ {
+  "vi": "Hope nấu bằng cả nhân phẩm.",
+  "src": [
+   "Core/Story.cs:124"
+  ]
+ },
+ {
+  "vi": "Nắp chuông nhấc lên: món Huyền thoại!",
+  "src": [
+   "Core/Story.cs:125"
+  ]
+ },
+ {
+  "vi": "Chủ nợ nếm thử một thìa… và sững người.",
+  "src": [
+   "Core/Story.cs:126"
+  ]
+ },
+ {
+  "vi": "\"Vị này… giống hệt món mẹ ta nấu…\"",
+  "src": [
+   "Core/Story.cs:127"
+  ]
+ },
+ {
+  "vi": "Đầu ngày {0}",
+  "src": [
+   "Core/Story.cs:128"
+  ]
+ },
+ {
+  "vi": "{0}, Hope trả đủ khoản cuối ",
+  "src": [
+   "Core/Story.cs:128"
+  ]
+ },
+ {
+  "vi": "Đầu ngày ",
+  "src": [
+   "Core/Story.cs:128",
+   "Core/Story.cs:140",
+   "Game/Hud.cs:487",
+   "Game/Hud.cs:494"
+  ]
+ },
+ {
+  "vi": ", Hope trả đủ khoản cuối ",
+  "src": [
+   "Core/Story.cs:128"
+  ]
+ },
+ {
+  "vi": "{0}, còn dư {1}. Chủ nợ xé giấy nợ. XOẸT!!",
+  "src": [
+   "Core/Story.cs:129"
+  ]
+ },
+ {
+  "vi": ", còn dư ",
+  "src": [
+   "Core/Story.cs:129"
+  ]
+ },
+ {
+  "vi": ". Chủ nợ xé giấy nợ. XOẸT!!",
+  "src": [
+   "Core/Story.cs:129"
+  ]
+ },
+ {
+  "vi": "\"Còn một chuyện nữa… con gái ta.\" Rồi ông gả con gái cho Hope.",
+  "src": [
+   "Core/Story.cs:130"
+  ]
+ },
+ {
+  "vi": "Quán ăn của Hope khai trương lại. Hết nợ, có vợ.",
+  "src": [
+   "Core/Story.cs:131"
+  ]
+ },
+ {
+  "vi": "Đầu ngày {0}, chủ nợ đến thu {1}. Hope chỉ có {2}",
+  "src": [
+   "Core/Story.cs:140"
+  ]
+ },
+ {
+  "vi": ", chủ nợ đến thu ",
+  "src": [
+   "Core/Story.cs:140"
+  ]
+ },
+ {
+  "vi": ". Hope chỉ có ",
+  "src": [
+   "Core/Story.cs:140"
+  ]
+ },
+ {
+  "vi": "{0}, thiếu {1}. Chủ nợ lấy lại chìa khóa quán.",
+  "src": [
+   "Core/Story.cs:141"
+  ]
+ },
+ {
+  "vi": ", thiếu ",
+  "src": [
+   "Core/Story.cs:141",
+   "Game/Hud.cs:503"
+  ]
+ },
+ {
+  "vi": ". Chủ nợ lấy lại chìa khóa quán.",
+  "src": [
+   "Core/Story.cs:141"
+  ]
+ },
+ {
+  "vi": "RẦM!",
+  "src": [
+   "Core/Story.cs:141"
+  ]
+ },
+ {
+  "vi": "Ngày {0}–{1}",
+  "src": [
+   "Game/ComicBook.cs:555"
+  ]
+ },
+ {
+  "vi": "Ngày {0}",
+  "src": [
+   "Game/ComicBook.cs:555"
+  ]
+ },
+ {
+  "vi": "Bà cụ",
+  "src": [
+   "Game/CustomerLooks.cs:22"
+  ]
+ },
+ {
+  "vi": "Cậu học sinh",
+  "src": [
+   "Game/CustomerLooks.cs:22"
+  ]
+ },
+ {
+  "vi": "Cô văn phòng",
+  "src": [
+   "Game/CustomerLooks.cs:22"
+  ]
+ },
+ {
+  "vi": "Chú nông dân",
+  "src": [
+   "Game/CustomerLooks.cs:22"
+  ]
+ },
+ {
+  "vi": "Ông họa sĩ",
+  "src": [
+   "Game/CustomerLooks.cs:22"
+  ]
+ },
+ {
+  "vi": "Em bé",
+  "src": [
+   "Game/CustomerLooks.cs:22"
+  ]
+ },
+ {
+  "vi": "Anh thợ",
+  "src": [
+   "Game/CustomerLooks.cs:22"
+  ]
+ },
+ {
+  "vi": "Ông trùm VIP",
+  "src": [
+   "Game/CustomerLooks.cs:23"
+  ]
+ },
+ {
+  "vi": "Nhà vô địch",
+  "src": [
+   "Game/CustomerLooks.cs:23"
+  ]
+ },
+ {
+  "vi": "Fan Quỷ Đỏ",
+  "src": [
+   "Game/CustomerLooks.cs:23"
+  ]
+ },
+ {
+  "vi": "Anh đại gia",
+  "src": [
+   "Game/CustomerLooks.cs:23"
+  ]
+ },
+ {
+  "vi": "Tròn hiền",
+  "src": [
+   "Game/FaceArt.cs:137"
+  ]
+ },
+ {
+  "vi": "Mắt to mi cong",
+  "src": [
+   "Game/FaceArt.cs:138"
+  ]
+ },
+ {
+  "vi": "Mắt nhỏ tàn nhang",
+  "src": [
+   "Game/FaceArt.cs:139"
+  ]
+ },
+ {
+  "vi": "Râu mép",
+  "src": [
+   "Game/FaceArt.cs:140"
+  ]
+ },
+ {
+  "vi": "Nốt ruồi",
+  "src": [
+   "Game/FaceArt.cs:141"
+  ]
+ },
+ {
+  "vi": "Mắt dài",
+  "src": [
+   "Game/FaceArt.cs:142"
+  ]
+ },
+ {
+  "vi": "Má hây",
+  "src": [
+   "Game/FaceArt.cs:143"
+  ]
+ },
+ {
+  "vi": "Ông chú",
+  "src": [
+   "Game/FaceArt.cs:144"
+  ]
+ },
+ {
+  "vi": "Ngày 1 · Quay nguyên liệu, nấu sẵn, rồi mở quán.",
+  "src": [
+   "Game/GameController.cs:214"
+  ]
+ },
+ {
+  "vi": "Quán Ăn Hope: bản lưu hỏng ({0}).",
+  "src": [
+   "Game/GameController.cs:227"
+  ]
+ },
+ {
+  "vi": "Chơi tiếp từ đầu ngày {0}.",
+  "src": [
+   "Game/GameController.cs:235"
+  ]
+ },
+ {
+  "vi": "Chơi tiếp từ đầu ngày ",
+  "src": [
+   "Game/GameController.cs:235"
+  ]
+ },
+ {
+  "vi": "Chín rồi! Lấy đĩa trống, bấm vào bếp.",
+  "src": [
+   "Game/GameController.cs:408"
+  ]
+ },
+ {
+  "vi": "Cháy rồi! Món tụt 1 bậc.",
+  "src": [
+   "Game/GameController.cs:410"
+  ]
+ },
+ {
+  "vi": "Bếp bốc khói! Múc ra ngay.",
+  "src": [
+   "Game/GameController.cs:411"
+  ]
+ },
+ {
+  "vi": " đã sơ chế",
+  "src": [
+   "Game/GameController.cs:469",
+   "Game/RoomView.cs:404",
+   "Game/Sprint10Room.cs:194"
+  ]
+ },
+ {
+  "vi": "đĩa trống",
+  "src": [
+   "Game/GameController.cs:470",
+   "Game/GameControllerSprint12.cs:131"
+  ]
+ },
+ {
+  "vi": "nước sốt thần thánh",
+  "src": [
+   "Game/GameController.cs:472",
+   "Game/GameController.cs:904"
+  ]
+ },
+ {
+  "vi": "Tay đang bận. Chuột phải để {0}",
+  "src": [
+   "Game/GameController.cs:483"
+  ]
+ },
+ {
+  "vi": "Tay đang bận. Chuột phải để ",
+  "src": [
+   "Game/GameController.cs:483"
+  ]
+ },
+ {
+  "vi": "thả ",
+  "src": [
+   "Game/GameController.cs:483"
+  ]
+ },
+ {
+  "vi": "đặt lại ",
+  "src": [
+   "Game/GameController.cs:483"
+  ]
+ },
+ {
+  "vi": "Hết vé rồi.",
+  "src": [
+   "Game/GameController.cs:496"
+  ]
+ },
+ {
+  "vi": "Giờ này không nhận thùng được.",
+  "src": [
+   "Game/GameController.cs:496",
+   "Game/GameController.cs:976"
+  ]
+ },
+ {
+  "vi": " · Rương đột phá: {0}!",
+  "src": [
+   "Game/GameController.cs:502"
+  ]
+ },
+ {
+  "vi": " · Rương đột phá: ",
+  "src": [
+   "Game/GameController.cs:502"
+  ]
+ },
+ {
+  "vi": "Đã huỷ, không mua relic.",
+  "src": [
+   "Game/GameController.cs:517",
+   "Game/GameController.cs:654"
+  ]
+ },
+ {
+  "vi": "Đã mua {0} · còn {1} vé.",
+  "src": [
+   "Game/GameController.cs:528"
+  ]
+ },
+ {
+  "vi": "Đã mua ",
+  "src": [
+   "Game/GameController.cs:528",
+   "Game/GameController.cs:916"
+  ]
+ },
+ {
+  "vi": " · còn ",
+  "src": [
+   "Game/GameController.cs:528",
+   "Game/GameController.cs:612",
+   "Game/GameControllerSprint11.cs:136",
+   "Game/GameControllerSprint8.cs:129"
+  ]
+ },
+ {
+  "vi": " vé.",
+  "src": [
+   "Game/GameController.cs:528",
+   "Game/GameController.cs:612"
+  ]
+ },
+ {
+  "vi": "Đã đủ {0} relic: nhấn Tab, chọn 1 relic để bỏ. Chuột phải: huỷ.",
+  "src": [
+   "Game/GameController.cs:532"
+  ]
+ },
+ {
+  "vi": "Đã đủ ",
+  "src": [
+   "Game/GameController.cs:532",
+   "Game/GameController.cs:574",
+   "Game/GameController.cs:928",
+   "Game/GameController.cs:929"
+  ]
+ },
+ {
+  "vi": " relic: nhấn Tab, chọn 1 relic để bỏ. Chuột phải: huỷ.",
+  "src": [
+   "Game/GameController.cs:532"
+  ]
+ },
+ {
+  "vi": "Thiếu {0} vé để mua {1}.",
+  "src": [
+   "Game/GameController.cs:535"
+  ]
+ },
+ {
+  "vi": "Thiếu ",
+  "src": [
+   "Game/GameController.cs:535",
+   "Game/GameController.cs:925",
+   "Game/GameControllerSprint8.cs:48"
+  ]
+ },
+ {
+  "vi": " vé để mua ",
+  "src": [
+   "Game/GameController.cs:535"
+  ]
+ },
+ {
+  "vi": "Cửa hàng relic mở từ ngày {0}.",
+  "src": [
+   "Game/GameController.cs:538",
+   "Game/GameControllerSprint8.cs:54"
+  ]
+ },
+ {
+  "vi": "Cửa hàng đã đóng.",
+  "src": [
+   "Game/GameController.cs:538"
+  ]
+ },
+ {
+  "vi": "Cửa hàng relic mở từ ngày ",
+  "src": [
+   "Game/GameController.cs:538",
+   "Game/GameControllerSprint8.cs:54",
+   "Game/RoomView.cs:946"
+  ]
+ },
+ {
+  "vi": "Bệ này đã bán hôm nay.",
+  "src": [
+   "Game/GameController.cs:541"
+  ]
+ },
+ {
+  "vi": "Đang chờ bạn chọn 1 trong 3 relic trên bệ.",
+  "src": [
+   "Game/GameController.cs:550"
+  ]
+ },
+ {
+  "vi": "Vé đen bán từ ngày {0}.",
+  "src": [
+   "Game/GameController.cs:553"
+  ]
+ },
+ {
+  "vi": "Chưa có vé đen. Mua trong Tab → Cửa hàng.",
+  "src": [
+   "Game/GameController.cs:553",
+   "Game/GameController.cs:974"
+  ]
+ },
+ {
+  "vi": "Vé đen bán từ ngày ",
+  "src": [
+   "Game/GameController.cs:553"
+  ]
+ },
+ {
+  "vi": "dùng vé đen",
+  "src": [
+   "Game/GameController.cs:556"
+  ]
+ },
+ {
+  "vi": "Không còn relic Hiếm nào để chọn.",
+  "src": [
+   "Game/GameController.cs:557"
+  ]
+ },
+ {
+  "vi": "Vé đen: chọn 1 trong 3 relic Hiếm trở lên trên bệ.",
+  "src": [
+   "Game/GameController.cs:560"
+  ]
+ },
+ {
+  "vi": "Đã đủ {0} relic: nhấn Tab, chọn 1 relic để bỏ, lấy {1}.",
+  "src": [
+   "Game/GameController.cs:574"
+  ]
+ },
+ {
+  "vi": " relic: nhấn Tab, chọn 1 relic để bỏ, lấy ",
+  "src": [
+   "Game/GameController.cs:574"
+  ]
+ },
+ {
+  "vi": "Vé đen: đã lấy {0} ({1}).",
+  "src": [
+   "Game/GameController.cs:582"
+  ]
+ },
+ {
+  "vi": "Vé đen: đã lấy ",
+  "src": [
+   "Game/GameController.cs:582"
+  ]
+ },
+ {
+  "vi": "Không đổi được relic.",
+  "src": [
+   "Game/GameController.cs:596",
+   "Game/GameController.cs:607"
+  ]
+ },
+ {
+  "vi": "Đã bỏ {0}, lấy {1} bằng vé đen.",
+  "src": [
+   "Game/GameController.cs:599"
+  ]
+ },
+ {
+  "vi": "Đã bỏ ",
+  "src": [
+   "Game/GameController.cs:599",
+   "Game/GameController.cs:612",
+   "Game/GameControllerSprint8.cs:129"
+  ]
+ },
+ {
+  "vi": ", lấy ",
+  "src": [
+   "Game/GameController.cs:599"
+  ]
+ },
+ {
+  "vi": " bằng vé đen.",
+  "src": [
+   "Game/GameController.cs:599"
+  ]
+ },
+ {
+  "vi": "Đã bỏ {0}",
+  "src": [
+   "Game/GameController.cs:612",
+   "Game/GameControllerSprint8.cs:129"
+  ]
+ },
+ {
+  "vi": "{0}, mua {1} · còn {2} vé.",
+  "src": [
+   "Game/GameController.cs:612"
+  ]
+ },
+ {
+  "vi": "[Gỡ lỗi] Đã thêm relic {0}.",
+  "src": [
+   "Game/GameController.cs:621"
+  ]
+ },
+ {
+  "vi": "[Gỡ lỗi] Đã thêm relic ",
+  "src": [
+   "Game/GameController.cs:621"
+  ]
+ },
+ {
+  "vi": "lấy {0}",
+  "src": [
+   "Game/GameController.cs:628"
+  ]
+ },
+ {
+  "vi": "lấy ",
+  "src": [
+   "Game/GameController.cs:628"
+  ]
+ },
+ {
+  "vi": "Đang cầm {0}.",
+  "src": [
+   "Game/GameController.cs:635"
+  ]
+ },
+ {
+  "vi": "Đang cầm ",
+  "src": [
+   "Game/GameController.cs:635",
+   "Game/GameController.cs:721",
+   "Game/GameController.cs:862"
+  ]
+ },
+ {
+  "vi": "Đã thả {0}.",
+  "src": [
+   "Game/GameController.cs:671"
+  ]
+ },
+ {
+  "vi": "Đã thả ",
+  "src": [
+   "Game/GameController.cs:671"
+  ]
+ },
+ {
+  "vi": "Đã đặt lại {0}.",
+  "src": [
+   "Game/GameController.cs:678"
+  ]
+ },
+ {
+  "vi": "Đã đặt lại ",
+  "src": [
+   "Game/GameController.cs:678"
+  ]
+ },
+ {
+  "vi": "Cầm một nguyên liệu tới đây.",
+  "src": [
+   "Game/GameController.cs:703"
+  ]
+ },
+ {
+  "vi": "{0} đã sơ chế, cho thẳng vào bếp.",
+  "src": [
+   "Game/GameController.cs:704"
+  ]
+ },
+ {
+  "vi": " đã sơ chế, cho thẳng vào bếp.",
+  "src": [
+   "Game/GameController.cs:704"
+  ]
+ },
+ {
+  "vi": "Giữ chuột trái: sơ chế {0}.",
+  "src": [
+   "Game/GameController.cs:711",
+   "Game/GameController.cs:715"
+  ]
+ },
+ {
+  "vi": "Giữ chuột trái: sơ chế ",
+  "src": [
+   "Game/GameController.cs:711",
+   "Game/GameController.cs:715",
+   "Game/Sprint10Room.cs:83"
+  ]
+ },
+ {
+  "vi": "cầm {0}",
+  "src": [
+   "Game/GameController.cs:716"
+  ]
+ },
+ {
+  "vi": "cầm ",
+  "src": [
+   "Game/GameController.cs:716"
+  ]
+ },
+ {
+  "vi": "Đang cầm {0}. Mang tới bếp.",
+  "src": [
+   "Game/GameController.cs:721"
+  ]
+ },
+ {
+  "vi": ". Mang tới bếp.",
+  "src": [
+   "Game/GameController.cs:721"
+  ]
+ },
+ {
+  "vi": "Xong! Bấm thớt để cầm {0}.",
+  "src": [
+   "Game/GameController.cs:732"
+  ]
+ },
+ {
+  "vi": "Xong! Bấm thớt để cầm ",
+  "src": [
+   "Game/GameController.cs:732"
+  ]
+ },
+ {
+  "vi": "Bếp đang nấu, chưa đổi dụng cụ được.",
+  "src": [
+   "Game/GameController.cs:743"
+  ]
+ },
+ {
+  "vi": "Đặt {0} lên {1}",
+  "src": [
+   "Game/GameController.cs:746"
+  ]
+ },
+ {
+  "vi": "bếp {0}",
+  "src": [
+   "Game/GameController.cs:746",
+   "Game/GameController.cs:848"
+  ]
+ },
+ {
+  "vi": "Đặt ",
+  "src": [
+   "Game/GameController.cs:746",
+   "Game/Sprint10Room.cs:82",
+   "Game/Sprint10Room.cs:241",
+   "Game/Sprint10Room.cs:243"
+  ]
+ },
+ {
+  "vi": " lên ",
+  "src": [
+   "Game/GameController.cs:746"
+  ]
+ },
+ {
+  "vi": "bếp ",
+  "src": [
+   "Game/GameController.cs:746",
+   "Game/GameController.cs:848"
+  ]
+ },
+ {
+  "vi": "bếp",
+  "src": [
+   "Game/GameController.cs:746",
+   "Game/GameController.cs:848",
+   "Game/GameController.cs:907"
+  ]
+ },
+ {
+  "vi": "Chọn dụng cụ trên giá trước: Chảo, Nồi hoặc Vỉ nướng.",
+  "src": [
+   "Game/GameController.cs:755",
+   "Game/GameController.cs:775"
+  ]
+ },
+ {
+  "vi": "Bếp đang nấu, chưa cho thêm được.",
+  "src": [
+   "Game/GameController.cs:756"
+  ]
+ },
+ {
+  "vi": "Đã cho {0}.",
+  "src": [
+   "Game/GameController.cs:760"
+  ]
+ },
+ {
+  "vi": "Đã cho ",
+  "src": [
+   "Game/GameController.cs:760",
+   "Game/GameController.cs:789",
+   "Game/GameControllerSprint12.cs:191"
+  ]
+ },
+ {
+  "vi": "Múc món ra đĩa trước, rồi nhỏ nước sốt lên đĩa.",
+  "src": [
+   "Game/GameController.cs:770"
+  ]
+ },
+ {
+  "vi": "Sơ chế {0} trên thớt trước.",
+  "src": [
+   "Game/GameController.cs:774"
+  ]
+ },
+ {
+  "vi": "Sơ chế ",
+  "src": [
+   "Game/GameController.cs:774",
+   "Game/RoomView.cs:753",
+   "Game/Sprint11Room.cs:236"
+  ]
+ },
+ {
+  "vi": " trên thớt trước.",
+  "src": [
+   "Game/GameController.cs:774"
+  ]
+ },
+ {
+  "vi": "{0} không nấu chung với {1}",
+  "src": [
+   "Game/GameController.cs:781"
+  ]
+ },
+ {
+  "vi": "{0}. Xem Tab → Thực đơn.",
+  "src": [
+   "Game/GameController.cs:781"
+  ]
+ },
+ {
+  "vi": " không nấu chung với ",
+  "src": [
+   "Game/GameController.cs:781"
+  ]
+ },
+ {
+  "vi": "món trong bếp",
+  "src": [
+   "Game/GameController.cs:781"
+  ]
+ },
+ {
+  "vi": ". Xem Tab → Thực đơn.",
+  "src": [
+   "Game/GameController.cs:781"
+  ]
+ },
+ {
+  "vi": "Bếp không nhận thêm {0} lúc này.",
+  "src": [
+   "Game/GameController.cs:784"
+  ]
+ },
+ {
+  "vi": "Bếp không nhận thêm ",
+  "src": [
+   "Game/GameController.cs:784"
+  ]
+ },
+ {
+  "vi": " lúc này.",
+  "src": [
+   "Game/GameController.cs:784"
+  ]
+ },
+ {
+  "vi": "Đã cho {0} vào {1}.",
+  "src": [
+   "Game/GameController.cs:789"
+  ]
+ },
+ {
+  "vi": " vào ",
+  "src": [
+   "Game/GameController.cs:789",
+   "Game/RoomView.cs:508"
+  ]
+ },
+ {
+  "vi": "Lấy một đĩa trống ở chồng đĩa rồi bấm vào bếp để múc.",
+  "src": [
+   "Game/GameController.cs:795"
+  ]
+ },
+ {
+  "vi": "Quầy đã đủ {0} đĩa. Phục vụ bớt rồi múc.",
+  "src": [
+   "Game/GameController.cs:799"
+  ]
+ },
+ {
+  "vi": "Quầy đã đủ ",
+  "src": [
+   "Game/GameController.cs:799"
+  ]
+ },
+ {
+  "vi": " đĩa. Phục vụ bớt rồi múc.",
+  "src": [
+   "Game/GameController.cs:799"
+  ]
+ },
+ {
+  "vi": "Chưa múc được.",
+  "src": [
+   "Game/GameController.cs:799"
+  ]
+ },
+ {
+  "vi": " Có thể nhỏ nước sốt lên đĩa.",
+  "src": [
+   "Game/GameController.cs:808"
+  ]
+ },
+ {
+  "vi": "Đang nấu, chờ chín đã.",
+  "src": [
+   "Game/GameController.cs:812"
+  ]
+ },
+ {
+  "vi": "Chọn dụng cụ trên giá trước.",
+  "src": [
+   "Game/GameController.cs:813"
+  ]
+ },
+ {
+  "vi": "Cầm nguyên liệu đã sơ chế tới, hoặc bấm lọ gia vị.",
+  "src": [
+   "Game/GameController.cs:813"
+  ]
+ },
+ {
+  "vi": "Cần 1 nguyên liệu chính và 1 đồ phụ đã sơ chế trong bếp.",
+  "src": [
+   "Game/GameController.cs:823"
+  ]
+ },
+ {
+  "vi": "Đang nấu {0}…",
+  "src": [
+   "Game/GameController.cs:826"
+  ]
+ },
+ {
+  "vi": "Đang nấu ",
+  "src": [
+   "Game/GameController.cs:826",
+   "Game/RoomView.cs:755",
+   "Game/RoomView.cs:789",
+   "Game/Sprint11Room.cs:238"
+  ]
+ },
+ {
+  "vi": "lấy đĩa",
+  "src": [
+   "Game/GameController.cs:832",
+   "Game/GameController.cs:857"
+  ]
+ },
+ {
+  "vi": "Đang cầm đĩa trống.",
+  "src": [
+   "Game/GameController.cs:835"
+  ]
+ },
+ {
+  "vi": "Bếp đang trống.",
+  "src": [
+   "Game/GameController.cs:844"
+  ]
+ },
+ {
+  "vi": "Đã đổ bỏ đồ trên {0}",
+  "src": [
+   "Game/GameController.cs:848"
+  ]
+ },
+ {
+  "vi": "Đã đổ bỏ đồ trên ",
+  "src": [
+   "Game/GameController.cs:848"
+  ]
+ },
+ {
+  "vi": "Đang cầm {0} · {1}. Đặt trước mặt khách gọi món này.",
+  "src": [
+   "Game/GameController.cs:862"
+  ]
+ },
+ {
+  "vi": ". Đặt trước mặt khách gọi món này.",
+  "src": [
+   "Game/GameController.cs:862"
+  ]
+ },
+ {
+  "vi": "Tủ lạnh: cầm đĩa tới để cất, hoặc bấm một ô để lấy.",
+  "src": [
+   "Game/GameController.cs:881"
+  ]
+ },
+ {
+  "vi": "{0} đã ở trong tủ. Chuột phải để đặt lại.",
+  "src": [
+   "Game/GameController.cs:882"
+  ]
+ },
+ {
+  "vi": " đã ở trong tủ. Chuột phải để đặt lại.",
+  "src": [
+   "Game/GameController.cs:882"
+  ]
+ },
+ {
+  "vi": "Tủ lạnh đầy ({0} ô).",
+  "src": [
+   "Game/GameController.cs:883"
+  ]
+ },
+ {
+  "vi": "Tủ lạnh đầy (",
+  "src": [
+   "Game/GameController.cs:883"
+  ]
+ },
+ {
+  "vi": " ô).",
+  "src": [
+   "Game/GameController.cs:883"
+  ]
+ },
+ {
+  "vi": "Đã cất {0} vào tủ lạnh.",
+  "src": [
+   "Game/GameController.cs:889"
+  ]
+ },
+ {
+  "vi": "Đã cất ",
+  "src": [
+   "Game/GameController.cs:889"
+  ]
+ },
+ {
+  "vi": " vào tủ lạnh.",
+  "src": [
+   "Game/GameController.cs:889"
+  ]
+ },
+ {
+  "vi": "máy gacha đồ ăn",
+  "src": [
+   "Game/GameController.cs:905"
+  ]
+ },
+ {
+  "vi": "thớt",
+  "src": [
+   "Game/GameController.cs:906"
+  ]
+ },
+ {
+  "vi": "tay vạn năng",
+  "src": [
+   "Game/GameController.cs:908"
+  ]
+ },
+ {
+  "vi": "vé đen",
+  "src": [
+   "Game/GameController.cs:909"
+  ]
+ },
+ {
+  "vi": "Đã mua {0} ({1}G) · ví còn {2}G.",
+  "src": [
+   "Game/GameController.cs:916"
+  ]
+ },
+ {
+  "vi": "G) · ví còn ",
+  "src": [
+   "Game/GameController.cs:916"
+  ]
+ },
+ {
+  "vi": " Bàn sơ chế dài thêm, có thêm thớt.",
+  "src": [
+   "Game/GameController.cs:917"
+  ]
+ },
+ {
+  "vi": " Bếp mới ở bên phải quầy đĩa.",
+  "src": [
+   "Game/GameController.cs:917"
+  ]
+ },
+ {
+  "vi": " Cầm được 2 đồ: phím 1 / 2 chọn ô.",
+  "src": [
+   "Game/GameController.cs:918"
+  ]
+ },
+ {
+  "vi": " Lọ sốt ở bên phải bếp.",
+  "src": [
+   "Game/GameController.cs:919"
+  ]
+ },
+ {
+  "vi": "Cửa hàng mở từ ngày {0}.",
+  "src": [
+   "Game/GameController.cs:922",
+   "Game/GameController.cs:954",
+   "Game/GameControllerSprint11.cs:90"
+  ]
+ },
+ {
+  "vi": "Cửa hàng mở từ ngày ",
+  "src": [
+   "Game/GameController.cs:922",
+   "Game/GameController.cs:954",
+   "Game/GameControllerSprint11.cs:90"
+  ]
+ },
+ {
+  "vi": "Thiếu {0}G để mua {1}.",
+  "src": [
+   "Game/GameController.cs:925"
+  ]
+ },
+ {
+  "vi": "G để mua ",
+  "src": [
+   "Game/GameController.cs:925"
+  ]
+ },
+ {
+  "vi": "Đã đủ {0} thớt.",
+  "src": [
+   "Game/GameController.cs:928"
+  ]
+ },
+ {
+  "vi": "Đã có máy gacha đồ ăn.",
+  "src": [
+   "Game/GameController.cs:928"
+  ]
+ },
+ {
+  "vi": "Đã có tay vạn năng.",
+  "src": [
+   "Game/GameController.cs:928"
+  ]
+ },
+ {
+  "vi": " thớt.",
+  "src": [
+   "Game/GameController.cs:928"
+  ]
+ },
+ {
+  "vi": "Đã đủ {0} bếp.",
+  "src": [
+   "Game/GameController.cs:929"
+  ]
+ },
+ {
+  "vi": "Đã giữ tối đa {0}.",
+  "src": [
+   "Game/GameController.cs:929"
+  ]
+ },
+ {
+  "vi": " bếp.",
+  "src": [
+   "Game/GameController.cs:929"
+  ]
+ },
+ {
+  "vi": "Đã giữ tối đa ",
+  "src": [
+   "Game/GameController.cs:929"
+  ]
+ },
+ {
+  "vi": "Hết nước sốt. Mua trong Tab → Cửa hàng.",
+  "src": [
+   "Game/GameController.cs:954",
+   "Game/GameControllerSprint11.cs:90"
+  ]
+ },
+ {
+  "vi": "Cầm một đĩa món rồi bấm lọ nước sốt.",
+  "src": [
+   "Game/GameController.cs:955"
+  ]
+ },
+ {
+  "vi": "Vé đen: + {0} · + {1} hàng tốt.",
+  "src": [
+   "Game/GameController.cs:979"
+  ]
+ },
+ {
+  "vi": "Vé đen: + ",
+  "src": [
+   "Game/GameController.cs:979"
+  ]
+ },
+ {
+  "vi": " hàng tốt.",
+  "src": [
+   "Game/GameController.cs:979"
+  ]
+ },
+ {
+  "vi": "Mở quán! Khách đầu tiên đã tới.",
+  "src": [
+   "Game/GameController.cs:994"
+  ]
+ },
+ {
+  "vi": "Đóng quán. Hết ngày {0}.",
+  "src": [
+   "Game/GameController.cs:1006"
+  ]
+ },
+ {
+  "vi": "Đóng quán sớm: khách còn lại ra về.",
+  "src": [
+   "Game/GameController.cs:1006"
+  ]
+ },
+ {
+  "vi": "Đóng quán. Hết ngày ",
+  "src": [
+   "Game/GameController.cs:1006"
+  ]
+ },
+ {
+  "vi": "khách",
+  "src": [
+   "Game/GameController.cs:1017"
+  ]
+ },
+ {
+  "vi": "khách trái",
+  "src": [
+   "Game/GameController.cs:1020"
+  ]
+ },
+ {
+  "vi": "khách giữa",
+  "src": [
+   "Game/GameController.cs:1021"
+  ]
+ },
+ {
+  "vi": "khách phải",
+  "src": [
+   "Game/GameController.cs:1022"
+  ]
+ },
+ {
+  "vi": "Chưa có khách. Bấm biển Mở quán trước.",
+  "src": [
+   "Game/GameController.cs:1032"
+  ]
+ },
+ {
+  "vi": "Khách đang ăn.",
+  "src": [
+   "Game/GameController.cs:1034"
+  ]
+ },
+ {
+  "vi": "Ghế này đang trống.",
+  "src": [
+   "Game/GameController.cs:1035"
+  ]
+ },
+ {
+  "vi": "Mang {0} tới đây.",
+  "src": [
+   "Game/GameController.cs:1037"
+  ]
+ },
+ {
+  "vi": " tới đây.",
+  "src": [
+   "Game/GameController.cs:1037"
+  ]
+ },
+ {
+  "vi": "Chủ nợ ngạc nhiên! +{0}G (món {1}G, tip {2}G, thưởng {3}G).",
+  "src": [
+   "Game/GameController.cs:1058"
+  ]
+ },
+ {
+  "vi": "Chủ nợ ngạc nhiên! +",
+  "src": [
+   "Game/GameController.cs:1058"
+  ]
+ },
+ {
+  "vi": "G (món ",
+  "src": [
+   "Game/GameController.cs:1058"
+  ]
+ },
+ {
+  "vi": "G, thưởng ",
+  "src": [
+   "Game/GameController.cs:1058"
+  ]
+ },
+ {
+  "vi": "Chủ nợ nhận {0} ({1}): ",
+  "src": [
+   "Game/GameController.cs:1059"
+  ]
+ },
+ {
+  "vi": "Chủ nợ nhận ",
+  "src": [
+   "Game/GameController.cs:1059"
+  ]
+ },
+ {
+  "vi": "{0}G, không có thưởng (cần Tuyệt hảo trở lên).",
+  "src": [
+   "Game/GameController.cs:1060"
+  ]
+ },
+ {
+  "vi": "G, không có thưởng (cần Tuyệt hảo trở lên).",
+  "src": [
+   "Game/GameController.cs:1060"
+  ]
+ },
+ {
+  "vi": "Sai món! Khách gọi {0}: −{1}G.",
+  "src": [
+   "Game/GameController.cs:1062"
+  ]
+ },
+ {
+  "vi": "Sai món! Khách gọi ",
+  "src": [
+   "Game/GameController.cs:1062",
+   "Game/Sprint10Room.cs:242"
+  ]
+ },
+ {
+  "vi": "Khách vui: +{0}G{1}",
+  "src": [
+   "Game/GameController.cs:1064"
+  ]
+ },
+ {
+  "vi": "Khách vui: +",
+  "src": [
+   "Game/GameController.cs:1064"
+  ]
+ },
+ {
+  "vi": "Hơi tệ: khách trả nửa giá, +{0}G.",
+  "src": [
+   "Game/GameController.cs:1066"
+  ]
+ },
+ {
+  "vi": "Hơi tệ: khách trả nửa giá, +",
+  "src": [
+   "Game/GameController.cs:1066"
+  ]
+ },
+ {
+  "vi": "Món quá tệ, khách giận: −{0}G.",
+  "src": [
+   "Game/GameController.cs:1068"
+  ]
+ },
+ {
+  "vi": "Món quá tệ, khách giận: −",
+  "src": [
+   "Game/GameController.cs:1068"
+  ]
+ },
+ {
+  "vi": "Khách chờ lâu quá, bỏ đi: −{0}G.",
+  "src": [
+   "Game/GameController.cs:1123"
+  ]
+ },
+ {
+  "vi": "Khách chờ lâu quá, bỏ đi: −",
+  "src": [
+   "Game/GameController.cs:1123"
+  ]
+ },
+ {
+  "vi": "Chủ nợ đã tới, đợi ngoài cửa: mở quán để ông vào.",
+  "src": [
+   "Game/GameController.cs:1124"
+  ]
+ },
+ {
+  "vi": "Chủ nợ đã tới, đợi ghế trống.",
+  "src": [
+   "Game/GameController.cs:1125"
+  ]
+ },
+ {
+  "vi": "21:00 · Hết khách. Bấm biển để đóng quán.",
+  "src": [
+   "Game/GameController.cs:1126"
+  ]
+ },
+ {
+  "vi": "21:00 · Không nhận khách mới. Phục vụ nốt rồi đóng quán.",
+  "src": [
+   "Game/GameController.cs:1127"
+  ]
+ },
+ {
+  "vi": "Khách mới: {0}.",
+  "src": [
+   "Game/GameController.cs:1128"
+  ]
+ },
+ {
+  "vi": "Khách mới: ",
+  "src": [
+   "Game/GameController.cs:1128"
+  ]
+ },
+ {
+  "vi": "Ngày {0}: mất điện! Nấu bằng nến, khó nhìn bậc món.",
+  "src": [
+   "Game/GameController.cs:1152"
+  ]
+ },
+ {
+  "vi": ": mất điện! Nấu bằng nến, khó nhìn bậc món.",
+  "src": [
+   "Game/GameController.cs:1152"
+  ]
+ },
+ {
+  "vi": "Ngày {0}: {1}:00 chủ nợ tới. Để dành món Tuyệt hảo!",
+  "src": [
+   "Game/GameController.cs:1154"
+  ]
+ },
+ {
+  "vi": ":00 chủ nợ tới. Để dành món Tuyệt hảo!",
+  "src": [
+   "Game/GameController.cs:1154"
+  ]
+ },
+ {
+  "vi": "Ngày {0}: tin đồn xấu về quán. Mai trả nợ {1}",
+  "src": [
+   "Game/GameController.cs:1156"
+  ]
+ },
+ {
+  "vi": ": tin đồn xấu về quán. Mai trả nợ ",
+  "src": [
+   "Game/GameController.cs:1156"
+  ]
+ },
+ {
+  "vi": "{0}G: dốc hết món tủ lạnh, nước sốt, vé đen!",
+  "src": [
+   "Game/GameController.cs:1157"
+  ]
+ },
+ {
+  "vi": "G: dốc hết món tủ lạnh, nước sốt, vé đen!",
+  "src": [
+   "Game/GameController.cs:1157"
+  ]
+ },
+ {
+  "vi": "Đã trả {0}G. Vòng 3: khách khó tính hơn.",
+  "src": [
+   "Game/GameController.cs:1159"
+  ]
+ },
+ {
+  "vi": "Đã trả ",
+  "src": [
+   "Game/GameController.cs:1159",
+   "Game/GameController.cs:1161",
+   "Game/GameController.cs:1163"
+  ]
+ },
+ {
+  "vi": "G. Vòng 3: khách khó tính hơn.",
+  "src": [
+   "Game/GameController.cs:1159"
+  ]
+ },
+ {
+  "vi": "Đã trả {0}G. Vòng 4: thêm gà ta, bí đỏ, măng tây, nấm đông cô.",
+  "src": [
+   "Game/GameController.cs:1161"
+  ]
+ },
+ {
+  "vi": "G. Vòng 4: thêm gà ta, bí đỏ, măng tây, nấm đông cô.",
+  "src": [
+   "Game/GameController.cs:1161"
+  ]
+ },
+ {
+  "vi": "Đã trả {0}G. Vòng {1}: {2} khách cùng lúc. Tab → Cửa hàng đã mở.",
+  "src": [
+   "Game/GameController.cs:1163"
+  ]
+ },
+ {
+  "vi": "G. Vòng ",
+  "src": [
+   "Game/GameController.cs:1163"
+  ]
+ },
+ {
+  "vi": " khách cùng lúc. Tab → Cửa hàng đã mở.",
+  "src": [
+   "Game/GameController.cs:1163"
+  ]
+ },
+ {
+  "vi": "Ngày {0}: chọn 1 relic miễn phí · {1}.",
+  "src": [
+   "Game/GameController.cs:1165"
+  ]
+ },
+ {
+  "vi": ": chọn 1 relic miễn phí · ",
+  "src": [
+   "Game/GameController.cs:1165"
+  ]
+ },
+ {
+  "vi": "Chủ nợ đã tới · dễ tính {0}% · gọi {1}",
+  "src": [
+   "Game/GameController.cs:1213"
+  ]
+ },
+ {
+  "vi": "Chủ nợ đã tới · dễ tính ",
+  "src": [
+   "Game/GameController.cs:1213"
+  ]
+ },
+ {
+  "vi": "% · gọi ",
+  "src": [
+   "Game/GameController.cs:1213"
+  ]
+ },
+ {
+  "vi": "{0}. Món Tuyệt hảo trở lên: thưởng {1}G.",
+  "src": [
+   "Game/GameController.cs:1214"
+  ]
+ },
+ {
+  "vi": ". Món Tuyệt hảo trở lên: thưởng ",
+  "src": [
+   "Game/GameController.cs:1214"
+  ]
+ },
+ {
+  "vi": "[Gỡ lỗi] Đầu ngày {0} · {1}G · {2} relic.",
+  "src": [
+   "Game/GameController.cs:1258"
+  ]
+ },
+ {
+  "vi": "[Gỡ lỗi] Đầu ngày ",
+  "src": [
+   "Game/GameController.cs:1258"
+  ]
+ },
+ {
+  "vi": "[Gỡ lỗi] Sang đầu ngày {0}.",
+  "src": [
+   "Game/GameController.cs:1282"
+  ]
+ },
+ {
+  "vi": "[Gỡ lỗi] Sang đầu ngày ",
+  "src": [
+   "Game/GameController.cs:1282"
+  ]
+ },
+ {
+  "vi": "Nồi",
+  "src": [
+   "Game/GameControllerAudio.cs:175",
+   "Game/GameControllerAudio.cs:182",
+   "Game/PanView.cs:88",
+   "Game/RoomView.cs:19"
+  ]
+ },
+ {
+  "vi": "Bếp {0}: {1}",
+  "src": [
+   "Game/GameControllerSprint11.cs:40"
+  ]
+ },
+ {
+  "vi": "Bếp ",
+  "src": [
+   "Game/GameControllerSprint11.cs:40"
+  ]
+ },
+ {
+  "vi": "Đã đặt lại nước sốt.",
+  "src": [
+   "Game/GameControllerSprint11.cs:87"
+  ]
+ },
+ {
+  "vi": "cầm nước sốt",
+  "src": [
+   "Game/GameControllerSprint11.cs:92"
+  ]
+ },
+ {
+  "vi": "Cầm nước sốt (còn {0} chai). Bấm vào đĩa vừa nấu để nhỏ sốt.",
+  "src": [
+   "Game/GameControllerSprint11.cs:95"
+  ]
+ },
+ {
+  "vi": "Cầm nước sốt (còn ",
+  "src": [
+   "Game/GameControllerSprint11.cs:95",
+   "Game/Sprint11Room.cs:66"
+  ]
+ },
+ {
+  "vi": " chai). Bấm vào đĩa vừa nấu để nhỏ sốt.",
+  "src": [
+   "Game/GameControllerSprint11.cs:95"
+  ]
+ },
+ {
+  "vi": "Nhỏ sốt lên đĩa trên quầy hoặc trong tủ lạnh.",
+  "src": [
+   "Game/GameControllerSprint11.cs:103"
+  ]
+ },
+ {
+  "vi": "Hết nước sốt.",
+  "src": [
+   "Game/GameControllerSprint11.cs:106"
+  ]
+ },
+ {
+  "vi": " · còn {0} chai.",
+  "src": [
+   "Game/GameControllerSprint11.cs:136"
+  ]
+ },
+ {
+  "vi": "HUYỀN THOẠI! {0} (giá ×{1}",
+  "src": [
+   "Game/GameControllerSprint11.cs:137"
+  ]
+ },
+ {
+  "vi": "HUYỀN THOẠI! ",
+  "src": [
+   "Game/GameControllerSprint11.cs:137"
+  ]
+ },
+ {
+  "vi": " (giá ×",
+  "src": [
+   "Game/GameControllerSprint11.cs:137"
+  ]
+ },
+ {
+  "vi": "Nước sốt: {0} {1} → {2}",
+  "src": [
+   "Game/GameControllerSprint11.cs:138"
+  ]
+ },
+ {
+  "vi": "Nước sốt: ",
+  "src": [
+   "Game/GameControllerSprint11.cs:138"
+  ]
+ },
+ {
+  "vi": "Ô {0}: {1}",
+  "src": [
+   "Game/GameControllerSprint12.cs:104"
+  ]
+ },
+ {
+  "vi": "Ô ",
+  "src": [
+   "Game/GameControllerSprint12.cs:104"
+  ]
+ },
+ {
+  "vi": "trống",
+  "src": [
+   "Game/GameControllerSprint12.cs:104"
+  ]
+ },
+ {
+  "vi": " (sơ chế)",
+  "src": [
+   "Game/GameControllerSprint12.cs:130"
+  ]
+ },
+ {
+  "vi": "nước sốt",
+  "src": [
+   "Game/GameControllerSprint12.cs:133"
+  ]
+ },
+ {
+  "vi": "Máy đang quay…",
+  "src": [
+   "Game/GameControllerSprint12.cs:167",
+   "Game/GameControllerSprint12.cs:201",
+   "Game/GameControllerSprint12.cs:214"
+  ]
+ },
+ {
+  "vi": "Tay đang cầm đĩa. Lấy {0} ra sau.",
+  "src": [
+   "Game/GameControllerSprint12.cs:170"
+  ]
+ },
+ {
+  "vi": "Tay đang cầm đĩa. Lấy ",
+  "src": [
+   "Game/GameControllerSprint12.cs:170"
+  ]
+ },
+ {
+  "vi": "lấy đĩa ra khỏi máy",
+  "src": [
+   "Game/GameControllerSprint12.cs:171"
+  ]
+ },
+ {
+  "vi": "Lấy {0} · {1} ra khỏi máy.",
+  "src": [
+   "Game/GameControllerSprint12.cs:177"
+  ]
+ },
+ {
+  "vi": "Lấy ",
+  "src": [
+   "Game/GameControllerSprint12.cs:177",
+   "Game/RoomView.cs:404",
+   "Game/RoomView.cs:944",
+   "Game/RoomViewRound2.cs:628"
+  ]
+ },
+ {
+  "vi": " ra khỏi máy.",
+  "src": [
+   "Game/GameControllerSprint12.cs:177"
+  ]
+ },
+ {
+  "vi": "Máy gacha đồ ăn: cầm một đĩa món tới, bấm máy để cho vào. Hôm nay còn {0} lượt.",
+  "src": [
+   "Game/GameControllerSprint12.cs:181"
+  ]
+ },
+ {
+  "vi": "Máy gacha đồ ăn: cầm một đĩa món tới, bấm máy để cho vào. Hôm nay còn ",
+  "src": [
+   "Game/GameControllerSprint12.cs:181"
+  ]
+ },
+ {
+  "vi": " lượt.",
+  "src": [
+   "Game/GameControllerSprint12.cs:181"
+  ]
+ },
+ {
+  "vi": "{0} đã vào máy một lần rồi.",
+  "src": [
+   "Game/GameControllerSprint12.cs:183"
+  ]
+ },
+ {
+  "vi": " đã vào máy một lần rồi.",
+  "src": [
+   "Game/GameControllerSprint12.cs:183"
+  ]
+ },
+ {
+  "vi": "Hôm nay máy đã chạy đủ {0} lần.",
+  "src": [
+   "Game/GameControllerSprint12.cs:184"
+  ]
+ },
+ {
+  "vi": "Hôm nay máy đã chạy đủ ",
+  "src": [
+   "Game/GameControllerSprint12.cs:184"
+  ]
+ },
+ {
+  "vi": " lần.",
+  "src": [
+   "Game/GameControllerSprint12.cs:184"
+  ]
+ },
+ {
+  "vi": "Đã cho {0} vào máy. Gạt cần bên cạnh để quay.",
+  "src": [
+   "Game/GameControllerSprint12.cs:191"
+  ]
+ },
+ {
+  "vi": " vào máy. Gạt cần bên cạnh để quay.",
+  "src": [
+   "Game/GameControllerSprint12.cs:191"
+  ]
+ },
+ {
+  "vi": "Chưa có máy gacha đồ ăn. Mua trong Tab → Cửa hàng.",
+  "src": [
+   "Game/GameControllerSprint12.cs:200"
+  ]
+ },
+ {
+  "vi": "Cho một đĩa món vào máy trước (cầm đĩa, bấm máy).",
+  "src": [
+   "Game/GameControllerSprint12.cs:202"
+  ]
+ },
+ {
+  "vi": "{0} đã quay rồi. Bấm máy để lấy ra.",
+  "src": [
+   "Game/GameControllerSprint12.cs:203"
+  ]
+ },
+ {
+  "vi": " đã quay rồi. Bấm máy để lấy ra.",
+  "src": [
+   "Game/GameControllerSprint12.cs:203"
+  ]
+ },
+ {
+  "vi": "Hôm nay máy đã chạy đủ lượt.",
+  "src": [
+   "Game/GameControllerSprint12.cs:207"
+  ]
+ },
+ {
+  "vi": "Xịt! Máy kêu rắc rắc… {0} hỏng mất rồi.",
+  "src": [
+   "Game/GameControllerSprint12.cs:256"
+  ]
+ },
+ {
+  "vi": "Xịt! Máy kêu rắc rắc… ",
+  "src": [
+   "Game/GameControllerSprint12.cs:256"
+  ]
+ },
+ {
+  "vi": " hỏng mất rồi.",
+  "src": [
+   "Game/GameControllerSprint12.cs:256"
+  ]
+ },
+ {
+  "vi": "Thành công! {0} {1} → {2}. Bấm máy để lấy ra.",
+  "src": [
+   "Game/GameControllerSprint12.cs:258"
+  ]
+ },
+ {
+  "vi": "Thành công! ",
+  "src": [
+   "Game/GameControllerSprint12.cs:258"
+  ]
+ },
+ {
+  "vi": ". Bấm máy để lấy ra.",
+  "src": [
+   "Game/GameControllerSprint12.cs:258",
+   "Game/GameControllerSprint12.cs:259",
+   "Game/GameControllerSprint12.cs:260"
+  ]
+ },
+ {
+  "vi": "Xịt! {0} {1} → {2}. Bấm máy để lấy ra.",
+  "src": [
+   "Game/GameControllerSprint12.cs:259"
+  ]
+ },
+ {
+  "vi": "Xịt! ",
+  "src": [
+   "Game/GameControllerSprint12.cs:259"
+  ]
+ },
+ {
+  "vi": "Giữ nguyên {0}. Bấm máy để lấy ra.",
+  "src": [
+   "Game/GameControllerSprint12.cs:260"
+  ]
+ },
+ {
+  "vi": "Giữ nguyên ",
+  "src": [
+   "Game/GameControllerSprint12.cs:260"
+  ]
+ },
+ {
+  "vi": "Mất điện: công tắc không có tác dụng, nấu bằng nến.",
+  "src": [
+   "Game/GameControllerSprint8.cs:23"
+  ]
+ },
+ {
+  "vi": "Đã bật đèn.",
+  "src": [
+   "Game/GameControllerSprint8.cs:28"
+  ]
+ },
+ {
+  "vi": "Đã tắt đèn.",
+  "src": [
+   "Game/GameControllerSprint8.cs:28"
+  ]
+ },
+ {
+  "vi": "Đang chọn relic bằng vé đen: chọn xong rồi mới đổi hàng.",
+  "src": [
+   "Game/GameControllerSprint8.cs:36"
+  ]
+ },
+ {
+  "vi": "Đổi hàng ({0}G): 3 relic mới · ví còn {1}G · lần sau {2}G.",
+  "src": [
+   "Game/GameControllerSprint8.cs:45"
+  ]
+ },
+ {
+  "vi": "Đổi hàng (",
+  "src": [
+   "Game/GameControllerSprint8.cs:45"
+  ]
+ },
+ {
+  "vi": "G): 3 relic mới · ví còn ",
+  "src": [
+   "Game/GameControllerSprint8.cs:45"
+  ]
+ },
+ {
+  "vi": "G · lần sau ",
+  "src": [
+   "Game/GameControllerSprint8.cs:45"
+  ]
+ },
+ {
+  "vi": "Thiếu {0}G để đổi hàng relic.",
+  "src": [
+   "Game/GameControllerSprint8.cs:48"
+  ]
+ },
+ {
+  "vi": "G để đổi hàng relic.",
+  "src": [
+   "Game/GameControllerSprint8.cs:48"
+  ]
+ },
+ {
+  "vi": "Không còn relic nào khác để bày.",
+  "src": [
+   "Game/GameControllerSprint8.cs:51"
+  ]
+ },
+ {
+  "vi": "Giờ này không đổi hàng được.",
+  "src": [
+   "Game/GameControllerSprint8.cs:55"
+  ]
+ },
+ {
+  "vi": "{0} · còn {1}/{2} relic.",
+  "src": [
+   "Game/GameControllerSprint8.cs:129"
+  ]
+ },
+ {
+  "vi": "+{0} vé{1}",
+  "src": [
+   "Game/GameControllerSprint8.cs:148"
+  ]
+ },
+ {
+  "vi": " (cộng {0} vé còn từ hôm qua)",
+  "src": [
+   "Game/GameControllerSprint8.cs:148"
+  ]
+ },
+ {
+  "vi": "{0} → {1} vé",
+  "src": [
+   "Game/GameControllerSprint8.cs:148"
+  ]
+ },
+ {
+  "vi": " vé",
+  "src": [
+   "Game/GameControllerSprint8.cs:148",
+   "Game/GameControllerSprint8.cs:148",
+   "Game/GuidePics.cs:311",
+   "Game/Hud.cs:316"
+  ]
+ },
+ {
+  "vi": " (cộng ",
+  "src": [
+   "Game/GameControllerSprint8.cs:148"
+  ]
+ },
+ {
+  "vi": " vé còn từ hôm qua)",
+  "src": [
+   "Game/GameControllerSprint8.cs:148"
+  ]
+ },
+ {
+  "vi": "Đầy đủ",
+  "src": [
+   "Game/GameSettings.cs:43",
+   "Game/PaperKit.cs:16"
+  ]
+ },
+ {
+  "vi": "Giảm",
+  "src": [
+   "Game/GameSettings.cs:43",
+   "Game/PaperKit.cs:16"
+  ]
+ },
+ {
+  "vi": "Tắt",
+  "src": [
+   "Game/GameSettings.cs:43",
+   "Game/MenuView.cs:337",
+   "Game/MenuView.cs:340",
+   "Game/PaperKit.cs:16"
+  ]
+ },
+ {
+  "vi": "Theo màn hình",
+  "src": [
+   "Game/GameSettings.cs:158"
+  ]
+ },
+ {
+  "vi": "Nhét vé",
+  "src": [
+   "Game/GuidePics.cs:36",
+   "Game/RoomView.cs:316",
+   "Game/Tutorial.cs:106"
+  ]
+ },
+ {
+  "vi": "Lấy 1 món",
+  "src": [
+   "Game/GuidePics.cs:37"
+  ]
+ },
+ {
+  "vi": "Giữ chuột: sơ chế",
+  "src": [
+   "Game/GuidePics.cs:38"
+  ]
+ },
+ {
+  "vi": "Chọn dụng cụ",
+  "src": [
+   "Game/GuidePics.cs:39",
+   "Game/Tutorial.cs:117"
+  ]
+ },
+ {
+  "vi": "Tab: xem thực đơn",
+  "src": [
+   "Game/GuidePics.cs:40",
+   "Game/Tutorial.cs:114"
+  ]
+ },
+ {
+  "vi": "Cho đúng thứ tự",
+  "src": [
+   "Game/GuidePics.cs:41"
+  ]
+ },
+ {
+  "vi": "Vặn núm",
+  "src": [
+   "Game/GuidePics.cs:42",
+   "Game/RoomView.cs:582",
+   "Game/TabMenu.cs:276",
+   "Game/Tutorial.cs:122"
+  ]
+ },
+ {
+  "vi": "Múc ra đĩa",
+  "src": [
+   "Game/GuidePics.cs:43",
+   "Game/Tutorial.cs:125"
+  ]
+ },
+ {
+  "vi": "Mở quán",
+  "src": [
+   "Game/GuidePics.cs:44",
+   "Game/RoomView.cs:835",
+   "Game/Tutorial.cs:127"
+  ]
+ },
+ {
+  "vi": "Đặt trước mặt khách",
+  "src": [
+   "Game/GuidePics.cs:45",
+   "Game/Tutorial.cs:129"
+  ]
+ },
+ {
+  "vi": "Đóng quán",
+  "src": [
+   "Game/GuidePics.cs:46",
+   "Game/Tutorial.cs:134"
+  ]
+ },
+ {
+  "vi": "Bật đèn",
+  "src": [
+   "Game/GuidePics.cs:47",
+   "Game/Sprint8Room.cs:126"
+  ]
+ },
+ {
+  "vi": "Chọn 1 relic",
+  "src": [
+   "Game/GuidePics.cs:48"
+  ]
+ },
+ {
+  "vi": "Tab: cửa hàng",
+  "src": [
+   "Game/GuidePics.cs:50",
+   "Game/Tutorial.cs:153"
+  ]
+ },
+ {
+  "vi": "Cất tủ lạnh",
+  "src": [
+   "Game/GuidePics.cs:51",
+   "Game/Tutorial.cs:157"
+  ]
+ },
+ {
+  "vi": "Chuột phải: thả",
+  "src": [
+   "Game/GuidePics.cs:52"
+  ]
+ },
+ {
+  "vi": "Món Tuyệt hảo",
+  "src": [
+   "Game/GuidePics.cs:53"
+  ]
+ },
+ {
+  "vi": "Mất điện",
+  "src": [
+   "Game/GuidePics.cs:54"
+  ]
+ },
+ {
+  "vi": "Màu đế = bậc",
+  "src": [
+   "Game/GuidePics.cs:55"
+  ]
+ },
+ {
+  "vi": "Đồ tốt → món ngon",
+  "src": [
+   "Game/GuidePics.cs:56"
+  ]
+ },
+ {
+  "vi": "Món ngon: đắt hơn",
+  "src": [
+   "Game/GuidePics.cs:57"
+  ]
+ },
+ {
+  "vi": "Khách khó: cần ngon",
+  "src": [
+   "Game/GuidePics.cs:58"
+  ]
+ },
+ {
+  "vi": "Chờ lâu: bỏ đi",
+  "src": [
+   "Game/GuidePics.cs:59"
+  ]
+ },
+ {
+  "vi": "Đúng món mới trả",
+  "src": [
+   "Game/GuidePics.cs:60"
+  ]
+ },
+ {
+  "vi": "Khói: múc ngay",
+  "src": [
+   "Game/GuidePics.cs:61",
+   "Game/Tutorial.cs:156"
+  ]
+ },
+ {
+  "vi": "Vòng sau: đồ tốt hơn",
+  "src": [
+   "Game/GuidePics.cs:62"
+  ]
+ },
+ {
+  "vi": "Trả vé: mua relic",
+  "src": [
+   "Game/GuidePics.cs:63",
+   "Game/Tutorial.cs:143"
+  ]
+ },
+ {
+  "vi": "Cầm lọ, nhỏ sốt",
+  "src": [
+   "Game/GuidePics.cs:64"
+  ]
+ },
+ {
+  "vi": "Thường lên bậc",
+  "src": [
+   "Game/GuidePics.cs:65"
+  ]
+ },
+ {
+  "vi": "Món ngon nhất?",
+  "src": [
+   "Game/GuidePics.cs:66"
+  ]
+ },
+ {
+  "vi": "VÉ",
+  "src": [
+   "Game/GuidePics.cs:159",
+   "Game/GuidePics.cs:305"
+  ]
+ },
+ {
+  "vi": "MỞ",
+  "src": [
+   "Game/GuidePics.cs:264"
+  ]
+ },
+ {
+  "vi": "ĐÓNG",
+  "src": [
+   "Game/GuidePics.cs:264",
+   "CotTruyen/Trang_1.json"
+  ]
+ },
+ {
+  "vi": "{0} vé",
+  "src": [
+   "Game/GuidePics.cs:311",
+   "Game/RelicArt.cs:231"
+  ]
+ },
+ {
+  "vi": "0 vé · lấy 1",
+  "src": [
+   "Game/GuidePics.cs:311"
+  ]
+ },
+ {
+  "vi": "Chuột phải",
+  "src": [
+   "Game/GuidePics.cs:347",
+   "Game/MenuView.cs:222"
+  ]
+ },
+ {
+  "vi": "Nước sốt",
+  "src": [
+   "Game/GuidePics.cs:362",
+   "Game/Hud.cs:384",
+   "Game/RoomViewRound2.cs:752",
+   "Game/TabMenu.cs:387"
+  ]
+ },
+ {
+  "vi": "+tiền",
+  "src": [
+   "Game/GuidePics.cs:480"
+  ]
+ },
+ {
+  "vi": "−tiền",
+  "src": [
+   "Game/GuidePics.cs:480"
+  ]
+ },
+ {
+  "vi": "Bấm chuột vào màn hình để điều khiển",
+  "src": [
+   "Game/Hud.cs:119"
+  ]
+ },
+ {
+  "vi": "Về menu chính",
+  "src": [
+   "Game/Hud.cs:140",
+   "Game/MenuView.cs:127"
+  ]
+ },
+ {
+  "vi": "ẩn / hiện",
+  "src": [
+   "Game/Hud.cs:262"
+  ]
+ },
+ {
+  "vi": " · T: xem hình",
+  "src": [
+   "Game/Hud.cs:309",
+   "Game/Hud.cs:426"
+  ]
+ },
+ {
+  "vi": "Ví <size=26>{0}G</size>\n",
+  "src": [
+   "Game/Hud.cs:313"
+  ]
+ },
+ {
+  "vi": "Ví <size=26>",
+  "src": [
+   "Game/Hud.cs:313"
+  ]
+ },
+ {
+  "vi": "Nợ <size=26>{0}G</size> đầu ngày {1}",
+  "src": [
+   "Game/Hud.cs:314"
+  ]
+ },
+ {
+  "vi": "Nợ <size=26>",
+  "src": [
+   "Game/Hud.cs:314"
+  ]
+ },
+ {
+  "vi": "G</size> đầu ngày ",
+  "src": [
+   "Game/Hud.cs:314"
+  ]
+ },
+ {
+  "vi": "Hết nợ",
+  "src": [
+   "Game/Hud.cs:314"
+  ]
+ },
+ {
+  "vi": "{0} vé{1}",
+  "src": [
+   "Game/Hud.cs:316"
+  ]
+ },
+ {
+  "vi": " · {0} vé đen",
+  "src": [
+   "Game/Hud.cs:316"
+  ]
+ },
+ {
+  "vi": " vé đen",
+  "src": [
+   "Game/Hud.cs:316",
+   "Game/RoomViewRound2.cs:710"
+  ]
+ },
+ {
+  "vi": "Đang cầm: {0}",
+  "src": [
+   "Game/Hud.cs:326"
+  ]
+ },
+ {
+  "vi": "Đang cầm: ",
+  "src": [
+   "Game/Hud.cs:326"
+  ]
+ },
+ {
+  "vi": "Ngày {0} · {1}",
+  "src": [
+   "Game/Hud.cs:405"
+  ]
+ },
+ {
+  "vi": " <size=70%>chưa mở quán</size>",
+  "src": [
+   "Game/Hud.cs:406"
+  ]
+ },
+ {
+  "vi": "Chuột trái · {0}",
+  "src": [
+   "Game/Hud.cs:435"
+  ]
+ },
+ {
+  "vi": "Chuột trái · ",
+  "src": [
+   "Game/Hud.cs:435"
+  ]
+ },
+ {
+  "vi": "Hết ngày {0}",
+  "src": [
+   "Game/Hud.cs:469"
+  ]
+ },
+ {
+  "vi": "Hết ngày ",
+  "src": [
+   "Game/Hud.cs:469"
+  ]
+ },
+ {
+  "vi": "Đã phục vụ ",
+  "src": [
+   "Game/Hud.cs:471"
+  ]
+ },
+ {
+  "vi": " khách · đóng quán lúc ",
+  "src": [
+   "Game/Hud.cs:471"
+  ]
+ },
+ {
+  "vi": "Thu trong ngày: ",
+  "src": [
+   "Game/Hud.cs:472"
+  ]
+ },
+ {
+  "vi": "Tiền hiện có: ",
+  "src": [
+   "Game/Hud.cs:473"
+  ]
+ },
+ {
+  "vi": "Tủ lạnh giữ ",
+  "src": [
+   "Game/Hud.cs:474"
+  ]
+ },
+ {
+  "vi": " món\n",
+  "src": [
+   "Game/Hud.cs:474"
+  ]
+ },
+ {
+  "vi": "<b>Sáng mai chủ nợ thu ",
+  "src": [
+   "Game/Hud.cs:477"
+  ]
+ },
+ {
+  "vi": "Nợ sắp tới: ",
+  "src": [
+   "Game/Hud.cs:478"
+  ]
+ },
+ {
+  "vi": "G vào đầu ngày ",
+  "src": [
+   "Game/Hud.cs:478"
+  ]
+ },
+ {
+  "vi": "Sang ngày {0}",
+  "src": [
+   "Game/Hud.cs:481"
+  ]
+ },
+ {
+  "vi": "Sang ngày ",
+  "src": [
+   "Game/Hud.cs:481"
+  ]
+ },
+ {
+  "vi": "Hope trả hết nợ!",
+  "src": [
+   "Game/Hud.cs:486"
+  ]
+ },
+ {
+  "vi": "Đầu ngày {0}, chủ nợ thu khoản cuối {1}G.\nHope còn {2}",
+  "src": [
+   "Game/Hud.cs:487"
+  ]
+ },
+ {
+  "vi": ", chủ nợ thu khoản cuối ",
+  "src": [
+   "Game/Hud.cs:487"
+  ]
+ },
+ {
+  "vi": "G.\nHope còn ",
+  "src": [
+   "Game/Hud.cs:487"
+  ]
+ },
+ {
+  "vi": "{0}G và quán ăn đã đứng vững.\n\nChủ nợ bật cười lần đầu tiên, rồi gả con gái cho Hope.",
+  "src": [
+   "Game/Hud.cs:488"
+  ]
+ },
+ {
+  "vi": "G và quán ăn đã đứng vững.\n\nChủ nợ bật cười lần đầu tiên, rồi gả con gái cho Hope.",
+  "src": [
+   "Game/Hud.cs:488"
+  ]
+ },
+ {
+  "vi": "Chơi lại",
+  "src": [
+   "Game/Hud.cs:489",
+   "Game/Hud.cs:496",
+   "Game/Hud.cs:505"
+  ]
+ },
+ {
+  "vi": "Qua vòng {0}!",
+  "src": [
+   "Game/Hud.cs:493"
+  ]
+ },
+ {
+  "vi": "Qua vòng ",
+  "src": [
+   "Game/Hud.cs:493"
+  ]
+ },
+ {
+  "vi": "Đầu ngày {0}, chủ nợ đã thu {1}G.\nBạn còn {2}",
+  "src": [
+   "Game/Hud.cs:494"
+  ]
+ },
+ {
+  "vi": ", chủ nợ đã thu ",
+  "src": [
+   "Game/Hud.cs:494"
+  ]
+ },
+ {
+  "vi": "G.\nBạn còn ",
+  "src": [
+   "Game/Hud.cs:494"
+  ]
+ },
+ {
+  "vi": "{0}G.\n\nBản chơi thử này dừng ở đây.",
+  "src": [
+   "Game/Hud.cs:495"
+  ]
+ },
+ {
+  "vi": "G.\n\nBản chơi thử này dừng ở đây.",
+  "src": [
+   "Game/Hud.cs:495"
+  ]
+ },
+ {
+  "vi": "Thua rồi",
+  "src": [
+   "Game/Hud.cs:501"
+  ]
+ },
+ {
+  "vi": "Đầu ngày {0}, chủ nợ đòi {1}\nnhưng bạn chỉ có {2}",
+  "src": [
+   "Game/Hud.cs:502"
+  ]
+ },
+ {
+  "vi": ", chủ nợ đòi ",
+  "src": [
+   "Game/Hud.cs:502"
+  ]
+ },
+ {
+  "vi": "\nnhưng bạn chỉ có ",
+  "src": [
+   "Game/Hud.cs:502"
+  ]
+ },
+ {
+  "vi": "{0}, thiếu {1}.",
+  "src": [
+   "Game/Hud.cs:503"
+  ]
+ },
+ {
+  "vi": "\n\nCần phục vụ chủ nợ món Tuyệt hảo ngày {0} (thưởng {1}G).",
+  "src": [
+   "Game/Hud.cs:504"
+  ]
+ },
+ {
+  "vi": "\n\nCần phục vụ chủ nợ món Tuyệt hảo ngày ",
+  "src": [
+   "Game/Hud.cs:504"
+  ]
+ },
+ {
+  "vi": " (thưởng ",
+  "src": [
+   "Game/Hud.cs:504"
+  ]
+ },
+ {
+  "vi": "IconBook: không chụp được {0}: {1}",
+  "src": [
+   "Game/IconBook.cs:152"
+  ]
+ },
+ {
+  "vi": "Tiếng Việt",
+  "src": [
+   "Game/Lang.cs:17"
+  ]
+ },
+ {
+  "vi": "Quán ăn của Hope",
+  "src": [
+   "Game/MenuView.cs:23"
+  ]
+ },
+ {
+  "vi": "22 ngày để trả hết nợ",
+  "src": [
+   "Game/MenuView.cs:90"
+  ]
+ },
+ {
+  "vi": "Phiên bản {0}",
+  "src": [
+   "Game/MenuView.cs:92"
+  ]
+ },
+ {
+  "vi": "Phiên bản ",
+  "src": [
+   "Game/MenuView.cs:92"
+  ]
+ },
+ {
+  "vi": "Chơi mới",
+  "src": [
+   "Game/MenuView.cs:97"
+  ]
+ },
+ {
+  "vi": "Chơi tiếp",
+  "src": [
+   "Game/MenuView.cs:98",
+   "Game/MenuView.cs:110"
+  ]
+ },
+ {
+  "vi": "Cài đặt",
+  "src": [
+   "Game/MenuView.cs:99",
+   "Game/MenuView.cs:126",
+   "Game/MenuView.cs:171"
+  ]
+ },
+ {
+  "vi": "Thoát",
+  "src": [
+   "Game/MenuView.cs:100"
+  ]
+ },
+ {
+  "vi": "Chơi tiếp · ngày {0}",
+  "src": [
+   "Game/MenuView.cs:110"
+  ]
+ },
+ {
+  "vi": "Chơi tiếp · ngày ",
+  "src": [
+   "Game/MenuView.cs:110"
+  ]
+ },
+ {
+  "vi": "Tạm dừng",
+  "src": [
+   "Game/MenuView.cs:124",
+   "Game/MenuView.cs:225"
+  ]
+ },
+ {
+  "vi": "Tiếp tục",
+  "src": [
+   "Game/MenuView.cs:125"
+  ]
+ },
+ {
+  "vi": "Game tự lưu đầu mỗi ngày: về menu thì chơi tiếp từ đầu ngày này.",
+  "src": [
+   "Game/MenuView.cs:129"
+  ]
+ },
+ {
+  "vi": "Âm lượng tổng",
+  "src": [
+   "Game/MenuView.cs:175"
+  ]
+ },
+ {
+  "vi": "Nhạc",
+  "src": [
+   "Game/MenuView.cs:176"
+  ]
+ },
+ {
+  "vi": "Hiệu ứng",
+  "src": [
+   "Game/MenuView.cs:177"
+  ]
+ },
+ {
+  "vi": "Độ nhạy chuột",
+  "src": [
+   "Game/MenuView.cs:178"
+  ]
+ },
+ {
+  "vi": "Đảo trục dọc",
+  "src": [
+   "Game/MenuView.cs:182"
+  ]
+ },
+ {
+  "vi": "Toàn màn hình",
+  "src": [
+   "Game/MenuView.cs:183"
+  ]
+ },
+ {
+  "vi": "Độ phân giải",
+  "src": [
+   "Game/MenuView.cs:184"
+  ]
+ },
+ {
+  "vi": "Hướng dẫn ngày 1",
+  "src": [
+   "Game/MenuView.cs:185"
+  ]
+ },
+ {
+  "vi": "Hiệu ứng truyện",
+  "src": [
+   "Game/MenuView.cs:191"
+  ]
+ },
+ {
+  "vi": "Hiệu ứng giấy",
+  "src": [
+   "Game/MenuView.cs:197"
+  ]
+ },
+ {
+  "vi": "Ngôn ngữ / Language",
+  "src": [
+   "Game/MenuView.cs:203"
+  ]
+ },
+ {
+  "vi": "Đi",
+  "src": [
+   "Game/MenuView.cs:217"
+  ]
+ },
+ {
+  "vi": "Chạy",
+  "src": [
+   "Game/MenuView.cs:218"
+  ]
+ },
+ {
+  "vi": "Nhảy",
+  "src": [
+   "Game/MenuView.cs:219"
+  ]
+ },
+ {
+  "vi": "Chuột",
+  "src": [
+   "Game/MenuView.cs:220"
+  ]
+ },
+ {
+  "vi": "Nhìn quanh",
+  "src": [
+   "Game/MenuView.cs:220"
+  ]
+ },
+ {
+  "vi": "Chuột trái",
+  "src": [
+   "Game/MenuView.cs:221"
+  ]
+ },
+ {
+  "vi": "Bấm · giữ để sơ chế",
+  "src": [
+   "Game/MenuView.cs:221"
+  ]
+ },
+ {
+  "vi": "Thả / đặt lại đồ",
+  "src": [
+   "Game/MenuView.cs:222"
+  ]
+ },
+ {
+  "vi": "Thực đơn, relic, cửa hàng",
+  "src": [
+   "Game/MenuView.cs:223"
+  ]
+ },
+ {
+  "vi": "Ẩn / hiện hướng dẫn",
+  "src": [
+   "Game/MenuView.cs:224"
+  ]
+ },
+ {
+  "vi": "Điều khiển",
+  "src": [
+   "Game/MenuView.cs:239"
+  ]
+ },
+ {
+  "vi": "Bật",
+  "src": [
+   "Game/MenuView.cs:337",
+   "Game/MenuView.cs:338",
+   "Game/MenuView.cs:340"
+  ]
+ },
+ {
+  "vi": "Tắt (cửa sổ)",
+  "src": [
+   "Game/MenuView.cs:338"
+  ]
+ },
+ {
+  "vi": "Tự động (ván đầu)",
+  "src": [
+   "Game/MenuView.cs:340"
+  ]
+ },
+ {
+  "vi": "Bấm để tiếp · Giữ để bỏ qua",
+  "src": [
+   "Game/MenuView.cs:420"
+  ]
+ },
+ {
+  "vi": "Dầu ăn",
+  "src": [
+   "Game/PanView.cs:20",
+   "Game/PanView.cs:23",
+   "balance/recipes.json.pantry",
+   "balance/recipes.json.chinh.steps"
+  ]
+ },
+ {
+  "vi": "Bơ",
+  "src": [
+   "Game/PanView.cs:20",
+   "Game/PanView.cs:23",
+   "balance/recipes.json.pantry",
+   "balance/recipes.json.chinh.steps"
+  ]
+ },
+ {
+  "vi": "Nước dùng",
+  "src": [
+   "Game/PanView.cs:20",
+   "Game/PanView.cs:23",
+   "balance/recipes.json.pantry",
+   "balance/recipes.json.chinh.steps"
+  ]
+ },
+ {
+  "vi": "Nước mắm",
+  "src": [
+   "Game/PanView.cs:21",
+   "balance/recipes.json.pantry",
+   "balance/recipes.json.chinh.steps",
+   "balance/recipes.json.chinh.steps"
+  ]
+ },
+ {
+  "vi": "Nước tương",
+  "src": [
+   "Game/PanView.cs:21",
+   "balance/recipes.json.pantry",
+   "balance/recipes.json.chinh.steps",
+   "balance/recipes.json.recipes.steps"
+  ]
+ },
+ {
+  "vi": "Mật ong",
+  "src": [
+   "Game/PanView.cs:21",
+   "balance/recipes.json.pantry",
+   "balance/recipes.json.chinh.steps",
+   "balance/recipes.json.recipes.steps"
+  ]
+ },
+ {
+  "vi": "Vỉ nướng",
+  "src": [
+   "Game/PanView.cs:75",
+   "Game/RoomView.cs:19",
+   "Game/RoomView.cs:547",
+   "Game/RoomView.cs:547"
+  ]
+ },
+ {
+  "vi": "hấp",
+  "src": [
+   "Game/PanView.cs:76",
+   "Game/PanView.cs:546",
+   "Game/PanView.cs:548",
+   "balance/recipes.json.chinh.method"
+  ]
+ },
+ {
+  "vi": "Hành lá",
+  "src": [
+   "Game/PanView.cs:137",
+   "Game/PanView.cs:141",
+   "Game/PanView.cs:142",
+   "Game/PanView.cs:143"
+  ]
+ },
+ {
+  "vi": "Muối",
+  "src": [
+   "Game/PanView.cs:137",
+   "balance/recipes.json.pantry",
+   "balance/recipes.json.chinh.steps",
+   "balance/recipes.json.chinh.steps"
+  ]
+ },
+ {
+  "vi": "Chảo",
+  "src": [
+   "Game/PanView.cs:308",
+   "Game/RoomView.cs:19",
+   "Game/RoomView.cs:546",
+   "Game/RoomView.cs:546"
+  ]
+ },
+ {
+  "vi": "nướng",
+  "src": [
+   "Game/PanView.cs:502",
+   "Game/PanView.cs:570",
+   "balance/recipes.json.chinh.method",
+   "balance/recipes.json.chinh.method"
+  ]
+ },
+ {
+  "vi": "chiên",
+  "src": [
+   "Game/PanView.cs:534",
+   "balance/recipes.json.chinh.method",
+   "balance/recipes.json.recipes.method",
+   "balance/recipes.json.recipes.method"
+  ]
+ },
+ {
+  "vi": "sốt",
+  "src": [
+   "Game/PanView.cs:545",
+   "balance/recipes.json.chinh.method",
+   "balance/recipes.json.recipes.method",
+   "balance/recipes.json.recipes.method"
+  ]
+ },
+ {
+  "vi": "xào",
+  "src": [
+   "Game/PanView.cs:557",
+   "balance/recipes.json.chinh.method",
+   "balance/recipes.json.chinh.method",
+   "balance/recipes.json.chinh.method"
+  ]
+ },
+ {
+  "vi": "Vé đen",
+  "src": [
+   "Game/RelicArt.cs:231",
+   "Game/RoomViewRound2.cs:753"
+  ]
+ },
+ {
+  "vi": "<color=#E8604F>Miễn phí</color>",
+  "src": [
+   "Game/RelicArt.cs:231"
+  ]
+ },
+ {
+  "vi": "\n<color=#E8604F><size=46>có tác dụng từ ngày 4</size></color>",
+  "src": [
+   "Game/RelicArt.cs:233"
+  ]
+ },
+ {
+  "vi": "<color=#E8604F>Bấm relic trên giá để bỏ</color>",
+  "src": [
+   "Game/RelicArt.cs:236"
+  ]
+ },
+ {
+  "vi": "QUÁN NHÂN PHẨM",
+  "src": [
+   "Game/RoomView.cs:22"
+  ]
+ },
+ {
+  "vi": "Nhét vé · còn {0} vé",
+  "src": [
+   "Game/RoomView.cs:312"
+  ]
+ },
+ {
+  "vi": "Nhét vé · còn ",
+  "src": [
+   "Game/RoomView.cs:312"
+  ]
+ },
+ {
+  "vi": "Hết vé",
+  "src": [
+   "Game/RoomView.cs:312"
+  ]
+ },
+ {
+  "vi": "Máy gacha đồ ăn\n<size=60>sắp mở</size>",
+  "src": [
+   "Game/RoomView.cs:327"
+  ]
+ },
+ {
+  "vi": "Lấy {0}",
+  "src": [
+   "Game/RoomView.cs:404"
+  ]
+ },
+ {
+  "vi": "Tỉ lệ bậc nguyên liệu · {0}",
+  "src": [
+   "Game/RoomView.cs:431"
+  ]
+ },
+ {
+  "vi": "Ngày {0} (sau mưa)",
+  "src": [
+   "Game/RoomView.cs:431"
+  ]
+ },
+ {
+  "vi": "Vòng {0}",
+  "src": [
+   "Game/RoomView.cs:431"
+  ]
+ },
+ {
+  "vi": "Tỉ lệ bậc nguyên liệu · ",
+  "src": [
+   "Game/RoomView.cs:431"
+  ]
+ },
+ {
+  "vi": " (sau mưa)",
+  "src": [
+   "Game/RoomView.cs:431"
+  ]
+ },
+ {
+  "vi": "Vòng ",
+  "src": [
+   "Game/RoomView.cs:431"
+  ]
+ },
+ {
+  "vi": "{0} · 1 vé: {1} đồ phụ + {2} nguyên liệu chính",
+  "src": [
+   "Game/RoomView.cs:432"
+  ]
+ },
+ {
+  "vi": " · 1 vé: ",
+  "src": [
+   "Game/RoomView.cs:432"
+  ]
+ },
+ {
+  "vi": " đồ phụ + ",
+  "src": [
+   "Game/RoomView.cs:432"
+  ]
+ },
+ {
+  "vi": " nguyên liệu chính",
+  "src": [
+   "Game/RoomView.cs:432"
+  ]
+ },
+ {
+  "vi": "Có relic",
+  "src": [
+   "Game/RoomView.cs:447"
+  ]
+ },
+ {
+  "vi": ": tỉ lệ đã tính tác dụng relic",
+  "src": [
+   "Game/RoomView.cs:448"
+  ]
+ },
+ {
+  "vi": " · +{0} rương đột phá ({1} món: ",
+  "src": [
+   "Game/RoomView.cs:450"
+  ]
+ },
+ {
+  "vi": " rương đột phá (",
+  "src": [
+   "Game/RoomView.cs:450"
+  ]
+ },
+ {
+  "vi": " món: ",
+  "src": [
+   "Game/RoomView.cs:450"
+  ]
+ },
+ {
+  "vi": "{0} Xuất sắc, {1} Hiếm)",
+  "src": [
+   "Game/RoomView.cs:451"
+  ]
+ },
+ {
+  "vi": " Xuất sắc, ",
+  "src": [
+   "Game/RoomView.cs:451"
+  ]
+ },
+ {
+  "vi": " Hiếm)",
+  "src": [
+   "Game/RoomView.cs:451"
+  ]
+ },
+ {
+  "vi": "<size=78>Phụ {0}\nChính {1}</size>\n<size=60>{2}</size>",
+  "src": [
+   "Game/RoomView.cs:460"
+  ]
+ },
+ {
+  "vi": "<size=78>Phụ ",
+  "src": [
+   "Game/RoomView.cs:460"
+  ]
+ },
+ {
+  "vi": "\nChính ",
+  "src": [
+   "Game/RoomView.cs:460"
+  ]
+ },
+ {
+  "vi": "{0} · chọn dụng cụ trước",
+  "src": [
+   "Game/RoomView.cs:508"
+  ]
+ },
+ {
+  "vi": "Cho {0} vào {1}",
+  "src": [
+   "Game/RoomView.cs:508"
+  ]
+ },
+ {
+  "vi": " · chọn dụng cụ trước",
+  "src": [
+   "Game/RoomView.cs:508"
+  ]
+ },
+ {
+  "vi": "Dùng {0}",
+  "src": [
+   "Game/RoomView.cs:525"
+  ]
+ },
+ {
+  "vi": "Dùng ",
+  "src": [
+   "Game/RoomView.cs:525"
+  ]
+ },
+ {
+  "vi": "Đang nấu",
+  "src": [
+   "Game/RoomView.cs:582",
+   "Game/Sprint11Room.cs:157"
+  ]
+ },
+ {
+  "vi": "Đổ bỏ đồ trên bếp",
+  "src": [
+   "Game/RoomView.cs:588"
+  ]
+ },
+ {
+  "vi": "Lấy đĩa trống",
+  "src": [
+   "Game/RoomView.cs:608"
+  ]
+ },
+ {
+  "vi": "Cho {0} vào bếp",
+  "src": [
+   "Game/RoomView.cs:753"
+  ]
+ },
+ {
+  "vi": "Sơ chế {0} trước",
+  "src": [
+   "Game/RoomView.cs:753",
+   "Game/Sprint11Room.cs:236"
+  ]
+ },
+ {
+  "vi": " vào bếp",
+  "src": [
+   "Game/RoomView.cs:753"
+  ]
+ },
+ {
+  "vi": " trước",
+  "src": [
+   "Game/RoomView.cs:753",
+   "Game/Sprint11Room.cs:236"
+  ]
+ },
+ {
+  "vi": "Múc {0} ra đĩa",
+  "src": [
+   "Game/RoomView.cs:754",
+   "Game/Sprint11Room.cs:237"
+  ]
+ },
+ {
+  "vi": "Múc ",
+  "src": [
+   "Game/RoomView.cs:754",
+   "Game/Sprint11Room.cs:237"
+  ]
+ },
+ {
+  "vi": " ra đĩa",
+  "src": [
+   "Game/RoomView.cs:754",
+   "Game/Sprint11Room.cs:237"
+  ]
+ },
+ {
+  "vi": "Lấy đĩa trống để múc",
+  "src": [
+   "Game/RoomView.cs:754",
+   "Game/Sprint11Room.cs:237"
+  ]
+ },
+ {
+  "vi": "Đang nấu {0}",
+  "src": [
+   "Game/RoomView.cs:755",
+   "Game/RoomView.cs:789",
+   "Game/Sprint11Room.cs:238",
+   "Game/Sprint11Room.cs:277"
+  ]
+ },
+ {
+  "vi": "Bếp · {0}",
+  "src": [
+   "Game/RoomView.cs:756"
+  ]
+ },
+ {
+  "vi": "Bếp · chọn dụng cụ trên giá",
+  "src": [
+   "Game/RoomView.cs:756"
+  ]
+ },
+ {
+  "vi": "Bếp · ",
+  "src": [
+   "Game/RoomView.cs:756"
+  ]
+ },
+ {
+  "vi": "1 Chọn dụng cụ  ›  2 Cho đúng thứ tự  ›  3 Vặn núm",
+  "src": [
+   "Game/RoomView.cs:776",
+   "Game/Sprint11Room.cs:262"
+  ]
+ },
+ {
+  "vi": "{0} · trống",
+  "src": [
+   "Game/RoomView.cs:777",
+   "Game/Sprint11Room.cs:263"
+  ]
+ },
+ {
+  "vi": " · trống",
+  "src": [
+   "Game/RoomView.cs:777",
+   "Game/Sprint11Room.cs:263"
+  ]
+ },
+ {
+  "vi": "{0} đã chín",
+  "src": [
+   "Game/RoomView.cs:790",
+   "Game/Sprint11Room.cs:278"
+  ]
+ },
+ {
+  "vi": " đã chín",
+  "src": [
+   "Game/RoomView.cs:790",
+   "Game/Sprint11Room.cs:278"
+  ]
+ },
+ {
+  "vi": "Món sẽ ra bậc nào (nếu đúng thứ tự)",
+  "src": [
+   "Game/RoomView.cs:792",
+   "Game/Sprint11Room.cs:279"
+  ]
+ },
+ {
+  "vi": "Mất điện: không nhìn rõ bậc món",
+  "src": [
+   "Game/RoomView.cs:793",
+   "Game/Sprint11Room.cs:279"
+  ]
+ },
+ {
+  "vi": "Nhỏ nước sốt lên {0} · {1}",
+  "src": [
+   "Game/RoomView.cs:815"
+  ]
+ },
+ {
+  "vi": "Nhỏ nước sốt lên ",
+  "src": [
+   "Game/RoomView.cs:815",
+   "Game/RoomViewRound2.cs:627",
+   "Game/Sprint11Room.cs:64"
+  ]
+ },
+ {
+  "vi": "Cầm {0} · {1}",
+  "src": [
+   "Game/RoomView.cs:816"
+  ]
+ },
+ {
+  "vi": "Cầm ",
+  "src": [
+   "Game/RoomView.cs:816",
+   "Game/Sprint10Room.cs:83"
+  ]
+ },
+ {
+  "vi": "Đóng quán · sang ngày mới",
+  "src": [
+   "Game/RoomView.cs:835"
+  ]
+ },
+ {
+  "vi": "Đóng quán sớm",
+  "src": [
+   "Game/RoomView.cs:835"
+  ]
+ },
+ {
+  "vi": "Quán đã đóng",
+  "src": [
+   "Game/RoomView.cs:835"
+  ]
+ },
+ {
+  "vi": "MỞ QUÁN\n<size=60>bấm để đón khách</size>",
+  "src": [
+   "Game/RoomView.cs:851"
+  ]
+ },
+ {
+  "vi": "ĐÓNG QUÁN\n<size=60>bấm để nghỉ</size>",
+  "src": [
+   "Game/RoomView.cs:855"
+  ]
+ },
+ {
+  "vi": "21:00\n<size=60>phục vụ nốt khách</size>",
+  "src": [
+   "Game/RoomView.cs:856"
+  ]
+ },
+ {
+  "vi": "ĐANG MỞ\n<size=60>bấm để đóng sớm</size>",
+  "src": [
+   "Game/RoomView.cs:857"
+  ]
+ },
+ {
+  "vi": "ĐÃ ĐÓNG",
+  "src": [
+   "Game/RoomView.cs:859"
+  ]
+ },
+ {
+  "vi": "Đang chọn: bấm 1 trong 3 relic trên bệ",
+  "src": [
+   "Game/RoomView.cs:931"
+  ]
+ },
+ {
+  "vi": "Khe vé đen · cần 1 vé đen (Tab → Cửa hàng)",
+  "src": [
+   "Game/RoomView.cs:932"
+  ]
+ },
+ {
+  "vi": "Dùng 1 vé đen: chọn 1 trong 3 relic Hiếm trở lên (còn {0} vé đen)",
+  "src": [
+   "Game/RoomView.cs:933"
+  ]
+ },
+ {
+  "vi": "Dùng 1 vé đen: chọn 1 trong 3 relic Hiếm trở lên (còn ",
+  "src": [
+   "Game/RoomView.cs:933"
+  ]
+ },
+ {
+  "vi": " vé đen)",
+  "src": [
+   "Game/RoomView.cs:933"
+  ]
+ },
+ {
+  "vi": "Bệ trống",
+  "src": [
+   "Game/RoomView.cs:942"
+  ]
+ },
+ {
+  "vi": "Nhấn Tab, chọn relic để bỏ, lấy {0}",
+  "src": [
+   "Game/RoomView.cs:943"
+  ]
+ },
+ {
+  "vi": "Nhấn Tab, chọn relic để bỏ, lấy ",
+  "src": [
+   "Game/RoomView.cs:943"
+  ]
+ },
+ {
+  "vi": "Lấy {0} bằng vé đen{1}",
+  "src": [
+   "Game/RoomView.cs:944"
+  ]
+ },
+ {
+  "vi": " bằng vé đen",
+  "src": [
+   "Game/RoomView.cs:944"
+  ]
+ },
+ {
+  "vi": " · giá đầy, phải bỏ 1 relic",
+  "src": [
+   "Game/RoomView.cs:944",
+   "Game/RoomView.cs:950",
+   "Game/RoomView.cs:955"
+  ]
+ },
+ {
+  "vi": "Cửa hàng relic mở từ ngày {0}",
+  "src": [
+   "Game/RoomView.cs:946"
+  ]
+ },
+ {
+  "vi": "Bệ trống · đã bán hôm nay",
+  "src": [
+   "Game/RoomView.cs:948"
+  ]
+ },
+ {
+  "vi": "Lấy miễn phí · {0} (chỉ được lấy 1){1}",
+  "src": [
+   "Game/RoomView.cs:950"
+  ]
+ },
+ {
+  "vi": "Lấy miễn phí · ",
+  "src": [
+   "Game/RoomView.cs:950"
+  ]
+ },
+ {
+  "vi": " (chỉ được lấy 1)",
+  "src": [
+   "Game/RoomView.cs:950"
+  ]
+ },
+ {
+  "vi": "Bấm lại để huỷ mua {0}",
+  "src": [
+   "Game/RoomView.cs:951"
+  ]
+ },
+ {
+  "vi": "Bấm lại để huỷ mua ",
+  "src": [
+   "Game/RoomView.cs:951"
+  ]
+ },
+ {
+  "vi": "{0} · thiếu {1} vé",
+  "src": [
+   "Game/RoomView.cs:953"
+  ]
+ },
+ {
+  "vi": " · thiếu ",
+  "src": [
+   "Game/RoomView.cs:953"
+  ]
+ },
+ {
+  "vi": "Mua · {0} vé (còn {1})",
+  "src": [
+   "Game/RoomView.cs:954"
+  ]
+ },
+ {
+  "vi": " vé (còn ",
+  "src": [
+   "Game/RoomView.cs:954"
+  ]
+ },
+ {
+  "vi": "Vé đen → relic Hiếm · {0} vé",
+  "src": [
+   "Game/RoomView.cs:965"
+  ]
+ },
+ {
+  "vi": "Chọn 1 relic trên bệ",
+  "src": [
+   "Game/RoomView.cs:965"
+  ]
+ },
+ {
+  "vi": "Vé đen → relic Hiếm · ",
+  "src": [
+   "Game/RoomView.cs:965"
+  ]
+ },
+ {
+  "vi": "Vé đen\n<size=70>chọn 1 relic Hiếm</size>",
+  "src": [
+   "Game/RoomView.cs:967"
+  ]
+ },
+ {
+  "vi": "Relic miễn phí\n<size=70>chọn 1</size>",
+  "src": [
+   "Game/RoomView.cs:970"
+  ]
+ },
+ {
+  "vi": "Relic\n<size=70>trả bằng vé</size>",
+  "src": [
+   "Game/RoomView.cs:971"
+  ]
+ },
+ {
+  "vi": "Relic\n<size=80>mở từ ngày {0}</size>",
+  "src": [
+   "Game/RoomView.cs:972"
+  ]
+ },
+ {
+  "vi": "Relic\n<size=80>mở từ ngày ",
+  "src": [
+   "Game/RoomView.cs:972"
+  ]
+ },
+ {
+  "vi": "Mở từ ngày {0}",
+  "src": [
+   "Game/RoomView.cs:986"
+  ]
+ },
+ {
+  "vi": "Mở từ ngày ",
+  "src": [
+   "Game/RoomView.cs:986"
+  ]
+ },
+ {
+  "vi": "Đã bán",
+  "src": [
+   "Game/RoomView.cs:986"
+  ]
+ },
+ {
+  "vi": "Giá relic {0}/{1}",
+  "src": [
+   "Game/RoomView.cs:998"
+  ]
+ },
+ {
+  "vi": "Giá relic ",
+  "src": [
+   "Game/RoomView.cs:998"
+  ]
+ },
+ {
+  "vi": "Mì Ý",
+  "src": [
+   "Game/RoomView.cs:1332",
+   "Game/RoomView.cs:1343",
+   "balance/recipes.json.bases",
+   "balance/recipes.json.chinh.base"
+  ]
+ },
+ {
+  "vi": "Bún",
+  "src": [
+   "Game/RoomView.cs:1332",
+   "Game/RoomView.cs:1348",
+   "balance/recipes.json.bases",
+   "balance/recipes.json.chinh.base"
+  ]
+ },
+ {
+  "vi": "Bánh mì",
+  "src": [
+   "Game/RoomView.cs:1332",
+   "Game/RoomView.cs:1353",
+   "balance/recipes.json.bases",
+   "balance/recipes.json.chinh.base"
+  ]
+ },
+ {
+  "vi": "Chủ nợ",
+  "src": [
+   "Game/RoomViewRound2.cs:261"
+  ]
+ },
+ {
+  "vi": "{0} đang ăn · còn {1} giây",
+  "src": [
+   "Game/RoomViewRound2.cs:262"
+  ]
+ },
+ {
+  "vi": " đang ăn · còn ",
+  "src": [
+   "Game/RoomViewRound2.cs:262"
+  ]
+ },
+ {
+  "vi": " giây",
+  "src": [
+   "Game/RoomViewRound2.cs:262"
+  ]
+ },
+ {
+  "vi": "Ghế trống",
+  "src": [
+   "Game/RoomViewRound2.cs:263"
+  ]
+ },
+ {
+  "vi": "Chủ nợ · gọi {0} · Tuyệt hảo trở lên: thưởng {1}G",
+  "src": [
+   "Game/RoomViewRound2.cs:266"
+  ]
+ },
+ {
+  "vi": "Chủ nợ · gọi ",
+  "src": [
+   "Game/RoomViewRound2.cs:266"
+  ]
+ },
+ {
+  "vi": " · Tuyệt hảo trở lên: thưởng ",
+  "src": [
+   "Game/RoomViewRound2.cs:266"
+  ]
+ },
+ {
+  "vi": "Phục vụ chủ nợ: {0}",
+  "src": [
+   "Game/RoomViewRound2.cs:267"
+  ]
+ },
+ {
+  "vi": " · được thưởng {0}G",
+  "src": [
+   "Game/RoomViewRound2.cs:267"
+  ]
+ },
+ {
+  "vi": "Phục vụ chủ nợ: ",
+  "src": [
+   "Game/RoomViewRound2.cs:267"
+  ]
+ },
+ {
+  "vi": " · được thưởng ",
+  "src": [
+   "Game/RoomViewRound2.cs:267"
+  ]
+ },
+ {
+  "vi": " · chưa đủ Tuyệt hảo, không có thưởng",
+  "src": [
+   "Game/RoomViewRound2.cs:267"
+  ]
+ },
+ {
+  "vi": "{0} · gọi {1}",
+  "src": [
+   "Game/RoomViewRound2.cs:271"
+  ]
+ },
+ {
+  "vi": " · gọi ",
+  "src": [
+   "Game/RoomViewRound2.cs:271"
+  ]
+ },
+ {
+  "vi": "Sai món: {0} gọi {1} (bấm vẫn đưa, khách sẽ giận)",
+  "src": [
+   "Game/RoomViewRound2.cs:272"
+  ]
+ },
+ {
+  "vi": "Sai món: ",
+  "src": [
+   "Game/RoomViewRound2.cs:272"
+  ]
+ },
+ {
+  "vi": " gọi ",
+  "src": [
+   "Game/RoomViewRound2.cs:272"
+  ]
+ },
+ {
+  "vi": " (bấm vẫn đưa, khách sẽ giận)",
+  "src": [
+   "Game/RoomViewRound2.cs:272"
+  ]
+ },
+ {
+  "vi": "Phục vụ {0}: {1}",
+  "src": [
+   "Game/RoomViewRound2.cs:273"
+  ]
+ },
+ {
+  "vi": "Phục vụ ",
+  "src": [
+   "Game/RoomViewRound2.cs:273"
+  ]
+ },
+ {
+  "vi": "<size=64>Chủ nợ · Dễ tính {0}%</size>\nGọi: {1}",
+  "src": [
+   "Game/RoomViewRound2.cs:536"
+  ]
+ },
+ {
+  "vi": "<size=64>Chủ nợ · Dễ tính ",
+  "src": [
+   "Game/RoomViewRound2.cs:536"
+  ]
+ },
+ {
+  "vi": "%</size>\nGọi: ",
+  "src": [
+   "Game/RoomViewRound2.cs:536",
+   "Game/RoomViewRound2.cs:538"
+  ]
+ },
+ {
+  "vi": "Khách {0}",
+  "src": [
+   "Game/RoomViewRound2.cs:537"
+  ]
+ },
+ {
+  "vi": "Khách ",
+  "src": [
+   "Game/RoomViewRound2.cs:537"
+  ]
+ },
+ {
+  "vi": "{0} · Dễ tính {1}%</size>\nGọi: {2}",
+  "src": [
+   "Game/RoomViewRound2.cs:538"
+  ]
+ },
+ {
+  "vi": " · Dễ tính ",
+  "src": [
+   "Game/RoomViewRound2.cs:538"
+  ]
+ },
+ {
+  "vi": "Tủ lạnh",
+  "src": [
+   "Game/RoomViewRound2.cs:583"
+  ]
+ },
+ {
+  "vi": "Cất {0} vào tủ lạnh",
+  "src": [
+   "Game/RoomViewRound2.cs:590"
+  ]
+ },
+ {
+  "vi": "Tủ lạnh đầy",
+  "src": [
+   "Game/RoomViewRound2.cs:590"
+  ]
+ },
+ {
+  "vi": "Cất ",
+  "src": [
+   "Game/RoomViewRound2.cs:590"
+  ]
+ },
+ {
+  "vi": " vào tủ lạnh",
+  "src": [
+   "Game/RoomViewRound2.cs:590"
+  ]
+ },
+ {
+  "vi": "Tủ lạnh · {0}/{1} ô",
+  "src": [
+   "Game/RoomViewRound2.cs:591"
+  ]
+ },
+ {
+  "vi": "Tủ lạnh · ",
+  "src": [
+   "Game/RoomViewRound2.cs:591",
+   "Game/RoomViewRound2.cs:599"
+  ]
+ },
+ {
+  "vi": "Tủ lạnh · {0}/{1}",
+  "src": [
+   "Game/RoomViewRound2.cs:599"
+  ]
+ },
+ {
+  "vi": " · quá {0} ngày tụt 1 bậc",
+  "src": [
+   "Game/RoomViewRound2.cs:599"
+  ]
+ },
+ {
+  "vi": " · không tụt bậc",
+  "src": [
+   "Game/RoomViewRound2.cs:599"
+  ]
+ },
+ {
+  "vi": " · quá ",
+  "src": [
+   "Game/RoomViewRound2.cs:599"
+  ]
+ },
+ {
+  "vi": " ngày tụt 1 bậc",
+  "src": [
+   "Game/RoomViewRound2.cs:599"
+  ]
+ },
+ {
+  "vi": "Nhỏ nước sốt lên {0}",
+  "src": [
+   "Game/RoomViewRound2.cs:627"
+  ]
+ },
+ {
+  "vi": "Lấy {0} · {1} ({2} ngày trong tủ)",
+  "src": [
+   "Game/RoomViewRound2.cs:628"
+  ]
+ },
+ {
+  "vi": " ngày trong tủ)",
+  "src": [
+   "Game/RoomViewRound2.cs:628"
+  ]
+ },
+ {
+  "vi": "Vé đen · mở từ ngày {0}",
+  "src": [
+   "Game/RoomViewRound2.cs:703"
+  ]
+ },
+ {
+  "vi": "Vé đen · mở từ ngày ",
+  "src": [
+   "Game/RoomViewRound2.cs:703"
+  ]
+ },
+ {
+  "vi": "Mua vé đen · {0}G",
+  "src": [
+   "Game/RoomViewRound2.cs:704"
+  ]
+ },
+ {
+  "vi": "Đã giữ tối đa vé đen",
+  "src": [
+   "Game/RoomViewRound2.cs:704"
+  ]
+ },
+ {
+  "vi": "Mua vé đen · ",
+  "src": [
+   "Game/RoomViewRound2.cs:704"
+  ]
+ },
+ {
+  "vi": "Nhét vé đen · còn {0} vé đen",
+  "src": [
+   "Game/RoomViewRound2.cs:710"
+  ]
+ },
+ {
+  "vi": "Nhét vé đen · còn ",
+  "src": [
+   "Game/RoomViewRound2.cs:710"
+  ]
+ },
+ {
+  "vi": "Khe vé đen · chưa có vé đen",
+  "src": [
+   "Game/RoomViewRound2.cs:710"
+  ]
+ },
+ {
+  "vi": "Máy gacha đồ ăn · mở từ ngày {0}",
+  "src": [
+   "Game/RoomViewRound2.cs:717",
+   "Game/Sprint12Room.cs:135"
+  ]
+ },
+ {
+  "vi": "Máy gacha đồ ăn · mở từ ngày ",
+  "src": [
+   "Game/RoomViewRound2.cs:717",
+   "Game/Sprint12Room.cs:135"
+  ]
+ },
+ {
+  "vi": "Mua máy gacha đồ ăn · {0}G",
+  "src": [
+   "Game/RoomViewRound2.cs:718",
+   "Game/Sprint12Room.cs:136"
+  ]
+ },
+ {
+  "vi": "Mua máy gacha đồ ăn · ",
+  "src": [
+   "Game/RoomViewRound2.cs:718",
+   "Game/Sprint12Room.cs:136"
+  ]
+ },
+ {
+  "vi": "{0} đã vào máy rồi",
+  "src": [
+   "Game/RoomViewRound2.cs:719",
+   "Game/Sprint12Room.cs:139"
+  ]
+ },
+ {
+  "vi": "Cho {0} vào máy · còn {1} lượt",
+  "src": [
+   "Game/RoomViewRound2.cs:719",
+   "Game/Sprint12Room.cs:139"
+  ]
+ },
+ {
+  "vi": " đã vào máy rồi",
+  "src": [
+   "Game/RoomViewRound2.cs:719",
+   "Game/Sprint12Room.cs:139"
+  ]
+ },
+ {
+  "vi": " vào máy · còn ",
+  "src": [
+   "Game/RoomViewRound2.cs:719",
+   "Game/Sprint12Room.cs:139"
+  ]
+ },
+ {
+  "vi": " lượt",
+  "src": [
+   "Game/RoomViewRound2.cs:719",
+   "Game/Sprint12Room.cs:139",
+   "Game/Sprint12Room.cs:140",
+   "Game/TabMenu.cs:400"
+  ]
+ },
+ {
+  "vi": "Máy gacha đồ ăn · còn {0} lượt hôm nay",
+  "src": [
+   "Game/RoomViewRound2.cs:720"
+  ]
+ },
+ {
+  "vi": "Máy gacha đồ ăn · còn ",
+  "src": [
+   "Game/RoomViewRound2.cs:720"
+  ]
+ },
+ {
+  "vi": " lượt hôm nay",
+  "src": [
+   "Game/RoomViewRound2.cs:720"
+  ]
+ },
+ {
+  "vi": "<size=86>Quầy vật phẩm</size>\n\nMở từ ngày ",
+  "src": [
+   "Game/RoomViewRound2.cs:731"
+  ]
+ },
+ {
+  "vi": " (sau lần trả nợ đầu)",
+  "src": [
+   "Game/RoomViewRound2.cs:731"
+  ]
+ },
+ {
+  "vi": "<size=86>Quầy vật phẩm</size>\n",
+  "src": [
+   "Game/RoomViewRound2.cs:736"
+  ]
+ },
+ {
+  "vi": "<b>Nước sốt thần thánh</b> ",
+  "src": [
+   "Game/RoomViewRound2.cs:737"
+  ]
+ },
+ {
+  "vi": "G · có ",
+  "src": [
+   "Game/RoomViewRound2.cs:737",
+   "Game/RoomViewRound2.cs:742",
+   "Game/TabMenu.cs:382",
+   "Game/TabMenu.cs:390"
+  ]
+ },
+ {
+  "vi": "<size=52>Hỏng ",
+  "src": [
+   "Game/RoomViewRound2.cs:738"
+  ]
+ },
+ {
+  "vi": " · Giữ ",
+  "src": [
+   "Game/RoomViewRound2.cs:738"
+  ]
+ },
+ {
+  "vi": "+1 bậc ",
+  "src": [
+   "Game/RoomViewRound2.cs:739"
+  ]
+ },
+ {
+  "vi": " · +2 bậc ",
+  "src": [
+   "Game/RoomViewRound2.cs:739",
+   "Game/TabMenu.cs:384"
+  ]
+ },
+ {
+  "vi": " · Huyền thoại ",
+  "src": [
+   "Game/RoomViewRound2.cs:740",
+   "Game/TabMenu.cs:385"
+  ]
+ },
+ {
+  "vi": "<b>Vé đen</b> ",
+  "src": [
+   "Game/RoomViewRound2.cs:742"
+  ]
+ },
+ {
+  "vi": "<size=52>Thùng: ",
+  "src": [
+   "Game/RoomViewRound2.cs:744"
+  ]
+ },
+ {
+  "vi": "{0}G · mua 1 lần",
+  "src": [
+   "Game/RoomViewRound2.cs:749",
+   "Game/TabMenu.cs:400",
+   "Game/TabMenu.cs:417"
+  ]
+ },
+ {
+  "vi": "<b>Máy gacha đồ ăn</b> ",
+  "src": [
+   "Game/RoomViewRound2.cs:749"
+  ]
+ },
+ {
+  "vi": "đã mua",
+  "src": [
+   "Game/RoomViewRound2.cs:749",
+   "Game/TabMenu.cs:417"
+  ]
+ },
+ {
+  "vi": "G · mua 1 lần",
+  "src": [
+   "Game/RoomViewRound2.cs:749",
+   "Game/TabMenu.cs:400",
+   "Game/TabMenu.cs:417"
+  ]
+ },
+ {
+  "vi": "Nước sốt · {0}",
+  "src": [
+   "Game/RoomViewRound2.cs:752"
+  ]
+ },
+ {
+  "vi": "Nước sốt · ",
+  "src": [
+   "Game/RoomViewRound2.cs:752"
+  ]
+ },
+ {
+  "vi": "Vé đen · {0}",
+  "src": [
+   "Game/RoomViewRound2.cs:753"
+  ]
+ },
+ {
+  "vi": "Vé đen · ",
+  "src": [
+   "Game/RoomViewRound2.cs:753"
+  ]
+ },
+ {
+  "vi": "Máy gacha đồ ăn\n<size=60>mở từ ngày {0}</size>",
+  "src": [
+   "Game/RoomViewRound2.cs:755"
+  ]
+ },
+ {
+  "vi": "Máy gacha đồ ăn\n<size=60>mở từ ngày ",
+  "src": [
+   "Game/RoomViewRound2.cs:755"
+  ]
+ },
+ {
+  "vi": "Máy gacha đồ ăn\n<size=60>{0}G · bấm để mua</size>",
+  "src": [
+   "Game/RoomViewRound2.cs:756"
+  ]
+ },
+ {
+  "vi": "Máy gacha đồ ăn\n<size=60>",
+  "src": [
+   "Game/RoomViewRound2.cs:756"
+  ]
+ },
+ {
+  "vi": "G · bấm để mua</size>",
+  "src": [
+   "Game/RoomViewRound2.cs:756"
+  ]
+ },
+ {
+  "vi": "Máy gacha đồ ăn\n<size=60>còn {0}/{1} lượt hôm nay</size>",
+  "src": [
+   "Game/RoomViewRound2.cs:757"
+  ]
+ },
+ {
+  "vi": "Máy gacha đồ ăn\n<size=60>còn ",
+  "src": [
+   "Game/RoomViewRound2.cs:757"
+  ]
+ },
+ {
+  "vi": " lượt hôm nay</size>",
+  "src": [
+   "Game/RoomViewRound2.cs:757"
+  ]
+ },
+ {
+  "vi": "Quán Ăn Hope: không đọc được bản lưu ({0}).",
+  "src": [
+   "Game/SaveStore.cs:50"
+  ]
+ },
+ {
+  "vi": "Đặt {0} lên thớt",
+  "src": [
+   "Game/Sprint10Room.cs:82"
+  ]
+ },
+ {
+  "vi": " lên thớt",
+  "src": [
+   "Game/Sprint10Room.cs:82"
+  ]
+ },
+ {
+  "vi": "Thớt",
+  "src": [
+   "Game/Sprint10Room.cs:82"
+  ]
+ },
+ {
+  "vi": "Cầm {0}",
+  "src": [
+   "Game/Sprint10Room.cs:83"
+  ]
+ },
+ {
+  "vi": "Giữ chuột trái: sơ chế {0}",
+  "src": [
+   "Game/Sprint10Room.cs:83"
+  ]
+ },
+ {
+  "vi": "Nhặt {0}",
+  "src": [
+   "Game/Sprint10Room.cs:194"
+  ]
+ },
+ {
+  "vi": "Nhặt ",
+  "src": [
+   "Game/Sprint10Room.cs:194"
+  ]
+ },
+ {
+  "vi": "Bàn trống",
+  "src": [
+   "Game/Sprint10Room.cs:239"
+  ]
+ },
+ {
+  "vi": "Khách gọi {0}",
+  "src": [
+   "Game/Sprint10Room.cs:240"
+  ]
+ },
+ {
+  "vi": "Khách gọi ",
+  "src": [
+   "Game/Sprint10Room.cs:240"
+  ]
+ },
+ {
+  "vi": "Đặt {0} cho chủ nợ",
+  "src": [
+   "Game/Sprint10Room.cs:241"
+  ]
+ },
+ {
+  "vi": " cho chủ nợ",
+  "src": [
+   "Game/Sprint10Room.cs:241"
+  ]
+ },
+ {
+  "vi": "Sai món! Khách gọi {0}",
+  "src": [
+   "Game/Sprint10Room.cs:242"
+  ]
+ },
+ {
+  "vi": "Đặt {0} trước mặt khách",
+  "src": [
+   "Game/Sprint10Room.cs:243"
+  ]
+ },
+ {
+  "vi": " trước mặt khách",
+  "src": [
+   "Game/Sprint10Room.cs:243"
+  ]
+ },
+ {
+  "vi": "Nhỏ nước sốt lên {0} (còn {1} chai)",
+  "src": [
+   "Game/Sprint11Room.cs:64"
+  ]
+ },
+ {
+  "vi": " (còn ",
+  "src": [
+   "Game/Sprint11Room.cs:64",
+   "Game/Sprint12Room.cs:129"
+  ]
+ },
+ {
+  "vi": "Đặt lại nước sốt",
+  "src": [
+   "Game/Sprint11Room.cs:65"
+  ]
+ },
+ {
+  "vi": "Cầm nước sốt (còn {0} chai)",
+  "src": [
+   "Game/Sprint11Room.cs:66"
+  ]
+ },
+ {
+  "vi": "Vặn núm bếp 2",
+  "src": [
+   "Game/Sprint11Room.cs:157"
+  ]
+ },
+ {
+  "vi": "Bếp 2",
+  "src": [
+   "Game/Sprint11Room.cs:233"
+  ]
+ },
+ {
+  "vi": "Cho {0} vào bếp 2",
+  "src": [
+   "Game/Sprint11Room.cs:236"
+  ]
+ },
+ {
+  "vi": " vào bếp 2",
+  "src": [
+   "Game/Sprint11Room.cs:236"
+  ]
+ },
+ {
+  "vi": "Bếp 2 · {0}",
+  "src": [
+   "Game/Sprint11Room.cs:239"
+  ]
+ },
+ {
+  "vi": "Bếp 2 · chọn dụng cụ trên giá",
+  "src": [
+   "Game/Sprint11Room.cs:239"
+  ]
+ },
+ {
+  "vi": "Bếp 2 · ",
+  "src": [
+   "Game/Sprint11Room.cs:239"
+  ]
+ },
+ {
+  "vi": "MÁY GACHA ĐỒ ĂN",
+  "src": [
+   "Game/Sprint12Room.cs:98"
+  ]
+ },
+ {
+  "vi": "Máy gacha đồ ăn · chưa mua",
+  "src": [
+   "Game/Sprint12Room.cs:125"
+  ]
+ },
+ {
+  "vi": "Đang quay…",
+  "src": [
+   "Game/Sprint12Room.cs:126",
+   "Game/Sprint12Room.cs:137"
+  ]
+ },
+ {
+  "vi": "Cần gạt · cho đĩa vào máy trước",
+  "src": [
+   "Game/Sprint12Room.cs:127"
+  ]
+ },
+ {
+  "vi": "Đã quay · bấm máy lấy {0} ra",
+  "src": [
+   "Game/Sprint12Room.cs:128"
+  ]
+ },
+ {
+  "vi": "Đã quay · bấm máy lấy ",
+  "src": [
+   "Game/Sprint12Room.cs:128"
+  ]
+ },
+ {
+  "vi": "Gạt cần · quay {0} (còn {1} lượt)",
+  "src": [
+   "Game/Sprint12Room.cs:129"
+  ]
+ },
+ {
+  "vi": "Gạt cần · quay ",
+  "src": [
+   "Game/Sprint12Room.cs:129"
+  ]
+ },
+ {
+  "vi": " lượt)",
+  "src": [
+   "Game/Sprint12Room.cs:129"
+  ]
+ },
+ {
+  "vi": "Lấy {0} ra",
+  "src": [
+   "Game/Sprint12Room.cs:138"
+  ]
+ },
+ {
+  "vi": "Máy gacha đồ ăn · cầm đĩa tới để cho vào · còn {0} lượt",
+  "src": [
+   "Game/Sprint12Room.cs:140"
+  ]
+ },
+ {
+  "vi": "Máy gacha đồ ăn · cầm đĩa tới để cho vào · còn ",
+  "src": [
+   "Game/Sprint12Room.cs:140"
+  ]
+ },
+ {
+  "vi": "THÀNH CÔNG! +{0}",
+  "src": [
+   "Game/Sprint12Room.cs:170"
+  ]
+ },
+ {
+  "vi": "THÀNH CÔNG! +",
+  "src": [
+   "Game/Sprint12Room.cs:170"
+  ]
+ },
+ {
+  "vi": "XỊT! hỏng mất món",
+  "src": [
+   "Game/Sprint12Room.cs:171"
+  ]
+ },
+ {
+  "vi": "XỊT! −1 bậc",
+  "src": [
+   "Game/Sprint12Room.cs:171"
+  ]
+ },
+ {
+  "vi": "Giữ nguyên",
+  "src": [
+   "Game/Sprint12Room.cs:171"
+  ]
+ },
+ {
+  "vi": "Cần",
+  "src": [
+   "Game/Sprint8Room.cs:99"
+  ]
+ },
+ {
+  "vi": "Đèn",
+  "src": [
+   "Game/Sprint8Room.cs:103"
+  ]
+ },
+ {
+  "vi": "Công tắc đèn · mất điện, đèn không sáng",
+  "src": [
+   "Game/Sprint8Room.cs:125"
+  ]
+ },
+ {
+  "vi": "Bật đèn{0}",
+  "src": [
+   "Game/Sprint8Room.cs:126"
+  ]
+ },
+ {
+  "vi": "Tắt đèn",
+  "src": [
+   "Game/Sprint8Room.cs:126"
+  ]
+ },
+ {
+  "vi": " · trời đang tối",
+  "src": [
+   "Game/Sprint8Room.cs:126"
+  ]
+ },
+ {
+  "vi": "Đổi hàng relic · mở từ ngày {0}",
+  "src": [
+   "Game/Sprint8Room.cs:189"
+  ]
+ },
+ {
+  "vi": "Đổi hàng relic · mở từ ngày ",
+  "src": [
+   "Game/Sprint8Room.cs:189"
+  ]
+ },
+ {
+  "vi": "Đổi 3 relic khác · {0}G (ví {1}G)",
+  "src": [
+   "Game/Sprint8Room.cs:191"
+  ]
+ },
+ {
+  "vi": "Đổi 3 relic khác · ",
+  "src": [
+   "Game/Sprint8Room.cs:191"
+  ]
+ },
+ {
+  "vi": "G (ví ",
+  "src": [
+   "Game/Sprint8Room.cs:191"
+  ]
+ },
+ {
+  "vi": "Đổi hàng\n<size=44>mở từ ngày {0}</size>",
+  "src": [
+   "Game/Sprint8Room.cs:198"
+  ]
+ },
+ {
+  "vi": "Đổi hàng\n<size=44>mở từ ngày ",
+  "src": [
+   "Game/Sprint8Room.cs:198"
+  ]
+ },
+ {
+  "vi": "Đổi hàng\n<size=50>{0}G</size>",
+  "src": [
+   "Game/Sprint8Room.cs:199"
+  ]
+ },
+ {
+  "vi": "Đổi hàng\n<size=50>",
+  "src": [
+   "Game/Sprint8Room.cs:199"
+  ]
+ },
+ {
+  "vi": "Ngày {0}\n<size=30>{1}</size>",
+  "src": [
+   "Game/StoryArt.cs:103"
+  ]
+ },
+ {
+  "vi": "ĐÓNG CỬA",
+  "src": [
+   "Game/StoryArt.cs:132"
+  ]
+ },
+ {
+  "vi": "Thực đơn",
+  "src": [
+   "Game/TabMenu.cs:82"
+  ]
+ },
+ {
+  "vi": "Cửa hàng",
+  "src": [
+   "Game/TabMenu.cs:84"
+  ]
+ },
+ {
+  "vi": "Cách chơi",
+  "src": [
+   "Game/TabMenu.cs:85"
+  ]
+ },
+ {
+  "vi": "Đóng (Tab)",
+  "src": [
+   "Game/TabMenu.cs:86"
+  ]
+ },
+ {
+  "vi": "Sơn hào hải vị · cần rương đột phá",
+  "src": [
+   "Game/TabMenu.cs:224"
+  ]
+ },
+ {
+  "vi": "Đế: {0}",
+  "src": [
+   "Game/TabMenu.cs:251"
+  ]
+ },
+ {
+  "vi": "Đế: ",
+  "src": [
+   "Game/TabMenu.cs:251"
+  ]
+ },
+ {
+  "vi": "CẦN",
+  "src": [
+   "Game/TabMenu.cs:256"
+  ]
+ },
+ {
+  "vi": "Nấu {0}s · bán {1}G (bậc Bình thường)",
+  "src": [
+   "Game/TabMenu.cs:262"
+  ]
+ },
+ {
+  "vi": "Nấu ",
+  "src": [
+   "Game/TabMenu.cs:262"
+  ]
+ },
+ {
+  "vi": "s · bán ",
+  "src": [
+   "Game/TabMenu.cs:262"
+  ]
+ },
+ {
+  "vi": "G (bậc Bình thường)",
+  "src": [
+   "Game/TabMenu.cs:262"
+  ]
+ },
+ {
+  "vi": "Món ngon hơn → đắt hơn · tệ hơn → rẻ hơn",
+  "src": [
+   "Game/TabMenu.cs:265"
+  ]
+ },
+ {
+  "vi": "Chọn",
+  "src": [
+   "Game/TabMenu.cs:273"
+  ]
+ },
+ {
+  "vi": "Sai thứ tự hoặc sai dụng cụ → Lạc vị",
+  "src": [
+   "Game/TabMenu.cs:278"
+  ]
+ },
+ {
+  "vi": "{0} món · giá niêm yết ở bậc Bình thường · khách trả thêm tip",
+  "src": [
+   "Game/TabMenu.cs:280"
+  ]
+ },
+ {
+  "vi": " món · giá niêm yết ở bậc Bình thường · khách trả thêm tip",
+  "src": [
+   "Game/TabMenu.cs:280"
+  ]
+ },
+ {
+  "vi": "Relic đang có · {0}/{1}",
+  "src": [
+   "Game/TabMenu.cs:326"
+  ]
+ },
+ {
+  "vi": "Relic đang có · ",
+  "src": [
+   "Game/TabMenu.cs:326"
+  ]
+ },
+ {
+  "vi": " · <color=#E8604F>đã đủ: chọn 1 relic để bỏ, lấy {0}</color>",
+  "src": [
+   "Game/TabMenu.cs:327"
+  ]
+ },
+ {
+  "vi": " · <color=#E8604F>đã đủ: chọn 1 relic để bỏ, lấy ",
+  "src": [
+   "Game/TabMenu.cs:327"
+  ]
+ },
+ {
+  "vi": "Bỏ",
+  "src": [
+   "Game/TabMenu.cs:344",
+   "Game/TabMenu.cs:344"
+  ]
+ },
+ {
+  "vi": "Chắc?",
+  "src": [
+   "Game/TabMenu.cs:344"
+  ]
+ },
+ {
+  "vi": "Chưa có relic. Mua ở 3 bệ relic (mở từ ngày {0}).",
+  "src": [
+   "Game/TabMenu.cs:349"
+  ]
+ },
+ {
+  "vi": "Chưa có relic. Mua ở 3 bệ relic (mở từ ngày ",
+  "src": [
+   "Game/TabMenu.cs:349"
+  ]
+ },
+ {
+  "vi": "Bấm Bỏ ở relic muốn bỏ: relic mới vào thay chỗ.",
+  "src": [
+   "Game/TabMenu.cs:350"
+  ]
+ },
+ {
+  "vi": "Bỏ relic không hoàn vé. Bấm Bỏ hai lần để chắc chắn.",
+  "src": [
+   "Game/TabMenu.cs:350"
+  ]
+ },
+ {
+  "vi": "Cửa hàng · ví {0}G{1}",
+  "src": [
+   "Game/TabMenu.cs:378"
+  ]
+ },
+ {
+  "vi": " · mở từ ngày {0}",
+  "src": [
+   "Game/TabMenu.cs:378"
+  ]
+ },
+ {
+  "vi": "Cửa hàng · ví ",
+  "src": [
+   "Game/TabMenu.cs:378"
+  ]
+ },
+ {
+  "vi": " · mở từ ngày ",
+  "src": [
+   "Game/TabMenu.cs:378"
+  ]
+ },
+ {
+  "vi": "<b>Nước sốt thần thánh</b> · ",
+  "src": [
+   "Game/TabMenu.cs:382"
+  ]
+ },
+ {
+  "vi": "\n<size=15>Lọ ở bên phải bếp: cầm lọ, bấm đĩa vừa nấu. Hỏng ",
+  "src": [
+   "Game/TabMenu.cs:383"
+  ]
+ },
+ {
+  "vi": " · giữ ",
+  "src": [
+   "Game/TabMenu.cs:383"
+  ]
+ },
+ {
+  "vi": " · +1 bậc ",
+  "src": [
+   "Game/TabMenu.cs:384"
+  ]
+ },
+ {
+  "vi": "<b>Vé đen</b> · ",
+  "src": [
+   "Game/TabMenu.cs:390"
+  ]
+ },
+ {
+  "vi": "\n<size=15>Nhét vào máy vé: ",
+  "src": [
+   "Game/TabMenu.cs:391"
+  ]
+ },
+ {
+  "vi": " · hoặc khe cạnh bệ relic: chọn relic Hiếm</size>",
+  "src": [
+   "Game/TabMenu.cs:396"
+  ]
+ },
+ {
+  "vi": "<b>Máy gacha đồ ăn</b> · {0}",
+  "src": [
+   "Game/TabMenu.cs:400"
+  ]
+ },
+ {
+  "vi": "đã mua · còn {0}/{1} lượt",
+  "src": [
+   "Game/TabMenu.cs:400"
+  ]
+ },
+ {
+  "vi": "<b>Máy gacha đồ ăn</b> · ",
+  "src": [
+   "Game/TabMenu.cs:400"
+  ]
+ },
+ {
+  "vi": "đã mua · còn ",
+  "src": [
+   "Game/TabMenu.cs:400"
+  ]
+ },
+ {
+  "vi": "{0}\n<size=15>Đổi bậc một món đã nấu (lên hoặc xuống, tỉ lệ ẩn), mỗi món 1 lần.</size>",
+  "src": [
+   "Game/TabMenu.cs:401"
+  ]
+ },
+ {
+  "vi": "\n<size=15>Đổi bậc một món đã nấu (lên hoặc xuống, tỉ lệ ẩn), mỗi món 1 lần.</size>",
+  "src": [
+   "Game/TabMenu.cs:401"
+  ]
+ },
+ {
+  "vi": "<b>Thớt</b> · {0}",
+  "src": [
+   "Game/TabMenu.cs:406"
+  ]
+ },
+ {
+  "vi": "đủ {0} thớt",
+  "src": [
+   "Game/TabMenu.cs:406"
+  ]
+ },
+ {
+  "vi": "{0} · có {1}/{2}",
+  "src": [
+   "Game/TabMenu.cs:406",
+   "Game/TabMenu.cs:412"
+  ]
+ },
+ {
+  "vi": "<b>Thớt</b> · ",
+  "src": [
+   "Game/TabMenu.cs:406"
+  ]
+ },
+ {
+  "vi": "đủ ",
+  "src": [
+   "Game/TabMenu.cs:406",
+   "Game/TabMenu.cs:412"
+  ]
+ },
+ {
+  "vi": " thớt",
+  "src": [
+   "Game/TabMenu.cs:406"
+  ]
+ },
+ {
+  "vi": " · có ",
+  "src": [
+   "Game/TabMenu.cs:406",
+   "Game/TabMenu.cs:412"
+  ]
+ },
+ {
+  "vi": "{0}\n<size=15>Sơ chế nhiều món cùng lúc. Bàn sơ chế dài thêm.</size>",
+  "src": [
+   "Game/TabMenu.cs:407"
+  ]
+ },
+ {
+  "vi": "\n<size=15>Sơ chế nhiều món cùng lúc. Bàn sơ chế dài thêm.</size>",
+  "src": [
+   "Game/TabMenu.cs:407"
+  ]
+ },
+ {
+  "vi": "<b>Bếp</b> · {0}",
+  "src": [
+   "Game/TabMenu.cs:412"
+  ]
+ },
+ {
+  "vi": "đủ {0} bếp",
+  "src": [
+   "Game/TabMenu.cs:412"
+  ]
+ },
+ {
+  "vi": "<b>Bếp</b> · ",
+  "src": [
+   "Game/TabMenu.cs:412"
+  ]
+ },
+ {
+  "vi": " bếp",
+  "src": [
+   "Game/TabMenu.cs:412"
+  ]
+ },
+ {
+  "vi": "{0}\n<size=15>Nấu hai món cùng lúc. Bếp mới ở bên phải quầy đĩa.</size>",
+  "src": [
+   "Game/TabMenu.cs:413"
+  ]
+ },
+ {
+  "vi": "\n<size=15>Nấu hai món cùng lúc. Bếp mới ở bên phải quầy đĩa.</size>",
+  "src": [
+   "Game/TabMenu.cs:413"
+  ]
+ },
+ {
+  "vi": "<b>Tay vạn năng</b> · {0}",
+  "src": [
+   "Game/TabMenu.cs:417"
+  ]
+ },
+ {
+  "vi": "<b>Tay vạn năng</b> · ",
+  "src": [
+   "Game/TabMenu.cs:417"
+  ]
+ },
+ {
+  "vi": "{0}\n<size=15>Cầm 2 đồ cùng lúc. Phím 1 / 2 chọn ô; không chọn thì dùng / thả theo thứ tự nhặt.</size>",
+  "src": [
+   "Game/TabMenu.cs:418"
+  ]
+ },
+ {
+  "vi": "\n<size=15>Cầm 2 đồ cùng lúc. Phím 1 / 2 chọn ô; không chọn thì dùng / thả theo thứ tự nhặt.</size>",
+  "src": [
+   "Game/TabMenu.cs:418"
+  ]
+ },
+ {
+  "vi": "Đồ mua xong hiện trong phòng. Đồng hồ đứng trong lúc mở bảng này.",
+  "src": [
+   "Game/TabMenu.cs:420"
+  ]
+ },
+ {
+  "vi": "‹ Trước",
+  "src": [
+   "Game/TabMenu.cs:488"
+  ]
+ },
+ {
+  "vi": "Lấy 1 nguyên liệu",
+  "src": [
+   "Game/Tutorial.cs:108"
+  ]
+ },
+ {
+  "vi": "Sơ chế trên thớt",
+  "src": [
+   "Game/Tutorial.cs:111"
+  ]
+ },
+ {
+  "vi": "Cho vào đúng thứ tự",
+  "src": [
+   "Game/Tutorial.cs:119"
+  ]
+ },
+ {
+  "vi": "Trời tối: bật đèn",
+  "src": [
+   "Game/Tutorial.cs:139"
+  ]
+ },
+ {
+  "vi": "Ngày {0}: món ngon nhất",
+  "src": [
+   "Game/Tutorial.cs:148"
+  ]
+ },
+ {
+  "vi": ": món ngon nhất",
+  "src": [
+   "Game/Tutorial.cs:148"
+  ]
+ },
+ {
+  "vi": "Phục vụ ai trước cũng được",
+  "src": [
+   "Game/Tutorial.cs:154"
+  ]
+ },
+ {
+  "vi": "Cầm lọ nước sốt",
+  "src": [
+   "Game/Tutorial.cs:161"
+  ]
+ },
+ {
+  "vi": "Bấm đĩa vừa nấu",
+  "src": [
+   "Game/Tutorial.cs:163"
+  ]
+ },
+ {
+  "vi": "Mất điện: nấu bằng nến",
+  "src": [
+   "Game/Tutorial.cs:168"
+  ]
+ },
+ {
+  "vi": "{0}:00 chủ nợ tới",
+  "src": [
+   "Game/Tutorial.cs:172"
+  ]
+ },
+ {
+  "vi": ":00 chủ nợ tới",
+  "src": [
+   "Game/Tutorial.cs:172"
+  ]
+ },
+ {
+  "vi": "Xong! Gom tiền trả nợ ngày {0}.",
+  "src": [
+   "Game/Tutorial.cs:267"
+  ]
+ },
+ {
+  "vi": "Xong! Gom tiền trả nợ ngày ",
+  "src": [
+   "Game/Tutorial.cs:267"
+  ]
+ },
+ {
+  "vi": "Ôi thiu",
+  "src": [
+   "Game/UiKit.cs:35"
+  ]
+ },
+ {
+  "vi": "Bình thường",
+  "src": [
+   "Game/UiKit.cs:35",
+   "Game/UiKit.cs:36"
+  ]
+ },
+ {
+  "vi": "Tốt",
+  "src": [
+   "Game/UiKit.cs:35"
+  ]
+ },
+ {
+  "vi": "Tươi",
+  "src": [
+   "Game/UiKit.cs:35"
+  ]
+ },
+ {
+  "vi": "Xuất sắc",
+  "src": [
+   "Game/UiKit.cs:35"
+  ]
+ },
+ {
+  "vi": "Lạc vị",
+  "src": [
+   "Game/UiKit.cs:36"
+  ]
+ },
+ {
+  "vi": "Dở",
+  "src": [
+   "Game/UiKit.cs:36"
+  ]
+ },
+ {
+  "vi": "Tuyệt hảo",
+  "src": [
+   "Game/UiKit.cs:36"
+  ]
+ },
+ {
+  "vi": "Bị đuổi việc",
+  "src": [
+   "CotTruyen/Trang_1.json"
+  ]
+ },
+ {
+  "vi": "Chương 1 · Bị đuổi việc",
+  "src": [
+   "CotTruyen/Trang_1.json",
+   "CotTruyen/Trang_1.json"
+  ]
+ },
+ {
+  "vi": "Thứ Hai · 9 giờ sáng",
+  "src": [
+   "CotTruyen/Trang_1.json"
+  ]
+ },
+ {
+  "vi": "CẬU BỊ",
+  "src": [
+   "CotTruyen/Trang_1.json"
+  ]
+ },
+ {
+  "vi": "ĐUỔI!!",
+  "src": [
+   "CotTruyen/Trang_1.json"
+  ]
+ },
+ {
+  "vi": "…và thế là hết.",
+  "src": [
+   "CotTruyen/Trang_1.json"
+  ]
+ },
+ {
+  "vi": "QUÁN CŨ",
+  "src": [
+   "CotTruyen/Trang_1.json",
+   "CotTruyen/Trang_1.json"
+  ]
+ },
+ {
+  "vi": "CỘP… CỘP…",
+  "src": [
+   "CotTruyen/Trang_1.json"
+  ]
+ },
+ {
+  "vi": "Quán này giờ là",
+  "src": [
+   "CotTruyen/Trang_1.json"
+  ]
+ },
+ {
+  "vi": "của cậu. Nấu đi.",
+  "src": [
+   "CotTruyen/Trang_1.json"
+  ]
+ },
+ {
+  "vi": "GIẤY NỢ",
+  "src": [
+   "CotTruyen/Trang_1.json"
+  ]
+ },
+ {
+  "vi": "Ngày 4",
+  "src": [
+   "CotTruyen/Trang_1.json"
+  ]
+ },
+ {
+  "vi": "Ngày 9",
+  "src": [
+   "CotTruyen/Trang_1.json"
+  ]
+ },
+ {
+  "vi": "Ngày 15",
+  "src": [
+   "CotTruyen/Trang_1.json"
+  ]
+ },
+ {
+  "vi": "Ngày 22",
+  "src": [
+   "CotTruyen/Trang_1.json"
+  ]
+ },
+ {
+  "vi": "Hạn trả: 4 lần",
+  "src": [
+   "CotTruyen/Trang_1.json"
+  ]
+ },
+ {
+  "vi": "Chương 2 · Cơn bão",
+  "src": [
+   "CotTruyen/Trang_2.json",
+   "CotTruyen/Trang_2.json"
+  ]
+ },
+ {
+  "vi": "QUÁN CỦA HOPE",
+  "src": [
+   "CotTruyen/Trang_2.json",
+   "CotTruyen/Trang_4.json",
+   "CotTruyen/Trang_6.json"
+  ]
+ },
+ {
+  "vi": "ĐÙNG!!",
+  "src": [
+   "CotTruyen/Trang_2.json"
+  ]
+ },
+ {
+  "vi": "Ngày 2 · Bão đổ bộ",
+  "src": [
+   "CotTruyen/Trang_2.json"
+  ]
+ },
+ {
+  "vi": "tách… tách…",
+  "src": [
+   "CotTruyen/Trang_2.json"
+  ]
+ },
+ {
+  "vi": "Quán ơi, đừng",
+  "src": [
+   "CotTruyen/Trang_2.json"
+  ]
+ },
+ {
+  "vi": "sập nha…",
+  "src": [
+   "CotTruyen/Trang_2.json"
+  ]
+ },
+ {
+  "vi": "Ngày 3 · Kho gần trống",
+  "src": [
+   "CotTruyen/Trang_2.json"
+  ]
+ },
+ {
+  "vi": "Ít thì",
+  "src": [
+   "CotTruyen/Trang_2.json"
+  ]
+ },
+ {
+  "vi": "nấu khéo!",
+  "src": [
+   "CotTruyen/Trang_2.json"
+  ]
+ },
+ {
+  "vi": "Ngon quá",
+  "src": [
+   "CotTruyen/Trang_2.json"
+  ]
+ },
+ {
+  "vi": "cháu ơi!",
+  "src": [
+   "CotTruyen/Trang_2.json"
+  ]
+ },
+ {
+  "vi": "Chương 3 · Đêm mất điện",
+  "src": [
+   "CotTruyen/Trang_3.json",
+   "CotTruyen/Trang_3.json"
+  ]
+ },
+ {
+  "vi": "PHỤT!",
+  "src": [
+   "CotTruyen/Trang_3.json"
+  ]
+ },
+ {
+  "vi": "Ngày 8 · 19 giờ 02",
+  "src": [
+   "CotTruyen/Trang_3.json"
+  ]
+ },
+ {
+  "vi": "…ơ?",
+  "src": [
+   "CotTruyen/Trang_3.json"
+  ]
+ },
+ {
+  "vi": "(khách)",
+  "src": [
+   "CotTruyen/Trang_3.json"
+  ]
+ },
+ {
+  "vi": "Bếp vẫn",
+  "src": [
+   "CotTruyen/Trang_3.json"
+  ]
+ },
+ {
+  "vi": "phải đỏ lửa!",
+  "src": [
+   "CotTruyen/Trang_3.json"
+  ]
+ },
+ {
+  "vi": "XÈO XÈO",
+  "src": [
+   "CotTruyen/Trang_3.json"
+  ]
+ },
+ {
+  "vi": "Không điện, vẫn đông khách",
+  "src": [
+   "CotTruyen/Trang_3.json"
+  ]
+ },
+ {
+  "vi": "Lãng mạn ghê!",
+  "src": [
+   "CotTruyen/Trang_3.json"
+  ]
+ },
+ {
+  "vi": "Chương 4 · Tin đồn",
+  "src": [
+   "CotTruyen/Trang_4.json",
+   "CotTruyen/Trang_4.json"
+  ]
+ },
+ {
+  "vi": "QUÁN",
+  "src": [
+   "CotTruyen/Trang_4.json",
+   "CotTruyen/Trang_4.json",
+   "CotTruyen/Trang_4.json",
+   "CotTruyen/Trang_4.json"
+  ]
+ },
+ {
+  "vi": "BẨN!!",
+  "src": [
+   "CotTruyen/Trang_4.json",
+   "CotTruyen/Trang_4.json",
+   "CotTruyen/Trang_4.json",
+   "CotTruyen/Trang_4.json"
+  ]
+ },
+ {
+  "vi": "hí hí hí",
+  "src": [
+   "CotTruyen/Trang_4.json"
+  ]
+ },
+ {
+  "vi": "Ngày 9 · Tin đồn lan",
+  "src": [
+   "CotTruyen/Trang_4.json"
+  ]
+ },
+ {
+  "vi": "…vắng tanh",
+  "src": [
+   "CotTruyen/Trang_4.json"
+  ]
+ },
+ {
+  "vi": "Ngày 10–13",
+  "src": [
+   "CotTruyen/Trang_4.json"
+  ]
+ },
+ {
+  "vi": "Bắt được",
+  "src": [
+   "CotTruyen/Trang_4.json"
+  ]
+ },
+ {
+  "vi": "rồi nhé!",
+  "src": [
+   "CotTruyen/Trang_4.json"
+  ]
+ },
+ {
+  "vi": "LỘ RỒI!!",
+  "src": [
+   "CotTruyen/Trang_4.json"
+  ]
+ },
+ {
+  "vi": "Ngày 14",
+  "src": [
+   "CotTruyen/Trang_4.json"
+  ]
+ },
+ {
+  "vi": "Ngày 15 · Danh tiếng trở lại!",
+  "src": [
+   "CotTruyen/Trang_4.json"
+  ]
+ },
+ {
+  "vi": "Chương 5 · Món cuối cùng",
+  "src": [
+   "CotTruyen/Trang_5.json",
+   "CotTruyen/Trang_5.json"
+  ]
+ },
+ {
+  "vi": "Ngày 21 · Hạn chót",
+  "src": [
+   "CotTruyen/Trang_5.json"
+  ]
+ },
+ {
+  "vi": "Một món.",
+  "src": [
+   "CotTruyen/Trang_5.json"
+  ]
+ },
+ {
+  "vi": "Tuyệt hảo.",
+  "src": [
+   "CotTruyen/Trang_5.json"
+  ]
+ },
+ {
+  "vi": "XÈO!",
+  "src": [
+   "CotTruyen/Trang_5.json"
+  ]
+ },
+ {
+  "vi": "XÈO!!",
+  "src": [
+   "CotTruyen/Trang_5.json"
+  ]
+ },
+ {
+  "vi": "Nấu bằng cả",
+  "src": [
+   "CotTruyen/Trang_5.json"
+  ]
+ },
+ {
+  "vi": "nhân phẩm!",
+  "src": [
+   "CotTruyen/Trang_5.json"
+  ]
+ },
+ {
+  "vi": "<space=36.7> HUYỀN THOẠI <space=36.7>",
+  "src": [
+   "CotTruyen/Trang_5.json"
+  ]
+ },
+ {
+  "vi": "Ự…!!",
+  "src": [
+   "CotTruyen/Trang_5.json"
+  ]
+ },
+ {
+  "vi": "Vị này… giống hệt",
+  "src": [
+   "CotTruyen/Trang_5.json"
+  ]
+ },
+ {
+  "vi": "món mẹ ta nấu…",
+  "src": [
+   "CotTruyen/Trang_5.json"
+  ]
+ },
+ {
+  "vi": "Chương 6 · Hết nợ, có vợ",
+  "src": [
+   "CotTruyen/Trang_6.json",
+   "CotTruyen/Trang_6.json"
+  ]
+ },
+ {
+  "vi": "XOẸT!!",
+  "src": [
+   "CotTruyen/Trang_6.json"
+  ]
+ },
+ {
+  "vi": "Ngày 22 · Nợ đã trả đủ",
+  "src": [
+   "CotTruyen/Trang_6.json"
+  ]
+ },
+ {
+  "vi": "Còn một chuyện nữa…",
+  "src": [
+   "CotTruyen/Trang_6.json"
+  ]
+ },
+ {
+  "vi": "con gái ta.",
+  "src": [
+   "CotTruyen/Trang_6.json"
+  ]
+ },
+ {
+  "vi": "HẾT",
+  "src": [
+   "CotTruyen/Trang_6.json"
+  ]
+ },
+ {
+  "vi": "Quán của Hope · Khai trương lại",
+  "src": [
+   "CotTruyen/Trang_6.json"
+  ]
+ },
+ {
+  "vi": "Tỏi",
+  "src": [
+   "balance/recipes.json.pantry",
+   "balance/recipes.json.chinh.steps",
+   "balance/recipes.json.chinh.steps",
+   "balance/recipes.json.chinh.steps"
+  ]
+ },
+ {
+  "vi": "Cơm",
+  "src": [
+   "balance/recipes.json.bases",
+   "balance/recipes.json.chinh.base",
+   "balance/recipes.json.chinh.base",
+   "balance/recipes.json.chinh.base"
+  ]
+ },
+ {
+  "vi": "Cà chua",
+  "src": [
+   "balance/recipes.json.phu.name",
+   "balance/recipes.json.recipes.side",
+   "balance/recipes.json.recipes.steps",
+   "balance/recipes.json.recipes.side"
+  ]
+ },
+ {
+  "vi": "cà chua",
+  "src": [
+   "balance/recipes.json.phu.in_name"
+  ]
+ },
+ {
+  "vi": "Thái múi",
+  "src": [
+   "balance/recipes.json.phu.prep",
+   "balance/recipes.json.recipes.prep.Cà chua",
+   "balance/recipes.json.recipes.prep.Cà chua",
+   "balance/recipes.json.recipes.prep.Cà chua"
+  ]
+ },
+ {
+  "vi": "Hành tây",
+  "src": [
+   "balance/recipes.json.phu.name",
+   "balance/recipes.json.recipes.side",
+   "balance/recipes.json.recipes.steps",
+   "balance/recipes.json.recipes.side"
+  ]
+ },
+ {
+  "vi": "hành tây",
+  "src": [
+   "balance/recipes.json.phu.in_name"
+  ]
+ },
+ {
+  "vi": "Thái lát",
+  "src": [
+   "balance/recipes.json.phu.prep",
+   "balance/recipes.json.phu.prep",
+   "balance/recipes.json.recipes.prep.Hành tây",
+   "balance/recipes.json.recipes.prep.Nấm đông cô"
+  ]
+ },
+ {
+  "vi": "Rau muống",
+  "src": [
+   "balance/recipes.json.phu.name",
+   "balance/recipes.json.recipes.side",
+   "balance/recipes.json.recipes.steps",
+   "balance/recipes.json.recipes.side"
+  ]
+ },
+ {
+  "vi": "rau muống",
+  "src": [
+   "balance/recipes.json.phu.in_name"
+  ]
+ },
+ {
+  "vi": "Nhặt, rửa",
+  "src": [
+   "balance/recipes.json.phu.prep",
+   "balance/recipes.json.recipes.prep.Rau muống",
+   "balance/recipes.json.recipes.prep.Rau muống",
+   "balance/recipes.json.recipes.prep.Rau muống"
+  ]
+ },
+ {
+  "vi": "Khoai tây",
+  "src": [
+   "balance/recipes.json.phu.name",
+   "balance/recipes.json.recipes.side",
+   "balance/recipes.json.recipes.steps",
+   "balance/recipes.json.recipes.side"
+  ]
+ },
+ {
+  "vi": "khoai tây",
+  "src": [
+   "balance/recipes.json.phu.in_name"
+  ]
+ },
+ {
+  "vi": "Gọt, thái",
+  "src": [
+   "balance/recipes.json.phu.prep",
+   "balance/recipes.json.phu.prep",
+   "balance/recipes.json.recipes.prep.Khoai tây",
+   "balance/recipes.json.recipes.prep.Khoai tây"
+  ]
+ },
+ {
+  "vi": "Nấm rơm",
+  "src": [
+   "balance/recipes.json.phu.name",
+   "balance/recipes.json.recipes.side",
+   "balance/recipes.json.recipes.steps",
+   "balance/recipes.json.recipes.side"
+  ]
+ },
+ {
+  "vi": "nấm rơm",
+  "src": [
+   "balance/recipes.json.phu.in_name"
+  ]
+ },
+ {
+  "vi": "Rửa, bổ đôi",
+  "src": [
+   "balance/recipes.json.phu.prep",
+   "balance/recipes.json.recipes.prep.Nấm rơm",
+   "balance/recipes.json.recipes.prep.Nấm rơm",
+   "balance/recipes.json.recipes.prep.Nấm rơm"
+  ]
+ },
+ {
+  "vi": "Bông cải xanh",
+  "src": [
+   "balance/recipes.json.phu.name",
+   "balance/recipes.json.recipes.side",
+   "balance/recipes.json.recipes.steps",
+   "balance/recipes.json.recipes.side"
+  ]
+ },
+ {
+  "vi": "bông cải",
+  "src": [
+   "balance/recipes.json.phu.in_name"
+  ]
+ },
+ {
+  "vi": "Tách bông",
+  "src": [
+   "balance/recipes.json.phu.prep",
+   "balance/recipes.json.recipes.prep.Bông cải xanh",
+   "balance/recipes.json.recipes.prep.Bông cải xanh",
+   "balance/recipes.json.recipes.prep.Bông cải xanh"
+  ]
+ },
+ {
+  "vi": "Ớt chuông",
+  "src": [
+   "balance/recipes.json.phu.name",
+   "balance/recipes.json.recipes.side",
+   "balance/recipes.json.recipes.steps",
+   "balance/recipes.json.recipes.side"
+  ]
+ },
+ {
+  "vi": "ớt chuông",
+  "src": [
+   "balance/recipes.json.phu.in_name"
+  ]
+ },
+ {
+  "vi": "Bỏ hạt, thái",
+  "src": [
+   "balance/recipes.json.phu.prep",
+   "balance/recipes.json.recipes.prep.Ớt chuông",
+   "balance/recipes.json.recipes.prep.Ớt chuông",
+   "balance/recipes.json.recipes.prep.Ớt chuông"
+  ]
+ },
+ {
+  "vi": "Bí đỏ",
+  "src": [
+   "balance/recipes.json.phu.name",
+   "balance/recipes.json.recipes.side",
+   "balance/recipes.json.recipes.steps",
+   "balance/recipes.json.recipes.side"
+  ]
+ },
+ {
+  "vi": "bí đỏ",
+  "src": [
+   "balance/recipes.json.phu.in_name"
+  ]
+ },
+ {
+  "vi": "Măng tây",
+  "src": [
+   "balance/recipes.json.phu.name",
+   "balance/recipes.json.recipes.side",
+   "balance/recipes.json.recipes.steps",
+   "balance/recipes.json.recipes.side"
+  ]
+ },
+ {
+  "vi": "măng tây",
+  "src": [
+   "balance/recipes.json.phu.in_name"
+  ]
+ },
+ {
+  "vi": "Cắt khúc",
+  "src": [
+   "balance/recipes.json.phu.prep",
+   "balance/recipes.json.recipes.prep.Măng tây",
+   "balance/recipes.json.recipes.prep.Măng tây",
+   "balance/recipes.json.recipes.prep.Măng tây"
+  ]
+ },
+ {
+  "vi": "Nấm đông cô",
+  "src": [
+   "balance/recipes.json.phu.name",
+   "balance/recipes.json.recipes.side",
+   "balance/recipes.json.recipes.steps",
+   "balance/recipes.json.recipes.side"
+  ]
+ },
+ {
+  "vi": "nấm đông cô",
+  "src": [
+   "balance/recipes.json.phu.in_name"
+  ]
+ },
+ {
+  "vi": "Trứng gà",
+  "src": [
+   "balance/recipes.json.chinh.name",
+   "balance/recipes.json.chinh.steps",
+   "balance/recipes.json.recipes.main",
+   "balance/recipes.json.recipes.steps"
+  ]
+ },
+ {
+  "vi": "Trứng chiên {p}",
+  "src": [
+   "balance/recipes.json.chinh.template"
+  ]
+ },
+ {
+  "vi": "Đập, đánh",
+  "src": [
+   "balance/recipes.json.chinh.prep",
+   "balance/recipes.json.recipes.prep.Trứng gà",
+   "balance/recipes.json.recipes.prep.Trứng gà",
+   "balance/recipes.json.recipes.prep.Trứng gà"
+  ]
+ },
+ {
+  "vi": "Thịt heo",
+  "src": [
+   "balance/recipes.json.chinh.name",
+   "balance/recipes.json.chinh.steps",
+   "balance/recipes.json.recipes.main",
+   "balance/recipes.json.recipes.steps"
+  ]
+ },
+ {
+  "vi": "Heo xào {p}",
+  "src": [
+   "balance/recipes.json.chinh.template"
+  ]
+ },
+ {
+  "vi": "Thái mỏng",
+  "src": [
+   "balance/recipes.json.chinh.prep",
+   "balance/recipes.json.chinh.prep",
+   "balance/recipes.json.recipes.prep.Thịt heo",
+   "balance/recipes.json.recipes.prep.Thịt heo"
+  ]
+ },
+ {
+  "vi": "Đậu phụ",
+  "src": [
+   "balance/recipes.json.chinh.name",
+   "balance/recipes.json.chinh.steps",
+   "balance/recipes.json.recipes.main",
+   "balance/recipes.json.recipes.steps"
+  ]
+ },
+ {
+  "vi": "Đậu phụ sốt {p}",
+  "src": [
+   "balance/recipes.json.chinh.template"
+  ]
+ },
+ {
+  "vi": "Cắt miếng",
+  "src": [
+   "balance/recipes.json.chinh.prep",
+   "balance/recipes.json.recipes.prep.Đậu phụ",
+   "balance/recipes.json.recipes.prep.Đậu phụ",
+   "balance/recipes.json.recipes.prep.Đậu phụ"
+  ]
+ },
+ {
+  "vi": "Thịt bò",
+  "src": [
+   "balance/recipes.json.chinh.name",
+   "balance/recipes.json.chinh.steps",
+   "balance/recipes.json.recipes.main",
+   "balance/recipes.json.recipes.steps"
+  ]
+ },
+ {
+  "vi": "Mì Ý bò xào {p}",
+  "src": [
+   "balance/recipes.json.chinh.template"
+  ]
+ },
+ {
+  "vi": "Tôm",
+  "src": [
+   "balance/recipes.json.chinh.name",
+   "balance/recipes.json.chinh.steps",
+   "balance/recipes.json.recipes.main",
+   "balance/recipes.json.recipes.steps"
+  ]
+ },
+ {
+  "vi": "Bún xào tôm {p}",
+  "src": [
+   "balance/recipes.json.chinh.template"
+  ]
+ },
+ {
+  "vi": "Bóc vỏ",
+  "src": [
+   "balance/recipes.json.chinh.prep",
+   "balance/recipes.json.recipes.prep.Tôm",
+   "balance/recipes.json.recipes.prep.Tôm",
+   "balance/recipes.json.recipes.prep.Tôm"
+  ]
+ },
+ {
+  "vi": "Cá hồi",
+  "src": [
+   "balance/recipes.json.chinh.name",
+   "balance/recipes.json.chinh.steps",
+   "balance/recipes.json.recipes.main",
+   "balance/recipes.json.recipes.steps"
+  ]
+ },
+ {
+  "vi": "Cá hồi áp chảo {p}",
+  "src": [
+   "balance/recipes.json.chinh.template"
+  ]
+ },
+ {
+  "vi": "áp chảo",
+  "src": [
+   "balance/recipes.json.chinh.method",
+   "balance/recipes.json.chinh.method",
+   "balance/recipes.json.recipes.method",
+   "balance/recipes.json.recipes.method"
+  ]
+ },
+ {
+  "vi": "Lọc xương",
+  "src": [
+   "balance/recipes.json.chinh.prep",
+   "balance/recipes.json.recipes.prep.Cá hồi",
+   "balance/recipes.json.recipes.prep.Cá hồi",
+   "balance/recipes.json.recipes.prep.Cá hồi"
+  ]
+ },
+ {
+  "vi": "Mực",
+  "src": [
+   "balance/recipes.json.chinh.name",
+   "balance/recipes.json.chinh.steps",
+   "balance/recipes.json.recipes.main",
+   "balance/recipes.json.recipes.steps"
+  ]
+ },
+ {
+  "vi": "Mực xào {p}",
+  "src": [
+   "balance/recipes.json.chinh.template"
+  ]
+ },
+ {
+  "vi": "Làm sạch, khứa",
+  "src": [
+   "balance/recipes.json.chinh.prep",
+   "balance/recipes.json.recipes.prep.Mực",
+   "balance/recipes.json.recipes.prep.Mực",
+   "balance/recipes.json.recipes.prep.Mực"
+  ]
+ },
+ {
+  "vi": "Gà ta",
+  "src": [
+   "balance/recipes.json.chinh.name",
+   "balance/recipes.json.chinh.steps",
+   "balance/recipes.json.recipes.main",
+   "balance/recipes.json.recipes.steps"
+  ]
+ },
+ {
+  "vi": "Gà nướng mật ong {p}",
+  "src": [
+   "balance/recipes.json.chinh.template"
+  ]
+ },
+ {
+  "vi": "Chặt miếng",
+  "src": [
+   "balance/recipes.json.chinh.prep",
+   "balance/recipes.json.recipes.prep.Gà ta",
+   "balance/recipes.json.recipes.prep.Gà ta",
+   "balance/recipes.json.recipes.prep.Gà ta"
+  ]
+ },
+ {
+  "vi": "Tôm hùm",
+  "src": [
+   "balance/recipes.json.chinh.name",
+   "balance/recipes.json.chinh.steps",
+   "balance/recipes.json.recipes.main",
+   "balance/recipes.json.recipes.steps"
+  ]
+ },
+ {
+  "vi": "Tôm hùm nướng bơ tỏi {p}",
+  "src": [
+   "balance/recipes.json.chinh.template"
+  ]
+ },
+ {
+  "vi": "Bổ đôi",
+  "src": [
+   "balance/recipes.json.chinh.prep",
+   "balance/recipes.json.recipes.prep.Tôm hùm",
+   "balance/recipes.json.recipes.prep.Tôm hùm",
+   "balance/recipes.json.recipes.prep.Tôm hùm"
+  ]
+ },
+ {
+  "vi": "Bò Wagyu",
+  "src": [
+   "balance/recipes.json.chinh.name",
+   "balance/recipes.json.chinh.steps",
+   "balance/recipes.json.recipes.main",
+   "balance/recipes.json.recipes.steps"
+  ]
+ },
+ {
+  "vi": "Bò Wagyu áp chảo {p}",
+  "src": [
+   "balance/recipes.json.chinh.template"
+  ]
+ },
+ {
+  "vi": "Cắt miếng dày",
+  "src": [
+   "balance/recipes.json.chinh.prep",
+   "balance/recipes.json.recipes.prep.Bò Wagyu",
+   "balance/recipes.json.recipes.prep.Bò Wagyu",
+   "balance/recipes.json.recipes.prep.Bò Wagyu"
+  ]
+ },
+ {
+  "vi": "Cá ngừ vây xanh",
+  "src": [
+   "balance/recipes.json.chinh.name",
+   "balance/recipes.json.chinh.steps",
+   "balance/recipes.json.recipes.main",
+   "balance/recipes.json.recipes.steps"
+  ]
+ },
+ {
+  "vi": "Cá ngừ vây xanh tataki {p}",
+  "src": [
+   "balance/recipes.json.chinh.template"
+  ]
+ },
+ {
+  "vi": "áp chảo nhanh",
+  "src": [
+   "balance/recipes.json.chinh.method",
+   "balance/recipes.json.recipes.method",
+   "balance/recipes.json.recipes.method",
+   "balance/recipes.json.recipes.method"
+  ]
+ },
+ {
+  "vi": "Lọc thăn",
+  "src": [
+   "balance/recipes.json.chinh.prep",
+   "balance/recipes.json.recipes.prep.Cá ngừ vây xanh",
+   "balance/recipes.json.recipes.prep.Cá ngừ vây xanh",
+   "balance/recipes.json.recipes.prep.Cá ngừ vây xanh"
+  ]
+ },
+ {
+  "vi": "Cua hoàng đế",
+  "src": [
+   "balance/recipes.json.chinh.name",
+   "balance/recipes.json.chinh.steps",
+   "balance/recipes.json.recipes.main",
+   "balance/recipes.json.recipes.steps"
+  ]
+ },
+ {
+  "vi": "Cua hoàng đế hấp {p}",
+  "src": [
+   "balance/recipes.json.chinh.template"
+  ]
+ },
+ {
+  "vi": "Tách mai",
+  "src": [
+   "balance/recipes.json.chinh.prep",
+   "balance/recipes.json.recipes.prep.Cua hoàng đế",
+   "balance/recipes.json.recipes.prep.Cua hoàng đế",
+   "balance/recipes.json.recipes.prep.Cua hoàng đế"
+  ]
+ },
+ {
+  "vi": "Trứng chiên cà chua",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Trứng chiên hành tây",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Trứng chiên khoai tây",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Trứng chiên nấm rơm",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Trứng chiên ớt chuông",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Trứng chiên măng tây",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Trứng chiên nấm đông cô",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Heo xào hành tây",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Heo xào rau muống",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Heo xào khoai tây",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Heo xào nấm rơm",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Heo xào bông cải",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Heo xào ớt chuông",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Heo xào bí đỏ",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Heo xào nấm đông cô",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Đậu phụ sốt cà chua",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Đậu phụ sốt hành tây",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Đậu phụ sốt nấm rơm",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Đậu phụ sốt bông cải",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Đậu phụ sốt bí đỏ",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Đậu phụ sốt nấm đông cô",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Mì Ý bò sốt cà chua",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Mì Ý bò xào hành tây",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Mì Ý bò xào rau muống",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Mì Ý bò xào khoai tây",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Mì Ý bò xào bông cải",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Mì Ý bò xào ớt chuông",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Mì Ý bò xào măng tây",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Mì Ý bò xào nấm đông cô",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Bún xào tôm hành tây",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Bún xào tôm rau muống",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Bún xào tôm nấm rơm",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Bún xào tôm bông cải",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Bún xào tôm bí đỏ",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Bún xào tôm măng tây",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Cá hồi áp chảo cà chua",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Cá hồi áp chảo khoai tây",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Cá hồi áp chảo nấm rơm",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Cá hồi áp chảo bông cải",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Cá hồi áp chảo ớt chuông",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Cá hồi áp chảo măng tây",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Cá hồi áp chảo nấm đông cô",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Mực xào hành tây",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Mực xào nấm rơm",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Mực xào bông cải",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Mực xào ớt chuông",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Mực xào măng tây",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Mực xào nấm đông cô",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Gà nướng mật ong cà chua",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Gà nướng mật ong hành tây",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Gà nướng mật ong khoai tây",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Gà nướng mật ong bông cải",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Gà nướng mật ong ớt chuông",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Gà nướng mật ong bí đỏ",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Gà nướng mật ong măng tây",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Gà nướng mật ong nấm đông cô",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Tôm hùm nướng bơ tỏi cà chua",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Tôm hùm nướng bơ tỏi hành tây",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Tôm hùm nướng bơ tỏi khoai tây",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Tôm hùm nướng bơ tỏi bông cải",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Tôm hùm nướng bơ tỏi ớt chuông",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Tôm hùm nướng bơ tỏi măng tây",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Tôm hùm nướng bơ tỏi nấm đông cô",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Bò Wagyu áp chảo hành tây",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Bò Wagyu áp chảo khoai tây",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Bò Wagyu áp chảo nấm rơm",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Bò Wagyu áp chảo ớt chuông",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Bò Wagyu áp chảo bí đỏ",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Bò Wagyu áp chảo măng tây",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Bò Wagyu áp chảo nấm đông cô",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Cá ngừ vây xanh tataki cà chua",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Cá ngừ vây xanh tataki hành tây",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Cá ngừ vây xanh tataki rau muống",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Cá ngừ vây xanh tataki nấm rơm",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Cá ngừ vây xanh tataki bông cải",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Cá ngừ vây xanh tataki ớt chuông",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Cá ngừ vây xanh tataki măng tây",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Cua hoàng đế hấp cà chua",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Cua hoàng đế hấp hành tây",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Cua hoàng đế hấp rau muống",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Cua hoàng đế hấp nấm rơm",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Cua hoàng đế hấp bí đỏ",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Cua hoàng đế hấp măng tây",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Cua hoàng đế hấp nấm đông cô",
+  "src": [
+   "balance/recipes.json.recipes.name"
+  ]
+ },
+ {
+  "vi": "Bình tưới gỉ",
+  "src": [
+   "balance/relics.json.name"
+  ]
+ },
+ {
+  "vi": "Rổ tre bà ngoại",
+  "src": [
+   "balance/relics.json.name"
+  ]
+ },
+ {
+  "vi": "Phân bón bí truyền",
+  "src": [
+   "balance/relics.json.name"
+  ]
+ },
+ {
+  "vi": "Hạt giống vàng",
+  "src": [
+   "balance/relics.json.name"
+  ]
+ },
+ {
+  "vi": "Dao phay cũ",
+  "src": [
+   "balance/relics.json.name"
+  ]
+ },
+ {
+  "vi": "Thùng đá",
+  "src": [
+   "balance/relics.json.name"
+  ]
+ },
+ {
+  "vi": "Mối quen chợ cá",
+  "src": [
+   "balance/relics.json.name"
+  ]
+ },
+ {
+  "vi": "Cân vàng",
+  "src": [
+   "balance/relics.json.name"
+  ]
+ },
+ {
+  "vi": "Bản đồ hải đảo",
+  "src": [
+   "balance/relics.json.name"
+  ]
+ },
+ {
+  "vi": "Lưới thép",
+  "src": [
+   "balance/relics.json.name"
+  ]
+ },
+ {
+  "vi": "Thuyền thuê",
+  "src": [
+   "balance/relics.json.name"
+  ]
+ },
+ {
+  "vi": "La bàn rồng",
+  "src": [
+   "balance/relics.json.name"
+  ]
+ },
+ {
+  "vi": "Tủ lạnh 2 cửa",
+  "src": [
+   "balance/relics.json.name"
+  ]
+ },
+ {
+  "vi": "Chuông vàng",
+  "src": [
+   "balance/relics.json.name"
+  ]
+ },
+ {
+  "vi": "Đồng hồ cát",
+  "src": [
+   "balance/relics.json.name"
+  ]
+ },
+ {
+  "vi": "Muối hồng",
+  "src": [
+   "balance/relics.json.name"
+  ]
+ },
+ {
+  "vi": "Chảo gang bà ngoại",
+  "src": [
+   "balance/relics.json.name"
+  ]
+ },
+ {
+  "vi": "Tượng mèo vàng",
+  "src": [
+   "balance/relics.json.name"
+  ]
+ },
+ {
+  "vi": "Máy pha cà phê xịn",
+  "src": [
+   "balance/relics.json.name"
+  ]
+ },
+ {
+  "vi": "Ớt ma",
+  "src": [
+   "balance/relics.json.name"
+  ]
+ },
+ {
+  "vi": "Hũ sốt cũ",
+  "src": [
+   "balance/relics.json.name"
+  ]
+ },
+ {
+  "vi": "Vé số cào",
+  "src": [
+   "balance/relics.json.name"
+  ]
+ },
+ {
+  "vi": "Sao băng trong nồi",
+  "src": [
+   "balance/relics.json.name"
+  ]
+ },
+ {
+  "vi": "Bí kíp gia truyền",
+  "src": [
+   "balance/relics.json.name"
+  ]
+ }
+]

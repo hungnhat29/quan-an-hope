@@ -1,0 +1,89 @@
+QUÁN ĂN CỦA HOPE / HOPE'S DINER — 0.11.0 (release candidate rc-1)
+==================================================================
+
+[English below]
+
+TIẾNG VIỆT
+----------
+Cảm ơn bạn đã chơi thử! Bạn là Hope: 22 ngày để trả hết nợ bằng một quán ăn nhỏ.
+
+CÁCH MỞ
+- Giải nén cả thư mục (đừng chạy thẳng trong file nén).
+- Mở QuanAnHope.exe. Game chạy toàn màn hình theo độ phân giải màn hình của bạn.
+- Windows có thể hỏi "Windows protected your PC": bấm "More info" → "Run anyway".
+- Cần Windows 10/11 64-bit, card đồ hoạ hỗ trợ DirectX 11.
+
+NGÔN NGỮ
+- Lần đầu mở: Windows tiếng Việt → Tiếng Việt, Windows ngôn ngữ khác → English.
+- Đổi bất cứ lúc nào: Cài đặt → "Ngôn ngữ / Language".
+
+PHÍM
+- W A S D (hoặc phím mũi tên): đi       - Chuột: nhìn
+- Shift: chạy                           - Space: nhảy
+- Chuột trái: bấm vào đồ vật / giữ để sơ chế
+- Chuột phải: thả nguyên liệu xuống chỗ đang nhìn (đĩa thì đặt lại chỗ cũ)
+- Tab: Thực đơn, Relic, Cửa hàng, Cách chơi
+- T: ẩn / hiện tranh hướng dẫn toàn màn hình
+- 1 / 2: chọn ô đồ (khi đã mua Tay vạn năng)
+- Esc: tạm dừng, cài đặt (âm lượng, độ nhạy chuột, cửa sổ / toàn màn hình, ngôn ngữ, danh sách phím)
+
+MỘT NGÀY TRONG QUÁN
+1. Nhét vé vào máy (mỗi ngày 8 vé; ngày 1 có 5) → thùng nguyên liệu rơi xuống bàn.
+2. Lấy nguyên liệu, sơ chế trên thớt, chọn dụng cụ, cho vào bếp đúng thứ tự (Tab → Thực đơn), vặn núm.
+3. Múc ra đĩa, mở quán, đặt đĩa trước mặt khách gọi món đó. Khách chờ quá lâu sẽ bỏ đi.
+4. Sau 21:00 và hết khách: bấm biển ĐÓNG QUÁN để sang ngày mới.
+5. Đầu ngày 4, 9, 15 và 22 chủ nợ đến thu tiền. Thiếu một đồng là thua.
+Lần đầu chơi sẽ có tranh hướng dẫn từng bước.
+
+LƯU GAME
+- Game tự lưu đầu mỗi ngày. Menu chính → "Chơi tiếp" để quay lại đầu ngày đã lưu.
+
+GỬI PHẢN HỒI (quan trọng nhất!)
+1. Điền phiếu khảo sát người gửi game cho bạn đưa (khoảng 5 phút).
+2. Gửi file nhật ký: mở File Explorer, dán vào thanh địa chỉ
+       %USERPROFILE%\AppData\LocalLow\hungnhat29\Quán ăn của Hope
+   rồi gửi file  playtest-log.csv  (không có thông tin cá nhân, chỉ thời gian nấu từng món).
+3. Gặp lỗi: ghi số phiên bản (góc dưới menu chính) và mô tả bạn vừa làm gì.
+
+
+ENGLISH
+-------
+Thanks for playtesting! You are Hope: 22 days to pay off a debt by running a tiny diner.
+
+HOW TO START
+- Unzip the whole folder (don't run it from inside the zip).
+- Run QuanAnHope.exe. The game starts fullscreen at your screen's resolution.
+- Windows may say "Windows protected your PC": click "More info" → "Run anyway".
+- Needs 64-bit Windows 10/11 and a DirectX 11 graphics card.
+
+LANGUAGE
+- First launch: Vietnamese Windows → Vietnamese, any other Windows language → English.
+- Change it any time: Settings → "Language".
+
+CONTROLS
+- W A S D (or arrow keys): walk         - Mouse: look
+- Shift: run                            - Space: jump
+- Left mouse: click things / hold to prep ingredients
+- Right mouse: drop the ingredient where you look (plates go back to where they were)
+- Tab: Menu, Relics, Shop, How to play
+- T: hide / show the full-screen tutorial pictures
+- 1 / 2: pick a hand slot (after buying the Extra Hand)
+- Esc: pause, settings (volume, mouse sensitivity, windowed / fullscreen, language, controls)
+
+A DAY AT THE DINER
+1. Insert a ticket into the machine (8 tickets a day; 5 on day 1) → an ingredient crate drops on the table.
+2. Take ingredients, prep them on the cutting board, pick a tool, add them to the stove in the right order (Tab → Menu), turn the knob.
+3. Plate the dish, open the diner, put the plate in front of the customer who ordered it. Customers who wait too long leave.
+4. After 21:00 and once everyone is gone: click the CLOSE UP sign to start the next day.
+5. On the morning of days 4, 9, 15 and 22 the Creditor collects. One coin short and it's game over.
+Your first game shows a picture tutorial step by step.
+
+SAVING
+- The game saves at the start of every day. Main menu → "Continue" returns to the start of the saved day.
+
+FEEDBACK (the most important part!)
+1. Fill in the survey from the person who sent you the game (about 5 minutes).
+2. Send the log file: open File Explorer, paste into the address bar
+       %USERPROFILE%\AppData\LocalLow\hungnhat29\Quán ăn của Hope
+   and send  playtest-log.csv  (no personal data, only how long each dish took).
+3. Found a bug? Note the version number (bottom of the main menu) and what you were doing.

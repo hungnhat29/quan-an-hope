@@ -105,3 +105,9 @@
 ## F-090 AC-2: đề xuất đóng câu hỏi cũ (chờ bạn trả lời một lần: "đồng ý" hoặc sửa từng câu)
 - Đề xuất ĐÓNG theo mặc định đang chạy (game đã chơi theo đúng mặc định, bạn đã nghiệm thu các sprint đó): Q-1, Q-13, Q-17, Q-18, Q-19, Q-20, Q-22, Q-23, Q-25, Q-26, Q-27, Q-28, Q-29, Q-30, Q-31, Q-34, Q-35, Q-36, Q-37, Q-41, Q-42, Q-43, Q-54, Q-55, Q-58, Q-59, Q-60, Q-61, Q-62, Q-63, Q-65, Q-66, Q-67, Q-68, Q-69.
 - Đề xuất ĐỂ SAU PHÁT HÀNH (cần số đo người thật hoặc quyết định thiết kế lớn): Q-24, Q-38, Q-40, Q-44, Q-45, Q-53, Q-56 (đo bằng F-094); Q-46, Q-70 (tên chính thức); Q-47, Q-59, Q-68, Q-69 (sửa văn bản Art Bible); Q-49, Q-50, Q-51, Q-52 (cốt truyện / công cụ); Q-57 (âm thanh CC0); Q-64 (tự dựng Blender).
+
+### Sprint 11 (25/11/2026)
+- Q-88 | 2026-11-25 | chặn: không | Bản dịch tiếng Anh: tên game "Hope's Diner", biển trong phòng "QUÁN NHÂN PHẨM" → "DIGNITY DINER", chủ nợ → "Creditor", tay vạn năng → "Extra Hand", nước sốt thần thánh → "Divine Sauce", máy gacha đồ ăn → "Food Gacha Machine". Đổi chữ nào thì sửa `tools/i18n/en.tsv` rồi chạy build.py | trạng thái: OPEN
+- Q-89 | 2026-11-25 | chặn: không | Lần đầu mở game: Windows tiếng Việt → Tiếng Việt, khác → English (Unity Editor luôn Tiếng Việt). Muốn mặc định luôn Tiếng Việt không? | trạng thái: OPEN
+- Q-90 | 2026-11-25 | chặn: không | Trang khảo sát: người ngoài tổ chức của bạn mở link chỉ có quyền xem nên không gửi thẳng được; họ bấm "Sao chép câu trả lời" và nhắn cho bạn, bạn dán vào mục Kết quả. Muốn dựng thêm bản Google Forms từ `docs/release/KHAO-SAT.md` không? | trạng thái: OPEN
+- Q-91 | 2026-11-25 | chặn: không | F-113: model 16 nguyên liệu vòng 2–4 bám hình dựng bằng code cũ; măng tây dài 10 cm (bản code 5 cm, ngọn rời thân). Duyệt hình ở `SourceArt/Blender/preview/_tong_hop_nguyen_lieu_vong2_4.png` | trạng thái: OPEN

@@ -1,0 +1,4696 @@
+{
+"pairs": [
+{
+"vi": "Món Hy Vọng",
+"en": "Hope's Special"
+},
+{
+"vi": "món ngon nhất của quán",
+"en": "the best dish in the house"
+},
+{
+"vi": "Vườn Nhà",
+"en": "Home Garden"
+},
+{
+"vi": "Chợ Sớm",
+"en": "Morning Market"
+},
+{
+"vi": "Sơn Hào",
+"en": "Mountain Feast"
+},
+{
+"vi": "Thường",
+"en": "Common"
+},
+{
+"vi": "Hiếm",
+"en": "Rare"
+},
+{
+"vi": "Huyền thoại",
+"en": "Legendary"
+},
+{
+"vi": "Đồ phụ: ",
+"en": "Side:"
+},
+{
+"vi": " nâng bậc",
+"en": " tier up"
+},
+{
+"vi": "Nguyên liệu chính: ",
+"en": "Main ingredient:"
+},
+{
+"vi": "Đồ phụ bậc 0 được quay lại 1 lần",
+"en": "Tier-0 sides get 1 reroll"
+},
+{
+"vi": "Nguyên liệu chính bậc 0 được quay lại 1 lần",
+"en": "Tier-0 main ingredients get 1 reroll"
+},
+{
+"vi": " nhảy lên bậc 4",
+"en": " jumps to tier 4"
+},
+{
+"vi": "Đồ phụ tối thiểu bậc ",
+"en": "Sides at least tier"
+},
+{
+"vi": "Nguyên liệu chính tối thiểu bậc ",
+"en": "Main ingredients at least tier"
+},
+{
+"vi": "Mọi đồ phụ +",
+"en": "All sides +"
+},
+{
+"vi": " bậc",
+"en": " tier"
+},
+{
+"vi": "Mọi nguyên liệu chính +",
+"en": "All main ingredients +"
+},
+{
+"vi": "Thùng đồ phụ ",
+"en": "Side crate"
+},
+{
+"vi": " món",
+"en": " items"
+},
+{
+"vi": "Thùng chính ",
+"en": "Main crate"
+},
+{
+"vi": "Thùng đột phá +",
+"en": "Breakthrough crate +"
+},
+{
+"vi": "Mọi món đột phá bậc 5",
+"en": "All breakthrough items tier 5"
+},
+{
+"vi": "Đột phá bậc 5 +",
+"en": "Breakthrough tier 5 +"
+},
+{
+"vi": "Điểm món +",
+"en": "Dish score +"
+},
+{
+"vi": " món thành Lạc vị",
+"en": " dishes turn Off-flavor"
+},
+{
+"vi": "Món không bao giờ dưới Dở",
+"en": "Dishes never below Bad"
+},
+{
+"vi": "Huyền thoại khi nấu +",
+"en": "Legendary when cooking +"
+},
+{
+"vi": "Tiền bán món +",
+"en": "Dish income +"
+},
+{
+"vi": " vé trắng mỗi 3 ngày",
+"en": " white tickets every 3 days"
+},
+{
+"vi": "Tủ lạnh +",
+"en": "Fridge +"
+},
+{
+"vi": " ô",
+"en": " slots"
+},
+{
+"vi": "món không tụt bậc",
+"en": "dishes don't lose tiers"
+},
+{
+"vi": "Thời gian chờ an toàn +",
+"en": "Safe waiting time +"
+},
+{
+"vi": "Tỉ lệ hỏng nước sốt −",
+"en": "Sauce failure chance −"
+},
+{
+"vi": " điểm",
+"en": " points"
+},
+{
+"vi": "đầu ngày ",
+"en": "start of day"
+},
+{
+"vi": "Sáng thứ Hai, Hope bị đuổi việc ngay giữa văn phòng.",
+"en": "Monday morning, Hope gets fired in the middle of the office."
+},
+{
+"vi": "Cả sự nghiệp gói gọn trong một thùng các-tông. …và thế là hết.",
+"en": "A whole career packed into one cardboard box. …and that's that."
+},
+{
+"vi": "Về tới quán ăn cũ, Hope thấy chủ nợ đã đứng chờ trước cửa.",
+"en": "Back at the old diner, Hope finds the Creditor already waiting at the door."
+},
+{
+"vi": "Thay vì siết nợ, chủ nợ đưa Hope chùm chìa khóa: \"Quán này giờ là của cậu. Nấu đi.\"",
+"en": "Instead of seizing it, the Creditor hands Hope the keys: \"This place is yours now. Cook.\""
+},
+{
+"vi": "Giấy nợ: ",
+"en": "IOU:"
+},
+{
+"vi": ". Thiếu một đồng là tôi lấy lại quán.",
+"en": ". One coin short and I take the diner back."
+},
+{
+"vi": "Ngày 2, bão đổ bộ. Sấm nổ ngay trên mái quán.",
+"en": "Day 2: a storm hits. Thunder cracks right over the roof."
+},
+{
+"vi": "Mái dột tứ tung, Hope đội nồi hứng nước: \"Quán ơi, đừng sập nha…\"",
+"en": "The roof leaks everywhere. Hope wears a pot to catch the drips: \"Please don't fall down…\""
+},
+{
+"vi": "Ngày 3, kho gần như trống trơn.",
+"en": "Day 3: the pantry is almost empty."
+},
+{
+"vi": "Ít nguyên liệu thì nấu thật khéo!",
+"en": "Few ingredients? Cook them really well!"
+},
+{
+"vi": "Bà cụ khách quen húp một thìa: \"Ngon quá cháu ơi!\" Ngoài cửa sổ, trời đã tạnh.",
+"en": "A regular, an old lady, takes a sip: \"Delicious, dear!\" Outside, the rain has stopped."
+},
+{
+"vi": "Ngày ",
+"en": "Day"
+},
+{
+"vi": ", 19 giờ 02: sét đánh cột điện. PHỤT!",
+"en": ", 7:02 pm: lightning hits the power pole. FZZT!"
+},
+{
+"vi": "Cả quán tối om… chỉ còn mấy đôi mắt nhìn nhau.",
+"en": "The whole diner goes dark… just a few pairs of eyes staring at each other."
+},
+{
+"vi": "Hope thắp nến: bếp vẫn phải đỏ lửa!",
+"en": "Hope lights candles: the stove stays on!"
+},
+{
+"vi": "Không điện, quán vẫn đông khách.",
+"en": "No power, still a full house."
+},
+{
+"vi": "Khách còn khen: \"Lãng mạn ghê!\"",
+"en": "The customers even say: \"How romantic!\""
+},
+{
+"vi": ", có kẻ dán tờ rơi khắp phố: \"Quán bẩn!!\"",
+"en": ", someone plasters flyers all over the street: \"FILTHY DINER!!\""
+},
+{
+"vi": "Mấy ngày liền, quán vắng tanh.",
+"en": "For days, the diner sits empty."
+},
+{
+"vi": "Nhưng máy quay của quán đã ghi lại tất cả. \"Bắt được rồi nhé!\"",
+"en": "But the diner's camera recorded everything. \"Gotcha!\""
+},
+{
+"vi": ", kẻ phá đám bị lật tẩy trước mặt mọi người.",
+"en": ", the troublemaker is exposed in front of everyone."
+},
+{
+"vi": ", danh tiếng của quán trở lại!",
+"en": ", the diner's good name is back!"
+},
+{
+"vi": ", hạn chót. Chủ nợ đứng ở cửa: \"Một món. Tuyệt hảo.\"",
+"en": ", the deadline. The Creditor stands at the door: \"One dish. Superb.\""
+},
+{
+"vi": "Hope nấu bằng cả nhân phẩm.",
+"en": "Hope cooks with all his heart and dignity."
+},
+{
+"vi": "Nắp chuông nhấc lên: món Huyền thoại!",
+"en": "The cloche lifts: a Legendary dish!"
+},
+{
+"vi": "Chủ nợ nếm thử một thìa… và sững người.",
+"en": "The Creditor tastes a spoonful… and freezes."
+},
+{
+"vi": "\"Vị này… giống hệt món mẹ ta nấu…\"",
+"en": "\"This taste… just like my mother's cooking…\""
+},
+{
+"vi": "Đầu ngày ",
+"en": "Start of day"
+},
+{
+"vi": ", Hope trả đủ khoản cuối ",
+"en": ", Hope pays the final installment"
+},
+{
+"vi": ", còn dư ",
+"en": ", with"
+},
+{
+"vi": ". Chủ nợ xé giấy nợ. XOẸT!!",
+"en": " to spare. The Creditor tears up the IOU. RRRIP!!"
+},
+{
+"vi": "\"Còn một chuyện nữa… con gái ta.\" Rồi ông gả con gái cho Hope.",
+"en": "\"One more thing… my daughter.\" And he gives Hope his daughter's hand."
+},
+{
+"vi": "Quán ăn của Hope khai trương lại. Hết nợ, có vợ.",
+"en": "Hope's Diner reopens. No debt, and a wife."
+},
+{
+"vi": ", chủ nợ đến thu ",
+"en": ", the Creditor comes to collect"
+},
+{
+"vi": ". Hope chỉ có ",
+"en": ". Hope only has"
+},
+{
+"vi": ", thiếu ",
+"en": ", short by"
+},
+{
+"vi": ". Chủ nợ lấy lại chìa khóa quán.",
+"en": ". The Creditor takes back the keys."
+},
+{
+"vi": "RẦM!",
+"en": "SLAM!"
+},
+{
+"vi": "Bà cụ",
+"en": "Granny"
+},
+{
+"vi": "Cậu học sinh",
+"en": "Schoolboy"
+},
+{
+"vi": "Cô văn phòng",
+"en": "Office worker"
+},
+{
+"vi": "Chú nông dân",
+"en": "Farmer"
+},
+{
+"vi": "Ông họa sĩ",
+"en": "Old painter"
+},
+{
+"vi": "Em bé",
+"en": "Little kid"
+},
+{
+"vi": "Anh thợ",
+"en": "Handyman"
+},
+{
+"vi": "Ông trùm VIP",
+"en": "VIP Boss"
+},
+{
+"vi": "Nhà vô địch",
+"en": "Champion"
+},
+{
+"vi": "Fan Quỷ Đỏ",
+"en": "Red Devils fan"
+},
+{
+"vi": "Anh đại gia",
+"en": "Big spender"
+},
+{
+"vi": "Tròn hiền",
+"en": "Round & gentle"
+},
+{
+"vi": "Mắt to mi cong",
+"en": "Big lashes"
+},
+{
+"vi": "Mắt nhỏ tàn nhang",
+"en": "Freckles"
+},
+{
+"vi": "Râu mép",
+"en": "Mustache"
+},
+{
+"vi": "Nốt ruồi",
+"en": "Mole"
+},
+{
+"vi": "Mắt dài",
+"en": "Long eyes"
+},
+{
+"vi": "Má hây",
+"en": "Rosy cheeks"
+},
+{
+"vi": "Ông chú",
+"en": "Uncle"
+},
+{
+"vi": "Ngày 1 · Quay nguyên liệu, nấu sẵn, rồi mở quán.",
+"en": "Day 1 · Pull ingredients, cook ahead, then open the diner."
+},
+{
+"vi": "Chơi tiếp từ đầu ngày ",
+"en": "Continue from the start of day"
+},
+{
+"vi": "Chín rồi! Lấy đĩa trống, bấm vào bếp.",
+"en": "It's done! Take an empty plate and click the stove."
+},
+{
+"vi": "Cháy rồi! Món tụt 1 bậc.",
+"en": "Burnt! The dish drops 1 tier."
+},
+{
+"vi": "Bếp bốc khói! Múc ra ngay.",
+"en": "The stove is smoking! Plate it now."
+},
+{
+"vi": " đã sơ chế",
+"en": " (prepped)"
+},
+{
+"vi": "đĩa trống",
+"en": "empty plate"
+},
+{
+"vi": "nước sốt thần thánh",
+"en": "Divine Sauce"
+},
+{
+"vi": "Tay đang bận. Chuột phải để ",
+"en": "Hands full. Right-click to"
+},
+{
+"vi": "thả ",
+"en": "drop"
+},
+{
+"vi": "đặt lại ",
+"en": "put back"
+},
+{
+"vi": "Hết vé rồi.",
+"en": "Out of tickets."
+},
+{
+"vi": "Giờ này không nhận thùng được.",
+"en": "You can't take crates right now."
+},
+{
+"vi": " · Rương đột phá: ",
+"en": " · Breakthrough chest:"
+},
+{
+"vi": "Đã huỷ, không mua relic.",
+"en": "Cancelled, no relic bought."
+},
+{
+"vi": "Đã mua ",
+"en": "Bought"
+},
+{
+"vi": " · còn ",
+"en": " · left:"
+},
+{
+"vi": " vé.",
+"en": " tickets."
+},
+{
+"vi": "Đã đủ ",
+"en": "Already have"
+},
+{
+"vi": " relic: nhấn Tab, chọn 1 relic để bỏ. Chuột phải: huỷ.",
+"en": " relics: press Tab, pick 1 relic to discard. Right-click: cancel."
+},
+{
+"vi": "Thiếu ",
+"en": "Short"
+},
+{
+"vi": " vé để mua ",
+"en": " tickets to buy"
+},
+{
+"vi": "Cửa hàng đã đóng.",
+"en": "The shop is closed."
+},
+{
+"vi": "Cửa hàng relic mở từ ngày ",
+"en": "The relic shop opens on day"
+},
+{
+"vi": "Bệ này đã bán hôm nay.",
+"en": "This pedestal is sold out today."
+},
+{
+"vi": "Đang chờ bạn chọn 1 trong 3 relic trên bệ.",
+"en": "Pick 1 of the 3 relics on the pedestals."
+},
+{
+"vi": "Chưa có vé đen. Mua trong Tab → Cửa hàng.",
+"en": "No black tickets yet. Buy them in Tab → Shop."
+},
+{
+"vi": "Vé đen bán từ ngày ",
+"en": "Black tickets on sale from day"
+},
+{
+"vi": "dùng vé đen",
+"en": "use a black ticket"
+},
+{
+"vi": "Không còn relic Hiếm nào để chọn.",
+"en": "No Rare relics left to choose."
+},
+{
+"vi": "Vé đen: chọn 1 trong 3 relic Hiếm trở lên trên bệ.",
+"en": "Black ticket: pick 1 of 3 Rare-or-better relics on the pedestals."
+},
+{
+"vi": " relic: nhấn Tab, chọn 1 relic để bỏ, lấy ",
+"en": " relics: press Tab, pick 1 relic to discard, take"
+},
+{
+"vi": "Vé đen: đã lấy ",
+"en": "Black ticket: took"
+},
+{
+"vi": "Không đổi được relic.",
+"en": "Can't swap the relic."
+},
+{
+"vi": "Đã bỏ ",
+"en": "Discarded"
+},
+{
+"vi": ", lấy ",
+"en": ", took"
+},
+{
+"vi": " bằng vé đen.",
+"en": " with a black ticket."
+},
+{
+"vi": "[Gỡ lỗi] Đã thêm relic ",
+"en": "[Debug] Added relic"
+},
+{
+"vi": "lấy ",
+"en": "take"
+},
+{
+"vi": "Đang cầm ",
+"en": "Holding"
+},
+{
+"vi": "Đã thả ",
+"en": "Dropped"
+},
+{
+"vi": "Đã đặt lại ",
+"en": "Put back"
+},
+{
+"vi": "Cầm một nguyên liệu tới đây.",
+"en": "Bring an ingredient here."
+},
+{
+"vi": " đã sơ chế, cho thẳng vào bếp.",
+"en": " is already prepped, put it straight on the stove."
+},
+{
+"vi": "Giữ chuột trái: sơ chế ",
+"en": "Hold left mouse: prep"
+},
+{
+"vi": "cầm ",
+"en": "pick up"
+},
+{
+"vi": ". Mang tới bếp.",
+"en": ". Take it to the stove."
+},
+{
+"vi": "Xong! Bấm thớt để cầm ",
+"en": "Done! Click the board to pick up"
+},
+{
+"vi": "Bếp đang nấu, chưa đổi dụng cụ được.",
+"en": "The stove is cooking, you can't change tools yet."
+},
+{
+"vi": "Đặt ",
+"en": "Put"
+},
+{
+"vi": " lên ",
+"en": " on"
+},
+{
+"vi": "bếp ",
+"en": "stove"
+},
+{
+"vi": "bếp",
+"en": "stove"
+},
+{
+"vi": "Chọn dụng cụ trên giá trước: Chảo, Nồi hoặc Vỉ nướng.",
+"en": "Pick a tool from the rack first: Pan, Pot or Grill."
+},
+{
+"vi": "Bếp đang nấu, chưa cho thêm được.",
+"en": "The stove is cooking, you can't add more."
+},
+{
+"vi": "Đã cho ",
+"en": "Added"
+},
+{
+"vi": "Múc món ra đĩa trước, rồi nhỏ nước sốt lên đĩa.",
+"en": "Plate the dish first, then drizzle the sauce on it."
+},
+{
+"vi": "Sơ chế ",
+"en": "Prep"
+},
+{
+"vi": " trên thớt trước.",
+"en": " on the cutting board first."
+},
+{
+"vi": " không nấu chung với ",
+"en": " doesn't go with"
+},
+{
+"vi": "món trong bếp",
+"en": "what's on the stove"
+},
+{
+"vi": ". Xem Tab → Thực đơn.",
+"en": ". See Tab → Menu."
+},
+{
+"vi": "Bếp không nhận thêm ",
+"en": "The stove can't take"
+},
+{
+"vi": " lúc này.",
+"en": " right now."
+},
+{
+"vi": " vào ",
+"en": " into"
+},
+{
+"vi": "Lấy một đĩa trống ở chồng đĩa rồi bấm vào bếp để múc.",
+"en": "Take an empty plate from the stack, then click the stove to plate."
+},
+{
+"vi": "Quầy đã đủ ",
+"en": "The counter already has"
+},
+{
+"vi": " đĩa. Phục vụ bớt rồi múc.",
+"en": " plates. Serve some first."
+},
+{
+"vi": "Chưa múc được.",
+"en": "Can't plate yet."
+},
+{
+"vi": " Có thể nhỏ nước sốt lên đĩa.",
+"en": " You can drizzle sauce on the plate."
+},
+{
+"vi": "Đang nấu, chờ chín đã.",
+"en": "Cooking, wait until it's done."
+},
+{
+"vi": "Chọn dụng cụ trên giá trước.",
+"en": "Pick a tool from the rack first."
+},
+{
+"vi": "Cầm nguyên liệu đã sơ chế tới, hoặc bấm lọ gia vị.",
+"en": "Bring a prepped ingredient, or click a seasoning jar."
+},
+{
+"vi": "Cần 1 nguyên liệu chính và 1 đồ phụ đã sơ chế trong bếp.",
+"en": "Needs 1 main ingredient and 1 prepped side on the stove."
+},
+{
+"vi": "Đang nấu ",
+"en": "Cooking"
+},
+{
+"vi": "lấy đĩa",
+"en": "take a plate"
+},
+{
+"vi": "Đang cầm đĩa trống.",
+"en": "Holding an empty plate."
+},
+{
+"vi": "Bếp đang trống.",
+"en": "The stove is empty."
+},
+{
+"vi": "Đã đổ bỏ đồ trên ",
+"en": "Emptied"
+},
+{
+"vi": ". Đặt trước mặt khách gọi món này.",
+"en": ". Put it in front of the customer who ordered it."
+},
+{
+"vi": "Tủ lạnh: cầm đĩa tới để cất, hoặc bấm một ô để lấy.",
+"en": "Fridge: bring a plate to store it, or click a slot to take one."
+},
+{
+"vi": " đã ở trong tủ. Chuột phải để đặt lại.",
+"en": " is already in the fridge. Right-click to put it back."
+},
+{
+"vi": "Tủ lạnh đầy (",
+"en": "Fridge full ("
+},
+{
+"vi": " ô).",
+"en": " slots)."
+},
+{
+"vi": "Đã cất ",
+"en": "Stored"
+},
+{
+"vi": " vào tủ lạnh.",
+"en": " in the fridge."
+},
+{
+"vi": "máy gacha đồ ăn",
+"en": "Food Gacha Machine"
+},
+{
+"vi": "thớt",
+"en": "cutting board"
+},
+{
+"vi": "tay vạn năng",
+"en": "Extra Hand"
+},
+{
+"vi": "vé đen",
+"en": "black ticket"
+},
+{
+"vi": "G) · ví còn ",
+"en": "G) · wallet:"
+},
+{
+"vi": " Bàn sơ chế dài thêm, có thêm thớt.",
+"en": " The prep table is longer, with another board."
+},
+{
+"vi": " Bếp mới ở bên phải quầy đĩa.",
+"en": " The new stove is right of the plate counter."
+},
+{
+"vi": " Cầm được 2 đồ: phím 1 / 2 chọn ô.",
+"en": " Hold 2 things: keys 1 / 2 pick the slot."
+},
+{
+"vi": " Lọ sốt ở bên phải bếp.",
+"en": " The sauce bottle is right of the stove."
+},
+{
+"vi": "Cửa hàng mở từ ngày ",
+"en": "The shop opens on day"
+},
+{
+"vi": "G để mua ",
+"en": "G to buy"
+},
+{
+"vi": "Đã có máy gacha đồ ăn.",
+"en": "You already have the Food Gacha Machine."
+},
+{
+"vi": "Đã có tay vạn năng.",
+"en": "You already have the Extra Hand."
+},
+{
+"vi": " thớt.",
+"en": " boards."
+},
+{
+"vi": " bếp.",
+"en": " stoves."
+},
+{
+"vi": "Đã giữ tối đa ",
+"en": "Already at the maximum of"
+},
+{
+"vi": "Hết nước sốt. Mua trong Tab → Cửa hàng.",
+"en": "Out of sauce. Buy more in Tab → Shop."
+},
+{
+"vi": "Cầm một đĩa món rồi bấm lọ nước sốt.",
+"en": "Hold a plated dish, then click the sauce bottle."
+},
+{
+"vi": "Vé đen: + ",
+"en": "Black ticket: +"
+},
+{
+"vi": " hàng tốt.",
+"en": " good items."
+},
+{
+"vi": "Mở quán! Khách đầu tiên đã tới.",
+"en": "We're open! The first customer is here."
+},
+{
+"vi": "Đóng quán sớm: khách còn lại ra về.",
+"en": "Closing early: the remaining customers leave."
+},
+{
+"vi": "Đóng quán. Hết ngày ",
+"en": "Closed. End of day"
+},
+{
+"vi": "khách",
+"en": "customer"
+},
+{
+"vi": "khách trái",
+"en": "left customer"
+},
+{
+"vi": "khách giữa",
+"en": "middle customer"
+},
+{
+"vi": "khách phải",
+"en": "right customer"
+},
+{
+"vi": "Chưa có khách. Bấm biển Mở quán trước.",
+"en": "No customers yet. Click the Open sign first."
+},
+{
+"vi": "Khách đang ăn.",
+"en": "The customer is eating."
+},
+{
+"vi": "Ghế này đang trống.",
+"en": "This seat is empty."
+},
+{
+"vi": " tới đây.",
+"en": " here."
+},
+{
+"vi": "Chủ nợ ngạc nhiên! +",
+"en": "The Creditor is amazed! +"
+},
+{
+"vi": "G (món ",
+"en": "G (dish"
+},
+{
+"vi": "G, thưởng ",
+"en": "G, bonus"
+},
+{
+"vi": "Chủ nợ nhận ",
+"en": "The Creditor takes"
+},
+{
+"vi": "G, không có thưởng (cần Tuyệt hảo trở lên).",
+"en": "G, no bonus (needs Superb or better)."
+},
+{
+"vi": "Sai món! Khách gọi ",
+"en": "Wrong dish! The customer ordered"
+},
+{
+"vi": "Khách vui: +",
+"en": "Happy customer: +"
+},
+{
+"vi": "Hơi tệ: khách trả nửa giá, +",
+"en": "A bit poor: the customer pays half, +"
+},
+{
+"vi": "Món quá tệ, khách giận: −",
+"en": "Awful dish, the customer is angry: −"
+},
+{
+"vi": "Khách chờ lâu quá, bỏ đi: −",
+"en": "The customer waited too long and left: −"
+},
+{
+"vi": "Chủ nợ đã tới, đợi ngoài cửa: mở quán để ông vào.",
+"en": "The Creditor has arrived and waits outside: open the diner to let him in."
+},
+{
+"vi": "Chủ nợ đã tới, đợi ghế trống.",
+"en": "The Creditor has arrived, waiting for a free seat."
+},
+{
+"vi": "21:00 · Hết khách. Bấm biển để đóng quán.",
+"en": "21:00 · No more customers. Click the sign to close."
+},
+{
+"vi": "21:00 · Không nhận khách mới. Phục vụ nốt rồi đóng quán.",
+"en": "21:00 · No new customers. Serve the rest, then close."
+},
+{
+"vi": "Khách mới: ",
+"en": "New customer:"
+},
+{
+"vi": ": mất điện! Nấu bằng nến, khó nhìn bậc món.",
+"en": ": blackout! Cook by candlelight, dish tiers are hard to see."
+},
+{
+"vi": ":00 chủ nợ tới. Để dành món Tuyệt hảo!",
+"en": ":00 the Creditor comes. Save a Superb dish!"
+},
+{
+"vi": ": tin đồn xấu về quán. Mai trả nợ ",
+"en": ": nasty rumors about the diner. Tomorrow's payment:"
+},
+{
+"vi": "G: dốc hết món tủ lạnh, nước sốt, vé đen!",
+"en": "G: use everything, fridge dishes, sauce, black tickets!"
+},
+{
+"vi": "Đã trả ",
+"en": "Paid"
+},
+{
+"vi": "G. Vòng 3: khách khó tính hơn.",
+"en": "G. Round 3: pickier customers."
+},
+{
+"vi": "G. Vòng 4: thêm gà ta, bí đỏ, măng tây, nấm đông cô.",
+"en": "G. Round 4: adds free-range chicken, pumpkin, asparagus, shiitake."
+},
+{
+"vi": "G. Vòng ",
+"en": "G. Round"
+},
+{
+"vi": " khách cùng lúc. Tab → Cửa hàng đã mở.",
+"en": " customers at once. Tab → Shop is open."
+},
+{
+"vi": ": chọn 1 relic miễn phí · ",
+"en": ": pick 1 free relic ·"
+},
+{
+"vi": "Chủ nợ đã tới · dễ tính ",
+"en": "The Creditor is here · easygoing"
+},
+{
+"vi": "% · gọi ",
+"en": "% · orders"
+},
+{
+"vi": ". Món Tuyệt hảo trở lên: thưởng ",
+"en": ". Superb or better: bonus"
+},
+{
+"vi": "[Gỡ lỗi] Đầu ngày ",
+"en": "[Debug] Start of day"
+},
+{
+"vi": "[Gỡ lỗi] Sang đầu ngày ",
+"en": "[Debug] Jump to start of day"
+},
+{
+"vi": "Nồi",
+"en": "Pot"
+},
+{
+"vi": "Bếp ",
+"en": "Stove"
+},
+{
+"vi": "Đã đặt lại nước sốt.",
+"en": "Sauce put back."
+},
+{
+"vi": "cầm nước sốt",
+"en": "pick up the sauce"
+},
+{
+"vi": "Cầm nước sốt (còn ",
+"en": "Holding the sauce ("
+},
+{
+"vi": " chai). Bấm vào đĩa vừa nấu để nhỏ sốt.",
+"en": " bottles left). Click a freshly cooked plate to drizzle."
+},
+{
+"vi": "Nhỏ sốt lên đĩa trên quầy hoặc trong tủ lạnh.",
+"en": "Drizzle sauce on a plate on the counter or in the fridge."
+},
+{
+"vi": "Hết nước sốt.",
+"en": "Out of sauce."
+},
+{
+"vi": "HUYỀN THOẠI! ",
+"en": "LEGENDARY!"
+},
+{
+"vi": " (giá ×",
+"en": " (price ×"
+},
+{
+"vi": "Nước sốt: ",
+"en": "Sauce:"
+},
+{
+"vi": "Ô ",
+"en": "Slot"
+},
+{
+"vi": "trống",
+"en": "empty"
+},
+{
+"vi": " (sơ chế)",
+"en": " (prepped)"
+},
+{
+"vi": "nước sốt",
+"en": "sauce"
+},
+{
+"vi": "Máy đang quay…",
+"en": "The machine is spinning…"
+},
+{
+"vi": "Tay đang cầm đĩa. Lấy ",
+"en": "Your hands hold a plate. Take"
+},
+{
+"vi": "lấy đĩa ra khỏi máy",
+"en": "take the plate out of the machine"
+},
+{
+"vi": "Lấy ",
+"en": "Take"
+},
+{
+"vi": " ra khỏi máy.",
+"en": " out of the machine."
+},
+{
+"vi": "Máy gacha đồ ăn: cầm một đĩa món tới, bấm máy để cho vào. Hôm nay còn ",
+"en": "Food Gacha Machine: bring a plated dish and click the machine to load it. Spins left today:"
+},
+{
+"vi": " lượt.",
+"en": " spins."
+},
+{
+"vi": " đã vào máy một lần rồi.",
+"en": " has already been through the machine once."
+},
+{
+"vi": "Hôm nay máy đã chạy đủ ",
+"en": "The machine already ran"
+},
+{
+"vi": " lần.",
+"en": " times today."
+},
+{
+"vi": " vào máy. Gạt cần bên cạnh để quay.",
+"en": " into the machine. Pull the lever beside it to spin."
+},
+{
+"vi": "Chưa có máy gacha đồ ăn. Mua trong Tab → Cửa hàng.",
+"en": "No Food Gacha Machine yet. Buy it in Tab → Shop."
+},
+{
+"vi": "Cho một đĩa món vào máy trước (cầm đĩa, bấm máy).",
+"en": "Load a plated dish first (hold the plate, click the machine)."
+},
+{
+"vi": " đã quay rồi. Bấm máy để lấy ra.",
+"en": " has been spun. Click the machine to take it out."
+},
+{
+"vi": "Hôm nay máy đã chạy đủ lượt.",
+"en": "The machine is out of spins today."
+},
+{
+"vi": "Xịt! Máy kêu rắc rắc… ",
+"en": "Fizzle! The machine crackles…"
+},
+{
+"vi": " hỏng mất rồi.",
+"en": " is ruined."
+},
+{
+"vi": "Thành công! ",
+"en": "Success!"
+},
+{
+"vi": ". Bấm máy để lấy ra.",
+"en": ". Click the machine to take it out."
+},
+{
+"vi": "Xịt! ",
+"en": "Fizzle!"
+},
+{
+"vi": "Giữ nguyên ",
+"en": "Unchanged:"
+},
+{
+"vi": "Mất điện: công tắc không có tác dụng, nấu bằng nến.",
+"en": "Blackout: the switch does nothing, cook by candlelight."
+},
+{
+"vi": "Đã bật đèn.",
+"en": "Lights on."
+},
+{
+"vi": "Đã tắt đèn.",
+"en": "Lights off."
+},
+{
+"vi": "Đang chọn relic bằng vé đen: chọn xong rồi mới đổi hàng.",
+"en": "Choosing a relic with a black ticket: finish before rerolling."
+},
+{
+"vi": "Đổi hàng (",
+"en": "Reroll ("
+},
+{
+"vi": "G): 3 relic mới · ví còn ",
+"en": "G): 3 new relics · wallet:"
+},
+{
+"vi": "G · lần sau ",
+"en": "G · next time"
+},
+{
+"vi": "G để đổi hàng relic.",
+"en": "G to reroll the relics."
+},
+{
+"vi": "Không còn relic nào khác để bày.",
+"en": "No other relics left to show."
+},
+{
+"vi": "Giờ này không đổi hàng được.",
+"en": "You can't reroll right now."
+},
+{
+"vi": " vé",
+"en": " tickets"
+},
+{
+"vi": " (cộng ",
+"en": " (plus"
+},
+{
+"vi": " vé còn từ hôm qua)",
+"en": " tickets left from yesterday)"
+},
+{
+"vi": "Đầy đủ",
+"en": "Full"
+},
+{
+"vi": "Giảm",
+"en": "Reduced"
+},
+{
+"vi": "Tắt",
+"en": "Off"
+},
+{
+"vi": "Theo màn hình",
+"en": "Native"
+},
+{
+"vi": "Nhét vé",
+"en": "Insert ticket"
+},
+{
+"vi": "Lấy 1 món",
+"en": "Take 1 item"
+},
+{
+"vi": "Giữ chuột: sơ chế",
+"en": "Hold mouse: prep"
+},
+{
+"vi": "Chọn dụng cụ",
+"en": "Pick a tool"
+},
+{
+"vi": "Tab: xem thực đơn",
+"en": "Tab: see the menu"
+},
+{
+"vi": "Cho đúng thứ tự",
+"en": "Add in the right order"
+},
+{
+"vi": "Vặn núm",
+"en": "Turn the knob"
+},
+{
+"vi": "Múc ra đĩa",
+"en": "Plate it"
+},
+{
+"vi": "Mở quán",
+"en": "Open up"
+},
+{
+"vi": "Đặt trước mặt khách",
+"en": "Serve the customer"
+},
+{
+"vi": "Đóng quán",
+"en": "Close up"
+},
+{
+"vi": "Bật đèn",
+"en": "Lights on"
+},
+{
+"vi": "Chọn 1 relic",
+"en": "Pick 1 relic"
+},
+{
+"vi": "Tab: cửa hàng",
+"en": "Tab: shop"
+},
+{
+"vi": "Cất tủ lạnh",
+"en": "Store in fridge"
+},
+{
+"vi": "Chuột phải: thả",
+"en": "Right-click: drop"
+},
+{
+"vi": "Món Tuyệt hảo",
+"en": "Superb dish"
+},
+{
+"vi": "Mất điện",
+"en": "Blackout"
+},
+{
+"vi": "Màu đế = bậc",
+"en": "Base color = tier"
+},
+{
+"vi": "Đồ tốt → món ngon",
+"en": "Good items → tasty dish"
+},
+{
+"vi": "Món ngon: đắt hơn",
+"en": "Tasty: pricier"
+},
+{
+"vi": "Khách khó: cần ngon",
+"en": "Picky: needs tasty"
+},
+{
+"vi": "Chờ lâu: bỏ đi",
+"en": "Wait too long: leaves"
+},
+{
+"vi": "Đúng món mới trả",
+"en": "Pays for the right dish"
+},
+{
+"vi": "Khói: múc ngay",
+"en": "Smoke: plate now"
+},
+{
+"vi": "Vòng sau: đồ tốt hơn",
+"en": "Later rounds: better items"
+},
+{
+"vi": "Trả vé: mua relic",
+"en": "Pay tickets: buy relics"
+},
+{
+"vi": "Cầm lọ, nhỏ sốt",
+"en": "Grab bottle, drizzle"
+},
+{
+"vi": "Thường lên bậc",
+"en": "Usually tiers up"
+},
+{
+"vi": "Món ngon nhất?",
+"en": "Best dish?"
+},
+{
+"vi": "VÉ",
+"en": "TICKET"
+},
+{
+"vi": "MỞ",
+"en": "OPEN"
+},
+{
+"vi": "ĐÓNG",
+"en": "CLOSED"
+},
+{
+"vi": "0 vé · lấy 1",
+"en": "0 tickets · take 1"
+},
+{
+"vi": "Chuột phải",
+"en": "Right mouse"
+},
+{
+"vi": "Nước sốt",
+"en": "Sauce"
+},
+{
+"vi": "+tiền",
+"en": "+money"
+},
+{
+"vi": "−tiền",
+"en": "−money"
+},
+{
+"vi": "Bấm chuột vào màn hình để điều khiển",
+"en": "Click the screen to take control"
+},
+{
+"vi": "Về menu chính",
+"en": "Back to main menu"
+},
+{
+"vi": "ẩn / hiện",
+"en": "hide / show"
+},
+{
+"vi": " · T: xem hình",
+"en": " · T: show pictures"
+},
+{
+"vi": "Ví <size=26>",
+"en": "Wallet <size=26>"
+},
+{
+"vi": "Nợ <size=26>",
+"en": "Debt <size=26>"
+},
+{
+"vi": "G</size> đầu ngày ",
+"en": "G</size> at start of day"
+},
+{
+"vi": "Hết nợ",
+"en": "Debt-free"
+},
+{
+"vi": " vé đen",
+"en": " black tickets"
+},
+{
+"vi": "Đang cầm: ",
+"en": "Holding:"
+},
+{
+"vi": " <size=70%>chưa mở quán</size>",
+"en": " <size=70%>closed</size>"
+},
+{
+"vi": "Chuột trái · ",
+"en": "Left mouse ·"
+},
+{
+"vi": "Hết ngày ",
+"en": "End of day"
+},
+{
+"vi": "Đã phục vụ ",
+"en": "Served"
+},
+{
+"vi": " khách · đóng quán lúc ",
+"en": " customers · closed at"
+},
+{
+"vi": "Thu trong ngày: ",
+"en": "Today's takings:"
+},
+{
+"vi": "Tiền hiện có: ",
+"en": "Money on hand:"
+},
+{
+"vi": "Tủ lạnh giữ ",
+"en": "The fridge keeps"
+},
+{
+"vi": " món\n",
+"en": " dishes\n"
+},
+{
+"vi": "<b>Sáng mai chủ nợ thu ",
+"en": "<b>Tomorrow morning the Creditor collects"
+},
+{
+"vi": "Nợ sắp tới: ",
+"en": "Next payment:"
+},
+{
+"vi": "G vào đầu ngày ",
+"en": "G at the start of day"
+},
+{
+"vi": "Sang ngày ",
+"en": "Go to day"
+},
+{
+"vi": "Hope trả hết nợ!",
+"en": "Hope is debt-free!"
+},
+{
+"vi": ", chủ nợ thu khoản cuối ",
+"en": ", the Creditor collects the final"
+},
+{
+"vi": "G.\nHope còn ",
+"en": "G.\nHope still has"
+},
+{
+"vi": "G và quán ăn đã đứng vững.\n\nChủ nợ bật cười lần đầu tiên, rồi gả con gái cho Hope.",
+"en": "G and the diner is standing strong.\n\nThe Creditor laughs for the first time, then gives Hope his daughter's hand."
+},
+{
+"vi": "Chơi lại",
+"en": "Play again"
+},
+{
+"vi": "Qua vòng ",
+"en": "Round cleared:"
+},
+{
+"vi": ", chủ nợ đã thu ",
+"en": ", the Creditor collected"
+},
+{
+"vi": "G.\nBạn còn ",
+"en": "G.\nYou still have"
+},
+{
+"vi": "G.\n\nBản chơi thử này dừng ở đây.",
+"en": "G.\n\nThis demo ends here."
+},
+{
+"vi": "Thua rồi",
+"en": "Game over"
+},
+{
+"vi": ", chủ nợ đòi ",
+"en": ", the Creditor demands"
+},
+{
+"vi": "\nnhưng bạn chỉ có ",
+"en": "\nbut you only have"
+},
+{
+"vi": "\n\nCần phục vụ chủ nợ món Tuyệt hảo ngày ",
+"en": "\n\nServe the Creditor a Superb dish on day"
+},
+{
+"vi": " (thưởng ",
+"en": " (bonus"
+},
+{
+"vi": "Quán ăn của Hope",
+"en": "Hope's Diner"
+},
+{
+"vi": "22 ngày để trả hết nợ",
+"en": "22 days to pay off the debt"
+},
+{
+"vi": "Phiên bản ",
+"en": "Version"
+},
+{
+"vi": "Chơi mới",
+"en": "New game"
+},
+{
+"vi": "Chơi tiếp",
+"en": "Continue"
+},
+{
+"vi": "Cài đặt",
+"en": "Settings"
+},
+{
+"vi": "Thoát",
+"en": "Quit"
+},
+{
+"vi": "Chơi tiếp · ngày ",
+"en": "Continue · day"
+},
+{
+"vi": "Tạm dừng",
+"en": "Paused"
+},
+{
+"vi": "Tiếp tục",
+"en": "Resume"
+},
+{
+"vi": "Game tự lưu đầu mỗi ngày: về menu thì chơi tiếp từ đầu ngày này.",
+"en": "The game saves at the start of each day: going to the menu means continuing from the start of this day."
+},
+{
+"vi": "Âm lượng tổng",
+"en": "Master volume"
+},
+{
+"vi": "Nhạc",
+"en": "Music"
+},
+{
+"vi": "Hiệu ứng",
+"en": "Sound effects"
+},
+{
+"vi": "Độ nhạy chuột",
+"en": "Mouse sensitivity"
+},
+{
+"vi": "Đảo trục dọc",
+"en": "Invert Y axis"
+},
+{
+"vi": "Toàn màn hình",
+"en": "Fullscreen"
+},
+{
+"vi": "Độ phân giải",
+"en": "Resolution"
+},
+{
+"vi": "Hướng dẫn ngày 1",
+"en": "Day 1 tutorial"
+},
+{
+"vi": "Hiệu ứng truyện",
+"en": "Comic effects"
+},
+{
+"vi": "Hiệu ứng giấy",
+"en": "Paper effects"
+},
+{
+"vi": "Ngôn ngữ / Language",
+"en": "Language"
+},
+{
+"vi": "Tiếng Việt",
+"en": "Vietnamese"
+},
+{
+"vi": "Đi",
+"en": "Walk"
+},
+{
+"vi": "Chạy",
+"en": "Run"
+},
+{
+"vi": "Nhảy",
+"en": "Jump"
+},
+{
+"vi": "Chuột",
+"en": "Mouse"
+},
+{
+"vi": "Nhìn quanh",
+"en": "Look around"
+},
+{
+"vi": "Chuột trái",
+"en": "Left mouse"
+},
+{
+"vi": "Bấm · giữ để sơ chế",
+"en": "Click · hold to prep"
+},
+{
+"vi": "Thả / đặt lại đồ",
+"en": "Drop / put back"
+},
+{
+"vi": "Thực đơn, relic, cửa hàng",
+"en": "Menu, relics, shop"
+},
+{
+"vi": "Ẩn / hiện hướng dẫn",
+"en": "Hide / show tutorial"
+},
+{
+"vi": "Điều khiển",
+"en": "Controls"
+},
+{
+"vi": "Bật",
+"en": "On"
+},
+{
+"vi": "Tắt (cửa sổ)",
+"en": "Off (windowed)"
+},
+{
+"vi": "Tự động (ván đầu)",
+"en": "Auto (first game)"
+},
+{
+"vi": "Bấm để tiếp · Giữ để bỏ qua",
+"en": "Click to continue · Hold to skip"
+},
+{
+"vi": "Xong",
+"en": "Done"
+},
+{
+"vi": "Dầu ăn",
+"en": "Cooking oil"
+},
+{
+"vi": "Bơ",
+"en": "Butter"
+},
+{
+"vi": "Nước dùng",
+"en": "Broth"
+},
+{
+"vi": "Nước mắm",
+"en": "Fish sauce"
+},
+{
+"vi": "Nước tương",
+"en": "Soy sauce"
+},
+{
+"vi": "Mật ong",
+"en": "Honey"
+},
+{
+"vi": "Vỉ nướng",
+"en": "Grill"
+},
+{
+"vi": "hấp",
+"en": "steamed"
+},
+{
+"vi": "Hành lá",
+"en": "Scallions"
+},
+{
+"vi": "Muối",
+"en": "Salt"
+},
+{
+"vi": "Chảo",
+"en": "Pan"
+},
+{
+"vi": "nướng",
+"en": "grilled"
+},
+{
+"vi": "chiên",
+"en": "fried"
+},
+{
+"vi": "sốt",
+"en": "in sauce"
+},
+{
+"vi": "xào",
+"en": "stir-fried"
+},
+{
+"vi": "Vé đen",
+"en": "Black ticket"
+},
+{
+"vi": "<color=#E8604F>Miễn phí</color>",
+"en": "<color=#E8604F>Free</color>"
+},
+{
+"vi": "\n<color=#E8604F><size=46>có tác dụng từ ngày 4</size></color>",
+"en": "\n<color=#E8604F><size=46>works from day 4</size></color>"
+},
+{
+"vi": "<color=#E8604F>Bấm relic trên giá để bỏ</color>",
+"en": "<color=#E8604F>Click a relic on the shelf to discard</color>"
+},
+{
+"vi": "QUÁN NHÂN PHẨM",
+"en": "DIGNITY DINER"
+},
+{
+"vi": "Nhét vé · còn ",
+"en": "Insert ticket · left:"
+},
+{
+"vi": "Hết vé",
+"en": "No tickets"
+},
+{
+"vi": "Máy gacha đồ ăn\n<size=60>sắp mở</size>",
+"en": "Food Gacha Machine\n<size=60>coming soon</size>"
+},
+{
+"vi": "Tỉ lệ bậc nguyên liệu · ",
+"en": "Ingredient tier odds ·"
+},
+{
+"vi": " (sau mưa)",
+"en": " (after the rain)"
+},
+{
+"vi": "Vòng ",
+"en": "Round"
+},
+{
+"vi": " · 1 vé: ",
+"en": " · 1 ticket:"
+},
+{
+"vi": " đồ phụ + ",
+"en": " sides +"
+},
+{
+"vi": " nguyên liệu chính",
+"en": " main ingredients"
+},
+{
+"vi": "Có relic",
+"en": "With relics"
+},
+{
+"vi": ": tỉ lệ đã tính tác dụng relic",
+"en": ": odds include relic effects"
+},
+{
+"vi": " rương đột phá (",
+"en": " breakthrough chests ("
+},
+{
+"vi": " món: ",
+"en": " items:"
+},
+{
+"vi": " Xuất sắc, ",
+"en": " Excellent,"
+},
+{
+"vi": " Hiếm)",
+"en": " Rare)"
+},
+{
+"vi": "<size=78>Phụ ",
+"en": "<size=78>Side"
+},
+{
+"vi": "\nChính ",
+"en": "\nMain"
+},
+{
+"vi": " · chọn dụng cụ trước",
+"en": " · pick a tool first"
+},
+{
+"vi": "Dùng ",
+"en": "Use"
+},
+{
+"vi": "Đang nấu",
+"en": "Cooking"
+},
+{
+"vi": "Đổ bỏ đồ trên bếp",
+"en": "Empty the stove"
+},
+{
+"vi": "Lấy đĩa trống",
+"en": "Take an empty plate"
+},
+{
+"vi": " vào bếp",
+"en": " onto the stove"
+},
+{
+"vi": " trước",
+"en": " first"
+},
+{
+"vi": "Múc ",
+"en": "Plate"
+},
+{
+"vi": " ra đĩa",
+"en": " "
+},
+{
+"vi": "Lấy đĩa trống để múc",
+"en": "Take an empty plate to serve it"
+},
+{
+"vi": "Bếp · chọn dụng cụ trên giá",
+"en": "Stove · pick a tool from the rack"
+},
+{
+"vi": "Bếp · ",
+"en": "Stove ·"
+},
+{
+"vi": "1 Chọn dụng cụ  ›  2 Cho đúng thứ tự  ›  3 Vặn núm",
+"en": "1 Pick a tool  ›  2 Add in order  ›  3 Turn the knob"
+},
+{
+"vi": " · trống",
+"en": " · empty"
+},
+{
+"vi": " đã chín",
+"en": " is done"
+},
+{
+"vi": "Món sẽ ra bậc nào (nếu đúng thứ tự)",
+"en": "Dish tier odds (if in the right order)"
+},
+{
+"vi": "Mất điện: không nhìn rõ bậc món",
+"en": "Blackout: can't see the dish tier"
+},
+{
+"vi": "Nhỏ nước sốt lên ",
+"en": "Drizzle sauce on"
+},
+{
+"vi": "Cầm ",
+"en": "Pick up"
+},
+{
+"vi": "Đóng quán · sang ngày mới",
+"en": "Close · next day"
+},
+{
+"vi": "Đóng quán sớm",
+"en": "Close early"
+},
+{
+"vi": "Quán đã đóng",
+"en": "Closed"
+},
+{
+"vi": "MỞ QUÁN\n<size=60>bấm để đón khách</size>",
+"en": "OPEN UP\n<size=60>click to welcome customers</size>"
+},
+{
+"vi": "ĐÓNG QUÁN\n<size=60>bấm để nghỉ</size>",
+"en": "CLOSE UP\n<size=60>click to call it a day</size>"
+},
+{
+"vi": "21:00\n<size=60>phục vụ nốt khách</size>",
+"en": "21:00\n<size=60>serve the last customers</size>"
+},
+{
+"vi": "ĐANG MỞ\n<size=60>bấm để đóng sớm</size>",
+"en": "OPEN\n<size=60>click to close early</size>"
+},
+{
+"vi": "ĐÃ ĐÓNG",
+"en": "CLOSED"
+},
+{
+"vi": "Đang chọn: bấm 1 trong 3 relic trên bệ",
+"en": "Choosing: click 1 of the 3 relics on the pedestals"
+},
+{
+"vi": "Khe vé đen · cần 1 vé đen (Tab → Cửa hàng)",
+"en": "Black ticket slot · needs 1 black ticket (Tab → Shop)"
+},
+{
+"vi": "Dùng 1 vé đen: chọn 1 trong 3 relic Hiếm trở lên (còn ",
+"en": "Use 1 black ticket: pick 1 of 3 Rare-or-better relics ("
+},
+{
+"vi": " vé đen)",
+"en": " black tickets left)"
+},
+{
+"vi": "Bệ trống",
+"en": "Empty pedestal"
+},
+{
+"vi": "Nhấn Tab, chọn relic để bỏ, lấy ",
+"en": "Press Tab, pick a relic to discard, take"
+},
+{
+"vi": " bằng vé đen",
+"en": " with a black ticket"
+},
+{
+"vi": " · giá đầy, phải bỏ 1 relic",
+"en": " · shelf full, discard 1 relic"
+},
+{
+"vi": "Bệ trống · đã bán hôm nay",
+"en": "Empty pedestal · sold today"
+},
+{
+"vi": "Lấy miễn phí · ",
+"en": "Take for free ·"
+},
+{
+"vi": " (chỉ được lấy 1)",
+"en": " (only 1)"
+},
+{
+"vi": "Bấm lại để huỷ mua ",
+"en": "Click again to cancel buying"
+},
+{
+"vi": " · thiếu ",
+"en": " · short"
+},
+{
+"vi": " vé (còn ",
+"en": " tickets (have"
+},
+{
+"vi": "Chọn 1 relic trên bệ",
+"en": "Pick 1 relic on the pedestals"
+},
+{
+"vi": "Vé đen → relic Hiếm · ",
+"en": "Black ticket → Rare relic ·"
+},
+{
+"vi": "Vé đen\n<size=70>chọn 1 relic Hiếm</size>",
+"en": "Black ticket\n<size=70>pick 1 Rare relic</size>"
+},
+{
+"vi": "Relic miễn phí\n<size=70>chọn 1</size>",
+"en": "Free relic\n<size=70>pick 1</size>"
+},
+{
+"vi": "Relic\n<size=70>trả bằng vé</size>",
+"en": "Relics\n<size=70>pay with tickets</size>"
+},
+{
+"vi": "Relic\n<size=80>mở từ ngày ",
+"en": "Relics\n<size=80>open from day"
+},
+{
+"vi": "Mở từ ngày ",
+"en": "Opens on day"
+},
+{
+"vi": "Đã bán",
+"en": "Sold"
+},
+{
+"vi": "Giá relic ",
+"en": "Relic shelf"
+},
+{
+"vi": "Mì Ý",
+"en": "Pasta"
+},
+{
+"vi": "Bún",
+"en": "Vermicelli"
+},
+{
+"vi": "Bánh mì",
+"en": "Baguette"
+},
+{
+"vi": "Chủ nợ",
+"en": "Creditor"
+},
+{
+"vi": " đang ăn · còn ",
+"en": " is eating ·"
+},
+{
+"vi": " giây",
+"en": " s left"
+},
+{
+"vi": "Ghế trống",
+"en": "Empty seat"
+},
+{
+"vi": "Chủ nợ · gọi ",
+"en": "Creditor · orders"
+},
+{
+"vi": " · Tuyệt hảo trở lên: thưởng ",
+"en": " · Superb or better: bonus"
+},
+{
+"vi": "Phục vụ chủ nợ: ",
+"en": "Serve the Creditor:"
+},
+{
+"vi": " · được thưởng ",
+"en": " · bonus"
+},
+{
+"vi": " · chưa đủ Tuyệt hảo, không có thưởng",
+"en": " · not Superb, no bonus"
+},
+{
+"vi": " · gọi ",
+"en": " · orders"
+},
+{
+"vi": "Sai món: ",
+"en": "Wrong dish:"
+},
+{
+"vi": " gọi ",
+"en": " ordered"
+},
+{
+"vi": " (bấm vẫn đưa, khách sẽ giận)",
+"en": " (click to serve anyway, the customer will be angry)"
+},
+{
+"vi": "Phục vụ ",
+"en": "Serve"
+},
+{
+"vi": "<size=64>Chủ nợ · Dễ tính ",
+"en": "<size=64>Creditor · Easygoing"
+},
+{
+"vi": "%</size>\nGọi: ",
+"en": "%</size>\nOrders:"
+},
+{
+"vi": "Khách ",
+"en": "Customer"
+},
+{
+"vi": " · Dễ tính ",
+"en": " · Easygoing"
+},
+{
+"vi": "Tủ lạnh",
+"en": "Fridge"
+},
+{
+"vi": "Tủ lạnh đầy",
+"en": "Fridge full"
+},
+{
+"vi": "Cất ",
+"en": "Store"
+},
+{
+"vi": " vào tủ lạnh",
+"en": " in the fridge"
+},
+{
+"vi": "Tủ lạnh · ",
+"en": "Fridge ·"
+},
+{
+"vi": " · không tụt bậc",
+"en": " · keeps its tier"
+},
+{
+"vi": " · quá ",
+"en": " · after"
+},
+{
+"vi": " ngày tụt 1 bậc",
+"en": " days drops 1 tier"
+},
+{
+"vi": " ngày trong tủ)",
+"en": " days in the fridge)"
+},
+{
+"vi": "Vé đen · mở từ ngày ",
+"en": "Black ticket · from day"
+},
+{
+"vi": "Đã giữ tối đa vé đen",
+"en": "Black tickets at maximum"
+},
+{
+"vi": "Mua vé đen · ",
+"en": "Buy a black ticket ·"
+},
+{
+"vi": "Nhét vé đen · còn ",
+"en": "Insert black ticket · left:"
+},
+{
+"vi": "Khe vé đen · chưa có vé đen",
+"en": "Black ticket slot · no black tickets"
+},
+{
+"vi": "Máy gacha đồ ăn · mở từ ngày ",
+"en": "Food Gacha Machine · from day"
+},
+{
+"vi": "Mua máy gacha đồ ăn · ",
+"en": "Buy the Food Gacha Machine ·"
+},
+{
+"vi": " đã vào máy rồi",
+"en": " has been through the machine"
+},
+{
+"vi": " vào máy · còn ",
+"en": " into the machine · left:"
+},
+{
+"vi": " lượt",
+"en": " spins"
+},
+{
+"vi": "Máy gacha đồ ăn · còn ",
+"en": "Food Gacha Machine · left:"
+},
+{
+"vi": " lượt hôm nay",
+"en": " spins today"
+},
+{
+"vi": "<size=86>Quầy vật phẩm</size>\n\nMở từ ngày ",
+"en": "<size=86>Item counter</size>\n\nOpens on day"
+},
+{
+"vi": " (sau lần trả nợ đầu)",
+"en": " (after the first payment)"
+},
+{
+"vi": "<size=86>Quầy vật phẩm</size>\n",
+"en": "<size=86>Item counter</size>\n"
+},
+{
+"vi": "<b>Nước sốt thần thánh</b> ",
+"en": "<b>Divine Sauce</b>"
+},
+{
+"vi": "G · có ",
+"en": "G · have"
+},
+{
+"vi": "<size=52>Hỏng ",
+"en": "<size=52>Fail"
+},
+{
+"vi": " · Giữ ",
+"en": " · Same"
+},
+{
+"vi": "+1 bậc ",
+"en": "+1 tier"
+},
+{
+"vi": " · +2 bậc ",
+"en": " · +2 tiers"
+},
+{
+"vi": " · Huyền thoại ",
+"en": " · Legendary"
+},
+{
+"vi": "<b>Vé đen</b> ",
+"en": "<b>Black ticket</b>"
+},
+{
+"vi": "<size=52>Thùng: ",
+"en": "<size=52>Crates:"
+},
+{
+"vi": "<b>Máy gacha đồ ăn</b> ",
+"en": "<b>Food Gacha Machine</b>"
+},
+{
+"vi": "đã mua",
+"en": "owned"
+},
+{
+"vi": "G · mua 1 lần",
+"en": "G · one-time purchase"
+},
+{
+"vi": "Nước sốt · ",
+"en": "Sauce ·"
+},
+{
+"vi": "Vé đen · ",
+"en": "Black ticket ·"
+},
+{
+"vi": "Máy gacha đồ ăn\n<size=60>mở từ ngày ",
+"en": "Food Gacha Machine\n<size=60>from day"
+},
+{
+"vi": "Máy gacha đồ ăn\n<size=60>",
+"en": "Food Gacha Machine\n<size=60>"
+},
+{
+"vi": "G · bấm để mua</size>",
+"en": "G · click to buy</size>"
+},
+{
+"vi": "Máy gacha đồ ăn\n<size=60>còn ",
+"en": "Food Gacha Machine\n<size=60>"
+},
+{
+"vi": " lượt hôm nay</size>",
+"en": " spins left today</size>"
+},
+{
+"vi": " lên thớt",
+"en": " on the board"
+},
+{
+"vi": "Thớt",
+"en": "Cutting board"
+},
+{
+"vi": "Nhặt ",
+"en": "Pick up"
+},
+{
+"vi": "Bàn trống",
+"en": "Empty table"
+},
+{
+"vi": "Khách gọi ",
+"en": "Customer ordered"
+},
+{
+"vi": " cho chủ nợ",
+"en": " for the Creditor"
+},
+{
+"vi": " trước mặt khách",
+"en": " in front of the customer"
+},
+{
+"vi": " (còn ",
+"en": " (left:"
+},
+{
+"vi": "Đặt lại nước sốt",
+"en": "Put the sauce back"
+},
+{
+"vi": "Vặn núm bếp 2",
+"en": "Turn stove 2's knob"
+},
+{
+"vi": "Bếp 2",
+"en": "Stove 2"
+},
+{
+"vi": " vào bếp 2",
+"en": " onto stove 2"
+},
+{
+"vi": "Bếp 2 · chọn dụng cụ trên giá",
+"en": "Stove 2 · pick a tool from the rack"
+},
+{
+"vi": "Bếp 2 · ",
+"en": "Stove 2 ·"
+},
+{
+"vi": "MÁY GACHA ĐỒ ĂN",
+"en": "FOOD GACHA MACHINE"
+},
+{
+"vi": "Máy gacha đồ ăn · chưa mua",
+"en": "Food Gacha Machine · not bought"
+},
+{
+"vi": "Đang quay…",
+"en": "Spinning…"
+},
+{
+"vi": "Cần gạt · cho đĩa vào máy trước",
+"en": "Lever · load a plate first"
+},
+{
+"vi": "Đã quay · bấm máy lấy ",
+"en": "Spun · click the machine to take"
+},
+{
+"vi": "Gạt cần · quay ",
+"en": "Pull the lever · spin"
+},
+{
+"vi": " lượt)",
+"en": " spins left)"
+},
+{
+"vi": "Máy gacha đồ ăn · cầm đĩa tới để cho vào · còn ",
+"en": "Food Gacha Machine · bring a plate to load it · left:"
+},
+{
+"vi": "THÀNH CÔNG! +",
+"en": "SUCCESS! +"
+},
+{
+"vi": "XỊT! hỏng mất món",
+"en": "FIZZLE! dish ruined"
+},
+{
+"vi": "XỊT! −1 bậc",
+"en": "FIZZLE! −1 tier"
+},
+{
+"vi": "Giữ nguyên",
+"en": "Unchanged"
+},
+{
+"vi": "Cần",
+"en": "Lever"
+},
+{
+"vi": "Đèn",
+"en": "Light"
+},
+{
+"vi": "Công tắc đèn · mất điện, đèn không sáng",
+"en": "Light switch · blackout, no light"
+},
+{
+"vi": "Tắt đèn",
+"en": "Lights off"
+},
+{
+"vi": " · trời đang tối",
+"en": " · it's getting dark"
+},
+{
+"vi": "Đổi hàng relic · mở từ ngày ",
+"en": "Relic reroll · from day"
+},
+{
+"vi": "Đổi 3 relic khác · ",
+"en": "Swap for 3 other relics ·"
+},
+{
+"vi": "G (ví ",
+"en": "G (wallet"
+},
+{
+"vi": "Đổi hàng\n<size=44>mở từ ngày ",
+"en": "Reroll\n<size=44>from day"
+},
+{
+"vi": "Đổi hàng\n<size=50>",
+"en": "Reroll\n<size=50>"
+},
+{
+"vi": "ĐÓNG CỬA",
+"en": "CLOSED"
+},
+{
+"vi": "Thực đơn",
+"en": "Menu"
+},
+{
+"vi": "Cửa hàng",
+"en": "Shop"
+},
+{
+"vi": "Cách chơi",
+"en": "How to play"
+},
+{
+"vi": "Đóng (Tab)",
+"en": "Close (Tab)"
+},
+{
+"vi": "Sơn hào hải vị · cần rương đột phá",
+"en": "Delicacies · need a breakthrough chest"
+},
+{
+"vi": "Đế: ",
+"en": "Base:"
+},
+{
+"vi": "CẦN",
+"en": "NEEDS"
+},
+{
+"vi": "×1",
+"en": "×1"
+},
+{
+"vi": "Nấu ",
+"en": "Cook"
+},
+{
+"vi": "s · bán ",
+"en": "s · sells for"
+},
+{
+"vi": "G (bậc Bình thường)",
+"en": "G (Normal tier)"
+},
+{
+"vi": "Món ngon hơn → đắt hơn · tệ hơn → rẻ hơn",
+"en": "Tastier → pricier · worse → cheaper"
+},
+{
+"vi": "Chọn",
+"en": "Pick"
+},
+{
+"vi": "Sai thứ tự hoặc sai dụng cụ → Lạc vị",
+"en": "Wrong order or wrong tool → Off-flavor"
+},
+{
+"vi": " món · giá niêm yết ở bậc Bình thường · khách trả thêm tip",
+"en": " dishes · listed price at Normal tier · customers add tips"
+},
+{
+"vi": "Relic đang có · ",
+"en": "Relics owned ·"
+},
+{
+"vi": " · <color=#E8604F>đã đủ: chọn 1 relic để bỏ, lấy ",
+"en": " · <color=#E8604F>full: pick 1 relic to discard, take"
+},
+{
+"vi": "Bỏ",
+"en": "Discard"
+},
+{
+"vi": "Chắc?",
+"en": "Sure?"
+},
+{
+"vi": "Chưa có relic. Mua ở 3 bệ relic (mở từ ngày ",
+"en": "No relics yet. Buy them at the 3 relic pedestals (open from day"
+},
+{
+"vi": "Bấm Bỏ ở relic muốn bỏ: relic mới vào thay chỗ.",
+"en": "Click Discard on a relic: the new relic takes its place."
+},
+{
+"vi": "Bỏ relic không hoàn vé. Bấm Bỏ hai lần để chắc chắn.",
+"en": "Discarding doesn't refund tickets. Click Discard twice to confirm."
+},
+{
+"vi": "Cửa hàng · ví ",
+"en": "Shop · wallet"
+},
+{
+"vi": " · mở từ ngày ",
+"en": " · opens on day"
+},
+{
+"vi": "<b>Nước sốt thần thánh</b> · ",
+"en": "<b>Divine Sauce</b> ·"
+},
+{
+"vi": "\n<size=15>Lọ ở bên phải bếp: cầm lọ, bấm đĩa vừa nấu. Hỏng ",
+"en": "\n<size=15>Bottle right of the stove: grab it, click a freshly cooked plate. Fail"
+},
+{
+"vi": " · giữ ",
+"en": " · same"
+},
+{
+"vi": " · +1 bậc ",
+"en": " · +1 tier"
+},
+{
+"vi": "<b>Vé đen</b> · ",
+"en": "<b>Black ticket</b> ·"
+},
+{
+"vi": "\n<size=15>Nhét vào máy vé: ",
+"en": "\n<size=15>Insert into the ticket machine:"
+},
+{
+"vi": " · hoặc khe cạnh bệ relic: chọn relic Hiếm</size>",
+"en": " · or the slot by the relic pedestals: pick a Rare relic</size>"
+},
+{
+"vi": "<b>Máy gacha đồ ăn</b> · ",
+"en": "<b>Food Gacha Machine</b> ·"
+},
+{
+"vi": "đã mua · còn ",
+"en": "owned · left:"
+},
+{
+"vi": "\n<size=15>Đổi bậc một món đã nấu (lên hoặc xuống, tỉ lệ ẩn), mỗi món 1 lần.</size>",
+"en": "\n<size=15>Rerolls a cooked dish's tier (up or down, hidden odds), once per dish.</size>"
+},
+{
+"vi": "<b>Thớt</b> · ",
+"en": "<b>Cutting board</b> ·"
+},
+{
+"vi": "đủ ",
+"en": "max"
+},
+{
+"vi": " thớt",
+"en": " boards"
+},
+{
+"vi": " · có ",
+"en": " · have"
+},
+{
+"vi": "\n<size=15>Sơ chế nhiều món cùng lúc. Bàn sơ chế dài thêm.</size>",
+"en": "\n<size=15>Prep several items at once. The prep table gets longer.</size>"
+},
+{
+"vi": "<b>Bếp</b> · ",
+"en": "<b>Stove</b> ·"
+},
+{
+"vi": " bếp",
+"en": " stoves"
+},
+{
+"vi": "\n<size=15>Nấu hai món cùng lúc. Bếp mới ở bên phải quầy đĩa.</size>",
+"en": "\n<size=15>Cook two dishes at once. The new stove is right of the plate counter.</size>"
+},
+{
+"vi": "<b>Tay vạn năng</b> · ",
+"en": "<b>Extra Hand</b> ·"
+},
+{
+"vi": "\n<size=15>Cầm 2 đồ cùng lúc. Phím 1 / 2 chọn ô; không chọn thì dùng / thả theo thứ tự nhặt.</size>",
+"en": "\n<size=15>Hold 2 things at once. Keys 1 / 2 pick the slot; otherwise use / drop in pick-up order.</size>"
+},
+{
+"vi": "Đồ mua xong hiện trong phòng. Đồng hồ đứng trong lúc mở bảng này.",
+"en": "Purchases appear in the room. The clock stops while this panel is open."
+},
+{
+"vi": "‹ Trước",
+"en": "‹ Back"
+},
+{
+"vi": "Lấy 1 nguyên liệu",
+"en": "Take 1 ingredient"
+},
+{
+"vi": "Sơ chế trên thớt",
+"en": "Prep on the board"
+},
+{
+"vi": "Cho vào đúng thứ tự",
+"en": "Add in the right order"
+},
+{
+"vi": "Trời tối: bật đèn",
+"en": "Dark: lights on"
+},
+{
+"vi": ": món ngon nhất",
+"en": ": the best dish"
+},
+{
+"vi": "Phục vụ ai trước cũng được",
+"en": "Serve anyone first"
+},
+{
+"vi": "Cầm lọ nước sốt",
+"en": "Grab the sauce bottle"
+},
+{
+"vi": "Bấm đĩa vừa nấu",
+"en": "Click the fresh plate"
+},
+{
+"vi": "Mất điện: nấu bằng nến",
+"en": "Blackout: cook by candlelight"
+},
+{
+"vi": ":00 chủ nợ tới",
+"en": ":00 the Creditor comes"
+},
+{
+"vi": "Xong! Gom tiền trả nợ ngày ",
+"en": "Done! Save up to pay the debt on day"
+},
+{
+"vi": "Ôi thiu",
+"en": "Spoiled"
+},
+{
+"vi": "Bình thường",
+"en": "Normal"
+},
+{
+"vi": "Tốt",
+"en": "Good"
+},
+{
+"vi": "Tươi",
+"en": "Fresh"
+},
+{
+"vi": "Xuất sắc",
+"en": "Excellent"
+},
+{
+"vi": "Lạc vị",
+"en": "Off-flavor"
+},
+{
+"vi": "Dở",
+"en": "Bad"
+},
+{
+"vi": "Tuyệt hảo",
+"en": "Superb"
+},
+{
+"vi": "Bị đuổi việc",
+"en": "Fired"
+},
+{
+"vi": "Chương 1 · Bị đuổi việc",
+"en": "Chapter 1 · Fired"
+},
+{
+"vi": "Thứ Hai · 9 giờ sáng",
+"en": "Monday · 9 am"
+},
+{
+"vi": "CẬU BỊ",
+"en": "YOU'RE"
+},
+{
+"vi": "ĐUỔI!!",
+"en": "FIRED!!"
+},
+{
+"vi": "…và thế là hết.",
+"en": "…and that's that."
+},
+{
+"vi": "QUÁN CŨ",
+"en": "OLD DINER"
+},
+{
+"vi": "CỘP… CỘP…",
+"en": "KNOCK… KNOCK…"
+},
+{
+"vi": "Quán này giờ là",
+"en": "This place is"
+},
+{
+"vi": "của cậu. Nấu đi.",
+"en": "yours now. Cook."
+},
+{
+"vi": "GIẤY NỢ",
+"en": "IOU"
+},
+{
+"vi": "Ngày 4",
+"en": "Day 4"
+},
+{
+"vi": "Ngày 9",
+"en": "Day 9"
+},
+{
+"vi": "Ngày 15",
+"en": "Day 15"
+},
+{
+"vi": "Ngày 22",
+"en": "Day 22"
+},
+{
+"vi": "Hạn trả: 4 lần",
+"en": "Due: 4 payments"
+},
+{
+"vi": "Chương 2 · Cơn bão",
+"en": "Chapter 2 · The Storm"
+},
+{
+"vi": "QUÁN CỦA HOPE",
+"en": "HOPE'S DINER"
+},
+{
+"vi": "ĐÙNG!!",
+"en": "BOOM!!"
+},
+{
+"vi": "Ngày 2 · Bão đổ bộ",
+"en": "Day 2 · The storm hits"
+},
+{
+"vi": "tách… tách…",
+"en": "drip… drip…"
+},
+{
+"vi": "Quán ơi, đừng",
+"en": "Please, diner,"
+},
+{
+"vi": "sập nha…",
+"en": "don't fall down…"
+},
+{
+"vi": "Ngày 3 · Kho gần trống",
+"en": "Day 3 · Pantry almost empty"
+},
+{
+"vi": "Ít thì",
+"en": "Few? Then"
+},
+{
+"vi": "nấu khéo!",
+"en": "cook well!"
+},
+{
+"vi": "Ngon quá",
+"en": "So tasty,"
+},
+{
+"vi": "cháu ơi!",
+"en": "dear!"
+},
+{
+"vi": "Chương 3 · Đêm mất điện",
+"en": "Chapter 3 · Blackout Night"
+},
+{
+"vi": "PHỤT!",
+"en": "FZZT!"
+},
+{
+"vi": "Ngày 8 · 19 giờ 02",
+"en": "Day 8 · 7:02 pm"
+},
+{
+"vi": "…ơ?",
+"en": "…huh?"
+},
+{
+"vi": "(khách)",
+"en": "(customers)"
+},
+{
+"vi": "Bếp vẫn",
+"en": "The stove"
+},
+{
+"vi": "phải đỏ lửa!",
+"en": "stays lit!"
+},
+{
+"vi": "XÈO XÈO",
+"en": "SIZZLE SIZZLE"
+},
+{
+"vi": "Không điện, vẫn đông khách",
+"en": "No power, still a full house"
+},
+{
+"vi": "Lãng mạn ghê!",
+"en": "How romantic!"
+},
+{
+"vi": "Chương 4 · Tin đồn",
+"en": "Chapter 4 · The Rumor"
+},
+{
+"vi": "QUÁN",
+"en": "FILTHY"
+},
+{
+"vi": "BẨN!!",
+"en": "DINER!!"
+},
+{
+"vi": "hí hí hí",
+"en": "hee hee hee"
+},
+{
+"vi": "Ngày 9 · Tin đồn lan",
+"en": "Day 9 · The rumor spreads"
+},
+{
+"vi": "…vắng tanh",
+"en": "…empty"
+},
+{
+"vi": "Ngày 10–13",
+"en": "Days 10–13"
+},
+{
+"vi": "Bắt được",
+"en": "Got"
+},
+{
+"vi": "rồi nhé!",
+"en": "you!"
+},
+{
+"vi": "LỘ RỒI!!",
+"en": "BUSTED!!"
+},
+{
+"vi": "Ngày 14",
+"en": "Day 14"
+},
+{
+"vi": "Ngày 15 · Danh tiếng trở lại!",
+"en": "Day 15 · Our good name is back!"
+},
+{
+"vi": "Chương 5 · Món cuối cùng",
+"en": "Chapter 5 · The Final Dish"
+},
+{
+"vi": "Ngày 21 · Hạn chót",
+"en": "Day 21 · The deadline"
+},
+{
+"vi": "Một món.",
+"en": "One dish."
+},
+{
+"vi": "Tuyệt hảo.",
+"en": "Superb."
+},
+{
+"vi": "XÈO!",
+"en": "SIZZLE!"
+},
+{
+"vi": "XÈO!!",
+"en": "SIZZLE!!"
+},
+{
+"vi": "Nấu bằng cả",
+"en": "Cooking with"
+},
+{
+"vi": "nhân phẩm!",
+"en": "all my heart!"
+},
+{
+"vi": "<space=36.7> HUYỀN THOẠI <space=36.7>",
+"en": "<space=36.7> LEGENDARY <space=36.7>"
+},
+{
+"vi": "Ự…!!",
+"en": "Ngh…!!"
+},
+{
+"vi": "Vị này… giống hệt",
+"en": "This taste… just like"
+},
+{
+"vi": "món mẹ ta nấu…",
+"en": "my mother's cooking…"
+},
+{
+"vi": "Chương 6 · Hết nợ, có vợ",
+"en": "Chapter 6 · No Debt, and a Wife"
+},
+{
+"vi": "XOẸT!!",
+"en": "RRRIP!!"
+},
+{
+"vi": "Ngày 22 · Nợ đã trả đủ",
+"en": "Day 22 · Debt paid in full"
+},
+{
+"vi": "Còn một chuyện nữa…",
+"en": "One more thing…"
+},
+{
+"vi": "con gái ta.",
+"en": "my daughter."
+},
+{
+"vi": "HẾT",
+"en": "THE END"
+},
+{
+"vi": "Quán của Hope · Khai trương lại",
+"en": "Hope's Diner · Grand reopening"
+},
+{
+"vi": "Tỏi",
+"en": "Garlic"
+},
+{
+"vi": "Cơm",
+"en": "Rice"
+},
+{
+"vi": "Cà chua",
+"en": "Tomato"
+},
+{
+"vi": "cà chua",
+"en": "tomato"
+},
+{
+"vi": "Thái múi",
+"en": "Cut into wedges"
+},
+{
+"vi": "Hành tây",
+"en": "Onion"
+},
+{
+"vi": "hành tây",
+"en": "onion"
+},
+{
+"vi": "Thái lát",
+"en": "Slice"
+},
+{
+"vi": "Rau muống",
+"en": "Water spinach"
+},
+{
+"vi": "rau muống",
+"en": "water spinach"
+},
+{
+"vi": "Nhặt, rửa",
+"en": "Pick & wash"
+},
+{
+"vi": "Khoai tây",
+"en": "Potato"
+},
+{
+"vi": "khoai tây",
+"en": "potato"
+},
+{
+"vi": "Gọt, thái",
+"en": "Peel & cut"
+},
+{
+"vi": "Nấm rơm",
+"en": "Straw mushroom"
+},
+{
+"vi": "nấm rơm",
+"en": "straw mushrooms"
+},
+{
+"vi": "Rửa, bổ đôi",
+"en": "Wash & halve"
+},
+{
+"vi": "Bông cải xanh",
+"en": "Broccoli"
+},
+{
+"vi": "bông cải",
+"en": "broccoli"
+},
+{
+"vi": "Tách bông",
+"en": "Cut into florets"
+},
+{
+"vi": "Ớt chuông",
+"en": "Bell pepper"
+},
+{
+"vi": "ớt chuông",
+"en": "bell pepper"
+},
+{
+"vi": "Bỏ hạt, thái",
+"en": "Seed & slice"
+},
+{
+"vi": "Bí đỏ",
+"en": "Pumpkin"
+},
+{
+"vi": "bí đỏ",
+"en": "pumpkin"
+},
+{
+"vi": "Măng tây",
+"en": "Asparagus"
+},
+{
+"vi": "măng tây",
+"en": "asparagus"
+},
+{
+"vi": "Cắt khúc",
+"en": "Cut into pieces"
+},
+{
+"vi": "Nấm đông cô",
+"en": "Shiitake"
+},
+{
+"vi": "nấm đông cô",
+"en": "shiitake"
+},
+{
+"vi": "Trứng gà",
+"en": "Egg"
+},
+{
+"vi": "Trứng chiên {p}",
+"en": "Fried egg with {p}"
+},
+{
+"vi": "Đập, đánh",
+"en": "Crack & beat"
+},
+{
+"vi": "Thịt heo",
+"en": "Pork"
+},
+{
+"vi": "Heo xào {p}",
+"en": "Stir-fried pork with {p}"
+},
+{
+"vi": "Thái mỏng",
+"en": "Slice thin"
+},
+{
+"vi": "Đậu phụ",
+"en": "Tofu"
+},
+{
+"vi": "Đậu phụ sốt {p}",
+"en": "Tofu in {p} sauce"
+},
+{
+"vi": "Cắt miếng",
+"en": "Cut into chunks"
+},
+{
+"vi": "Thịt bò",
+"en": "Beef"
+},
+{
+"vi": "Mì Ý bò xào {p}",
+"en": "Beef pasta with {p}"
+},
+{
+"vi": "Tôm",
+"en": "Shrimp"
+},
+{
+"vi": "Bún xào tôm {p}",
+"en": "Shrimp vermicelli with {p}"
+},
+{
+"vi": "Bóc vỏ",
+"en": "Peel"
+},
+{
+"vi": "Cá hồi",
+"en": "Salmon"
+},
+{
+"vi": "Cá hồi áp chảo {p}",
+"en": "Seared salmon with {p}"
+},
+{
+"vi": "áp chảo",
+"en": "seared"
+},
+{
+"vi": "Lọc xương",
+"en": "Debone"
+},
+{
+"vi": "Mực",
+"en": "Squid"
+},
+{
+"vi": "Mực xào {p}",
+"en": "Stir-fried squid with {p}"
+},
+{
+"vi": "Làm sạch, khứa",
+"en": "Clean & score"
+},
+{
+"vi": "Gà ta",
+"en": "Free-range chicken"
+},
+{
+"vi": "Gà nướng mật ong {p}",
+"en": "Honey-roast chicken with {p}"
+},
+{
+"vi": "Chặt miếng",
+"en": "Chop"
+},
+{
+"vi": "Tôm hùm",
+"en": "Lobster"
+},
+{
+"vi": "Tôm hùm nướng bơ tỏi {p}",
+"en": "Garlic-butter lobster with {p}"
+},
+{
+"vi": "Bổ đôi",
+"en": "Halve"
+},
+{
+"vi": "Bò Wagyu",
+"en": "Wagyu beef"
+},
+{
+"vi": "Bò Wagyu áp chảo {p}",
+"en": "Seared Wagyu with {p}"
+},
+{
+"vi": "Cắt miếng dày",
+"en": "Cut thick"
+},
+{
+"vi": "Cá ngừ vây xanh",
+"en": "Bluefin tuna"
+},
+{
+"vi": "Cá ngừ vây xanh tataki {p}",
+"en": "Bluefin tuna tataki with {p}"
+},
+{
+"vi": "áp chảo nhanh",
+"en": "quick-seared"
+},
+{
+"vi": "Lọc thăn",
+"en": "Fillet"
+},
+{
+"vi": "Cua hoàng đế",
+"en": "King crab"
+},
+{
+"vi": "Cua hoàng đế hấp {p}",
+"en": "Steamed king crab with {p}"
+},
+{
+"vi": "Tách mai",
+"en": "Remove the shell"
+},
+{
+"vi": "Mì Ý bò sốt cà chua",
+"en": "Beef pasta in tomato sauce"
+},
+{
+"vi": "Bình tưới gỉ",
+"en": "Rusty watering can"
+},
+{
+"vi": "Rổ tre bà ngoại",
+"en": "Grandma's bamboo basket"
+},
+{
+"vi": "Phân bón bí truyền",
+"en": "Secret fertilizer"
+},
+{
+"vi": "Hạt giống vàng",
+"en": "Golden seeds"
+},
+{
+"vi": "Dao phay cũ",
+"en": "Old cleaver"
+},
+{
+"vi": "Thùng đá",
+"en": "Ice box"
+},
+{
+"vi": "Mối quen chợ cá",
+"en": "Fish-market contact"
+},
+{
+"vi": "Cân vàng",
+"en": "Golden scale"
+},
+{
+"vi": "Bản đồ hải đảo",
+"en": "Island map"
+},
+{
+"vi": "Lưới thép",
+"en": "Steel net"
+},
+{
+"vi": "Thuyền thuê",
+"en": "Chartered boat"
+},
+{
+"vi": "La bàn rồng",
+"en": "Dragon compass"
+},
+{
+"vi": "Tủ lạnh 2 cửa",
+"en": "Double-door fridge"
+},
+{
+"vi": "Chuông vàng",
+"en": "Golden bell"
+},
+{
+"vi": "Đồng hồ cát",
+"en": "Hourglass"
+},
+{
+"vi": "Muối hồng",
+"en": "Pink salt"
+},
+{
+"vi": "Chảo gang bà ngoại",
+"en": "Grandma's cast-iron pan"
+},
+{
+"vi": "Tượng mèo vàng",
+"en": "Golden lucky cat"
+},
+{
+"vi": "Máy pha cà phê xịn",
+"en": "Fancy espresso machine"
+},
+{
+"vi": "Ớt ma",
+"en": "Ghost pepper"
+},
+{
+"vi": "Hũ sốt cũ",
+"en": "Old sauce jar"
+},
+{
+"vi": "Vé số cào",
+"en": "Scratch card"
+},
+{
+"vi": "Sao băng trong nồi",
+"en": "Shooting star in a pot"
+},
+{
+"vi": "Bí kíp gia truyền",
+"en": "Family secret recipe"
+},
+{
+"vi": "Đồ phụ: {0} nâng bậc",
+"en": "Side: {0} tier up"
+},
+{
+"vi": "Nguyên liệu chính: {0} nâng bậc",
+"en": "Main ingredient: {0} tier up"
+},
+{
+"vi": "Đồ phụ: {0} nhảy lên bậc 4",
+"en": "Side: {0} jumps to tier 4"
+},
+{
+"vi": "Nguyên liệu chính: {0} nhảy lên bậc 4",
+"en": "Main ingredient: {0} jumps to tier 4"
+},
+{
+"vi": "Đồ phụ tối thiểu bậc {0}",
+"en": "Sides at least tier {0}"
+},
+{
+"vi": "Nguyên liệu chính tối thiểu bậc {0}",
+"en": "Main ingredients at least tier {0}"
+},
+{
+"vi": "Mọi đồ phụ +{0}",
+"en": "All sides +{0}"
+},
+{
+"vi": "{0} bậc",
+"en": "{0} tier"
+},
+{
+"vi": "Mọi nguyên liệu chính +{0}",
+"en": "All main ingredients +{0}"
+},
+{
+"vi": "Thùng đồ phụ {0}",
+"en": "Side crate {0}"
+},
+{
+"vi": "{0} món",
+"en": "{0} items"
+},
+{
+"vi": "Thùng chính {0}",
+"en": "Main crate {0}"
+},
+{
+"vi": "Thùng đột phá +{0}",
+"en": "Breakthrough crate +{0}"
+},
+{
+"vi": "Đột phá bậc 5 +{0}",
+"en": "Breakthrough tier 5 +{0}"
+},
+{
+"vi": "Điểm món +{0}",
+"en": "Dish score +{0}"
+},
+{
+"vi": "{0} món thành Lạc vị",
+"en": "{0} dishes turn Off-flavor"
+},
+{
+"vi": "Huyền thoại khi nấu +{0}",
+"en": "Legendary when cooking +{0}"
+},
+{
+"vi": "Tiền bán món +{0}",
+"en": "Dish income +{0}"
+},
+{
+"vi": "{0} vé trắng mỗi 3 ngày",
+"en": "{0} white tickets every 3 days"
+},
+{
+"vi": "Tủ lạnh +{0}",
+"en": "Fridge +{0}"
+},
+{
+"vi": "{0} ô",
+"en": "{0} slots"
+},
+{
+"vi": "Thời gian chờ an toàn +{0}",
+"en": "Safe waiting time +{0}"
+},
+{
+"vi": "Tỉ lệ hỏng nước sốt −{0}",
+"en": "Sauce failure chance −{0}"
+},
+{
+"vi": "{0} điểm",
+"en": "{0} points"
+},
+{
+"vi": "đầu ngày {0}: {1}",
+"en": "start of day {0}: {1}"
+},
+{
+"vi": "Giấy nợ: {0}",
+"en": "IOU: {0}"
+},
+{
+"vi": "{0}. Thiếu một đồng là tôi lấy lại quán.",
+"en": "{0}. One coin short and I take the diner back."
+},
+{
+"vi": "Ngày {0}, 19 giờ 02: sét đánh cột điện. PHỤT!",
+"en": "Day {0}, 7:02 pm: lightning hits the power pole. FZZT!"
+},
+{
+"vi": "Ngày {0}, có kẻ dán tờ rơi khắp phố: \"Quán bẩn!!\"",
+"en": "Day {0}: someone plasters flyers all over the street: \"FILTHY DINER!!\""
+},
+{
+"vi": "Ngày {0}, kẻ phá đám bị lật tẩy trước mặt mọi người.",
+"en": "Day {0}: the troublemaker is exposed in front of everyone."
+},
+{
+"vi": "Ngày {0}, danh tiếng của quán trở lại!",
+"en": "Day {0}: the diner's good name is back!"
+},
+{
+"vi": "Ngày {0}, hạn chót. Chủ nợ đứng ở cửa: \"Một món. Tuyệt hảo.\"",
+"en": "Day {0}, the deadline. The Creditor stands at the door: \"One dish. Superb.\""
+},
+{
+"vi": "Đầu ngày {0}",
+"en": "Start of day {0}"
+},
+{
+"vi": "{0}, Hope trả đủ khoản cuối ",
+"en": "{0}, Hope pays the final installment"
+},
+{
+"vi": "{0}, còn dư {1}. Chủ nợ xé giấy nợ. XOẸT!!",
+"en": "{0}, with {1} to spare. The Creditor tears up the IOU. RRRIP!!"
+},
+{
+"vi": "Đầu ngày {0}, chủ nợ đến thu {1}. Hope chỉ có {2}",
+"en": "Start of day {0}: the Creditor comes to collect {1}. Hope only has {2}"
+},
+{
+"vi": "{0}, thiếu {1}. Chủ nợ lấy lại chìa khóa quán.",
+"en": "{0}, short by {1}. The Creditor takes back the keys."
+},
+{
+"vi": "Ngày {0}–{1}",
+"en": "Days {0}–{1}"
+},
+{
+"vi": "Ngày {0}",
+"en": "Day {0}"
+},
+{
+"vi": "Quán Ăn Hope: bản lưu hỏng ({0}).",
+"en": "Hope's Diner: the save file is broken ({0})."
+},
+{
+"vi": "Chơi tiếp từ đầu ngày {0}.",
+"en": "Continuing from the start of day {0}."
+},
+{
+"vi": "Tay đang bận. Chuột phải để {0}",
+"en": "Hands full. Right-click to {0}"
+},
+{
+"vi": " · Rương đột phá: {0}!",
+"en": " · Breakthrough chest: {0}!"
+},
+{
+"vi": "Đã mua {0} · còn {1} vé.",
+"en": "Bought {0} · {1} tickets left."
+},
+{
+"vi": "Đã đủ {0} relic: nhấn Tab, chọn 1 relic để bỏ. Chuột phải: huỷ.",
+"en": "You have {0} relics already: press Tab, pick 1 relic to discard. Right-click: cancel."
+},
+{
+"vi": "Thiếu {0} vé để mua {1}.",
+"en": "{0} tickets short to buy {1}."
+},
+{
+"vi": "Cửa hàng relic mở từ ngày {0}.",
+"en": "The relic shop opens on day {0}."
+},
+{
+"vi": "Vé đen bán từ ngày {0}.",
+"en": "Black tickets on sale from day {0}."
+},
+{
+"vi": "Đã đủ {0} relic: nhấn Tab, chọn 1 relic để bỏ, lấy {1}.",
+"en": "You have {0} relics already: press Tab, pick 1 relic to discard and take {1}."
+},
+{
+"vi": "Vé đen: đã lấy {0} ({1}).",
+"en": "Black ticket: took {0} ({1})."
+},
+{
+"vi": "Đã bỏ {0}, lấy {1} bằng vé đen.",
+"en": "Discarded {0}, took {1} with a black ticket."
+},
+{
+"vi": "Đã bỏ {0}",
+"en": "Discarded {0}"
+},
+{
+"vi": "{0}, mua {1} · còn {2} vé.",
+"en": "{0}, bought {1} · {2} tickets left."
+},
+{
+"vi": "[Gỡ lỗi] Đã thêm relic {0}.",
+"en": "[Debug] Added relic {0}."
+},
+{
+"vi": "lấy {0}",
+"en": "take {0}"
+},
+{
+"vi": "Đang cầm {0}.",
+"en": "Holding {0}."
+},
+{
+"vi": "Đã thả {0}.",
+"en": "Dropped {0}."
+},
+{
+"vi": "Đã đặt lại {0}.",
+"en": "Put back {0}."
+},
+{
+"vi": "{0} đã sơ chế, cho thẳng vào bếp.",
+"en": "{0} is already prepped, put it straight on the stove."
+},
+{
+"vi": "Giữ chuột trái: sơ chế {0}.",
+"en": "Hold left mouse: prep {0}."
+},
+{
+"vi": "cầm {0}",
+"en": "pick up {0}"
+},
+{
+"vi": "Đang cầm {0}. Mang tới bếp.",
+"en": "Holding {0}. Take it to the stove."
+},
+{
+"vi": "Xong! Bấm thớt để cầm {0}.",
+"en": "Done! Click the board to pick up {0}."
+},
+{
+"vi": "Đặt {0} lên {1}",
+"en": "Put {0} on {1}"
+},
+{
+"vi": "bếp {0}",
+"en": "stove {0}"
+},
+{
+"vi": "Đã cho {0}.",
+"en": "Added {0}."
+},
+{
+"vi": "Sơ chế {0} trên thớt trước.",
+"en": "Prep {0} on the cutting board first."
+},
+{
+"vi": "{0} không nấu chung với {1}",
+"en": "{0} doesn't go with {1}"
+},
+{
+"vi": "{0}. Xem Tab → Thực đơn.",
+"en": "{0}. See Tab → Menu."
+},
+{
+"vi": "Bếp không nhận thêm {0} lúc này.",
+"en": "The stove can't take {0} right now."
+},
+{
+"vi": "Đã cho {0} vào {1}.",
+"en": "Added {0} to {1}."
+},
+{
+"vi": "Quầy đã đủ {0} đĩa. Phục vụ bớt rồi múc.",
+"en": "The counter already has {0} plates. Serve some first."
+},
+{
+"vi": "Đang nấu {0}…",
+"en": "Cooking {0}…"
+},
+{
+"vi": "Đã đổ bỏ đồ trên {0}",
+"en": "Emptied {0}"
+},
+{
+"vi": "Đang cầm {0} · {1}. Đặt trước mặt khách gọi món này.",
+"en": "Holding {0} · {1}. Put it in front of the customer who ordered it."
+},
+{
+"vi": "{0} đã ở trong tủ. Chuột phải để đặt lại.",
+"en": "{0} is already in the fridge. Right-click to put it back."
+},
+{
+"vi": "Tủ lạnh đầy ({0} ô).",
+"en": "Fridge full ({0} slots)."
+},
+{
+"vi": "Đã cất {0} vào tủ lạnh.",
+"en": "Stored {0} in the fridge."
+},
+{
+"vi": "Đã mua {0} ({1}G) · ví còn {2}G.",
+"en": "Bought {0} ({1}G) · wallet: {2}G."
+},
+{
+"vi": "Cửa hàng mở từ ngày {0}.",
+"en": "The shop opens on day {0}."
+},
+{
+"vi": "Thiếu {0}G để mua {1}.",
+"en": "{0}G short to buy {1}."
+},
+{
+"vi": "Đã đủ {0} thớt.",
+"en": "You already have {0} boards."
+},
+{
+"vi": "Đã đủ {0} bếp.",
+"en": "You already have {0} stoves."
+},
+{
+"vi": "Đã giữ tối đa {0}.",
+"en": "Already at the maximum of {0}."
+},
+{
+"vi": "Vé đen: + {0} · + {1} hàng tốt.",
+"en": "Black ticket: + {0} · + {1} good items."
+},
+{
+"vi": "Đóng quán. Hết ngày {0}.",
+"en": "Closed. End of day {0}."
+},
+{
+"vi": "Mang {0} tới đây.",
+"en": "Bring {0} here."
+},
+{
+"vi": "Chủ nợ ngạc nhiên! +{0}G (món {1}G, tip {2}G, thưởng {3}G).",
+"en": "The Creditor is amazed! +{0}G (dish {1}G, tip {2}G, bonus {3}G)."
+},
+{
+"vi": "Chủ nợ nhận {0} ({1}): ",
+"en": "The Creditor takes {0} ({1}):"
+},
+{
+"vi": "{0}G, không có thưởng (cần Tuyệt hảo trở lên).",
+"en": "{0}G, no bonus (needs Superb or better)."
+},
+{
+"vi": "Sai món! Khách gọi {0}: −{1}G.",
+"en": "Wrong dish! The customer ordered {0}: −{1}G."
+},
+{
+"vi": "Khách vui: +{0}G{1}",
+"en": "Happy customer: +{0}G{1}"
+},
+{
+"vi": "Hơi tệ: khách trả nửa giá, +{0}G.",
+"en": "A bit poor: the customer pays half, +{0}G."
+},
+{
+"vi": "Món quá tệ, khách giận: −{0}G.",
+"en": "Awful dish, the customer is angry: −{0}G."
+},
+{
+"vi": "Khách chờ lâu quá, bỏ đi: −{0}G.",
+"en": "The customer waited too long and left: −{0}G."
+},
+{
+"vi": "Khách mới: {0}.",
+"en": "New customer: {0}."
+},
+{
+"vi": "Ngày {0}: mất điện! Nấu bằng nến, khó nhìn bậc món.",
+"en": "Day {0}: blackout! Cook by candlelight, dish tiers are hard to see."
+},
+{
+"vi": "Ngày {0}: {1}:00 chủ nợ tới. Để dành món Tuyệt hảo!",
+"en": "Day {0}: the Creditor comes at {1}:00. Save a Superb dish!"
+},
+{
+"vi": "Ngày {0}: tin đồn xấu về quán. Mai trả nợ {1}",
+"en": "Day {0}: nasty rumors about the diner. Tomorrow's payment: {1}"
+},
+{
+"vi": "{0}G: dốc hết món tủ lạnh, nước sốt, vé đen!",
+"en": "{0}G: use everything, fridge dishes, sauce, black tickets!"
+},
+{
+"vi": "Đã trả {0}G. Vòng 3: khách khó tính hơn.",
+"en": "Paid {0}G. Round 3: pickier customers."
+},
+{
+"vi": "Đã trả {0}G. Vòng 4: thêm gà ta, bí đỏ, măng tây, nấm đông cô.",
+"en": "Paid {0}G. Round 4: adds free-range chicken, pumpkin, asparagus, shiitake."
+},
+{
+"vi": "Đã trả {0}G. Vòng {1}: {2} khách cùng lúc. Tab → Cửa hàng đã mở.",
+"en": "Paid {0}G. Round {1}: {2} customers at once. Tab → Shop is open."
+},
+{
+"vi": "Ngày {0}: chọn 1 relic miễn phí · {1}.",
+"en": "Day {0}: pick 1 free relic · {1}."
+},
+{
+"vi": "Chủ nợ đã tới · dễ tính {0}% · gọi {1}",
+"en": "The Creditor is here · easygoing {0}% · orders {1}"
+},
+{
+"vi": "{0}. Món Tuyệt hảo trở lên: thưởng {1}G.",
+"en": "{0}. Superb or better: bonus {1}G."
+},
+{
+"vi": "[Gỡ lỗi] Đầu ngày {0} · {1}G · {2} relic.",
+"en": "[Debug] Start of day {0} · {1}G · {2} relics."
+},
+{
+"vi": "[Gỡ lỗi] Sang đầu ngày {0}.",
+"en": "[Debug] Jump to start of day {0}."
+},
+{
+"vi": "Bếp {0}: {1}",
+"en": "Stove {0}: {1}"
+},
+{
+"vi": "Cầm nước sốt (còn {0} chai). Bấm vào đĩa vừa nấu để nhỏ sốt.",
+"en": "Holding the sauce ({0} bottles left). Click a freshly cooked plate to drizzle."
+},
+{
+"vi": " · còn {0} chai.",
+"en": " · {0} bottles left."
+},
+{
+"vi": "HUYỀN THOẠI! {0} (giá ×{1}",
+"en": "LEGENDARY! {0} (price ×{1}"
+},
+{
+"vi": "Nước sốt: {0} {1} → {2}",
+"en": "Sauce: {0} {1} → {2}"
+},
+{
+"vi": "Ô {0}: {1}",
+"en": "Slot {0}: {1}"
+},
+{
+"vi": "Tay đang cầm đĩa. Lấy {0} ra sau.",
+"en": "Your hands hold a plate. Take {0} out later."
+},
+{
+"vi": "Lấy {0} · {1} ra khỏi máy.",
+"en": "Take {0} · {1} out of the machine."
+},
+{
+"vi": "Máy gacha đồ ăn: cầm một đĩa món tới, bấm máy để cho vào. Hôm nay còn {0} lượt.",
+"en": "Food Gacha Machine: bring a plated dish and click the machine to load it. {0} spins left today."
+},
+{
+"vi": "{0} đã vào máy một lần rồi.",
+"en": "{0} has already been through the machine once."
+},
+{
+"vi": "Hôm nay máy đã chạy đủ {0} lần.",
+"en": "The machine already ran {0} times today."
+},
+{
+"vi": "Đã cho {0} vào máy. Gạt cần bên cạnh để quay.",
+"en": "Loaded {0}. Pull the lever beside it to spin."
+},
+{
+"vi": "{0} đã quay rồi. Bấm máy để lấy ra.",
+"en": "{0} has been spun. Click the machine to take it out."
+},
+{
+"vi": "Xịt! Máy kêu rắc rắc… {0} hỏng mất rồi.",
+"en": "Fizzle! The machine crackles… {0} is ruined."
+},
+{
+"vi": "Thành công! {0} {1} → {2}. Bấm máy để lấy ra.",
+"en": "Success! {0} {1} → {2}. Click the machine to take it out."
+},
+{
+"vi": "Xịt! {0} {1} → {2}. Bấm máy để lấy ra.",
+"en": "Fizzle! {0} {1} → {2}. Click the machine to take it out."
+},
+{
+"vi": "Giữ nguyên {0}. Bấm máy để lấy ra.",
+"en": "{0} unchanged. Click the machine to take it out."
+},
+{
+"vi": "Đổi hàng ({0}G): 3 relic mới · ví còn {1}G · lần sau {2}G.",
+"en": "Reroll ({0}G): 3 new relics · wallet: {1}G · next time {2}G."
+},
+{
+"vi": "Thiếu {0}G để đổi hàng relic.",
+"en": "{0}G short to reroll the relics."
+},
+{
+"vi": "{0} · còn {1}/{2} relic.",
+"en": "{0} · {1}/{2} relics."
+},
+{
+"vi": "+{0} vé{1}",
+"en": "+{0} tickets{1}"
+},
+{
+"vi": " (cộng {0} vé còn từ hôm qua)",
+"en": " (plus {0} tickets left from yesterday)"
+},
+{
+"vi": "{0} → {1} vé",
+"en": "{0} → {1} tickets"
+},
+{
+"vi": "{0} vé",
+"en": "{0} tickets"
+},
+{
+"vi": "Ví <size=26>{0}G</size>\n",
+"en": "Wallet <size=26>{0}G</size>\n"
+},
+{
+"vi": "Nợ <size=26>{0}G</size> đầu ngày {1}",
+"en": "Debt <size=26>{0}G</size> at start of day {1}"
+},
+{
+"vi": "{0} vé{1}",
+"en": "{0} tickets{1}"
+},
+{
+"vi": " · {0} vé đen",
+"en": " · {0} black tickets"
+},
+{
+"vi": "Đang cầm: {0}",
+"en": "Holding: {0}"
+},
+{
+"vi": "Ngày {0} · {1}",
+"en": "Day {0} · {1}"
+},
+{
+"vi": "Chuột trái · {0}",
+"en": "Left mouse · {0}"
+},
+{
+"vi": "Hết ngày {0}",
+"en": "End of day {0}"
+},
+{
+"vi": "Sang ngày {0}",
+"en": "Go to day {0}"
+},
+{
+"vi": "Đầu ngày {0}, chủ nợ thu khoản cuối {1}G.\nHope còn {2}",
+"en": "Start of day {0}: the Creditor collects the final {1}G.\nHope still has {2}"
+},
+{
+"vi": "{0}G và quán ăn đã đứng vững.\n\nChủ nợ bật cười lần đầu tiên, rồi gả con gái cho Hope.",
+"en": "{0}G and the diner is standing strong.\n\nThe Creditor laughs for the first time, then gives Hope his daughter's hand."
+},
+{
+"vi": "Qua vòng {0}!",
+"en": "Round {0} cleared!"
+},
+{
+"vi": "Đầu ngày {0}, chủ nợ đã thu {1}G.\nBạn còn {2}",
+"en": "Start of day {0}: the Creditor collected {1}G.\nYou still have {2}"
+},
+{
+"vi": "{0}G.\n\nBản chơi thử này dừng ở đây.",
+"en": "{0}G.\n\nThis demo ends here."
+},
+{
+"vi": "Đầu ngày {0}, chủ nợ đòi {1}\nnhưng bạn chỉ có {2}",
+"en": "Start of day {0}: the Creditor demands {1}\nbut you only have {2}"
+},
+{
+"vi": "{0}, thiếu {1}.",
+"en": "{0}, short by {1}."
+},
+{
+"vi": "\n\nCần phục vụ chủ nợ món Tuyệt hảo ngày {0} (thưởng {1}G).",
+"en": "\n\nServe the Creditor a Superb dish on day {0} (bonus {1}G)."
+},
+{
+"vi": "IconBook: không chụp được {0}: {1}",
+"en": "IconBook: couldn't capture {0}: {1}"
+},
+{
+"vi": "Phiên bản {0}",
+"en": "Version {0}"
+},
+{
+"vi": "Chơi tiếp · ngày {0}",
+"en": "Continue · day {0}"
+},
+{
+"vi": "Nhét vé · còn {0} vé",
+"en": "Insert ticket · {0} tickets left"
+},
+{
+"vi": "Lấy {0}",
+"en": "Take {0}"
+},
+{
+"vi": "Tỉ lệ bậc nguyên liệu · {0}",
+"en": "Ingredient tier odds · {0}"
+},
+{
+"vi": "Ngày {0} (sau mưa)",
+"en": "Day {0} (after the rain)"
+},
+{
+"vi": "Vòng {0}",
+"en": "Round {0}"
+},
+{
+"vi": "{0} · 1 vé: {1} đồ phụ + {2} nguyên liệu chính",
+"en": "{0} · 1 ticket: {1} sides + {2} main ingredients"
+},
+{
+"vi": " · +{0} rương đột phá ({1} món: ",
+"en": " · +{0} breakthrough chests ({1} items:"
+},
+{
+"vi": "{0} Xuất sắc, {1} Hiếm)",
+"en": "{0} Excellent, {1} Rare)"
+},
+{
+"vi": "<size=78>Phụ {0}\nChính {1}</size>\n<size=60>{2}</size>",
+"en": "<size=78>Side {0}\nMain {1}</size>\n<size=60>{2}</size>"
+},
+{
+"vi": "{0} · chọn dụng cụ trước",
+"en": "{0} · pick a tool first"
+},
+{
+"vi": "Cho {0} vào {1}",
+"en": "Put {0} into {1}"
+},
+{
+"vi": "Dùng {0}",
+"en": "Use {0}"
+},
+{
+"vi": "Cho {0} vào bếp",
+"en": "Put {0} on the stove"
+},
+{
+"vi": "Sơ chế {0} trước",
+"en": "Prep {0} first"
+},
+{
+"vi": "Múc {0} ra đĩa",
+"en": "Plate {0}"
+},
+{
+"vi": "Đang nấu {0}",
+"en": "Cooking {0}"
+},
+{
+"vi": "Bếp · {0}",
+"en": "Stove · {0}"
+},
+{
+"vi": "{0} · trống",
+"en": "{0} · empty"
+},
+{
+"vi": "{0} đã chín",
+"en": "{0} is done"
+},
+{
+"vi": "Nhỏ nước sốt lên {0} · {1}",
+"en": "Drizzle sauce on {0} · {1}"
+},
+{
+"vi": "Cầm {0} · {1}",
+"en": "Pick up {0} · {1}"
+},
+{
+"vi": "Dùng 1 vé đen: chọn 1 trong 3 relic Hiếm trở lên (còn {0} vé đen)",
+"en": "Use 1 black ticket: pick 1 of 3 Rare-or-better relics ({0} black tickets left)"
+},
+{
+"vi": "Nhấn Tab, chọn relic để bỏ, lấy {0}",
+"en": "Press Tab, pick a relic to discard, take {0}"
+},
+{
+"vi": "Lấy {0} bằng vé đen{1}",
+"en": "Take {0} with a black ticket{1}"
+},
+{
+"vi": "Cửa hàng relic mở từ ngày {0}",
+"en": "The relic shop opens on day {0}"
+},
+{
+"vi": "Lấy miễn phí · {0} (chỉ được lấy 1){1}",
+"en": "Take for free · {0} (only 1){1}"
+},
+{
+"vi": "Bấm lại để huỷ mua {0}",
+"en": "Click again to cancel buying {0}"
+},
+{
+"vi": "{0} · thiếu {1} vé",
+"en": "{0} · {1} tickets short"
+},
+{
+"vi": "Mua · {0} vé (còn {1})",
+"en": "Buy · {0} tickets (have {1})"
+},
+{
+"vi": "Vé đen → relic Hiếm · {0} vé",
+"en": "Black ticket → Rare relic · {0} tickets"
+},
+{
+"vi": "Relic\n<size=80>mở từ ngày {0}</size>",
+"en": "Relics\n<size=80>open from day {0}</size>"
+},
+{
+"vi": "Mở từ ngày {0}",
+"en": "Opens on day {0}"
+},
+{
+"vi": "Giá relic {0}/{1}",
+"en": "Relic shelf {0}/{1}"
+},
+{
+"vi": "{0} đang ăn · còn {1} giây",
+"en": "{0} is eating · {1} s left"
+},
+{
+"vi": "Chủ nợ · gọi {0} · Tuyệt hảo trở lên: thưởng {1}G",
+"en": "Creditor · orders {0} · Superb or better: bonus {1}G"
+},
+{
+"vi": "Phục vụ chủ nợ: {0}",
+"en": "Serve the Creditor: {0}"
+},
+{
+"vi": " · được thưởng {0}G",
+"en": " · bonus {0}G"
+},
+{
+"vi": "{0} · gọi {1}",
+"en": "{0} · orders {1}"
+},
+{
+"vi": "Sai món: {0} gọi {1} (bấm vẫn đưa, khách sẽ giận)",
+"en": "Wrong dish: {0} ordered {1} (click to serve anyway, the customer will be angry)"
+},
+{
+"vi": "Phục vụ {0}: {1}",
+"en": "Serve {0}: {1}"
+},
+{
+"vi": "<size=64>Chủ nợ · Dễ tính {0}%</size>\nGọi: {1}",
+"en": "<size=64>Creditor · Easygoing {0}%</size>\nOrders: {1}"
+},
+{
+"vi": "Khách {0}",
+"en": "Customer {0}"
+},
+{
+"vi": "{0} · Dễ tính {1}%</size>\nGọi: {2}",
+"en": "{0} · Easygoing {1}%</size>\nOrders: {2}"
+},
+{
+"vi": "Cất {0} vào tủ lạnh",
+"en": "Store {0} in the fridge"
+},
+{
+"vi": "Tủ lạnh · {0}/{1} ô",
+"en": "Fridge · {0}/{1} slots"
+},
+{
+"vi": "Tủ lạnh · {0}/{1}",
+"en": "Fridge · {0}/{1}"
+},
+{
+"vi": " · quá {0} ngày tụt 1 bậc",
+"en": " · after {0} days drops 1 tier"
+},
+{
+"vi": "Nhỏ nước sốt lên {0}",
+"en": "Drizzle sauce on {0}"
+},
+{
+"vi": "Lấy {0} · {1} ({2} ngày trong tủ)",
+"en": "Take {0} · {1} ({2} days in the fridge)"
+},
+{
+"vi": "Vé đen · mở từ ngày {0}",
+"en": "Black ticket · from day {0}"
+},
+{
+"vi": "Mua vé đen · {0}G",
+"en": "Buy a black ticket · {0}G"
+},
+{
+"vi": "Nhét vé đen · còn {0} vé đen",
+"en": "Insert black ticket · {0} left"
+},
+{
+"vi": "Máy gacha đồ ăn · mở từ ngày {0}",
+"en": "Food Gacha Machine · from day {0}"
+},
+{
+"vi": "Mua máy gacha đồ ăn · {0}G",
+"en": "Buy the Food Gacha Machine · {0}G"
+},
+{
+"vi": "{0} đã vào máy rồi",
+"en": "{0} has been through the machine"
+},
+{
+"vi": "Cho {0} vào máy · còn {1} lượt",
+"en": "Load {0} into the machine · {1} spins left"
+},
+{
+"vi": "Máy gacha đồ ăn · còn {0} lượt hôm nay",
+"en": "Food Gacha Machine · {0} spins left today"
+},
+{
+"vi": "{0}G · mua 1 lần",
+"en": "{0}G · one-time purchase"
+},
+{
+"vi": "Nước sốt · {0}",
+"en": "Sauce · {0}"
+},
+{
+"vi": "Vé đen · {0}",
+"en": "Black ticket · {0}"
+},
+{
+"vi": "Máy gacha đồ ăn\n<size=60>mở từ ngày {0}</size>",
+"en": "Food Gacha Machine\n<size=60>from day {0}</size>"
+},
+{
+"vi": "Máy gacha đồ ăn\n<size=60>{0}G · bấm để mua</size>",
+"en": "Food Gacha Machine\n<size=60>{0}G · click to buy</size>"
+},
+{
+"vi": "Máy gacha đồ ăn\n<size=60>còn {0}/{1} lượt hôm nay</size>",
+"en": "Food Gacha Machine\n<size=60>{0}/{1} spins left today</size>"
+},
+{
+"vi": "Quán Ăn Hope: không đọc được bản lưu ({0}).",
+"en": "Hope's Diner: couldn't read the save file ({0})."
+},
+{
+"vi": "Đặt {0} lên thớt",
+"en": "Put {0} on the board"
+},
+{
+"vi": "Cầm {0}",
+"en": "Pick up {0}"
+},
+{
+"vi": "Giữ chuột trái: sơ chế {0}",
+"en": "Hold left mouse: prep {0}"
+},
+{
+"vi": "Nhặt {0}",
+"en": "Pick up {0}"
+},
+{
+"vi": "Khách gọi {0}",
+"en": "Customer ordered {0}"
+},
+{
+"vi": "Đặt {0} cho chủ nợ",
+"en": "Serve {0} to the Creditor"
+},
+{
+"vi": "Sai món! Khách gọi {0}",
+"en": "Wrong dish! The customer ordered {0}"
+},
+{
+"vi": "Đặt {0} trước mặt khách",
+"en": "Put {0} in front of the customer"
+},
+{
+"vi": "Nhỏ nước sốt lên {0} (còn {1} chai)",
+"en": "Drizzle sauce on {0} ({1} bottles left)"
+},
+{
+"vi": "Cầm nước sốt (còn {0} chai)",
+"en": "Holding the sauce ({0} bottles left)"
+},
+{
+"vi": "Cho {0} vào bếp 2",
+"en": "Put {0} on stove 2"
+},
+{
+"vi": "Bếp 2 · {0}",
+"en": "Stove 2 · {0}"
+},
+{
+"vi": "Đã quay · bấm máy lấy {0} ra",
+"en": "Spun · click the machine to take {0} out"
+},
+{
+"vi": "Gạt cần · quay {0} (còn {1} lượt)",
+"en": "Pull the lever · spin {0} ({1} spins left)"
+},
+{
+"vi": "Lấy {0} ra",
+"en": "Take {0} out"
+},
+{
+"vi": "Máy gacha đồ ăn · cầm đĩa tới để cho vào · còn {0} lượt",
+"en": "Food Gacha Machine · bring a plate to load it · {0} spins left"
+},
+{
+"vi": "THÀNH CÔNG! +{0}",
+"en": "SUCCESS! +{0}"
+},
+{
+"vi": "Bật đèn{0}",
+"en": "Lights on{0}"
+},
+{
+"vi": "Đổi hàng relic · mở từ ngày {0}",
+"en": "Relic reroll · from day {0}"
+},
+{
+"vi": "Đổi 3 relic khác · {0}G (ví {1}G)",
+"en": "Swap for 3 other relics · {0}G (wallet {1}G)"
+},
+{
+"vi": "Đổi hàng\n<size=44>mở từ ngày {0}</size>",
+"en": "Reroll\n<size=44>from day {0}</size>"
+},
+{
+"vi": "Đổi hàng\n<size=50>{0}G</size>",
+"en": "Reroll\n<size=50>{0}G</size>"
+},
+{
+"vi": "Ngày {0}\n<size=30>{1}</size>",
+"en": "Day {0}\n<size=30>{1}</size>"
+},
+{
+"vi": "Đế: {0}",
+"en": "Base: {0}"
+},
+{
+"vi": "Nấu {0}s · bán {1}G (bậc Bình thường)",
+"en": "Cook {0}s · sells for {1}G (Normal tier)"
+},
+{
+"vi": "{0} món · giá niêm yết ở bậc Bình thường · khách trả thêm tip",
+"en": "{0} dishes · listed price at Normal tier · customers add tips"
+},
+{
+"vi": "Relic đang có · {0}/{1}",
+"en": "Relics owned · {0}/{1}"
+},
+{
+"vi": " · <color=#E8604F>đã đủ: chọn 1 relic để bỏ, lấy {0}</color>",
+"en": " · <color=#E8604F>full: pick 1 relic to discard and take {0}</color>"
+},
+{
+"vi": "Chưa có relic. Mua ở 3 bệ relic (mở từ ngày {0}).",
+"en": "No relics yet. Buy them at the 3 relic pedestals (open from day {0})."
+},
+{
+"vi": "Cửa hàng · ví {0}G{1}",
+"en": "Shop · wallet {0}G{1}"
+},
+{
+"vi": " · mở từ ngày {0}",
+"en": " · opens on day {0}"
+},
+{
+"vi": "<b>Máy gacha đồ ăn</b> · {0}",
+"en": "<b>Food Gacha Machine</b> · {0}"
+},
+{
+"vi": "đã mua · còn {0}/{1} lượt",
+"en": "owned · {0}/{1} spins left"
+},
+{
+"vi": "{0}\n<size=15>Đổi bậc một món đã nấu (lên hoặc xuống, tỉ lệ ẩn), mỗi món 1 lần.</size>",
+"en": "{0}\n<size=15>Rerolls a cooked dish's tier (up or down, hidden odds), once per dish.</size>"
+},
+{
+"vi": "<b>Thớt</b> · {0}",
+"en": "<b>Cutting board</b> · {0}"
+},
+{
+"vi": "đủ {0} thớt",
+"en": "max {0} boards"
+},
+{
+"vi": "{0} · có {1}/{2}",
+"en": "{0} · have {1}/{2}"
+},
+{
+"vi": "{0}\n<size=15>Sơ chế nhiều món cùng lúc. Bàn sơ chế dài thêm.</size>",
+"en": "{0}\n<size=15>Prep several items at once. The prep table gets longer.</size>"
+},
+{
+"vi": "<b>Bếp</b> · {0}",
+"en": "<b>Stove</b> · {0}"
+},
+{
+"vi": "đủ {0} bếp",
+"en": "max {0} stoves"
+},
+{
+"vi": "{0}\n<size=15>Nấu hai món cùng lúc. Bếp mới ở bên phải quầy đĩa.</size>",
+"en": "{0}\n<size=15>Cook two dishes at once. The new stove is right of the plate counter.</size>"
+},
+{
+"vi": "<b>Tay vạn năng</b> · {0}",
+"en": "<b>Extra Hand</b> · {0}"
+},
+{
+"vi": "{0}\n<size=15>Cầm 2 đồ cùng lúc. Phím 1 / 2 chọn ô; không chọn thì dùng / thả theo thứ tự nhặt.</size>",
+"en": "{0}\n<size=15>Hold 2 things at once. Keys 1 / 2 pick the slot; otherwise use / drop in pick-up order.</size>"
+},
+{
+"vi": "Ngày {0}: món ngon nhất",
+"en": "Day {0}: the best dish"
+},
+{
+"vi": "{0}:00 chủ nợ tới",
+"en": "The Creditor comes at {0}:00"
+},
+{
+"vi": "Xong! Gom tiền trả nợ ngày {0}.",
+"en": "Done! Save up to pay the debt on day {0}."
+},
+{
+"vi": "{0} giờ {1}",
+"en": "{0}:{1}"
+},
+{
+"vi": "Mua",
+"en": "Buy"
+},
+{
+"vi": "Sau ›",
+"en": "Next ›"
+},
+{
+"vi": "Mai",
+"en": "Tomorrow"
+},
+{
+"vi": "Cho",
+"en": "Add"
+},
+{
+"vi": "Trứng chiên cà chua",
+"en": "Fried egg with tomato"
+},
+{
+"vi": "Trứng chiên hành tây",
+"en": "Fried egg with onion"
+},
+{
+"vi": "Trứng chiên khoai tây",
+"en": "Fried egg with potato"
+},
+{
+"vi": "Trứng chiên nấm rơm",
+"en": "Fried egg with straw mushrooms"
+},
+{
+"vi": "Trứng chiên ớt chuông",
+"en": "Fried egg with bell pepper"
+},
+{
+"vi": "Trứng chiên măng tây",
+"en": "Fried egg with asparagus"
+},
+{
+"vi": "Trứng chiên nấm đông cô",
+"en": "Fried egg with shiitake"
+},
+{
+"vi": "Heo xào hành tây",
+"en": "Stir-fried pork with onion"
+},
+{
+"vi": "Heo xào rau muống",
+"en": "Stir-fried pork with water spinach"
+},
+{
+"vi": "Heo xào khoai tây",
+"en": "Stir-fried pork with potato"
+},
+{
+"vi": "Heo xào nấm rơm",
+"en": "Stir-fried pork with straw mushrooms"
+},
+{
+"vi": "Heo xào bông cải",
+"en": "Stir-fried pork with broccoli"
+},
+{
+"vi": "Heo xào ớt chuông",
+"en": "Stir-fried pork with bell pepper"
+},
+{
+"vi": "Heo xào bí đỏ",
+"en": "Stir-fried pork with pumpkin"
+},
+{
+"vi": "Heo xào nấm đông cô",
+"en": "Stir-fried pork with shiitake"
+},
+{
+"vi": "Đậu phụ sốt cà chua",
+"en": "Tofu in tomato sauce"
+},
+{
+"vi": "Đậu phụ sốt hành tây",
+"en": "Tofu in onion sauce"
+},
+{
+"vi": "Đậu phụ sốt nấm rơm",
+"en": "Tofu in straw mushrooms sauce"
+},
+{
+"vi": "Đậu phụ sốt bông cải",
+"en": "Tofu in broccoli sauce"
+},
+{
+"vi": "Đậu phụ sốt bí đỏ",
+"en": "Tofu in pumpkin sauce"
+},
+{
+"vi": "Đậu phụ sốt nấm đông cô",
+"en": "Tofu in shiitake sauce"
+},
+{
+"vi": "Mì Ý bò xào hành tây",
+"en": "Beef pasta with onion"
+},
+{
+"vi": "Mì Ý bò xào rau muống",
+"en": "Beef pasta with water spinach"
+},
+{
+"vi": "Mì Ý bò xào khoai tây",
+"en": "Beef pasta with potato"
+},
+{
+"vi": "Mì Ý bò xào bông cải",
+"en": "Beef pasta with broccoli"
+},
+{
+"vi": "Mì Ý bò xào ớt chuông",
+"en": "Beef pasta with bell pepper"
+},
+{
+"vi": "Mì Ý bò xào măng tây",
+"en": "Beef pasta with asparagus"
+},
+{
+"vi": "Mì Ý bò xào nấm đông cô",
+"en": "Beef pasta with shiitake"
+},
+{
+"vi": "Bún xào tôm hành tây",
+"en": "Shrimp vermicelli with onion"
+},
+{
+"vi": "Bún xào tôm rau muống",
+"en": "Shrimp vermicelli with water spinach"
+},
+{
+"vi": "Bún xào tôm nấm rơm",
+"en": "Shrimp vermicelli with straw mushrooms"
+},
+{
+"vi": "Bún xào tôm bông cải",
+"en": "Shrimp vermicelli with broccoli"
+},
+{
+"vi": "Bún xào tôm bí đỏ",
+"en": "Shrimp vermicelli with pumpkin"
+},
+{
+"vi": "Bún xào tôm măng tây",
+"en": "Shrimp vermicelli with asparagus"
+},
+{
+"vi": "Cá hồi áp chảo cà chua",
+"en": "Seared salmon with tomato"
+},
+{
+"vi": "Cá hồi áp chảo khoai tây",
+"en": "Seared salmon with potato"
+},
+{
+"vi": "Cá hồi áp chảo nấm rơm",
+"en": "Seared salmon with straw mushrooms"
+},
+{
+"vi": "Cá hồi áp chảo bông cải",
+"en": "Seared salmon with broccoli"
+},
+{
+"vi": "Cá hồi áp chảo ớt chuông",
+"en": "Seared salmon with bell pepper"
+},
+{
+"vi": "Cá hồi áp chảo măng tây",
+"en": "Seared salmon with asparagus"
+},
+{
+"vi": "Cá hồi áp chảo nấm đông cô",
+"en": "Seared salmon with shiitake"
+},
+{
+"vi": "Mực xào hành tây",
+"en": "Stir-fried squid with onion"
+},
+{
+"vi": "Mực xào nấm rơm",
+"en": "Stir-fried squid with straw mushrooms"
+},
+{
+"vi": "Mực xào bông cải",
+"en": "Stir-fried squid with broccoli"
+},
+{
+"vi": "Mực xào ớt chuông",
+"en": "Stir-fried squid with bell pepper"
+},
+{
+"vi": "Mực xào măng tây",
+"en": "Stir-fried squid with asparagus"
+},
+{
+"vi": "Mực xào nấm đông cô",
+"en": "Stir-fried squid with shiitake"
+},
+{
+"vi": "Gà nướng mật ong cà chua",
+"en": "Honey-roast chicken with tomato"
+},
+{
+"vi": "Gà nướng mật ong hành tây",
+"en": "Honey-roast chicken with onion"
+},
+{
+"vi": "Gà nướng mật ong khoai tây",
+"en": "Honey-roast chicken with potato"
+},
+{
+"vi": "Gà nướng mật ong bông cải",
+"en": "Honey-roast chicken with broccoli"
+},
+{
+"vi": "Gà nướng mật ong ớt chuông",
+"en": "Honey-roast chicken with bell pepper"
+},
+{
+"vi": "Gà nướng mật ong bí đỏ",
+"en": "Honey-roast chicken with pumpkin"
+},
+{
+"vi": "Gà nướng mật ong măng tây",
+"en": "Honey-roast chicken with asparagus"
+},
+{
+"vi": "Gà nướng mật ong nấm đông cô",
+"en": "Honey-roast chicken with shiitake"
+},
+{
+"vi": "Tôm hùm nướng bơ tỏi cà chua",
+"en": "Garlic-butter lobster with tomato"
+},
+{
+"vi": "Tôm hùm nướng bơ tỏi hành tây",
+"en": "Garlic-butter lobster with onion"
+},
+{
+"vi": "Tôm hùm nướng bơ tỏi khoai tây",
+"en": "Garlic-butter lobster with potato"
+},
+{
+"vi": "Tôm hùm nướng bơ tỏi bông cải",
+"en": "Garlic-butter lobster with broccoli"
+},
+{
+"vi": "Tôm hùm nướng bơ tỏi ớt chuông",
+"en": "Garlic-butter lobster with bell pepper"
+},
+{
+"vi": "Tôm hùm nướng bơ tỏi măng tây",
+"en": "Garlic-butter lobster with asparagus"
+},
+{
+"vi": "Tôm hùm nướng bơ tỏi nấm đông cô",
+"en": "Garlic-butter lobster with shiitake"
+},
+{
+"vi": "Bò Wagyu áp chảo hành tây",
+"en": "Seared Wagyu with onion"
+},
+{
+"vi": "Bò Wagyu áp chảo khoai tây",
+"en": "Seared Wagyu with potato"
+},
+{
+"vi": "Bò Wagyu áp chảo nấm rơm",
+"en": "Seared Wagyu with straw mushrooms"
+},
+{
+"vi": "Bò Wagyu áp chảo ớt chuông",
+"en": "Seared Wagyu with bell pepper"
+},
+{
+"vi": "Bò Wagyu áp chảo bí đỏ",
+"en": "Seared Wagyu with pumpkin"
+},
+{
+"vi": "Bò Wagyu áp chảo măng tây",
+"en": "Seared Wagyu with asparagus"
+},
+{
+"vi": "Bò Wagyu áp chảo nấm đông cô",
+"en": "Seared Wagyu with shiitake"
+},
+{
+"vi": "Cá ngừ vây xanh tataki cà chua",
+"en": "Bluefin tuna tataki with tomato"
+},
+{
+"vi": "Cá ngừ vây xanh tataki hành tây",
+"en": "Bluefin tuna tataki with onion"
+},
+{
+"vi": "Cá ngừ vây xanh tataki rau muống",
+"en": "Bluefin tuna tataki with water spinach"
+},
+{
+"vi": "Cá ngừ vây xanh tataki nấm rơm",
+"en": "Bluefin tuna tataki with straw mushrooms"
+},
+{
+"vi": "Cá ngừ vây xanh tataki bông cải",
+"en": "Bluefin tuna tataki with broccoli"
+},
+{
+"vi": "Cá ngừ vây xanh tataki ớt chuông",
+"en": "Bluefin tuna tataki with bell pepper"
+},
+{
+"vi": "Cá ngừ vây xanh tataki măng tây",
+"en": "Bluefin tuna tataki with asparagus"
+},
+{
+"vi": "Cua hoàng đế hấp cà chua",
+"en": "Steamed king crab with tomato"
+},
+{
+"vi": "Cua hoàng đế hấp hành tây",
+"en": "Steamed king crab with onion"
+},
+{
+"vi": "Cua hoàng đế hấp rau muống",
+"en": "Steamed king crab with water spinach"
+},
+{
+"vi": "Cua hoàng đế hấp nấm rơm",
+"en": "Steamed king crab with straw mushrooms"
+},
+{
+"vi": "Cua hoàng đế hấp bí đỏ",
+"en": "Steamed king crab with pumpkin"
+},
+{
+"vi": "Cua hoàng đế hấp măng tây",
+"en": "Steamed king crab with asparagus"
+},
+{
+"vi": "Cua hoàng đế hấp nấm đông cô",
+"en": "Steamed king crab with shiitake"
+}
+]
+}

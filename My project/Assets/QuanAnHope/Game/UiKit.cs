@@ -266,6 +266,7 @@ namespace QuanAnHope.Game
             rt.offsetMin = new Vector2(padding, padding * 0.5f);
             rt.offsetMax = new Vector2(-padding, -padding * 0.5f);
             var t = rt.gameObject.AddComponent<TextMeshProUGUI>();
+            Lang.Attach(t);   // F-110: chu hien thi theo ngon ngu dang chon (.text giu tieng Viet)
             t.font = Font;
             t.text = text;
             t.fontSize = size;

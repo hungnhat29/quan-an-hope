@@ -31,6 +31,13 @@ File nằm ở `My project/Assets/QuanAnHope/Resources/Audio/*.wav` (Git LFS). C
 ## Hình ảnh
 
 Toàn bộ hình trong game dựng bằng code hoặc vẽ theo Art Bible của dự án (`docs/art-bible/`). Tranh cốt truyện từ `CotTruyen_BepNhanPham.zip` của bạn (`tools/cot-truyen/`).
+Sprint 11 (F-113): 16 nguyên liệu vòng 2–4 + đột phá (32 model nguyên / sơ chế) dựng bằng script `SourceArt/Blender/scripts/ingredients_r2_r4.py`, theo hình và màu của bản dựng bằng code — thuộc dự án.
+
+## Bản dịch (sprint 11, F-110)
+
+| Tài sản | Nguồn | Giấy phép |
+| --- | --- | --- |
+| Bản dịch tiếng Anh (`tools/i18n/en.tsv` → `Resources/Lang/en.json`, ~1.170 chuỗi) | Viết bởi Claude Code (Anthropic) theo yêu cầu 25/11/2026; **chưa có người bản ngữ đọc lại** | Thuộc dự án |
 
 ## Công cụ (sprint 10, F-093 AC-3)
 

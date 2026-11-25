@@ -158,8 +158,8 @@ class Model:
             f.smooth = True
         return verts
 
-    def set_face(self, x, y, z):
-        self.face = (x, y, z)
+    def set_face(self, x, y=None, z=None):
+        self.face = x if x == "center" else (x, y, z)
 
     # ---------------------------------------------------------------- luu + xuat
     def build(self):
@@ -197,7 +197,13 @@ class Model:
             e = bpy.data.objects.new("Face", None)
             e.empty_display_type = 'SPHERE'
             e.empty_display_size = 0.01
-            e.location = U(*self.face) + off
+            if self.face == "center":
+                # F-113: mat o tam hop bao (than lech tam, vd tom co rau dai) de mat khong lot vao trong khoi bao
+                vs = [v.co for v in mesh.vertices]
+                e.location = Vector(((min(v.x for v in vs) + max(v.x for v in vs)) / 2, (min(v.y for v in vs) + max(v.y for v in vs)) / 2,
+                                     (min(v.z for v in vs) + max(v.z for v in vs)) / 2))
+            else:
+                e.location = U(*self.face) + off
             scene.collection.objects.link(e)
             e.parent = obj
             objs.append(e)
@@ -518,6 +524,11 @@ def bep_thu_hai():
 ALL = [ca_chua, ca_chua_so_che, hanh_tay, hanh_tay_so_che, rau_muong, rau_muong_so_che, trung, trung_so_che,
        heo, heo_so_che, dau_phu, dau_phu_so_che, chao, noi, vi_nuong, thot, dao, dia, thung_phu, thung_chinh, ruong_dot_pha,
        lo_nuoc_sot, may_gacha_vo, may_gacha_long, bep_thu_hai]
+
+# F-113 (sprint 11): 16 nguyen lieu vong 2-4 + dot pha (nguyen + so che)
+sys.path.insert(0, HERE)
+import ingredients_r2_r4  # noqa: E402
+ALL += ingredients_r2_r4.make(Model)
 
 
 def main():

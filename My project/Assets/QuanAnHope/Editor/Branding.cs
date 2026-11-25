@@ -18,8 +18,8 @@ namespace QuanAnHope.EditorTools
         /// <summary>[TU QUYET] Q-70: ten cong ty = ten tai khoan GitHub cua ban (khong co ten cong ty nao trong tai lieu).</summary>
         public const string CompanyName = "hungnhat29";
 
-        /// <summary>0.&lt;sprint&gt;.&lt;lan build&gt;: sprint 10, ban phat hanh thu dau tien.</summary>
-        public const string Version = "0.10.4";
+        /// <summary>0.&lt;sprint&gt;.&lt;lan build&gt;: sprint 11, release candidate rc-1 (F-114).</summary>
+        public const string Version = "0.11.0";
 
         public const string IconPath = "Assets/QuanAnHope/Art/AppIcon.png";
 

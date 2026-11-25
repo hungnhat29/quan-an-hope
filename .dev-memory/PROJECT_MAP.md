@@ -110,3 +110,10 @@ Cập nhật: 2026-11-18
 - 5 khach dac biet: build_characters.py khach_dac_biet() (Toc_* + Do_*), CharacterRig extras, CustomerLooks (Count 12, RegularCount 7, SpecialPercent 25); ModelChecker.LookKey (ngan sach theo kieu dang hien)
 - Huong dan: Hud tranh to (BuildBig, phim T), Tutorial bai relic ngay 3 / nuoc sot / goi y mon cuoi; GuidePics BuyRelic, Sauce, SauceLuck, BossBest; MenuView cot Dieu khien (Controls); boss_best (GameSession.IsBossBest)
 - Test: Tests/EditMode/Sprint11Tests.cs, Tests/PlayMode/Sprint11PlayTests.cs (anh docs/sprint-10b/ui)
+
+## Sprint 11 (25/11) — tiếng Anh, release candidate rc-1 (constitution 2.3, specs/sprint-11/spec.md)
+- Core/Translator.cs (dịch hiển thị, không UnityEngine: exact / mẫu {n} thử mọi cách cắt / tách dòng · / mảnh / EnglishNumbers; Leftovers); Game/Lang.cs (Current, Set, Attach, T, Table từ Resources/Lang/en.json; QAH_FORCE_EN_LOG chẩn đoán). Gắn ở UiKit.Text và ComicBook.Text. GameSettings.language (-1 = theo Windows), MenuView.LanguageButton (dòng "Ngôn ngữ / Language", thẻ cài đặt cao 760)
+- tools/i18n: extract.py → strings_vi.json; en.tsv (bản dịch tay); build.py → Resources/Lang/en.json (+ 84 tên món sinh từ mẫu); README
+- Blender: SourceArt/Blender/scripts/ingredients_r2_r4.py (16 nguyên liệu × 2), build_models.py set_face("center")
+- Tests: EditMode LanguageTests (F110 AC1-3, AC6, F112, F113, F114); PlayMode LanguagePlayTests.cs (F110_AC1, F110_AC4, F111), ảnh docs/sprint-11/ui
+- docs/release/: BAO-CAO-TONG-THE.md, STEAM-DEPLOY-PLAN.md, KHAO-SAT.md, khao-sat.html (artifact khảo sát)

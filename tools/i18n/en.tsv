@@ -1,0 +1,1112 @@
+# F-110 ban dich tieng Anh (25/11/2026). Moi dong: tieng Viet <TAB> English, viet kieu chuoi JSON (\n, \").
+# Khoa phai khop nguyen van chuoi trong tools/i18n/strings_vi.json (build.py kiem). Ten 84 mon sinh tu MAIN_EN / SIDE_EN trong build.py.
+# Thuat ngu: ve = ticket, ve den = black ticket, do phu = side, nguyen lieu chinh = main ingredient, bac = tier, chu no = Creditor,
+# de tinh = easygoing, so che = prep, thot = cutting board, bep = stove, may gacha do an = Food Gacha Machine, nuoc sot than thanh = Divine Sauce.
+
+# ---- Core ----
+Món Hy Vọng	Hope's Special
+món ngon nhất của quán	the best dish in the house
+Vườn Nhà	Home Garden
+Chợ Sớm	Morning Market
+Sơn Hào	Mountain Feast
+Thường	Common
+Hiếm	Rare
+Huyền thoại	Legendary
+Đồ phụ: 	Side:
+ nâng bậc	 tier up
+Nguyên liệu chính: 	Main ingredient:
+Đồ phụ bậc 0 được quay lại 1 lần	Tier-0 sides get 1 reroll
+Nguyên liệu chính bậc 0 được quay lại 1 lần	Tier-0 main ingredients get 1 reroll
+ nhảy lên bậc 4	 jumps to tier 4
+Đồ phụ tối thiểu bậc 	Sides at least tier
+Nguyên liệu chính tối thiểu bậc 	Main ingredients at least tier
+Mọi đồ phụ +	All sides +
+ bậc	 tier
+Mọi nguyên liệu chính +	All main ingredients +
+Thùng đồ phụ 	Side crate
+ món	 items
+Thùng chính 	Main crate
+Thùng đột phá +	Breakthrough crate +
+Mọi món đột phá bậc 5	All breakthrough items tier 5
+Đột phá bậc 5 +	Breakthrough tier 5 +
+Điểm món +	Dish score +
+ món thành Lạc vị	 dishes turn Off-flavor
+Món không bao giờ dưới Dở	Dishes never below Bad
+Huyền thoại khi nấu +	Legendary when cooking +
+Tiền bán món +	Dish income +
+ vé trắng mỗi 3 ngày	 white tickets every 3 days
+Tủ lạnh +	Fridge +
+ ô	 slots
+món không tụt bậc	dishes don't lose tiers
+Thời gian chờ an toàn +	Safe waiting time +
+Tỉ lệ hỏng nước sốt −	Sauce failure chance −
+ điểm	 points
+đầu ngày 	start of day
+Sáng thứ Hai, Hope bị đuổi việc ngay giữa văn phòng.	Monday morning, Hope gets fired in the middle of the office.
+Cả sự nghiệp gói gọn trong một thùng các-tông. …và thế là hết.	A whole career packed into one cardboard box. …and that's that.
+Về tới quán ăn cũ, Hope thấy chủ nợ đã đứng chờ trước cửa.	Back at the old diner, Hope finds the Creditor already waiting at the door.
+Thay vì siết nợ, chủ nợ đưa Hope chùm chìa khóa: \"Quán này giờ là của cậu. Nấu đi.\"	Instead of seizing it, the Creditor hands Hope the keys: \"This place is yours now. Cook.\"
+Giấy nợ: 	IOU:
+. Thiếu một đồng là tôi lấy lại quán.	. One coin short and I take the diner back.
+Ngày 2, bão đổ bộ. Sấm nổ ngay trên mái quán.	Day 2: a storm hits. Thunder cracks right over the roof.
+Mái dột tứ tung, Hope đội nồi hứng nước: \"Quán ơi, đừng sập nha…\"	The roof leaks everywhere. Hope wears a pot to catch the drips: \"Please don't fall down…\"
+Ngày 3, kho gần như trống trơn.	Day 3: the pantry is almost empty.
+Ít nguyên liệu thì nấu thật khéo!	Few ingredients? Cook them really well!
+Bà cụ khách quen húp một thìa: \"Ngon quá cháu ơi!\" Ngoài cửa sổ, trời đã tạnh.	A regular, an old lady, takes a sip: \"Delicious, dear!\" Outside, the rain has stopped.
+Ngày 	Day
+, 19 giờ 02: sét đánh cột điện. PHỤT!	, 7:02 pm: lightning hits the power pole. FZZT!
+Cả quán tối om… chỉ còn mấy đôi mắt nhìn nhau.	The whole diner goes dark… just a few pairs of eyes staring at each other.
+Hope thắp nến: bếp vẫn phải đỏ lửa!	Hope lights candles: the stove stays on!
+Không điện, quán vẫn đông khách.	No power, still a full house.
+Khách còn khen: \"Lãng mạn ghê!\"	The customers even say: \"How romantic!\"
+, có kẻ dán tờ rơi khắp phố: \"Quán bẩn!!\"	, someone plasters flyers all over the street: \"FILTHY DINER!!\"
+Mấy ngày liền, quán vắng tanh.	For days, the diner sits empty.
+Nhưng máy quay của quán đã ghi lại tất cả. \"Bắt được rồi nhé!\"	But the diner's camera recorded everything. \"Gotcha!\"
+, kẻ phá đám bị lật tẩy trước mặt mọi người.	, the troublemaker is exposed in front of everyone.
+, danh tiếng của quán trở lại!	, the diner's good name is back!
+, hạn chót. Chủ nợ đứng ở cửa: \"Một món. Tuyệt hảo.\"	, the deadline. The Creditor stands at the door: \"One dish. Superb.\"
+Hope nấu bằng cả nhân phẩm.	Hope cooks with all his heart and dignity.
+Nắp chuông nhấc lên: món Huyền thoại!	The cloche lifts: a Legendary dish!
+Chủ nợ nếm thử một thìa… và sững người.	The Creditor tastes a spoonful… and freezes.
+\"Vị này… giống hệt món mẹ ta nấu…\"	\"This taste… just like my mother's cooking…\"
+Đầu ngày 	Start of day
+, Hope trả đủ khoản cuối 	, Hope pays the final installment
+, còn dư 	, with
+. Chủ nợ xé giấy nợ. XOẸT!!	 to spare. The Creditor tears up the IOU. RRRIP!!
+\"Còn một chuyện nữa… con gái ta.\" Rồi ông gả con gái cho Hope.	\"One more thing… my daughter.\" And he gives Hope his daughter's hand.
+Quán ăn của Hope khai trương lại. Hết nợ, có vợ.	Hope's Diner reopens. No debt, and a wife.
+, chủ nợ đến thu 	, the Creditor comes to collect
+. Hope chỉ có 	. Hope only has
+, thiếu 	, short by
+. Chủ nợ lấy lại chìa khóa quán.	. The Creditor takes back the keys.
+RẦM!	SLAM!
+Bà cụ	Granny
+Cậu học sinh	Schoolboy
+Cô văn phòng	Office worker
+Chú nông dân	Farmer
+Ông họa sĩ	Old painter
+Em bé	Little kid
+Anh thợ	Handyman
+Ông trùm VIP	VIP Boss
+Nhà vô địch	Champion
+Fan Quỷ Đỏ	Red Devils fan
+Anh đại gia	Big spender
+Tròn hiền	Round & gentle
+Mắt to mi cong	Big lashes
+Mắt nhỏ tàn nhang	Freckles
+Râu mép	Mustache
+Nốt ruồi	Mole
+Mắt dài	Long eyes
+Má hây	Rosy cheeks
+Ông chú	Uncle
+
+# ---- GameController ----
+Ngày 1 · Quay nguyên liệu, nấu sẵn, rồi mở quán.	Day 1 · Pull ingredients, cook ahead, then open the diner.
+Chơi tiếp từ đầu ngày 	Continue from the start of day
+Chín rồi! Lấy đĩa trống, bấm vào bếp.	It's done! Take an empty plate and click the stove.
+Cháy rồi! Món tụt 1 bậc.	Burnt! The dish drops 1 tier.
+Bếp bốc khói! Múc ra ngay.	The stove is smoking! Plate it now.
+ đã sơ chế	 (prepped)
+đĩa trống	empty plate
+nước sốt thần thánh	Divine Sauce
+Tay đang bận. Chuột phải để 	Hands full. Right-click to
+thả 	drop
+đặt lại 	put back
+Hết vé rồi.	Out of tickets.
+Giờ này không nhận thùng được.	You can't take crates right now.
+ · Rương đột phá: 	 · Breakthrough chest:
+Đã huỷ, không mua relic.	Cancelled, no relic bought.
+Đã mua 	Bought
+ · còn 	 · left:
+ vé.	 tickets.
+Đã đủ 	Already have
+ relic: nhấn Tab, chọn 1 relic để bỏ. Chuột phải: huỷ.	 relics: press Tab, pick 1 relic to discard. Right-click: cancel.
+Thiếu 	Short
+ vé để mua 	 tickets to buy
+Cửa hàng đã đóng.	The shop is closed.
+Cửa hàng relic mở từ ngày 	The relic shop opens on day
+Bệ này đã bán hôm nay.	This pedestal is sold out today.
+Đang chờ bạn chọn 1 trong 3 relic trên bệ.	Pick 1 of the 3 relics on the pedestals.
+Chưa có vé đen. Mua trong Tab → Cửa hàng.	No black tickets yet. Buy them in Tab → Shop.
+Vé đen bán từ ngày 	Black tickets on sale from day
+dùng vé đen	use a black ticket
+Không còn relic Hiếm nào để chọn.	No Rare relics left to choose.
+Vé đen: chọn 1 trong 3 relic Hiếm trở lên trên bệ.	Black ticket: pick 1 of 3 Rare-or-better relics on the pedestals.
+ relic: nhấn Tab, chọn 1 relic để bỏ, lấy 	 relics: press Tab, pick 1 relic to discard, take
+Vé đen: đã lấy 	Black ticket: took
+Không đổi được relic.	Can't swap the relic.
+Đã bỏ 	Discarded
+, lấy 	, took
+ bằng vé đen.	 with a black ticket.
+[Gỡ lỗi] Đã thêm relic 	[Debug] Added relic
+lấy 	take
+Đang cầm 	Holding
+Đã thả 	Dropped
+Đã đặt lại 	Put back
+Cầm một nguyên liệu tới đây.	Bring an ingredient here.
+ đã sơ chế, cho thẳng vào bếp.	 is already prepped, put it straight on the stove.
+Giữ chuột trái: sơ chế 	Hold left mouse: prep
+cầm 	pick up
+. Mang tới bếp.	. Take it to the stove.
+Xong! Bấm thớt để cầm 	Done! Click the board to pick up
+Bếp đang nấu, chưa đổi dụng cụ được.	The stove is cooking, you can't change tools yet.
+Đặt 	Put
+ lên 	 on
+bếp 	stove
+bếp	stove
+Chọn dụng cụ trên giá trước: Chảo, Nồi hoặc Vỉ nướng.	Pick a tool from the rack first: Pan, Pot or Grill.
+Bếp đang nấu, chưa cho thêm được.	The stove is cooking, you can't add more.
+Đã cho 	Added
+Múc món ra đĩa trước, rồi nhỏ nước sốt lên đĩa.	Plate the dish first, then drizzle the sauce on it.
+Sơ chế 	Prep
+ trên thớt trước.	 on the cutting board first.
+ không nấu chung với 	 doesn't go with
+món trong bếp	what's on the stove
+. Xem Tab → Thực đơn.	. See Tab → Menu.
+Bếp không nhận thêm 	The stove can't take
+ lúc này.	 right now.
+ vào 	 into
+Lấy một đĩa trống ở chồng đĩa rồi bấm vào bếp để múc.	Take an empty plate from the stack, then click the stove to plate.
+Quầy đã đủ 	The counter already has
+ đĩa. Phục vụ bớt rồi múc.	 plates. Serve some first.
+Chưa múc được.	Can't plate yet.
+ Có thể nhỏ nước sốt lên đĩa.	 You can drizzle sauce on the plate.
+Đang nấu, chờ chín đã.	Cooking, wait until it's done.
+Chọn dụng cụ trên giá trước.	Pick a tool from the rack first.
+Cầm nguyên liệu đã sơ chế tới, hoặc bấm lọ gia vị.	Bring a prepped ingredient, or click a seasoning jar.
+Cần 1 nguyên liệu chính và 1 đồ phụ đã sơ chế trong bếp.	Needs 1 main ingredient and 1 prepped side on the stove.
+Đang nấu 	Cooking
+lấy đĩa	take a plate
+Đang cầm đĩa trống.	Holding an empty plate.
+Bếp đang trống.	The stove is empty.
+Đã đổ bỏ đồ trên 	Emptied
+. Đặt trước mặt khách gọi món này.	. Put it in front of the customer who ordered it.
+Tủ lạnh: cầm đĩa tới để cất, hoặc bấm một ô để lấy.	Fridge: bring a plate to store it, or click a slot to take one.
+ đã ở trong tủ. Chuột phải để đặt lại.	 is already in the fridge. Right-click to put it back.
+Tủ lạnh đầy (	Fridge full (
+ ô).	 slots).
+Đã cất 	Stored
+ vào tủ lạnh.	 in the fridge.
+máy gacha đồ ăn	Food Gacha Machine
+thớt	cutting board
+tay vạn năng	Extra Hand
+vé đen	black ticket
+G) · ví còn 	G) · wallet:
+ Bàn sơ chế dài thêm, có thêm thớt.	 The prep table is longer, with another board.
+ Bếp mới ở bên phải quầy đĩa.	 The new stove is right of the plate counter.
+ Cầm được 2 đồ: phím 1 / 2 chọn ô.	 Hold 2 things: keys 1 / 2 pick the slot.
+ Lọ sốt ở bên phải bếp.	 The sauce bottle is right of the stove.
+Cửa hàng mở từ ngày 	The shop opens on day
+G để mua 	G to buy
+Đã có máy gacha đồ ăn.	You already have the Food Gacha Machine.
+Đã có tay vạn năng.	You already have the Extra Hand.
+ thớt.	 boards.
+ bếp.	 stoves.
+Đã giữ tối đa 	Already at the maximum of
+Hết nước sốt. Mua trong Tab → Cửa hàng.	Out of sauce. Buy more in Tab → Shop.
+Cầm một đĩa món rồi bấm lọ nước sốt.	Hold a plated dish, then click the sauce bottle.
+Vé đen: + 	Black ticket: +
+ hàng tốt.	 good items.
+Mở quán! Khách đầu tiên đã tới.	We're open! The first customer is here.
+Đóng quán sớm: khách còn lại ra về.	Closing early: the remaining customers leave.
+Đóng quán. Hết ngày 	Closed. End of day
+khách	customer
+khách trái	left customer
+khách giữa	middle customer
+khách phải	right customer
+Chưa có khách. Bấm biển Mở quán trước.	No customers yet. Click the Open sign first.
+Khách đang ăn.	The customer is eating.
+Ghế này đang trống.	This seat is empty.
+ tới đây.	 here.
+Chủ nợ ngạc nhiên! +	The Creditor is amazed! +
+G (món 	G (dish
+G, thưởng 	G, bonus
+Chủ nợ nhận 	The Creditor takes
+G, không có thưởng (cần Tuyệt hảo trở lên).	G, no bonus (needs Superb or better).
+Sai món! Khách gọi 	Wrong dish! The customer ordered
+Khách vui: +	Happy customer: +
+Hơi tệ: khách trả nửa giá, +	A bit poor: the customer pays half, +
+Món quá tệ, khách giận: −	Awful dish, the customer is angry: −
+Khách chờ lâu quá, bỏ đi: −	The customer waited too long and left: −
+Chủ nợ đã tới, đợi ngoài cửa: mở quán để ông vào.	The Creditor has arrived and waits outside: open the diner to let him in.
+Chủ nợ đã tới, đợi ghế trống.	The Creditor has arrived, waiting for a free seat.
+21:00 · Hết khách. Bấm biển để đóng quán.	21:00 · No more customers. Click the sign to close.
+21:00 · Không nhận khách mới. Phục vụ nốt rồi đóng quán.	21:00 · No new customers. Serve the rest, then close.
+Khách mới: 	New customer:
+: mất điện! Nấu bằng nến, khó nhìn bậc món.	: blackout! Cook by candlelight, dish tiers are hard to see.
+:00 chủ nợ tới. Để dành món Tuyệt hảo!	:00 the Creditor comes. Save a Superb dish!
+: tin đồn xấu về quán. Mai trả nợ 	: nasty rumors about the diner. Tomorrow's payment:
+G: dốc hết món tủ lạnh, nước sốt, vé đen!	G: use everything, fridge dishes, sauce, black tickets!
+Đã trả 	Paid
+G. Vòng 3: khách khó tính hơn.	G. Round 3: pickier customers.
+G. Vòng 4: thêm gà ta, bí đỏ, măng tây, nấm đông cô.	G. Round 4: adds free-range chicken, pumpkin, asparagus, shiitake.
+G. Vòng 	G. Round
+ khách cùng lúc. Tab → Cửa hàng đã mở.	 customers at once. Tab → Shop is open.
+: chọn 1 relic miễn phí · 	: pick 1 free relic ·
+Chủ nợ đã tới · dễ tính 	The Creditor is here · easygoing
+% · gọi 	% · orders
+. Món Tuyệt hảo trở lên: thưởng 	. Superb or better: bonus
+[Gỡ lỗi] Đầu ngày 	[Debug] Start of day
+[Gỡ lỗi] Sang đầu ngày 	[Debug] Jump to start of day
+Nồi	Pot
+Bếp 	Stove
+Đã đặt lại nước sốt.	Sauce put back.
+cầm nước sốt	pick up the sauce
+Cầm nước sốt (còn 	Holding the sauce (
+ chai). Bấm vào đĩa vừa nấu để nhỏ sốt.	 bottles left). Click a freshly cooked plate to drizzle.
+Nhỏ sốt lên đĩa trên quầy hoặc trong tủ lạnh.	Drizzle sauce on a plate on the counter or in the fridge.
+Hết nước sốt.	Out of sauce.
+HUYỀN THOẠI! 	LEGENDARY!
+ (giá ×	 (price ×
+Nước sốt: 	Sauce:
+Ô 	Slot
+trống	empty
+ (sơ chế)	 (prepped)
+nước sốt	sauce
+Máy đang quay…	The machine is spinning…
+Tay đang cầm đĩa. Lấy 	Your hands hold a plate. Take
+lấy đĩa ra khỏi máy	take the plate out of the machine
+Lấy 	Take
+ ra khỏi máy.	 out of the machine.
+Máy gacha đồ ăn: cầm một đĩa món tới, bấm máy để cho vào. Hôm nay còn 	Food Gacha Machine: bring a plated dish and click the machine to load it. Spins left today:
+ lượt.	 spins.
+ đã vào máy một lần rồi.	 has already been through the machine once.
+Hôm nay máy đã chạy đủ 	The machine already ran
+ lần.	 times today.
+ vào máy. Gạt cần bên cạnh để quay.	 into the machine. Pull the lever beside it to spin.
+Chưa có máy gacha đồ ăn. Mua trong Tab → Cửa hàng.	No Food Gacha Machine yet. Buy it in Tab → Shop.
+Cho một đĩa món vào máy trước (cầm đĩa, bấm máy).	Load a plated dish first (hold the plate, click the machine).
+ đã quay rồi. Bấm máy để lấy ra.	 has been spun. Click the machine to take it out.
+Hôm nay máy đã chạy đủ lượt.	The machine is out of spins today.
+Xịt! Máy kêu rắc rắc… 	Fizzle! The machine crackles…
+ hỏng mất rồi.	 is ruined.
+Thành công! 	Success!
+. Bấm máy để lấy ra.	. Click the machine to take it out.
+Xịt! 	Fizzle!
+Giữ nguyên 	Unchanged:
+Mất điện: công tắc không có tác dụng, nấu bằng nến.	Blackout: the switch does nothing, cook by candlelight.
+Đã bật đèn.	Lights on.
+Đã tắt đèn.	Lights off.
+Đang chọn relic bằng vé đen: chọn xong rồi mới đổi hàng.	Choosing a relic with a black ticket: finish before rerolling.
+Đổi hàng (	Reroll (
+G): 3 relic mới · ví còn 	G): 3 new relics · wallet:
+G · lần sau 	G · next time
+G để đổi hàng relic.	G to reroll the relics.
+Không còn relic nào khác để bày.	No other relics left to show.
+Giờ này không đổi hàng được.	You can't reroll right now.
+ vé	 tickets
+ (cộng 	 (plus
+ vé còn từ hôm qua)	 tickets left from yesterday)
+Đầy đủ	Full
+Giảm	Reduced
+Tắt	Off
+Theo màn hình	Native
+
+# ---- GuidePics, Hud, Menu ----
+Nhét vé	Insert ticket
+Lấy 1 món	Take 1 item
+Giữ chuột: sơ chế	Hold mouse: prep
+Chọn dụng cụ	Pick a tool
+Tab: xem thực đơn	Tab: see the menu
+Cho đúng thứ tự	Add in the right order
+Vặn núm	Turn the knob
+Múc ra đĩa	Plate it
+Mở quán	Open up
+Đặt trước mặt khách	Serve the customer
+Đóng quán	Close up
+Bật đèn	Lights on
+Chọn 1 relic	Pick 1 relic
+Tab: cửa hàng	Tab: shop
+Cất tủ lạnh	Store in fridge
+Chuột phải: thả	Right-click: drop
+Món Tuyệt hảo	Superb dish
+Mất điện	Blackout
+Màu đế = bậc	Base color = tier
+Đồ tốt → món ngon	Good items → tasty dish
+Món ngon: đắt hơn	Tasty: pricier
+Khách khó: cần ngon	Picky: needs tasty
+Chờ lâu: bỏ đi	Wait too long: leaves
+Đúng món mới trả	Pays for the right dish
+Khói: múc ngay	Smoke: plate now
+Vòng sau: đồ tốt hơn	Later rounds: better items
+Trả vé: mua relic	Pay tickets: buy relics
+Cầm lọ, nhỏ sốt	Grab bottle, drizzle
+Thường lên bậc	Usually tiers up
+Món ngon nhất?	Best dish?
+VÉ	TICKET
+MỞ	OPEN
+ĐÓNG	CLOSED
+0 vé · lấy 1	0 tickets · take 1
+Chuột phải	Right mouse
+Nước sốt	Sauce
++tiền	+money
+−tiền	−money
+Bấm chuột vào màn hình để điều khiển	Click the screen to take control
+Về menu chính	Back to main menu
+ẩn / hiện	hide / show
+ · T: xem hình	 · T: show pictures
+Ví <size=26>	Wallet <size=26>
+Nợ <size=26>	Debt <size=26>
+G</size> đầu ngày 	G</size> at start of day
+Hết nợ	Debt-free
+ vé đen	 black tickets
+Đang cầm: 	Holding:
+ <size=70%>chưa mở quán</size>	 <size=70%>closed</size>
+Chuột trái · 	Left mouse ·
+Hết ngày 	End of day
+Đã phục vụ 	Served
+ khách · đóng quán lúc 	 customers · closed at
+Thu trong ngày: 	Today's takings:
+Tiền hiện có: 	Money on hand:
+Tủ lạnh giữ 	The fridge keeps
+ món\n	 dishes\n
+<b>Sáng mai chủ nợ thu 	<b>Tomorrow morning the Creditor collects
+Nợ sắp tới: 	Next payment:
+G vào đầu ngày 	G at the start of day
+Sang ngày 	Go to day
+Hope trả hết nợ!	Hope is debt-free!
+, chủ nợ thu khoản cuối 	, the Creditor collects the final
+G.\nHope còn 	G.\nHope still has
+G và quán ăn đã đứng vững.\n\nChủ nợ bật cười lần đầu tiên, rồi gả con gái cho Hope.	G and the diner is standing strong.\n\nThe Creditor laughs for the first time, then gives Hope his daughter's hand.
+Chơi lại	Play again
+Qua vòng 	Round cleared:
+, chủ nợ đã thu 	, the Creditor collected
+G.\nBạn còn 	G.\nYou still have
+G.\n\nBản chơi thử này dừng ở đây.	G.\n\nThis demo ends here.
+Thua rồi	Game over
+, chủ nợ đòi 	, the Creditor demands
+\nnhưng bạn chỉ có 	\nbut you only have
+\n\nCần phục vụ chủ nợ món Tuyệt hảo ngày 	\n\nServe the Creditor a Superb dish on day
+ (thưởng 	 (bonus
+Quán ăn của Hope	Hope's Diner
+22 ngày để trả hết nợ	22 days to pay off the debt
+Phiên bản 	Version
+Chơi mới	New game
+Chơi tiếp	Continue
+Cài đặt	Settings
+Thoát	Quit
+Chơi tiếp · ngày 	Continue · day
+Tạm dừng	Paused
+Tiếp tục	Resume
+Game tự lưu đầu mỗi ngày: về menu thì chơi tiếp từ đầu ngày này.	The game saves at the start of each day: going to the menu means continuing from the start of this day.
+Âm lượng tổng	Master volume
+Nhạc	Music
+Hiệu ứng	Sound effects
+Độ nhạy chuột	Mouse sensitivity
+Đảo trục dọc	Invert Y axis
+Toàn màn hình	Fullscreen
+Độ phân giải	Resolution
+Hướng dẫn ngày 1	Day 1 tutorial
+Hiệu ứng truyện	Comic effects
+Hiệu ứng giấy	Paper effects
+Ngôn ngữ / Language	Language
+Tiếng Việt	Vietnamese
+Đi	Walk
+Chạy	Run
+Nhảy	Jump
+Chuột	Mouse
+Nhìn quanh	Look around
+Chuột trái	Left mouse
+Bấm · giữ để sơ chế	Click · hold to prep
+Thả / đặt lại đồ	Drop / put back
+Thực đơn, relic, cửa hàng	Menu, relics, shop
+Ẩn / hiện hướng dẫn	Hide / show tutorial
+Điều khiển	Controls
+Bật	On
+Tắt (cửa sổ)	Off (windowed)
+Tự động (ván đầu)	Auto (first game)
+Bấm để tiếp · Giữ để bỏ qua	Click to continue · Hold to skip
+Xong	Done
+Dầu ăn	Cooking oil
+Bơ	Butter
+Nước dùng	Broth
+Nước mắm	Fish sauce
+Nước tương	Soy sauce
+Mật ong	Honey
+Vỉ nướng	Grill
+hấp	steamed
+Hành lá	Scallions
+Muối	Salt
+Chảo	Pan
+nướng	grilled
+chiên	fried
+sốt	in sauce
+xào	stir-fried
+Vé đen	Black ticket
+<color=#E8604F>Miễn phí</color>	<color=#E8604F>Free</color>
+\n<color=#E8604F><size=46>có tác dụng từ ngày 4</size></color>	\n<color=#E8604F><size=46>works from day 4</size></color>
+<color=#E8604F>Bấm relic trên giá để bỏ</color>	<color=#E8604F>Click a relic on the shelf to discard</color>
+
+# ---- RoomView ----
+QUÁN NHÂN PHẨM	DIGNITY DINER
+Nhét vé · còn 	Insert ticket · left:
+Hết vé	No tickets
+Máy gacha đồ ăn\n<size=60>sắp mở</size>	Food Gacha Machine\n<size=60>coming soon</size>
+Tỉ lệ bậc nguyên liệu · 	Ingredient tier odds ·
+ (sau mưa)	 (after the rain)
+Vòng 	Round
+ · 1 vé: 	 · 1 ticket:
+ đồ phụ + 	 sides +
+ nguyên liệu chính	 main ingredients
+Có relic	With relics
+: tỉ lệ đã tính tác dụng relic	: odds include relic effects
+ rương đột phá (	 breakthrough chests (
+ món: 	 items:
+ Xuất sắc, 	 Excellent,
+ Hiếm)	 Rare)
+<size=78>Phụ 	<size=78>Side
+\nChính 	\nMain
+ · chọn dụng cụ trước	 · pick a tool first
+Dùng 	Use
+Đang nấu	Cooking
+Đổ bỏ đồ trên bếp	Empty the stove
+Lấy đĩa trống	Take an empty plate
+ vào bếp	 onto the stove
+ trước	 first
+Múc 	Plate
+ ra đĩa	 
+Lấy đĩa trống để múc	Take an empty plate to serve it
+Bếp · chọn dụng cụ trên giá	Stove · pick a tool from the rack
+Bếp · 	Stove ·
+1 Chọn dụng cụ  ›  2 Cho đúng thứ tự  ›  3 Vặn núm	1 Pick a tool  ›  2 Add in order  ›  3 Turn the knob
+ · trống	 · empty
+ đã chín	 is done
+Món sẽ ra bậc nào (nếu đúng thứ tự)	Dish tier odds (if in the right order)
+Mất điện: không nhìn rõ bậc món	Blackout: can't see the dish tier
+Nhỏ nước sốt lên 	Drizzle sauce on
+Cầm 	Pick up
+Đóng quán · sang ngày mới	Close · next day
+Đóng quán sớm	Close early
+Quán đã đóng	Closed
+MỞ QUÁN\n<size=60>bấm để đón khách</size>	OPEN UP\n<size=60>click to welcome customers</size>
+ĐÓNG QUÁN\n<size=60>bấm để nghỉ</size>	CLOSE UP\n<size=60>click to call it a day</size>
+21:00\n<size=60>phục vụ nốt khách</size>	21:00\n<size=60>serve the last customers</size>
+ĐANG MỞ\n<size=60>bấm để đóng sớm</size>	OPEN\n<size=60>click to close early</size>
+ĐÃ ĐÓNG	CLOSED
+Đang chọn: bấm 1 trong 3 relic trên bệ	Choosing: click 1 of the 3 relics on the pedestals
+Khe vé đen · cần 1 vé đen (Tab → Cửa hàng)	Black ticket slot · needs 1 black ticket (Tab → Shop)
+Dùng 1 vé đen: chọn 1 trong 3 relic Hiếm trở lên (còn 	Use 1 black ticket: pick 1 of 3 Rare-or-better relics (
+ vé đen)	 black tickets left)
+Bệ trống	Empty pedestal
+Nhấn Tab, chọn relic để bỏ, lấy 	Press Tab, pick a relic to discard, take
+ bằng vé đen	 with a black ticket
+ · giá đầy, phải bỏ 1 relic	 · shelf full, discard 1 relic
+Bệ trống · đã bán hôm nay	Empty pedestal · sold today
+Lấy miễn phí · 	Take for free ·
+ (chỉ được lấy 1)	 (only 1)
+Bấm lại để huỷ mua 	Click again to cancel buying
+ · thiếu 	 · short
+ vé (còn 	 tickets (have
+Chọn 1 relic trên bệ	Pick 1 relic on the pedestals
+Vé đen → relic Hiếm · 	Black ticket → Rare relic ·
+Vé đen\n<size=70>chọn 1 relic Hiếm</size>	Black ticket\n<size=70>pick 1 Rare relic</size>
+Relic miễn phí\n<size=70>chọn 1</size>	Free relic\n<size=70>pick 1</size>
+Relic\n<size=70>trả bằng vé</size>	Relics\n<size=70>pay with tickets</size>
+Relic\n<size=80>mở từ ngày 	Relics\n<size=80>open from day
+Mở từ ngày 	Opens on day
+Đã bán	Sold
+Giá relic 	Relic shelf
+Mì Ý	Pasta
+Bún	Vermicelli
+Bánh mì	Baguette
+Chủ nợ	Creditor
+ đang ăn · còn 	 is eating ·
+ giây	 s left
+Ghế trống	Empty seat
+Chủ nợ · gọi 	Creditor · orders
+ · Tuyệt hảo trở lên: thưởng 	 · Superb or better: bonus
+Phục vụ chủ nợ: 	Serve the Creditor:
+ · được thưởng 	 · bonus
+ · chưa đủ Tuyệt hảo, không có thưởng	 · not Superb, no bonus
+ · gọi 	 · orders
+Sai món: 	Wrong dish:
+ gọi 	 ordered
+ (bấm vẫn đưa, khách sẽ giận)	 (click to serve anyway, the customer will be angry)
+Phục vụ 	Serve
+<size=64>Chủ nợ · Dễ tính 	<size=64>Creditor · Easygoing
+%</size>\nGọi: 	%</size>\nOrders:
+Khách 	Customer
+ · Dễ tính 	 · Easygoing
+Tủ lạnh	Fridge
+Tủ lạnh đầy	Fridge full
+Cất 	Store
+ vào tủ lạnh	 in the fridge
+Tủ lạnh · 	Fridge ·
+ · không tụt bậc	 · keeps its tier
+ · quá 	 · after
+ ngày tụt 1 bậc	 days drops 1 tier
+ ngày trong tủ)	 days in the fridge)
+Vé đen · mở từ ngày 	Black ticket · from day
+Đã giữ tối đa vé đen	Black tickets at maximum
+Mua vé đen · 	Buy a black ticket ·
+Nhét vé đen · còn 	Insert black ticket · left:
+Khe vé đen · chưa có vé đen	Black ticket slot · no black tickets
+Máy gacha đồ ăn · mở từ ngày 	Food Gacha Machine · from day
+Mua máy gacha đồ ăn · 	Buy the Food Gacha Machine ·
+ đã vào máy rồi	 has been through the machine
+ vào máy · còn 	 into the machine · left:
+ lượt	 spins
+Máy gacha đồ ăn · còn 	Food Gacha Machine · left:
+ lượt hôm nay	 spins today
+<size=86>Quầy vật phẩm</size>\n\nMở từ ngày 	<size=86>Item counter</size>\n\nOpens on day
+ (sau lần trả nợ đầu)	 (after the first payment)
+<size=86>Quầy vật phẩm</size>\n	<size=86>Item counter</size>\n
+<b>Nước sốt thần thánh</b> 	<b>Divine Sauce</b>
+G · có 	G · have
+<size=52>Hỏng 	<size=52>Fail
+ · Giữ 	 · Same
++1 bậc 	+1 tier
+ · +2 bậc 	 · +2 tiers
+ · Huyền thoại 	 · Legendary
+<b>Vé đen</b> 	<b>Black ticket</b>
+<size=52>Thùng: 	<size=52>Crates:
+<b>Máy gacha đồ ăn</b> 	<b>Food Gacha Machine</b>
+đã mua	owned
+G · mua 1 lần	G · one-time purchase
+Nước sốt · 	Sauce ·
+Vé đen · 	Black ticket ·
+Máy gacha đồ ăn\n<size=60>mở từ ngày 	Food Gacha Machine\n<size=60>from day
+Máy gacha đồ ăn\n<size=60>	Food Gacha Machine\n<size=60>
+G · bấm để mua</size>	G · click to buy</size>
+Máy gacha đồ ăn\n<size=60>còn 	Food Gacha Machine\n<size=60>
+ lượt hôm nay</size>	 spins left today</size>
+ lên thớt	 on the board
+Thớt	Cutting board
+Nhặt 	Pick up
+Bàn trống	Empty table
+Khách gọi 	Customer ordered
+ cho chủ nợ	 for the Creditor
+ trước mặt khách	 in front of the customer
+ (còn 	 (left:
+Đặt lại nước sốt	Put the sauce back
+Vặn núm bếp 2	Turn stove 2's knob
+Bếp 2	Stove 2
+ vào bếp 2	 onto stove 2
+Bếp 2 · chọn dụng cụ trên giá	Stove 2 · pick a tool from the rack
+Bếp 2 · 	Stove 2 ·
+MÁY GACHA ĐỒ ĂN	FOOD GACHA MACHINE
+Máy gacha đồ ăn · chưa mua	Food Gacha Machine · not bought
+Đang quay…	Spinning…
+Cần gạt · cho đĩa vào máy trước	Lever · load a plate first
+Đã quay · bấm máy lấy 	Spun · click the machine to take
+Gạt cần · quay 	Pull the lever · spin
+ lượt)	 spins left)
+Máy gacha đồ ăn · cầm đĩa tới để cho vào · còn 	Food Gacha Machine · bring a plate to load it · left:
+THÀNH CÔNG! +	SUCCESS! +
+XỊT! hỏng mất món	FIZZLE! dish ruined
+XỊT! −1 bậc	FIZZLE! −1 tier
+Giữ nguyên	Unchanged
+Cần	Lever
+Đèn	Light
+Công tắc đèn · mất điện, đèn không sáng	Light switch · blackout, no light
+Tắt đèn	Lights off
+ · trời đang tối	 · it's getting dark
+Đổi hàng relic · mở từ ngày 	Relic reroll · from day
+Đổi 3 relic khác · 	Swap for 3 other relics ·
+G (ví 	G (wallet
+Đổi hàng\n<size=44>mở từ ngày 	Reroll\n<size=44>from day
+Đổi hàng\n<size=50>	Reroll\n<size=50>
+ĐÓNG CỬA	CLOSED
+
+# ---- Tab, Tutorial, UiKit ----
+Thực đơn	Menu
+Cửa hàng	Shop
+Cách chơi	How to play
+Đóng (Tab)	Close (Tab)
+Sơn hào hải vị · cần rương đột phá	Delicacies · need a breakthrough chest
+Đế: 	Base:
+CẦN	NEEDS
+×1	×1
+Nấu 	Cook
+s · bán 	s · sells for
+G (bậc Bình thường)	G (Normal tier)
+Món ngon hơn → đắt hơn · tệ hơn → rẻ hơn	Tastier → pricier · worse → cheaper
+Chọn	Pick
+Sai thứ tự hoặc sai dụng cụ → Lạc vị	Wrong order or wrong tool → Off-flavor
+ món · giá niêm yết ở bậc Bình thường · khách trả thêm tip	 dishes · listed price at Normal tier · customers add tips
+Relic đang có · 	Relics owned ·
+ · <color=#E8604F>đã đủ: chọn 1 relic để bỏ, lấy 	 · <color=#E8604F>full: pick 1 relic to discard, take
+Bỏ	Discard
+Chắc?	Sure?
+Chưa có relic. Mua ở 3 bệ relic (mở từ ngày 	No relics yet. Buy them at the 3 relic pedestals (open from day
+Bấm Bỏ ở relic muốn bỏ: relic mới vào thay chỗ.	Click Discard on a relic: the new relic takes its place.
+Bỏ relic không hoàn vé. Bấm Bỏ hai lần để chắc chắn.	Discarding doesn't refund tickets. Click Discard twice to confirm.
+Cửa hàng · ví 	Shop · wallet
+ · mở từ ngày 	 · opens on day
+<b>Nước sốt thần thánh</b> · 	<b>Divine Sauce</b> ·
+\n<size=15>Lọ ở bên phải bếp: cầm lọ, bấm đĩa vừa nấu. Hỏng 	\n<size=15>Bottle right of the stove: grab it, click a freshly cooked plate. Fail
+ · giữ 	 · same
+ · +1 bậc 	 · +1 tier
+<b>Vé đen</b> · 	<b>Black ticket</b> ·
+\n<size=15>Nhét vào máy vé: 	\n<size=15>Insert into the ticket machine:
+ · hoặc khe cạnh bệ relic: chọn relic Hiếm</size>	 · or the slot by the relic pedestals: pick a Rare relic</size>
+<b>Máy gacha đồ ăn</b> · 	<b>Food Gacha Machine</b> ·
+đã mua · còn 	owned · left:
+\n<size=15>Đổi bậc một món đã nấu (lên hoặc xuống, tỉ lệ ẩn), mỗi món 1 lần.</size>	\n<size=15>Rerolls a cooked dish's tier (up or down, hidden odds), once per dish.</size>
+<b>Thớt</b> · 	<b>Cutting board</b> ·
+đủ 	max
+ thớt	 boards
+ · có 	 · have
+\n<size=15>Sơ chế nhiều món cùng lúc. Bàn sơ chế dài thêm.</size>	\n<size=15>Prep several items at once. The prep table gets longer.</size>
+<b>Bếp</b> · 	<b>Stove</b> ·
+ bếp	 stoves
+\n<size=15>Nấu hai món cùng lúc. Bếp mới ở bên phải quầy đĩa.</size>	\n<size=15>Cook two dishes at once. The new stove is right of the plate counter.</size>
+<b>Tay vạn năng</b> · 	<b>Extra Hand</b> ·
+\n<size=15>Cầm 2 đồ cùng lúc. Phím 1 / 2 chọn ô; không chọn thì dùng / thả theo thứ tự nhặt.</size>	\n<size=15>Hold 2 things at once. Keys 1 / 2 pick the slot; otherwise use / drop in pick-up order.</size>
+Đồ mua xong hiện trong phòng. Đồng hồ đứng trong lúc mở bảng này.	Purchases appear in the room. The clock stops while this panel is open.
+‹ Trước	‹ Back
+Lấy 1 nguyên liệu	Take 1 ingredient
+Sơ chế trên thớt	Prep on the board
+Cho vào đúng thứ tự	Add in the right order
+Trời tối: bật đèn	Dark: lights on
+: món ngon nhất	: the best dish
+Phục vụ ai trước cũng được	Serve anyone first
+Cầm lọ nước sốt	Grab the sauce bottle
+Bấm đĩa vừa nấu	Click the fresh plate
+Mất điện: nấu bằng nến	Blackout: cook by candlelight
+:00 chủ nợ tới	:00 the Creditor comes
+Xong! Gom tiền trả nợ ngày 	Done! Save up to pay the debt on day
+Ôi thiu	Spoiled
+Bình thường	Normal
+Tốt	Good
+Tươi	Fresh
+Xuất sắc	Excellent
+Lạc vị	Off-flavor
+Dở	Bad
+Tuyệt hảo	Superb
+
+# ---- Truyen tranh (Resources/CotTruyen) ----
+Bị đuổi việc	Fired
+Chương 1 · Bị đuổi việc	Chapter 1 · Fired
+Thứ Hai · 9 giờ sáng	Monday · 9 am
+CẬU BỊ	YOU'RE
+ĐUỔI!!	FIRED!!
+…và thế là hết.	…and that's that.
+QUÁN CŨ	OLD DINER
+CỘP… CỘP…	KNOCK… KNOCK…
+Quán này giờ là	This place is
+của cậu. Nấu đi.	yours now. Cook.
+GIẤY NỢ	IOU
+Ngày 4	Day 4
+Ngày 9	Day 9
+Ngày 15	Day 15
+Ngày 22	Day 22
+Hạn trả: 4 lần	Due: 4 payments
+Chương 2 · Cơn bão	Chapter 2 · The Storm
+QUÁN CỦA HOPE	HOPE'S DINER
+ĐÙNG!!	BOOM!!
+Ngày 2 · Bão đổ bộ	Day 2 · The storm hits
+tách… tách…	drip… drip…
+Quán ơi, đừng	Please, diner,
+sập nha…	don't fall down…
+Ngày 3 · Kho gần trống	Day 3 · Pantry almost empty
+Ít thì	Few? Then
+nấu khéo!	cook well!
+Ngon quá	So tasty,
+cháu ơi!	dear!
+Chương 3 · Đêm mất điện	Chapter 3 · Blackout Night
+PHỤT!	FZZT!
+Ngày 8 · 19 giờ 02	Day 8 · 7:02 pm
+…ơ?	…huh?
+(khách)	(customers)
+Bếp vẫn	The stove
+phải đỏ lửa!	stays lit!
+XÈO XÈO	SIZZLE SIZZLE
+Không điện, vẫn đông khách	No power, still a full house
+Lãng mạn ghê!	How romantic!
+Chương 4 · Tin đồn	Chapter 4 · The Rumor
+QUÁN	FILTHY
+BẨN!!	DINER!!
+hí hí hí	hee hee hee
+Ngày 9 · Tin đồn lan	Day 9 · The rumor spreads
+…vắng tanh	…empty
+Ngày 10–13	Days 10–13
+Bắt được	Got
+rồi nhé!	you!
+LỘ RỒI!!	BUSTED!!
+Ngày 14	Day 14
+Ngày 15 · Danh tiếng trở lại!	Day 15 · Our good name is back!
+Chương 5 · Món cuối cùng	Chapter 5 · The Final Dish
+Ngày 21 · Hạn chót	Day 21 · The deadline
+Một món.	One dish.
+Tuyệt hảo.	Superb.
+XÈO!	SIZZLE!
+XÈO!!	SIZZLE!!
+Nấu bằng cả	Cooking with
+nhân phẩm!	all my heart!
+<space=36.7> HUYỀN THOẠI <space=36.7>	<space=36.7> LEGENDARY <space=36.7>
+Ự…!!	Ngh…!!
+Vị này… giống hệt	This taste… just like
+món mẹ ta nấu…	my mother's cooking…
+Chương 6 · Hết nợ, có vợ	Chapter 6 · No Debt, and a Wife
+XOẸT!!	RRRIP!!
+Ngày 22 · Nợ đã trả đủ	Day 22 · Debt paid in full
+Còn một chuyện nữa…	One more thing…
+con gái ta.	my daughter.
+HẾT	THE END
+Quán của Hope · Khai trương lại	Hope's Diner · Grand reopening
+
+# ---- Du lieu (balance/*.json) ----
+Tỏi	Garlic
+Cơm	Rice
+Cà chua	Tomato
+cà chua	tomato
+Thái múi	Cut into wedges
+Hành tây	Onion
+hành tây	onion
+Thái lát	Slice
+Rau muống	Water spinach
+rau muống	water spinach
+Nhặt, rửa	Pick & wash
+Khoai tây	Potato
+khoai tây	potato
+Gọt, thái	Peel & cut
+Nấm rơm	Straw mushroom
+nấm rơm	straw mushrooms
+Rửa, bổ đôi	Wash & halve
+Bông cải xanh	Broccoli
+bông cải	broccoli
+Tách bông	Cut into florets
+Ớt chuông	Bell pepper
+ớt chuông	bell pepper
+Bỏ hạt, thái	Seed & slice
+Bí đỏ	Pumpkin
+bí đỏ	pumpkin
+Măng tây	Asparagus
+măng tây	asparagus
+Cắt khúc	Cut into pieces
+Nấm đông cô	Shiitake
+nấm đông cô	shiitake
+Trứng gà	Egg
+Trứng chiên {p}	Fried egg with {p}
+Đập, đánh	Crack & beat
+Thịt heo	Pork
+Heo xào {p}	Stir-fried pork with {p}
+Thái mỏng	Slice thin
+Đậu phụ	Tofu
+Đậu phụ sốt {p}	Tofu in {p} sauce
+Cắt miếng	Cut into chunks
+Thịt bò	Beef
+Mì Ý bò xào {p}	Beef pasta with {p}
+Tôm	Shrimp
+Bún xào tôm {p}	Shrimp vermicelli with {p}
+Bóc vỏ	Peel
+Cá hồi	Salmon
+Cá hồi áp chảo {p}	Seared salmon with {p}
+áp chảo	seared
+Lọc xương	Debone
+Mực	Squid
+Mực xào {p}	Stir-fried squid with {p}
+Làm sạch, khứa	Clean & score
+Gà ta	Free-range chicken
+Gà nướng mật ong {p}	Honey-roast chicken with {p}
+Chặt miếng	Chop
+Tôm hùm	Lobster
+Tôm hùm nướng bơ tỏi {p}	Garlic-butter lobster with {p}
+Bổ đôi	Halve
+Bò Wagyu	Wagyu beef
+Bò Wagyu áp chảo {p}	Seared Wagyu with {p}
+Cắt miếng dày	Cut thick
+Cá ngừ vây xanh	Bluefin tuna
+Cá ngừ vây xanh tataki {p}	Bluefin tuna tataki with {p}
+áp chảo nhanh	quick-seared
+Lọc thăn	Fillet
+Cua hoàng đế	King crab
+Cua hoàng đế hấp {p}	Steamed king crab with {p}
+Tách mai	Remove the shell
+Mì Ý bò sốt cà chua	Beef pasta in tomato sauce
+Bình tưới gỉ	Rusty watering can
+Rổ tre bà ngoại	Grandma's bamboo basket
+Phân bón bí truyền	Secret fertilizer
+Hạt giống vàng	Golden seeds
+Dao phay cũ	Old cleaver
+Thùng đá	Ice box
+Mối quen chợ cá	Fish-market contact
+Cân vàng	Golden scale
+Bản đồ hải đảo	Island map
+Lưới thép	Steel net
+Thuyền thuê	Chartered boat
+La bàn rồng	Dragon compass
+Tủ lạnh 2 cửa	Double-door fridge
+Chuông vàng	Golden bell
+Đồng hồ cát	Hourglass
+Muối hồng	Pink salt
+Chảo gang bà ngoại	Grandma's cast-iron pan
+Tượng mèo vàng	Golden lucky cat
+Máy pha cà phê xịn	Fancy espresso machine
+Ớt ma	Ghost pepper
+Hũ sốt cũ	Old sauce jar
+Vé số cào	Scratch card
+Sao băng trong nồi	Shooting star in a pot
+Bí kíp gia truyền	Family secret recipe
+
+# ---- Mau cau ghep (cau trong code, {n} = cho trong) ----
+Đồ phụ: {0} nâng bậc	Side: {0} tier up
+Nguyên liệu chính: {0} nâng bậc	Main ingredient: {0} tier up
+Đồ phụ: {0} nhảy lên bậc 4	Side: {0} jumps to tier 4
+Nguyên liệu chính: {0} nhảy lên bậc 4	Main ingredient: {0} jumps to tier 4
+Đồ phụ tối thiểu bậc {0}	Sides at least tier {0}
+Nguyên liệu chính tối thiểu bậc {0}	Main ingredients at least tier {0}
+Mọi đồ phụ +{0}	All sides +{0}
+{0} bậc	{0} tier
+Mọi nguyên liệu chính +{0}	All main ingredients +{0}
+Thùng đồ phụ {0}	Side crate {0}
+{0} món	{0} items
+Thùng chính {0}	Main crate {0}
+Thùng đột phá +{0}	Breakthrough crate +{0}
+Đột phá bậc 5 +{0}	Breakthrough tier 5 +{0}
+Điểm món +{0}	Dish score +{0}
+{0} món thành Lạc vị	{0} dishes turn Off-flavor
+Huyền thoại khi nấu +{0}	Legendary when cooking +{0}
+Tiền bán món +{0}	Dish income +{0}
+{0} vé trắng mỗi 3 ngày	{0} white tickets every 3 days
+Tủ lạnh +{0}	Fridge +{0}
+{0} ô	{0} slots
+Thời gian chờ an toàn +{0}	Safe waiting time +{0}
+Tỉ lệ hỏng nước sốt −{0}	Sauce failure chance −{0}
+{0} điểm	{0} points
+đầu ngày {0}: {1}	start of day {0}: {1}
+Giấy nợ: {0}	IOU: {0}
+{0}. Thiếu một đồng là tôi lấy lại quán.	{0}. One coin short and I take the diner back.
+Ngày {0}, 19 giờ 02: sét đánh cột điện. PHỤT!	Day {0}, 7:02 pm: lightning hits the power pole. FZZT!
+Ngày {0}, có kẻ dán tờ rơi khắp phố: \"Quán bẩn!!\"	Day {0}: someone plasters flyers all over the street: \"FILTHY DINER!!\"
+Ngày {0}, kẻ phá đám bị lật tẩy trước mặt mọi người.	Day {0}: the troublemaker is exposed in front of everyone.
+Ngày {0}, danh tiếng của quán trở lại!	Day {0}: the diner's good name is back!
+Ngày {0}, hạn chót. Chủ nợ đứng ở cửa: \"Một món. Tuyệt hảo.\"	Day {0}, the deadline. The Creditor stands at the door: \"One dish. Superb.\"
+Đầu ngày {0}	Start of day {0}
+{0}, Hope trả đủ khoản cuối 	{0}, Hope pays the final installment
+{0}, còn dư {1}. Chủ nợ xé giấy nợ. XOẸT!!	{0}, with {1} to spare. The Creditor tears up the IOU. RRRIP!!
+Đầu ngày {0}, chủ nợ đến thu {1}. Hope chỉ có {2}	Start of day {0}: the Creditor comes to collect {1}. Hope only has {2}
+{0}, thiếu {1}. Chủ nợ lấy lại chìa khóa quán.	{0}, short by {1}. The Creditor takes back the keys.
+Ngày {0}–{1}	Days {0}–{1}
+Ngày {0}	Day {0}
+Quán Ăn Hope: bản lưu hỏng ({0}).	Hope's Diner: the save file is broken ({0}).
+Chơi tiếp từ đầu ngày {0}.	Continuing from the start of day {0}.
+Tay đang bận. Chuột phải để {0}	Hands full. Right-click to {0}
+ · Rương đột phá: {0}!	 · Breakthrough chest: {0}!
+Đã mua {0} · còn {1} vé.	Bought {0} · {1} tickets left.
+Đã đủ {0} relic: nhấn Tab, chọn 1 relic để bỏ. Chuột phải: huỷ.	You have {0} relics already: press Tab, pick 1 relic to discard. Right-click: cancel.
+Thiếu {0} vé để mua {1}.	{0} tickets short to buy {1}.
+Cửa hàng relic mở từ ngày {0}.	The relic shop opens on day {0}.
+Vé đen bán từ ngày {0}.	Black tickets on sale from day {0}.
+Đã đủ {0} relic: nhấn Tab, chọn 1 relic để bỏ, lấy {1}.	You have {0} relics already: press Tab, pick 1 relic to discard and take {1}.
+Vé đen: đã lấy {0} ({1}).	Black ticket: took {0} ({1}).
+Đã bỏ {0}, lấy {1} bằng vé đen.	Discarded {0}, took {1} with a black ticket.
+Đã bỏ {0}	Discarded {0}
+{0}, mua {1} · còn {2} vé.	{0}, bought {1} · {2} tickets left.
+[Gỡ lỗi] Đã thêm relic {0}.	[Debug] Added relic {0}.
+lấy {0}	take {0}
+Đang cầm {0}.	Holding {0}.
+Đã thả {0}.	Dropped {0}.
+Đã đặt lại {0}.	Put back {0}.
+{0} đã sơ chế, cho thẳng vào bếp.	{0} is already prepped, put it straight on the stove.
+Giữ chuột trái: sơ chế {0}.	Hold left mouse: prep {0}.
+cầm {0}	pick up {0}
+Đang cầm {0}. Mang tới bếp.	Holding {0}. Take it to the stove.
+Xong! Bấm thớt để cầm {0}.	Done! Click the board to pick up {0}.
+Đặt {0} lên {1}	Put {0} on {1}
+bếp {0}	stove {0}
+Đã cho {0}.	Added {0}.
+Sơ chế {0} trên thớt trước.	Prep {0} on the cutting board first.
+{0} không nấu chung với {1}	{0} doesn't go with {1}
+{0}. Xem Tab → Thực đơn.	{0}. See Tab → Menu.
+Bếp không nhận thêm {0} lúc này.	The stove can't take {0} right now.
+Đã cho {0} vào {1}.	Added {0} to {1}.
+Quầy đã đủ {0} đĩa. Phục vụ bớt rồi múc.	The counter already has {0} plates. Serve some first.
+Đang nấu {0}…	Cooking {0}…
+Đã đổ bỏ đồ trên {0}	Emptied {0}
+Đang cầm {0} · {1}. Đặt trước mặt khách gọi món này.	Holding {0} · {1}. Put it in front of the customer who ordered it.
+{0} đã ở trong tủ. Chuột phải để đặt lại.	{0} is already in the fridge. Right-click to put it back.
+Tủ lạnh đầy ({0} ô).	Fridge full ({0} slots).
+Đã cất {0} vào tủ lạnh.	Stored {0} in the fridge.
+Đã mua {0} ({1}G) · ví còn {2}G.	Bought {0} ({1}G) · wallet: {2}G.
+Cửa hàng mở từ ngày {0}.	The shop opens on day {0}.
+Thiếu {0}G để mua {1}.	{0}G short to buy {1}.
+Đã đủ {0} thớt.	You already have {0} boards.
+Đã đủ {0} bếp.	You already have {0} stoves.
+Đã giữ tối đa {0}.	Already at the maximum of {0}.
+Vé đen: + {0} · + {1} hàng tốt.	Black ticket: + {0} · + {1} good items.
+Đóng quán. Hết ngày {0}.	Closed. End of day {0}.
+Mang {0} tới đây.	Bring {0} here.
+Chủ nợ ngạc nhiên! +{0}G (món {1}G, tip {2}G, thưởng {3}G).	The Creditor is amazed! +{0}G (dish {1}G, tip {2}G, bonus {3}G).
+Chủ nợ nhận {0} ({1}): 	The Creditor takes {0} ({1}):
+{0}G, không có thưởng (cần Tuyệt hảo trở lên).	{0}G, no bonus (needs Superb or better).
+Sai món! Khách gọi {0}: −{1}G.	Wrong dish! The customer ordered {0}: −{1}G.
+Khách vui: +{0}G{1}	Happy customer: +{0}G{1}
+Hơi tệ: khách trả nửa giá, +{0}G.	A bit poor: the customer pays half, +{0}G.
+Món quá tệ, khách giận: −{0}G.	Awful dish, the customer is angry: −{0}G.
+Khách chờ lâu quá, bỏ đi: −{0}G.	The customer waited too long and left: −{0}G.
+Khách mới: {0}.	New customer: {0}.
+Ngày {0}: mất điện! Nấu bằng nến, khó nhìn bậc món.	Day {0}: blackout! Cook by candlelight, dish tiers are hard to see.
+Ngày {0}: {1}:00 chủ nợ tới. Để dành món Tuyệt hảo!	Day {0}: the Creditor comes at {1}:00. Save a Superb dish!
+Ngày {0}: tin đồn xấu về quán. Mai trả nợ {1}	Day {0}: nasty rumors about the diner. Tomorrow's payment: {1}
+{0}G: dốc hết món tủ lạnh, nước sốt, vé đen!	{0}G: use everything, fridge dishes, sauce, black tickets!
+Đã trả {0}G. Vòng 3: khách khó tính hơn.	Paid {0}G. Round 3: pickier customers.
+Đã trả {0}G. Vòng 4: thêm gà ta, bí đỏ, măng tây, nấm đông cô.	Paid {0}G. Round 4: adds free-range chicken, pumpkin, asparagus, shiitake.
+Đã trả {0}G. Vòng {1}: {2} khách cùng lúc. Tab → Cửa hàng đã mở.	Paid {0}G. Round {1}: {2} customers at once. Tab → Shop is open.
+Ngày {0}: chọn 1 relic miễn phí · {1}.	Day {0}: pick 1 free relic · {1}.
+Chủ nợ đã tới · dễ tính {0}% · gọi {1}	The Creditor is here · easygoing {0}% · orders {1}
+{0}. Món Tuyệt hảo trở lên: thưởng {1}G.	{0}. Superb or better: bonus {1}G.
+[Gỡ lỗi] Đầu ngày {0} · {1}G · {2} relic.	[Debug] Start of day {0} · {1}G · {2} relics.
+[Gỡ lỗi] Sang đầu ngày {0}.	[Debug] Jump to start of day {0}.
+Bếp {0}: {1}	Stove {0}: {1}
+Cầm nước sốt (còn {0} chai). Bấm vào đĩa vừa nấu để nhỏ sốt.	Holding the sauce ({0} bottles left). Click a freshly cooked plate to drizzle.
+ · còn {0} chai.	 · {0} bottles left.
+HUYỀN THOẠI! {0} (giá ×{1}	LEGENDARY! {0} (price ×{1}
+Nước sốt: {0} {1} → {2}	Sauce: {0} {1} → {2}
+Ô {0}: {1}	Slot {0}: {1}
+Tay đang cầm đĩa. Lấy {0} ra sau.	Your hands hold a plate. Take {0} out later.
+Lấy {0} · {1} ra khỏi máy.	Take {0} · {1} out of the machine.
+Máy gacha đồ ăn: cầm một đĩa món tới, bấm máy để cho vào. Hôm nay còn {0} lượt.	Food Gacha Machine: bring a plated dish and click the machine to load it. {0} spins left today.
+{0} đã vào máy một lần rồi.	{0} has already been through the machine once.
+Hôm nay máy đã chạy đủ {0} lần.	The machine already ran {0} times today.
+Đã cho {0} vào máy. Gạt cần bên cạnh để quay.	Loaded {0}. Pull the lever beside it to spin.
+{0} đã quay rồi. Bấm máy để lấy ra.	{0} has been spun. Click the machine to take it out.
+Xịt! Máy kêu rắc rắc… {0} hỏng mất rồi.	Fizzle! The machine crackles… {0} is ruined.
+Thành công! {0} {1} → {2}. Bấm máy để lấy ra.	Success! {0} {1} → {2}. Click the machine to take it out.
+Xịt! {0} {1} → {2}. Bấm máy để lấy ra.	Fizzle! {0} {1} → {2}. Click the machine to take it out.
+Giữ nguyên {0}. Bấm máy để lấy ra.	{0} unchanged. Click the machine to take it out.
+Đổi hàng ({0}G): 3 relic mới · ví còn {1}G · lần sau {2}G.	Reroll ({0}G): 3 new relics · wallet: {1}G · next time {2}G.
+Thiếu {0}G để đổi hàng relic.	{0}G short to reroll the relics.
+{0} · còn {1}/{2} relic.	{0} · {1}/{2} relics.
++{0} vé{1}	+{0} tickets{1}
+ (cộng {0} vé còn từ hôm qua)	 (plus {0} tickets left from yesterday)
+{0} → {1} vé	{0} → {1} tickets
+{0} vé	{0} tickets
+Ví <size=26>{0}G</size>\n	Wallet <size=26>{0}G</size>\n
+Nợ <size=26>{0}G</size> đầu ngày {1}	Debt <size=26>{0}G</size> at start of day {1}
+{0} vé{1}	{0} tickets{1}
+ · {0} vé đen	 · {0} black tickets
+Đang cầm: {0}	Holding: {0}
+Ngày {0} · {1}	Day {0} · {1}
+Chuột trái · {0}	Left mouse · {0}
+Hết ngày {0}	End of day {0}
+Sang ngày {0}	Go to day {0}
+Đầu ngày {0}, chủ nợ thu khoản cuối {1}G.\nHope còn {2}	Start of day {0}: the Creditor collects the final {1}G.\nHope still has {2}
+{0}G và quán ăn đã đứng vững.\n\nChủ nợ bật cười lần đầu tiên, rồi gả con gái cho Hope.	{0}G and the diner is standing strong.\n\nThe Creditor laughs for the first time, then gives Hope his daughter's hand.
+Qua vòng {0}!	Round {0} cleared!
+Đầu ngày {0}, chủ nợ đã thu {1}G.\nBạn còn {2}	Start of day {0}: the Creditor collected {1}G.\nYou still have {2}
+{0}G.\n\nBản chơi thử này dừng ở đây.	{0}G.\n\nThis demo ends here.
+Đầu ngày {0}, chủ nợ đòi {1}\nnhưng bạn chỉ có {2}	Start of day {0}: the Creditor demands {1}\nbut you only have {2}
+{0}, thiếu {1}.	{0}, short by {1}.
+\n\nCần phục vụ chủ nợ món Tuyệt hảo ngày {0} (thưởng {1}G).	\n\nServe the Creditor a Superb dish on day {0} (bonus {1}G).
+IconBook: không chụp được {0}: {1}	IconBook: couldn't capture {0}: {1}
+Phiên bản {0}	Version {0}
+Chơi tiếp · ngày {0}	Continue · day {0}
+Nhét vé · còn {0} vé	Insert ticket · {0} tickets left
+Lấy {0}	Take {0}
+Tỉ lệ bậc nguyên liệu · {0}	Ingredient tier odds · {0}
+Ngày {0} (sau mưa)	Day {0} (after the rain)
+Vòng {0}	Round {0}
+{0} · 1 vé: {1} đồ phụ + {2} nguyên liệu chính	{0} · 1 ticket: {1} sides + {2} main ingredients
+ · +{0} rương đột phá ({1} món: 	 · +{0} breakthrough chests ({1} items:
+{0} Xuất sắc, {1} Hiếm)	{0} Excellent, {1} Rare)
+<size=78>Phụ {0}\nChính {1}</size>\n<size=60>{2}</size>	<size=78>Side {0}\nMain {1}</size>\n<size=60>{2}</size>
+{0} · chọn dụng cụ trước	{0} · pick a tool first
+Cho {0} vào {1}	Put {0} into {1}
+Dùng {0}	Use {0}
+Cho {0} vào bếp	Put {0} on the stove
+Sơ chế {0} trước	Prep {0} first
+Múc {0} ra đĩa	Plate {0}
+Đang nấu {0}	Cooking {0}
+Bếp · {0}	Stove · {0}
+{0} · trống	{0} · empty
+{0} đã chín	{0} is done
+Nhỏ nước sốt lên {0} · {1}	Drizzle sauce on {0} · {1}
+Cầm {0} · {1}	Pick up {0} · {1}
+Dùng 1 vé đen: chọn 1 trong 3 relic Hiếm trở lên (còn {0} vé đen)	Use 1 black ticket: pick 1 of 3 Rare-or-better relics ({0} black tickets left)
+Nhấn Tab, chọn relic để bỏ, lấy {0}	Press Tab, pick a relic to discard, take {0}
+Lấy {0} bằng vé đen{1}	Take {0} with a black ticket{1}
+Cửa hàng relic mở từ ngày {0}	The relic shop opens on day {0}
+Lấy miễn phí · {0} (chỉ được lấy 1){1}	Take for free · {0} (only 1){1}
+Bấm lại để huỷ mua {0}	Click again to cancel buying {0}
+{0} · thiếu {1} vé	{0} · {1} tickets short
+Mua · {0} vé (còn {1})	Buy · {0} tickets (have {1})
+Vé đen → relic Hiếm · {0} vé	Black ticket → Rare relic · {0} tickets
+Relic\n<size=80>mở từ ngày {0}</size>	Relics\n<size=80>open from day {0}</size>
+Mở từ ngày {0}	Opens on day {0}
+Giá relic {0}/{1}	Relic shelf {0}/{1}
+{0} đang ăn · còn {1} giây	{0} is eating · {1} s left
+Chủ nợ · gọi {0} · Tuyệt hảo trở lên: thưởng {1}G	Creditor · orders {0} · Superb or better: bonus {1}G
+Phục vụ chủ nợ: {0}	Serve the Creditor: {0}
+ · được thưởng {0}G	 · bonus {0}G
+{0} · gọi {1}	{0} · orders {1}
+Sai món: {0} gọi {1} (bấm vẫn đưa, khách sẽ giận)	Wrong dish: {0} ordered {1} (click to serve anyway, the customer will be angry)
+Phục vụ {0}: {1}	Serve {0}: {1}
+<size=64>Chủ nợ · Dễ tính {0}%</size>\nGọi: {1}	<size=64>Creditor · Easygoing {0}%</size>\nOrders: {1}
+Khách {0}	Customer {0}
+{0} · Dễ tính {1}%</size>\nGọi: {2}	{0} · Easygoing {1}%</size>\nOrders: {2}
+Cất {0} vào tủ lạnh	Store {0} in the fridge
+Tủ lạnh · {0}/{1} ô	Fridge · {0}/{1} slots
+Tủ lạnh · {0}/{1}	Fridge · {0}/{1}
+ · quá {0} ngày tụt 1 bậc	 · after {0} days drops 1 tier
+Nhỏ nước sốt lên {0}	Drizzle sauce on {0}
+Lấy {0} · {1} ({2} ngày trong tủ)	Take {0} · {1} ({2} days in the fridge)
+Vé đen · mở từ ngày {0}	Black ticket · from day {0}
+Mua vé đen · {0}G	Buy a black ticket · {0}G
+Nhét vé đen · còn {0} vé đen	Insert black ticket · {0} left
+Máy gacha đồ ăn · mở từ ngày {0}	Food Gacha Machine · from day {0}
+Mua máy gacha đồ ăn · {0}G	Buy the Food Gacha Machine · {0}G
+{0} đã vào máy rồi	{0} has been through the machine
+Cho {0} vào máy · còn {1} lượt	Load {0} into the machine · {1} spins left
+Máy gacha đồ ăn · còn {0} lượt hôm nay	Food Gacha Machine · {0} spins left today
+{0}G · mua 1 lần	{0}G · one-time purchase
+Nước sốt · {0}	Sauce · {0}
+Vé đen · {0}	Black ticket · {0}
+Máy gacha đồ ăn\n<size=60>mở từ ngày {0}</size>	Food Gacha Machine\n<size=60>from day {0}</size>
+Máy gacha đồ ăn\n<size=60>{0}G · bấm để mua</size>	Food Gacha Machine\n<size=60>{0}G · click to buy</size>
+Máy gacha đồ ăn\n<size=60>còn {0}/{1} lượt hôm nay</size>	Food Gacha Machine\n<size=60>{0}/{1} spins left today</size>
+Quán Ăn Hope: không đọc được bản lưu ({0}).	Hope's Diner: couldn't read the save file ({0}).
+Đặt {0} lên thớt	Put {0} on the board
+Cầm {0}	Pick up {0}
+Giữ chuột trái: sơ chế {0}	Hold left mouse: prep {0}
+Nhặt {0}	Pick up {0}
+Khách gọi {0}	Customer ordered {0}
+Đặt {0} cho chủ nợ	Serve {0} to the Creditor
+Sai món! Khách gọi {0}	Wrong dish! The customer ordered {0}
+Đặt {0} trước mặt khách	Put {0} in front of the customer
+Nhỏ nước sốt lên {0} (còn {1} chai)	Drizzle sauce on {0} ({1} bottles left)
+Cầm nước sốt (còn {0} chai)	Holding the sauce ({0} bottles left)
+Cho {0} vào bếp 2	Put {0} on stove 2
+Bếp 2 · {0}	Stove 2 · {0}
+Đã quay · bấm máy lấy {0} ra	Spun · click the machine to take {0} out
+Gạt cần · quay {0} (còn {1} lượt)	Pull the lever · spin {0} ({1} spins left)
+Lấy {0} ra	Take {0} out
+Máy gacha đồ ăn · cầm đĩa tới để cho vào · còn {0} lượt	Food Gacha Machine · bring a plate to load it · {0} spins left
+THÀNH CÔNG! +{0}	SUCCESS! +{0}
+Bật đèn{0}	Lights on{0}
+Đổi hàng relic · mở từ ngày {0}	Relic reroll · from day {0}
+Đổi 3 relic khác · {0}G (ví {1}G)	Swap for 3 other relics · {0}G (wallet {1}G)
+Đổi hàng\n<size=44>mở từ ngày {0}</size>	Reroll\n<size=44>from day {0}</size>
+Đổi hàng\n<size=50>{0}G</size>	Reroll\n<size=50>{0}G</size>
+Ngày {0}\n<size=30>{1}</size>	Day {0}\n<size=30>{1}</size>
+Đế: {0}	Base: {0}
+Nấu {0}s · bán {1}G (bậc Bình thường)	Cook {0}s · sells for {1}G (Normal tier)
+{0} món · giá niêm yết ở bậc Bình thường · khách trả thêm tip	{0} dishes · listed price at Normal tier · customers add tips
+Relic đang có · {0}/{1}	Relics owned · {0}/{1}
+ · <color=#E8604F>đã đủ: chọn 1 relic để bỏ, lấy {0}</color>	 · <color=#E8604F>full: pick 1 relic to discard and take {0}</color>
+Chưa có relic. Mua ở 3 bệ relic (mở từ ngày {0}).	No relics yet. Buy them at the 3 relic pedestals (open from day {0}).
+Cửa hàng · ví {0}G{1}	Shop · wallet {0}G{1}
+ · mở từ ngày {0}	 · opens on day {0}
+<b>Máy gacha đồ ăn</b> · {0}	<b>Food Gacha Machine</b> · {0}
+đã mua · còn {0}/{1} lượt	owned · {0}/{1} spins left
+{0}\n<size=15>Đổi bậc một món đã nấu (lên hoặc xuống, tỉ lệ ẩn), mỗi món 1 lần.</size>	{0}\n<size=15>Rerolls a cooked dish's tier (up or down, hidden odds), once per dish.</size>
+<b>Thớt</b> · {0}	<b>Cutting board</b> · {0}
+đủ {0} thớt	max {0} boards
+{0} · có {1}/{2}	{0} · have {1}/{2}
+{0}\n<size=15>Sơ chế nhiều món cùng lúc. Bàn sơ chế dài thêm.</size>	{0}\n<size=15>Prep several items at once. The prep table gets longer.</size>
+<b>Bếp</b> · {0}	<b>Stove</b> · {0}
+đủ {0} bếp	max {0} stoves
+{0}\n<size=15>Nấu hai món cùng lúc. Bếp mới ở bên phải quầy đĩa.</size>	{0}\n<size=15>Cook two dishes at once. The new stove is right of the plate counter.</size>
+<b>Tay vạn năng</b> · {0}	<b>Extra Hand</b> · {0}
+{0}\n<size=15>Cầm 2 đồ cùng lúc. Phím 1 / 2 chọn ô; không chọn thì dùng / thả theo thứ tự nhặt.</size>	{0}\n<size=15>Hold 2 things at once. Keys 1 / 2 pick the slot; otherwise use / drop in pick-up order.</size>
+Ngày {0}: món ngon nhất	Day {0}: the best dish
+{0}:00 chủ nợ tới	The Creditor comes at {0}:00
+Xong! Gom tiền trả nợ ngày {0}.	Done! Save up to pay the debt on day {0}.
+{0} giờ {1}	{0}:{1}
+# ---- chu Viet khong dau tren nut / the (anh en_* 25/11: build.py khong gom duoc vi khong co dau) ----
+Xong	Done
+Mua	Buy
+Sau ›	Next ›
+Mai	Tomorrow
+Cho	Add

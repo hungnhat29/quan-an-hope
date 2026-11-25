@@ -42,6 +42,15 @@ namespace QuanAnHope.Game
         public int paperMotion;
         public static readonly string[] ComicMotionNames = { "Đầy đủ", "Giảm", "Tắt" };
 
+        /// <summary>F-110 AC-1 (yeu cau 25/11/2026): ngon ngu hien thi (Lang.Vietnamese / Lang.English); -1 = chua chon, lay theo may (AC-6).</summary>
+        public int language = -1;
+
+        /// <summary>F-110 AC-6: chua chon thi may tieng Viet -> Tieng Viet, may khac -> English; chay batchmode / test -> Tieng Viet.</summary>
+        public static int DefaultLanguage(bool systemIsVietnamese, bool batchMode)
+        {
+            return systemIsVietnamese || batchMode ? Lang.Vietnamese : Lang.English;
+        }
+
         /// <summary>Ten khoa PlayerPrefs (test doi sang khoa rieng de khong dong vao cai dat that).</summary>
         public static string Prefix = "";
 
@@ -55,6 +64,8 @@ namespace QuanAnHope.Game
                 catch (ArgumentException) { s = null; }
             }
             if (s == null) s = new GameSettings();
+            if (s.language < 0)
+                s.language = DefaultLanguage(Application.systemLanguage == SystemLanguage.Vietnamese, Application.isBatchMode || Application.isEditor);
             s.Clamp();
             return s;
         }
@@ -79,6 +90,7 @@ namespace QuanAnHope.Game
             sfxVolume = Mathf.Clamp(sfxVolume, 0, 100);
             if (sensitivity <= 0f) sensitivity = DefaultSensitivity;
             sensitivity = Mathf.Clamp(sensitivity, MinSensitivity, MaxSensitivity);
+            if (language > Lang.English) language = Lang.Vietnamese;
         }
 
         /// <summary>So van da bat dau (de tat huong dan tu van thu hai).</summary>
@@ -102,6 +114,7 @@ namespace QuanAnHope.Game
         public void Apply(PlayerController player, bool screen)
         {
             AudioListener.volume = masterVolume / 100f;
+            Lang.Set(language < 0 ? Lang.Vietnamese : language);
             PaperKit.Motion = Mathf.Clamp(paperMotion, 0, PaperKit.MotionNames.Length - 1);
             if (player != null)
             {

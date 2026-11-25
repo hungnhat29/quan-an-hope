@@ -1,0 +1,416 @@
+<title>Khảo sát Quán ăn của Hope</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Be+Vietnam+Pro:wght@400;500;600&display=swap">
+<style>
+/* Layout: mot phieu goi mon (order ticket) doc, moi phan la mot to phieu; ket qua la so ghi cua chu quan. Mau / phong theo Art Bible cua game. */
+:root {
+  --bg: #F6EEDF; --paper: #FFF9EE; --ink: #2B2321; --muted: #6E625A; --line: #DCCFBC;
+  --mustard: #F2C14E; --coral: #E8604F; --mint: #8CC9AE; --mint-ink: #2F6E55; --chip: #FBF0DA;
+  --display: "Baloo 2", "Be Vietnam Pro", system-ui, sans-serif;
+  --body: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #1F1917; --paper: #2B2321; --ink: #F6EEDF; --muted: #BFB2A6; --line: #4A3F3A;
+  --mustard: #F2C14E; --coral: #F07A6B; --mint: #8CC9AE; --mint-ink: #A9DCC4; --chip: #3A302C; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #1F1917; --paper: #2B2321; --ink: #F6EEDF; --muted: #BFB2A6; --line: #4A3F3A;
+  --mustard: #F2C14E; --coral: #F07A6B; --mint: #8CC9AE; --mint-ink: #A9DCC4; --chip: #3A302C; color-scheme: dark }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.55; }
+.wrap { max-width: 760px; margin: 0 auto; padding-block: 28px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); display: flex; flex-direction: column; gap: 18px; }
+header { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px; }
+h1 { font-family: var(--display); font-weight: 800; font-size: clamp(28px, 6vw, 40px); line-height: 1.05; margin: 0; text-wrap: balance; }
+h1 small { display: block; font-size: 15px; font-weight: 600; color: var(--muted); font-family: var(--body); margin-top: 6px; }
+.tools { display: flex; gap: 8px; flex-wrap: wrap; }
+button, .seg label { font: inherit; }
+.btn { border: 2px solid var(--ink); background: var(--paper); color: var(--ink); border-radius: 999px; padding: 6px 14px; font-weight: 600; cursor: pointer; }
+.btn.primary { background: var(--coral); border-color: var(--coral); color: #FFF9EE; }
+.btn:focus-visible, input:focus-visible, textarea:focus-visible, .seg input:focus-visible + span { outline: 3px solid var(--mustard); outline-offset: 2px; }
+.btn[aria-pressed="true"] { background: var(--mustard); color: #2B2321; border-color: var(--mustard); }
+.ticket { background: var(--paper); border: 2px solid var(--ink); border-radius: 14px; padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 18px; position: relative; }
+.ticket::before { content: attr(data-tag); position: absolute; top: -13px; left: 16px; background: var(--mustard); color: #2B2321; font-family: var(--display); font-weight: 800; font-size: 14px; padding: 0 10px; border-radius: 6px; letter-spacing: .04em; }
+.ticket h2 { font-family: var(--display); font-size: 20px; margin: 4px 0 0; line-height: 1.2; }
+.q { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.q > .label { font-weight: 600; }
+.q > .label b { color: var(--coral); font-family: var(--display); margin-right: 4px; }
+.hint { color: var(--muted); font-size: 13px; }
+.seg { display: flex; flex-wrap: wrap; gap: 6px; }
+.seg label { position: relative; cursor: pointer; }
+.seg input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.seg span { display: inline-block; padding: 6px 12px; border: 1.5px solid var(--line); border-radius: 999px; background: var(--chip); }
+.seg input:checked + span { background: var(--mustard); border-color: var(--mustard); color: #2B2321; font-weight: 600; }
+.scale span { min-width: 42px; text-align: center; font-family: var(--display); font-weight: 800; font-size: 17px; padding: 4px 0; }
+.ends { display: flex; justify-content: space-between; color: var(--muted); font-size: 12px; max-width: 260px; }
+textarea, input[type=number] { font: inherit; color: var(--ink); background: var(--chip); border: 1.5px solid var(--line); border-radius: 10px; padding: 8px 10px; width: 100%; box-sizing: border-box; }
+textarea { min-height: 64px; resize: vertical; }
+input[type=number] { max-width: 120px; }
+.rules { display: grid; gap: 10px; }
+.rule { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 14px; align-items: center; padding-top: 10px; border-top: 1px dashed var(--line); }
+.rule:first-child { border-top: 0; padding-top: 0; }
+@media (max-width: 560px) { .rule { grid-template-columns: minmax(0, 1fr); } }
+.foot { display: flex; flex-direction: column; gap: 10px; }
+.status { font-weight: 600; }
+.status.ok { color: var(--mint-ink); }
+.status.err { color: var(--coral); }
+pre.code { background: var(--chip); border: 1.5px dashed var(--line); border-radius: 10px; padding: 10px; font-size: 12px; white-space: pre-wrap; word-break: break-all; max-height: 160px; overflow: auto; margin: 0; }
+/* ket qua */
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.stat { border: 1.5px solid var(--line); border-radius: 12px; padding: 10px 12px; background: var(--chip); }
+.stat .v { font-family: var(--display); font-weight: 800; font-size: 30px; line-height: 1; font-variant-numeric: tabular-nums; }
+.stat .k { font-size: 13px; color: var(--muted); }
+.stat .s { font-size: 12px; margin-top: 4px; }
+.bars { display: grid; gap: 6px; }
+.bar { display: grid; grid-template-columns: minmax(0, 14em) 1fr 3.2em; gap: 10px; align-items: center; font-size: 13px; }
+.bar .track { height: 12px; background: var(--chip); border: 1px solid var(--line); border-radius: 999px; overflow: hidden; }
+.bar .fill { height: 100%; background: var(--mint); }
+.bar .fill.warn { background: var(--coral); }
+.bar .n { text-align: right; font-variant-numeric: tabular-nums; }
+@media (max-width: 560px) { .bar { grid-template-columns: minmax(0, 1fr) 3em; } .bar .track { grid-column: 1 / -1; grid-row: 2; } }
+.quotes { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.quotes li { border-left: 3px solid var(--mustard); padding: 2px 0 2px 10px; }
+.quotes li span { color: var(--muted); font-size: 12px; }
+.empty { color: var(--muted); }
+@media (prefers-reduced-motion: no-preference) { .ticket { transition: transform .15s ease; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <h1 id="title">Quán ăn của Hope<small id="subtitle">Phiếu khảo sát người chơi thử · bản 0.11.0 · khoảng 5 phút</small></h1>
+    <div class="tools">
+      <button class="btn" id="lang-vi" aria-pressed="true" type="button">Tiếng Việt</button>
+      <button class="btn" id="lang-en" aria-pressed="false" type="button">English</button>
+      <button class="btn" id="to-results" type="button" hidden>Kết quả</button>
+    </div>
+  </header>
+
+  <form id="form" novalidate></form>
+
+  <section id="results" hidden></section>
+</div>
+
+<script>
+(() => {
+  "use strict";
+  // ---------------------------------------------------------------- cau hoi (docs/release/KHAO-SAT.md)
+  const L = (vi, en) => ({ vi, en });
+  const AGREE = [L("Rất không đồng ý", "Strongly disagree"), L("Rất đồng ý", "Strongly agree")];
+  const Q = [
+    { sec: L("A · Bạn là ai", "A · About you") },
+    { id: "q1", type: "one", t: L("Bạn chơi game bao nhiêu giờ mỗi tuần?", "How many hours a week do you play games?"),
+      o: [L("< 1", "< 1"), L("1–5", "1–5"), L("5–15", "5–15"), L("> 15", "> 15")] },
+    { id: "q2", type: "many", t: L("Thể loại bạn hay chơi", "Genres you usually play"), h: L("Chọn nhiều", "Pick any"),
+      o: [L("Nấu ăn / quản lý quán", "Cooking / restaurant management"), L("Roguelike / thẻ bài", "Roguelike / deckbuilder"), L("Nhẹ nhàng (cozy)", "Cozy"),
+          L("Hành động / bắn súng", "Action / shooter"), L("Chiến thuật", "Strategy"), L("Ít chơi game", "I rarely play games")] },
+    { id: "q3", type: "one", t: L("Bạn chơi bằng ngôn ngữ nào?", "Which language did you play in?"), o: [L("Tiếng Việt", "Vietnamese"), L("English", "English")] },
+    { sec: L("B · Bạn đã chơi tới đâu", "B · How far you got") },
+    { id: "q4", type: "one", t: L("Bạn chơi bao lâu?", "How long did you play?"),
+      o: [L("< 15 phút", "< 15 min"), L("15–30 phút", "15–30 min"), L("30–60 phút", "30–60 min"), L("1–2 giờ", "1–2 hours"), L("> 2 giờ", "> 2 hours")] },
+    { id: "q5", type: "one", t: L("Kết quả", "Result"),
+      o: [L("Thắng", "Won"), L("Thua ở lần trả nợ ngày 4", "Lost at the day 4 payment"), L("Thua ở ngày 9", "Lost on day 9"), L("Thua ở ngày 15", "Lost on day 15"),
+          L("Thua ở ngày 22", "Lost on day 22"), L("Dừng giữa chừng", "Stopped before the end")] },
+    { id: "q6", type: "num", t: L("Ngày xa nhất bạn tới (1–22)", "Furthest day you reached (1–22)"), min: 1, max: 22 },
+    { sec: L("C · Bạn có hiểu luật không", "C · Did the rules make sense?") },
+    { id: "q7", type: "rules", t: L("Với mỗi luật: Có · Hơi hơi · Không", "For each rule: Yes · Sort of · No"),
+      o: [L("Có", "Yes"), L("Hơi hơi", "Sort of"), L("Không", "No")],
+      r: [ ["q7a", L("Khách gọi một món cụ thể; phải đặt đúng món trước mặt khách", "Customers order a specific dish; you serve that dish in front of them")],
+           ["q7b", L("Màu đế nguyên liệu là bậc; đồ tốt hơn → món ngon hơn → bán đắt hơn", "Base color is the ingredient tier; better items → tastier dish → higher price")],
+           ["q7c", L("Bảng tỉ lệ trên máy vé và trên bếp", "The odds boards on the ticket machine and the stove")],
+           ["q7d", L("Relic và việc gom đủ một bộ relic", "Relics and completing a relic set")],
+           ["q7e", L("Chủ nợ thu tiền đầu ngày 4, 9, 15, 22; thiếu là thua", "The Creditor collects on days 4, 9, 15, 22; short means game over")] ] },
+    { id: "q8", type: "text", t: L("Lần đầu bạn bị kẹt (không biết làm gì tiếp) là ở đâu?", "Where did you first get stuck (not knowing what to do next)?") },
+    { sec: L("D · Cảm nhận", "D · How it felt"), h: L("1 = rất không đồng ý · 5 = rất đồng ý", "1 = strongly disagree · 5 = strongly agree") },
+    { id: "q9", type: "scale", t: L("Phần nấu (sơ chế, cho đúng thứ tự, vặn núm) vui", "Cooking (prep, adding in order, turning the knob) is fun") },
+    { id: "q10", type: "scale", t: L("Nhét vé quay nguyên liệu thấy hồi hộp", "Pulling ingredient crates with tickets feels exciting") },
+    { id: "q11", type: "scale", t: L("Độ khó", "Difficulty"), ends: [L("Quá dễ", "Too easy"), L("Quá khó", "Too hard")], h: L("3 = vừa", "3 = just right") },
+    { id: "q12", type: "scale", t: L("Tôi muốn chơi lại / chơi tiếp", "I want to play again / keep playing") },
+    { id: "q13", type: "scale", t: L("Tôi sẽ giới thiệu game này cho bạn bè", "I'd recommend this game to friends") },
+    { id: "q14", type: "scale", t: L("Nếu game có trên Steam, tôi sẽ thêm vào wishlist hoặc mua", "If it were on Steam, I'd wishlist or buy it") },
+    { id: "q15", type: "scale", t: L("Hình ảnh và không khí quán dễ chịu", "The look and mood of the diner are pleasant") },
+    { id: "q16", type: "scale", t: L("Âm thanh và nhạc hợp", "Sound and music fit") },
+    { id: "q17", type: "scale", t: L("Truyện tranh / cốt truyện thú vị", "The comic story is enjoyable") },
+    { id: "q18", type: "scale", t: L("Tranh hướng dẫn dễ hiểu", "The picture tutorial is easy to follow") },
+    { sec: L("E · Giá và góp ý", "E · Price and comments") },
+    { id: "q19", type: "one", t: L("Bạn sẵn lòng trả bao nhiêu cho bản đầy đủ?", "How much would you pay for the full game?"),
+      o: [L("Không trả", "Nothing"), L("< 50.000đ (~2 USD)", "< $2"), L("50–100 nghìn (~2–4 USD)", "$2–4"), L("100–200 nghìn (~4–8 USD)", "$4–8"), L("> 200 nghìn", "> $8")] },
+    { id: "q20", type: "text", t: L("Khoảnh khắc bạn thích nhất", "Your favorite moment") },
+    { id: "q21", type: "text", t: L("Điều làm bạn khó chịu nhất", "What annoyed you most") },
+    { id: "q22", type: "text", t: L("Nếu được đổi một điều, bạn đổi gì?", "If you could change one thing, what would it be?") },
+    { id: "q23", type: "text", t: L("Lỗi bạn gặp (nếu có): đang làm gì, ngày mấy", "Bugs you hit (if any): what you were doing, which day") },
+  ];
+  const FUN = ["q9", "q10", "q12", "q13", "q14", "q15", "q16", "q17", "q18"], INTENT = ["q12", "q13", "q14"];
+  const UI = {
+    title: L("Quán ăn của Hope", "Hope's Diner"),
+    sub: L("Phiếu khảo sát người chơi thử · bản 0.11.0 · khoảng 5 phút", "Playtest survey · version 0.11.0 · about 5 minutes"),
+    results: L("Kết quả", "Results"), back: L("Về phiếu", "Back to the form"),
+    send: L("Gửi câu trả lời", "Send answers"), copy: L("Sao chép câu trả lời", "Copy my answers"),
+    copyHint: L("Gửi đoạn chữ này cho người đã đưa bạn game (tin nhắn, email).", "Send this text to the person who gave you the game (message or email)."),
+    copied: L("Đã sao chép. Dán vào tin nhắn gửi cho người đưa game.", "Copied. Paste it into a message to the person who sent you the game."),
+    copyFail: L("Không sao chép tự động được: chọn đoạn chữ bên dưới rồi sao chép.", "Couldn't copy automatically: select the text below and copy it."),
+    sent: L("Đã gửi. Cảm ơn bạn!", "Sent. Thank you!"),
+    sendFail: L("Không gửi thẳng được. Bấm Sao chép câu trả lời và gửi qua tin nhắn.", "Couldn't send directly. Use Copy my answers and send it by message."),
+    need: L("Còn thiếu: ", "Still missing: "),
+  };
+  let lang = "vi";
+  try { const s = localStorage.getItem("qah-survey-lang"); if (s === "en" || s === "vi") lang = s; } catch (e) {}
+  const tr = (x) => (x ? x[lang] : "");
+  const ans = {};
+  try { Object.assign(ans, JSON.parse(localStorage.getItem("qah-survey-draft") || "{}")); } catch (e) {}
+  const saveDraft = () => { try { localStorage.setItem("qah-survey-draft", JSON.stringify(ans)); } catch (e) {} };
+
+  const el = (tag, attrs, ...kids) => {
+    const n = document.createElement(tag);
+    for (const k in attrs || {}) { if (k === "text") n.textContent = attrs[k]; else if (k === "class") n.className = attrs[k]; else n.setAttribute(k, attrs[k]); }
+    for (const c of kids) if (c != null) n.append(c);
+    return n;
+  };
+
+  // ---------------------------------------------------------------- phieu
+  const form = document.getElementById("form");
+  function choice(name, i, label, type, checked) {
+    const inp = el("input", { type, name, value: String(i), id: name + "-" + i });
+    if (checked) inp.checked = true;
+    return el("label", { for: name + "-" + i }, inp, el("span", { text: label }));
+  }
+  function renderForm() {
+    form.replaceChildren();
+    let ticket = null, n = 0;
+    for (const q of Q) {
+      if (q.sec) {
+        n++;
+        ticket = el("section", { class: "ticket", "data-tag": lang === "vi" ? "PHIẾU " + n + "/5" : "TICKET " + n + "/5" }, el("h2", { text: tr(q.sec) }));
+        if (q.h) ticket.append(el("div", { class: "hint", text: tr(q.h) }));
+        form.append(ticket);
+        continue;
+      }
+      const num = q.id.replace("q", "Q").toUpperCase();
+      const box = el("div", { class: "q" }, el("div", { class: "label" }, el("b", { text: num }), tr(q.t)));
+      if (q.h && q.type !== "many") box.append(el("div", { class: "hint", text: tr(q.h) }));
+      if (q.type === "one" || q.type === "many") {
+        if (q.type === "many") box.append(el("div", { class: "hint", text: tr(q.h) }));
+        const seg = el("div", { class: "seg", role: q.type === "one" ? "radiogroup" : "group" });
+        q.o.forEach((o, i) => seg.append(choice(q.id, i, tr(o), q.type === "one" ? "radio" : "checkbox",
+          q.type === "one" ? ans[q.id] === i : (ans[q.id] || []).includes(i))));
+        seg.addEventListener("change", () => {
+          if (q.type === "one") ans[q.id] = Number(seg.querySelector("input:checked").value);
+          else ans[q.id] = [...seg.querySelectorAll("input:checked")].map((x) => Number(x.value));
+          saveDraft();
+        });
+        box.append(seg);
+      } else if (q.type === "scale") {
+        const seg = el("div", { class: "seg scale", role: "radiogroup" });
+        for (let v = 1; v <= 5; v++) seg.append(choice(q.id, v, String(v), "radio", ans[q.id] === v));
+        seg.addEventListener("change", () => { ans[q.id] = Number(seg.querySelector("input:checked").value); saveDraft(); });
+        const ends = q.ends || AGREE;
+        box.append(seg, el("div", { class: "ends" }, el("span", { text: tr(ends[0]) }), el("span", { text: tr(ends[1]) })));
+      } else if (q.type === "num") {
+        const inp = el("input", { type: "number", id: q.id, min: q.min, max: q.max, inputmode: "numeric" });
+        if (ans[q.id]) inp.value = ans[q.id];
+        inp.addEventListener("input", () => { const v = parseInt(inp.value, 10); ans[q.id] = v >= q.min && v <= q.max ? v : undefined; saveDraft(); });
+        box.append(inp);
+      } else if (q.type === "text") {
+        const ta = el("textarea", { id: q.id, maxlength: "800" });
+        ta.value = ans[q.id] || "";
+        ta.addEventListener("input", () => { ans[q.id] = ta.value.trim(); saveDraft(); });
+        box.append(ta);
+      } else if (q.type === "rules") {
+        const rules = el("div", { class: "rules" });
+        for (const [rid, rt] of q.r) {
+          const seg = el("div", { class: "seg", role: "radiogroup" });
+          q.o.forEach((o, i) => seg.append(choice(rid, i, tr(o), "radio", ans[rid] === i)));
+          seg.addEventListener("change", () => { ans[rid] = Number(seg.querySelector("input:checked").value); saveDraft(); });
+          rules.append(el("div", { class: "rule" }, el("div", { text: rid.replace("q", "Q").toUpperCase() + " · " + tr(rt) }), seg));
+        }
+        box.append(rules);
+      }
+      ticket.append(box);
+    }
+    const status = el("div", { class: "status", id: "status", role: "status" });
+    const code = el("pre", { class: "code", id: "code", hidden: "" });
+    const btns = el("div", { class: "tools" });
+    const sendBtn = el("button", { class: "btn primary", type: "submit", id: "send", text: tr(UI.send) });
+    const copyBtn = el("button", { class: "btn", type: "button", id: "copy", text: tr(UI.copy) });
+    if (!canSend) sendBtn.hidden = true;
+    btns.append(sendBtn, copyBtn);
+    form.append(el("section", { class: "ticket foot", "data-tag": lang === "vi" ? "GỬI" : "SEND" }, el("div", { class: "hint", text: tr(UI.copyHint) }), btns, status, code));
+    copyBtn.addEventListener("click", onCopy);
+  }
+
+  const REQUIRED = ["q4", "q5", "q9", "q12", "q13", "q14", "q11"];
+  function missing() { return REQUIRED.filter((k) => ans[k] == null); }
+  function payload() {
+    const o = { v: 1, at: new Date().toISOString(), lang };
+    for (const k in ans) if (ans[k] !== undefined && ans[k] !== "") o[k] = ans[k];
+    return o;
+  }
+  const codeText = () => "KHAO-SAT-QAH v1\n" + JSON.stringify(payload());
+  function setStatus(msg, kind) { const s = document.getElementById("status"); s.textContent = msg; s.className = "status " + (kind || ""); }
+  function checkRequired() {
+    const m = missing();
+    if (m.length) { setStatus(tr(UI.need) + m.map((k) => k.toUpperCase()).join(", "), "err"); return false; }
+    return true;
+  }
+  async function onCopy() {
+    if (!checkRequired()) return;
+    const text = codeText(), pre = document.getElementById("code");
+    pre.textContent = text; pre.hidden = false;
+    try { await navigator.clipboard.writeText(text); setStatus(tr(UI.copied), "ok"); }
+    catch (e) {
+      setStatus(tr(UI.copyFail), "err");
+      const r = document.createRange(); r.selectNodeContents(pre); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+    }
+  }
+  form.addEventListener("submit", async (ev) => {
+    ev.preventDefault();
+    if (!checkRequired() || !db || !uid) return;
+    const btn = document.getElementById("send"); btn.disabled = true;
+    try { await db.doc("responses/" + uid).set(payload()); setStatus(tr(UI.sent), "ok"); }
+    catch (e) { setStatus(tr(UI.sendFail), "err"); canSend = false; btn.hidden = true; }
+    finally { btn.disabled = false; }
+  });
+
+  // ---------------------------------------------------------------- ngon ngu, dieu huong
+  function applyLang() {
+    document.documentElement.lang = lang;
+    document.getElementById("title").firstChild.textContent = tr(UI.title);
+    document.getElementById("subtitle").textContent = tr(UI.sub);
+    document.getElementById("lang-vi").setAttribute("aria-pressed", String(lang === "vi"));
+    document.getElementById("lang-en").setAttribute("aria-pressed", String(lang === "en"));
+    document.getElementById("to-results").textContent = location.hash === "#ket-qua" ? tr(UI.back) : tr(UI.results);
+    renderForm();
+    if (!resultsEl.hidden) renderResults();
+  }
+  for (const id of ["vi", "en"]) document.getElementById("lang-" + id).addEventListener("click", () => {
+    lang = id; try { localStorage.setItem("qah-survey-lang", id); } catch (e) {} applyLang();
+  });
+  const resultsEl = document.getElementById("results");
+  document.getElementById("to-results").addEventListener("click", () => { location.hash = location.hash === "#ket-qua" ? "" : "ket-qua"; });
+  function route() {
+    const r = location.hash === "#ket-qua" && isEditor;
+    resultsEl.hidden = !r; form.hidden = r;
+    document.getElementById("to-results").textContent = r ? tr(UI.back) : tr(UI.results);
+    if (r) { subscribe(); renderResults(); }
+  }
+  window.addEventListener("hashchange", route);
+
+  // ---------------------------------------------------------------- du lieu (db): nguoi duoc moi gui thang; chu trang xem ket qua
+  let db = null, uid = null, canSend = false, isEditor = false, rows = [], unsub = null, loadNote = "";
+  function subscribe() {
+    if (unsub || !db) return;
+    loadNote = lang === "vi" ? "Đang tải câu trả lời…" : "Loading responses…";
+    const timer = setTimeout(() => { loadNote = lang === "vi" ? "Chưa tải được dữ liệu, có thể đang mất mạng." : "Can't reach the data yet; you may be offline."; renderResults(); }, 10000);
+    unsub = db.collection("responses").onSnapshot((snap) => {
+      if (!snap.metadata.fromCache) { clearTimeout(timer); loadNote = ""; }
+      rows = snap.docs.map((d) => Object.assign({ _id: d.id }, d.data()));
+      renderResults();
+    }, () => { clearTimeout(timer); loadNote = lang === "vi" ? "Không đọc được dữ liệu." : "Couldn't read the data."; renderResults(); });
+  }
+
+  // ---------------------------------------------------------------- ket qua
+  const mean = (xs) => (xs.length ? xs.reduce((a, b) => a + b, 0) / xs.length : NaN);
+  const fmt = (x, d = 1) => (isNaN(x) ? "–" : x.toFixed(d).replace(".", lang === "vi" ? "," : "."));
+  function funScore(r) { const v = FUN.map((k) => r[k]).filter((x) => typeof x === "number"); return v.length ? (mean(v) - 1) / 4 * 100 : NaN; }
+  function bars(items, warnIdx) {
+    const box = el("div", { class: "bars" });
+    const total = items.reduce((a, b) => a + b[1], 0) || 1;
+    items.forEach(([label, n], i) => {
+      const fill = el("div", { class: "fill" + (warnIdx && warnIdx.includes(i) ? " warn" : "") });
+      fill.style.width = (n / total * 100) + "%";
+      box.append(el("div", { class: "bar" }, el("div", { text: label }), el("div", { class: "track" }, fill), el("div", { class: "n", text: String(n) })));
+    });
+    return box;
+  }
+  function count(key, opts) { return opts.map((o, i) => [tr(o), rows.filter((r) => r[key] === i).length]); }
+  function renderResults() {
+    resultsEl.replaceChildren();
+    const t1 = el("section", { class: "ticket", "data-tag": lang === "vi" ? "SỔ CHỦ QUÁN" : "OWNER'S BOOK" });
+    t1.append(el("h2", { text: lang === "vi" ? "Tổng hợp " + rows.length + " phiếu" : rows.length + " responses" }));
+    if (loadNote) t1.append(el("div", { class: "hint", text: loadNote }));
+    if (!rows.length) t1.append(el("p", { class: "empty", text: lang === "vi"
+      ? "Chưa có phiếu nào. Người chơi thử bấm Sao chép câu trả lời rồi gửi bạn; dán đoạn chữ đó vào ô bên dưới."
+      : "No responses yet. Playtesters copy their answers and send them to you; paste that text in the box below." }));
+    const fun = mean(rows.map(funScore).filter((x) => !isNaN(x)));
+    const intent = mean(rows.flatMap((r) => INTENT.map((k) => r[k]).filter((x) => typeof x === "number")));
+    const diff = mean(rows.map((r) => r.q11).filter((x) => typeof x === "number"));
+    const pass1 = rows.filter((r) => typeof r.q5 === "number").length;
+    const passed = rows.filter((r) => r.q5 === 0 || r.q5 >= 2 && r.q5 <= 4 || (r.q5 === 5 && (r.q6 || 0) > 4)).length;
+    const stats = el("div", { class: "stats" });
+    const stat = (v, k, s) => stats.append(el("div", { class: "stat" }, el("div", { class: "v", text: v }), el("div", { class: "k", text: k }), el("div", { class: "s", text: s })));
+    stat(fmt(fun, 0), lang === "vi" ? "Điểm độ hay (0–100)" : "Fun score (0–100)", lang === "vi" ? "≥ 65 tốt · 50–65 cần sửa" : "≥ 65 good · 50–65 needs work");
+    stat(fmt(intent), lang === "vi" ? "Ý định (Q12–Q14, 1–5)" : "Intent (Q12–Q14, 1–5)", lang === "vi" ? "≥ 3,5 → phát hành 1.0" : "≥ 3.5 → ship 1.0");
+    stat(fmt(diff), lang === "vi" ? "Độ khó (Q11, 3 = vừa)" : "Difficulty (Q11, 3 = right)", lang === "vi" ? "Mục tiêu 2–4" : "Target 2–4");
+    stat(pass1 ? Math.round(passed / pass1 * 100) + "%" : "–", lang === "vi" ? "Qua lần trả nợ 1" : "Passed payment 1", lang === "vi" ? "Mục tiêu ≥ 60%" : "Target ≥ 60%");
+    t1.append(stats);
+    resultsEl.append(t1);
+    if (rows.length) {
+      const q = (id) => Q.find((x) => x.id === id);
+      const t2 = el("section", { class: "ticket", "data-tag": lang === "vi" ? "HIỂU LUẬT" : "RULES" });
+      t2.append(el("h2", { text: lang === "vi" ? "Tỉ lệ trả lời “Có” · câu nào ≥ 2 người “Không” là nhóm B" : "Share answering “Yes” · any rule with ≥ 2 “No” goes to group B" }));
+      t2.append(bars(q("q7").r.map(([rid, rt]) => [rid.toUpperCase() + " · " + tr(rt) + " (" + (lang === "vi" ? "Không: " : "No: ") + rows.filter((r) => r[rid] === 2).length + ")",
+        rows.filter((r) => r[rid] === 0).length]), q("q7").r.map(([rid], i) => rows.filter((r) => r[rid] === 2).length >= 2 ? i : -1)));
+      resultsEl.append(t2);
+      const t3 = el("section", { class: "ticket", "data-tag": lang === "vi" ? "TIẾN ĐỘ" : "PROGRESS" });
+      t3.append(el("h2", { text: tr(q("q5").t) }), bars(count("q5", q("q5").o)), el("h2", { text: tr(q("q19").t) }), bars(count("q19", q("q19").o)),
+        el("h2", { text: tr(q("q11").t) + " (1–5)" }), bars([1, 2, 3, 4, 5].map((v) => [String(v), rows.filter((r) => r.q11 === v).length]), [0, 4]));
+      resultsEl.append(t3);
+      const t4 = el("section", { class: "ticket", "data-tag": lang === "vi" ? "LỜI KHÁCH" : "COMMENTS" });
+      for (const id of ["q8", "q20", "q21", "q22", "q23"]) {
+        const items = rows.filter((r) => r[id]).map((r) => r[id]);
+        t4.append(el("h2", { text: id.toUpperCase() + " · " + tr(q(id).t) }));
+        const ul = el("ul", { class: "quotes" });
+        if (!items.length) ul.append(el("li", { class: "empty", text: "–" }));
+        items.forEach((s) => ul.append(el("li", { text: String(s) })));
+        t4.append(ul);
+      }
+      resultsEl.append(t4);
+    }
+    // nhap phieu tu tin nhan
+    const t5 = el("section", { class: "ticket", "data-tag": lang === "vi" ? "NHẬP PHIẾU" : "IMPORT" });
+    const ta = el("textarea", { id: "import", placeholder: "KHAO-SAT-QAH v1\n{...}" });
+    const st = el("div", { class: "status", role: "status" });
+    const imp = el("button", { class: "btn primary", type: "button", text: lang === "vi" ? "Lưu phiếu" : "Save responses" });
+    const csv = el("button", { class: "btn", type: "button", text: lang === "vi" ? "Sao chép bảng CSV" : "Copy as CSV" });
+    t5.append(el("h2", { text: lang === "vi" ? "Dán câu trả lời người chơi gửi bạn (dán nhiều phiếu một lúc được)" : "Paste the answers playtesters sent you (several at once is fine)" }), ta, el("div", { class: "tools" }, imp, csv), st);
+    imp.addEventListener("click", async () => {
+      // moi phieu: dong "KHAO-SAT-QAH v1" roi mot dong JSON (JSON.stringify khong xuong dong)
+      const found = ta.value.split(/\r?\n/).map((s) => s.trim()).filter((s) => s.startsWith("{"))
+        .map((s) => { try { return JSON.parse(s); } catch (e) { return null; } })
+        .filter((o) => o && typeof o === "object" && !Array.isArray(o) && o.v === 1);
+      if (!found.length) { st.textContent = lang === "vi" ? "Không thấy phiếu nào trong đoạn chữ (cần dòng KHAO-SAT-QAH v1 và phần {…})." : "No responses found (need the KHAO-SAT-QAH v1 line and its {…} part)."; st.className = "status err"; return; }
+      imp.disabled = true;
+      let ok = 0;
+      for (const o of found) {
+        const id = "nhap-" + (o.at || "").replace(/[^0-9]/g, "").slice(0, 17) + "-" + Math.random().toString(36).slice(2, 6);
+        try { await db.doc("responses/" + id).set(o); ok++; } catch (e) { /* dem phia duoi */ }
+      }
+      imp.disabled = false;
+      st.textContent = (lang === "vi" ? "Đã lưu " : "Saved ") + ok + "/" + found.length + (lang === "vi" ? " phiếu." : " responses.");
+      st.className = "status " + (ok === found.length ? "ok" : "err");
+      if (ok === found.length) ta.value = "";
+    });
+    csv.addEventListener("click", async () => {
+      const keys = ["at", "lang", "q1", "q2", "q3", "q4", "q5", "q6", "q7a", "q7b", "q7c", "q7d", "q7e", "q8"].concat(Array.from({ length: 15 }, (_, i) => "q" + (i + 9)));
+      const cell = (v) => { const s = v == null ? "" : Array.isArray(v) ? v.join("|") : String(v); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+      const text = [keys.join(",")].concat(rows.map((r) => keys.map((k) => cell(r[k])).join(","))).join("\n");
+      try { await navigator.clipboard.writeText(text); st.textContent = lang === "vi" ? "Đã sao chép CSV." : "CSV copied."; st.className = "status ok"; }
+      catch (e) { ta.value = text; ta.select(); st.textContent = lang === "vi" ? "Bảng CSV ở trong ô: sao chép tay." : "The CSV is in the box: copy it by hand."; st.className = "status err"; }
+    });
+    if (!db) { imp.disabled = true; st.textContent = lang === "vi" ? "Không có quyền lưu dữ liệu ở lượt xem này." : "Saving isn't available in this view."; }
+    resultsEl.append(t5);
+  }
+
+  applyLang();
+  (async () => {
+    if (!window.claude || !window.claude.use) return;
+    const [d, user] = await Promise.all([window.claude.use("db"), window.claude.use("user")]);
+    db = d;
+    if (user) {
+      try { uid = await user.id(); } catch (e) { uid = null; }
+      try { isEditor = !!(await user.canEdit()); } catch (e) { isEditor = false; }
+      let w = null; try { w = await user.can("data.write"); } catch (e) { w = null; }
+      canSend = !!(db && uid && w !== false);
+    }
+    document.getElementById("to-results").hidden = !isEditor;
+    renderForm();
+    route();
+  })();
+})();
+</script>

@@ -575,6 +575,7 @@ namespace QuanAnHope.Game
             rt.anchoredPosition = pos;
             rt.localEulerAngles = new Vector3(0f, 0f, -t.rot);
             var tmp = rt.gameObject.AddComponent<TextMeshProUGUI>();
+            Lang.Attach(tmp);   // F-110
             tmp.font = UiKit.Font;
             tmp.text = Days(t.s);
             tmp.fontSize = t.size;

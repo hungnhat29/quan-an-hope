@@ -215,7 +215,8 @@ namespace QuanAnHope.Game
                 t.rectTransform.offsetMax = new Vector2(-70f, -2f);
                 t.text = r.name;
                 PicKit.Icon(row.transform, IconBook.Dish(r, s.Recipes), new Vector2(-366f * 0.5f + 28f, 0f), 50f);
-                TextMeshProUGUI price = UiKit.Label(row.transform, "Gia", new Vector2(1f, 0.5f), new Vector2(-38f, 0f), new Vector2(68f, 40f), r.price + "G", 18f);
+                // F-111 (K-8): cot gia nam ngoai o ten (truoc: gia -38 / rong 68 chui 36 px duoi o ten dai)
+                TextMeshProUGUI price = UiKit.Label(row.transform, "Gia", new Vector2(1f, 0.5f), new Vector2(-8f, 0f), new Vector2(62f, 40f), r.price + "G", 18f);
                 price.alignment = TextAlignmentOptions.Right;
             }
             if (!bt)
