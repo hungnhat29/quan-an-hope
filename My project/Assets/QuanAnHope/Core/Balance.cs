@@ -66,6 +66,55 @@ namespace QuanAnHope.Core
 
         /// <summary>Ngay cua hang relic mien phi (muc 7.1): chi relic do hiem nay, lay toi da picks cai.</summary>
         public FreeRelicRules freeRelic = new FreeRelicRules();
+
+        // ---------- truoc sprint 10 (constitution 2.0) ----------
+
+        /// <summary>Thot (muc 5.1, 8): co san start cai, mua them toi tong max, gia price roi + step moi lan.</summary>
+        public BoardRules board = new BoardRules { start = 1, max = 1 };
+
+        // ---------- sau sprint 10 (constitution 2.1, yeu cau 23/11/2026) ----------
+
+        /// <summary>Bep (muc 5.1, 8): co san start cai, mua them toi tong max, gia price roi + step moi lan (500 / 800G).</summary>
+        public BoardRules stove = new BoardRules { start = 1, max = 1 };
+
+        /// <summary>Mon ngon nhat cho chu no (muc 8 boss): dung mon + dung bac thi thuong them (bonusMult x thuong boss).</summary>
+        public BossBestRules bossBest = new BossBestRules();
+
+        /// <summary>Tay van nang (2.2 muc 8): cam 2 do; gia, mua 1 lan. price = 0: chua co trong du lieu (khong ban).</summary>
+        public int glovePrice;
+    }
+
+    [Serializable]
+    public class BossBestRules
+    {
+        public string recipe;
+        public int tier = 5;
+        public float bonusMult = 1f;
+    }
+
+    /// <summary>Hinh dang chia bac mon (constitution 2.1 muc 5.3, balance/cookodds.py).</summary>
+    [Serializable]
+    public class DishOddsRules
+    {
+        /// <summary>Mau chuan Lac vi..Tuyet hao o b = shapeB (tam o bac shapeTier).</summary>
+        public float[] shape = new float[0];
+        public float shapeB;
+        public int shapeTier;
+        public float tailDecay;
+        public double legendBase;
+        public double legendGrowth;
+        public double legendCap;
+        public double minChance;
+        public int grid;
+    }
+
+    [Serializable]
+    public class BoardRules
+    {
+        public int start;
+        public int max;
+        public int price;
+        public int step;
     }
 
     [Serializable]
@@ -95,6 +144,12 @@ namespace QuanAnHope.Core
         public float dropEverySeconds;
         public int maxDrop;
         public float blackoutExtraSeconds;
+
+        /// <summary>
+        /// Khach het thanh cho thi gian bo di, quan bi tru so tien nay (G) theo vong; chi so 0 = vong 1 (constitution 2.0 muc 6.6).
+        /// Rong / 0 = khach khong bo di (ban 1.9).
+        /// </summary>
+        public int[] leavePenaltyByRound = new int[0];
     }
 
     /// <summary>Ngay mat dien (constitution muc 2, 5.3, 5.9; Art Bible muc 4).</summary>
@@ -281,6 +336,9 @@ namespace QuanAnHope.Core
 
         /// <summary>Gia goc theo vong; chi so 0 = vong 1.</summary>
         public int[] basePriceByRound = new int[0];
+
+        /// <summary>Tu 2.1: moi to hop ra du 6 bac (null / rong = cong thuc 2 bac cu cua 1.0-2.0).</summary>
+        public DishOddsRules odds;
     }
 
     /// <summary>Tu 1.4 khong con so khach moi ngay: khach vao lien tuc toi gio dong cua (muc 6.2).</summary>

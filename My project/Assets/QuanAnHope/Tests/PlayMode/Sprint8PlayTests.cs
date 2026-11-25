@@ -151,9 +151,10 @@ namespace QuanAnHope.PlayTests
         [UnityTest]
         public IEnumerator F080_SauKieuKhach_KhacHinhBong_TayCungMauAo()
         {
-            Assert.AreEqual(7, CustomerLooks.Count, "sprint 9: them kieu Anh tho (Toc_Ngan)");
-            var looks = Enumerable.Range(1, 12).Select(n => CustomerLooks.LookFor(n, 4)).ToList();
-            Assert.AreEqual(7, looks.Distinct().Count(), "12 khach dau ngay du 7 kieu");
+            Assert.AreEqual(7, CustomerLooks.RegularCount, "sprint 9: them kieu Anh tho (Toc_Ngan)");
+            Assert.AreEqual(12, CustomerLooks.Count, "23/11/2026: them 5 khach dac biet");
+            var looks = Enumerable.Range(1, 40).Select(n => CustomerLooks.LookFor(n, 4)).ToList();
+            Assert.AreEqual(7, looks.Where(l => !CustomerLooks.IsSpecial(l)).Distinct().Count(), "40 khach dau ngay du 7 kieu thuong");
             for (int i = 1; i < looks.Count; i++) Assert.AreNotEqual(looks[i - 1], looks[i], "hai khach lien nhau khac kieu");
             // bay 6 kieu ra 3 ghe, chup anh
             yield return ToDay(4, 2000);
@@ -285,15 +286,14 @@ namespace QuanAnHope.PlayTests
             yield return Shot("f077_ngay2_mien_phi.png", g.Room.Station("Relic_1").WorldCenter, Sprint8);
             Assert.AreEqual(1, S.Relics.Owned.Count);
             Assert.AreEqual(tickets, S.Wallet.Count, "mien phi");
-            Assert.IsTrue(S.Shop.Offers.All(o => o == null), "chi lay 1");
-            int money = S.Money;
-            yield return UseGoc3("RelicReroll");
-            Assert.AreEqual(money, S.Money, "da lay relic mien phi: khong doi hang");
+            // 2.2 (yeu cau 24/11/2026): hai be con lai hien lai gia ve
+            Assert.AreEqual(2, S.Shop.Offers.Count(o => o != null), "hai relic con lai van tren ke");
+            Assert.Greater(S.Shop.Price(1) + S.Shop.Price(2), 0, "het mien phi: hien gia ve");
 
             // ngay 3: doi hang ton 50G, ba relic khac han
             yield return ToDay(3, 500);
             var before = S.Shop.Offers.ToList();
-            money = S.Money;
+            int money = S.Money;
             yield return UseGoc3("RelicReroll");
             Assert.AreEqual(money - S.Balance.relicReroll.baseCost, S.Money);
             Assert.IsTrue(S.Shop.Offers.All(o => o != null && !before.Contains(o)), "3 relic khac han");
@@ -352,12 +352,13 @@ namespace QuanAnHope.PlayTests
         [UnityTest]
         public IEnumerator F081_HuongDan_Ngay2_Relic_Ngay4_CuaHang_TroiToi()
         {
-            yield return ToDay(2, 500);
+            // yeu cau 23/11/2026: bai relic chieu dau ngay 3 (khong con ngay 2)
+            yield return ToDay(3, 500);
             g.Tutorial.Begin(true);
             yield return null;
             yield return null;
-            Assert.AreEqual(Tutorial.Relic, g.Tutorial.LessonId, "ngay 2: bai relic");
-            StringAssert.Contains("miễn phí", g.Tutorial.Line);
+            Assert.AreEqual(Tutorial.Relic, g.Tutorial.LessonId, "ngay 3: bai relic");
+            StringAssert.Contains("relic", g.Tutorial.Line);
             yield return UseGoc3("Relic_0");
             yield return null;
             Assert.IsTrue(g.OpenTab(TabMenu.Page.Relic));

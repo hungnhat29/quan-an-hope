@@ -38,7 +38,7 @@ B['day'] = {"open_hour": 9, "close_hour": 21, "seconds_per_hour": 40, "boss_hour
 # boss_day (sprint 5): constitution muc 2 "Ngay 21, dung 20:00 chu no den"
 B['day_seconds'] = (21 - 9) * 40
 # Thung nho lai (2 chinh) nen can nhieu ve hon de du nguyen lieu cho ca ngay va con ve mua relic: 3 -> 6 ve / ngay
-B["tickets_per_day"] = 7  # sprint 7 F-060: 6 -> 7 (ngay 1 van 5 ve, start.first_day_tickets)
+B["tickets_per_day"] = 8  # sprint 7 F-060: 6 -> 7; yeu cau 23/11/2026 "mac dinh moi ngay la 8 ve, tru ngay 1 van 5 ve": 7 -> 8
 B["relic_shop_offers"] = 3  # constitution 7.1: moi ngay 3 relic khac nhau (sprint 3)
 # ---- sprint 4 (vong 2): so co san o constitution 1.4, dua vao du lieu theo Dieu 2
 # 6.1 / 6.2: vong 1 mot ghe (khach lan luot), tu vong 2 toi da 3 khach cung ngoi
@@ -86,11 +86,80 @@ for r in R['recipes']:
     r['warn_s'] = r['cook_s'] * T['warn_factor']
     r['total_s'] = round(sum(v[1] for v in r['prep'].values()) + T['step_s'] * len(r['steps']) + r['cook_s'] + T['plate_s'] + T['serve_s'], 1)
 R['_note'] = 'Constitution 1.4: so che x%s, nau x%s so voi 1.3. Sinh tu make_next.py.' % (PREP_X, COOK_X)
+
+# ---- truoc sprint 10 (yeu cau 22/11/2026, constitution 2.0) ----
+# 5.8 "giam bot 30% so cong thuc mon an lai va tinh toan voi loai nguyen lieu tuong ung": moi nguyen lieu chinh / dot pha chi
+# ghep voi nhung do phu duoi day (120 -> 84 mon). Chon de: (a) moi do phu co >= 1 mon ngay o vong no mo khoa; (b) moi vong
+# giu ~70% so cap; (c) cap nghe hop mieng (bo xao rau muong, dau phu sot ca chua...). Cap khong co o day = khong co mon.
+PAIRS = {
+    'trung':   ['ca_chua', 'hanh_tay', 'khoai_tay', 'nam_rom', 'ot_chuong', 'mang_tay', 'nam_dong_co'],
+    'heo':     ['hanh_tay', 'rau_muong', 'khoai_tay', 'nam_rom', 'bong_cai', 'ot_chuong', 'bi_do', 'nam_dong_co'],
+    'dau_phu': ['ca_chua', 'hanh_tay', 'nam_rom', 'bong_cai', 'bi_do', 'nam_dong_co'],
+    'bo':      ['ca_chua', 'hanh_tay', 'rau_muong', 'khoai_tay', 'bong_cai', 'ot_chuong', 'mang_tay', 'nam_dong_co'],
+    'tom':     ['hanh_tay', 'rau_muong', 'nam_rom', 'bong_cai', 'bi_do', 'mang_tay'],
+    'ca_hoi':  ['ca_chua', 'khoai_tay', 'nam_rom', 'bong_cai', 'ot_chuong', 'mang_tay', 'nam_dong_co'],
+    'muc':     ['hanh_tay', 'nam_rom', 'bong_cai', 'ot_chuong', 'mang_tay', 'nam_dong_co'],
+    'ga':      ['ca_chua', 'hanh_tay', 'khoai_tay', 'bong_cai', 'ot_chuong', 'bi_do', 'mang_tay', 'nam_dong_co'],
+    'tom_hum': ['ca_chua', 'hanh_tay', 'khoai_tay', 'bong_cai', 'ot_chuong', 'mang_tay', 'nam_dong_co'],
+    'wagyu':   ['hanh_tay', 'khoai_tay', 'nam_rom', 'ot_chuong', 'bi_do', 'mang_tay', 'nam_dong_co'],
+    'ca_ngu':  ['ca_chua', 'hanh_tay', 'rau_muong', 'nam_rom', 'bong_cai', 'ot_chuong', 'mang_tay'],
+    'cua':     ['ca_chua', 'hanh_tay', 'rau_muong', 'nam_rom', 'bi_do', 'mang_tay', 'nam_dong_co'],
+}
+R['recipes'] = [r for r in R['recipes'] if r['id'].split('__')[1] in PAIRS[r['id'].split('__')[0]]]
+
+# 5.2 "bo phan gia theo bac mon, co gia niem yet cho tung mon o bac binh thuong, bac thap hon va cao hon ti le thuan voi gia":
+# moi mon mot gia (bac Binh thuong, he so x1). Gia goc cu theo vong (60 / 70 / 85 / 100) la muc tieu: giai lan luot gia cua
+# nhom mon mo o vong r sao cho trung binh cac mon lam duoc o vong r (deu nhau) bang gia goc cu cua vong r. Trong nhom, mon
+# lau hon thi dat hon (can bac hai thoi gian). Lam tron 5G. Mon dot pha: mot gia cho ca nhom (BT_PRICE), chon bang bot.
+OLD_BASE = {1: 60, 2: 70, 3: 85, 4: 100}
+# Lan 1 (bot C# 4.000 van): giu trung binh = gia goc cu -> gom bo thang 71% (1.9: 87%), khach goi lech ve mon re (gacha ghep cap
+# lam loai chinh cu ra nhieu hon). Lan 2: x1,07 -> 88% / 57% (khong gom bo) / 83%; lan 3: x1,05 -> 85% / 50% / 82% (chot).
+PRICE_X = float(os.environ.get("PRICE_X", "0.95"))  # 2.1 (24/11/2026): 8 ve + ti le 6 bac lam de hon -> quet bot: 1.05 -> 94/97/72%, 0.95 -> 90/89/30%, 0.9 -> 87/77/12%; chon 0.95 (Q-79)
+BT_PRICE = 100
+r5 = lambda x: int(5 * round(x / 5.0))
+std = [r for r in R['recipes'] if r['group'] == 'chinh']
+for rd in (1, 2, 3, 4):
+    group = [r for r in std if r['unlock_round'] == rd]
+    older = [r for r in std if r['unlock_round'] < rd]
+    mean_t = sum(r['total_s'] for r in group) / len(group)
+    target = OLD_BASE[rd] * PRICE_X * (len(group) + len(older)) - sum(r["price"] for r in older)
+    U = target / len(group)
+    for _ in range(40):  # chinh U de tong sau khi lam tron khop muc tieu
+        for r in group: r['price'] = r5(U * (r['total_s'] / mean_t) ** 0.5)
+        U += (target - sum(r['price'] for r in group)) / len(group) * 0.5
+for r in R['recipes']:
+    if r['group'] != 'chinh': r['price'] = BT_PRICE
 save('recipes.json', R)
+
+# 6.6 "khach hang khi het thanh cho doi thi se tuc gian bo di va tu dong tru 1 so tien nhat dinh": vong 2 / 3 / 4 (~30% gia goc cu)
+B['patience']['leave_penalty'] = {"2": 20, "3": 25, "4": 30}
+# 8 "them vao Shop: mua them thot max 3, tang gia moi luot mua": tong toi da 3 thot (co san 1), 300G roi +200G moi lan
+B['board'] = {"start": 1, "max": 3, "price": 300, "step": 200}
+# 5.3 / 5.4 (yeu cau 23/11/2026 "chinh sua lai ti le"): moi to hop ra du 6 bac, Huyen thoai ngan rieng (balance/cookodds.py)
+B['dish']['odds'] = {
+    "shape": [4.95, 17.05, 74.35, 13.25, 9.15],  # mau chuan chinh 1 + phu 1 (b = 1,8): Lac vi..Tuyet hao (Huyen thoai 2,1 tach rieng)
+    "shape_b": 1.8, "shape_tier": 2,               # o b = 1,8 tam mau o bac Binh thuong
+    "tail_decay": 3.0,                             # moi bac xa hon giam e^-3 (~20 lan)
+    "legend_base": 0.00001, "legend_growth": 2000, # L = 0,001% x 2000^(S/5): 0,001% o S = 0, 2% o S = 5
+    "legend_cap": 0.05,                            # relic Huyen thoai cong them, tong toi da 5%
+    "min_chance": 0.00001,                         # moi bac toi thieu 0,001%
+    "grid": 100000,                                # luu tren 100.000 ve nguyen
+}
+B['dish']['max_tier'] = 4  # bac cao nhat cua 5 bac chia hinh dang (Tuyet hao); Huyen thoai = bac 5 (ngan rieng)
+# 8 "them bep vao shop: max 2 bep ... mua them bep gia 500g, mua lan 2 voi gia 800g": co san 1; gia 500G, +300G moi lan
+B['stove'] = {"start": 1, "max": 2, "price": 500, "step": 300}
+# 6.7 / muc 8 boss: "mon ngon nhat cua tiem" - goi y bang tranh: Trung chien ca chua bac Huyen thoai -> thuong x1,5 (Q-80)
+B['boss_best'] = {"recipe": "trung__ca_chua", "tier": 5, "bonus_mult": 1.5}
+# 8 (yeu cau 24/11/2026 "tay van nang: mua thi cam duoc 2 do ... tu dinh gia, chi mua 1 lan"): 600G, mo ngay 4 cung cua hang (Q-85)
+B['glove'] = {"price": 600}
+save('balance.json', B)
 
 RL = load('relics.json')
 for x in RL:
     # Ro tre ba ngoai: thung do phu tu 5 xuong 3 nen +2 mon thanh +1 mon (giu ti le ~ +35%)
     if x['id'] == 'V2': x['fx'] = {'phu_size': 1}
+# 7.3 (yeu cau 23/11/2026 "co 2 relic moi"): relic Huyen thoai khi nau (+0,3% va +1,0%; tong toi da 5%). Ten relic thu hai: Q-81
+RL.append({"id": "F11", "name": "Sao băng trong nồi", "set": "", "price": 2, "rarity": "hiem", "fx": {"dish_legend": 0.003}})
+RL.append({"id": "F12", "name": "Bí kíp gia truyền", "set": "", "price": 4, "rarity": "hiem", "fx": {"dish_legend": 0.01}})
 save('relics.json', RL)
 print('ok ->', OUT)

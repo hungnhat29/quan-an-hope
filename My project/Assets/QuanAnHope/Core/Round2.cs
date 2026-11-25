@@ -53,6 +53,24 @@ namespace QuanAnHope.Core
             return Math.Max(0f, Math.Min(1f, 1f - c.waitedSeconds / total));
         }
 
+        /// <summary>Tien quan bi tru khi khach het thanh cho bo di hom nay (constitution 2.0 muc 6.6); 0 = khach khong bo di.</summary>
+        public static int LeavePenalty(Balance b, int day)
+        {
+            if (!Applies(b, day)) return 0;
+            int round = b.RoundOfDay(day);
+            int[] byRound = b.patience.leavePenaltyByRound;
+            return byRound != null && round >= 1 && round <= byRound.Length ? byRound[round - 1] : 0;
+        }
+
+        /// <summary>Khach het thanh cho (khoang an toan + toi da diem bi tru) va se gian bo di. Chu no khong bao gio bo di.</summary>
+        public static bool GivesUp(Balance b, int day, Customer c, RelicFx fx)
+        {
+            if (c == null || c.isBoss || LeavePenalty(b, day) <= 0) return false;
+            float safe = SafeSeconds(b, day, fx);
+            if (float.IsInfinity(safe)) return false;
+            return c.waitedSeconds + 1e-4f >= safe + b.patience.maxDrop * b.patience.dropEverySeconds;
+        }
+
         /// <summary>Khach da qua khoang an toan (thanh doi mau).</summary>
         public static bool IsImpatient(Balance b, int day, Customer c, RelicFx fx)
         {
@@ -157,6 +175,8 @@ namespace QuanAnHope.Core
         public ItemShop(Balance balance)
         {
             this.balance = balance;
+            Boards = Math.Max(1, balance.board.start);
+            Stoves = Math.Max(1, balance.stove.start);
         }
 
         public int Day { get; private set; }
@@ -172,6 +192,26 @@ namespace QuanAnHope.Core
 
         public bool HasMachine { get; private set; }
         public int MachineUsesLeft { get; private set; }
+
+        /// <summary>So thot dang co (constitution 2.0 muc 8): co san board.start, mua them toi board.max.</summary>
+        public int Boards { get; private set; }
+        public int BoardPrice { get { return balance.board.price + balance.board.step * Math.Max(0, Boards - balance.board.start); } }
+        public ItemBuyResult CheckBoard(int money, out int cost) { return Check(money, BoardPrice, Boards >= balance.board.max, out cost); }
+        internal void AddBoard() { Boards++; }
+        internal void RestoreBoards(int count) { Boards = Math.Max(balance.board.start, Math.Min(balance.board.max, count)); }
+
+        /// <summary>So bep dang co (constitution 2.1 muc 8): co san stove.start, mua them toi stove.max (500G, roi +300G).</summary>
+        public int Stoves { get; private set; }
+        public int StovePrice { get { return balance.stove.price + balance.stove.step * Math.Max(0, Stoves - balance.stove.start); } }
+        public ItemBuyResult CheckStove(int money, out int cost) { return Check(money, StovePrice, Stoves >= balance.stove.max, out cost); }
+        internal void AddStove() { Stoves++; }
+        internal void RestoreStoves(int count) { Stoves = Math.Max(Math.Max(1, balance.stove.start), Math.Min(Math.Max(1, balance.stove.max), count)); }
+
+        /// <summary>Tay van nang (constitution 2.2 muc 8): cam 2 do cung luc; mua 1 lan.</summary>
+        public bool HasGlove { get; private set; }
+        public ItemBuyResult CheckGlove(int money, out int cost) { return Check(money, balance.glovePrice, HasGlove || balance.glovePrice <= 0, out cost); }
+        internal void AddGlove() { HasGlove = true; }
+        internal void RestoreGlove(bool has) { HasGlove = has; }
 
         public void BeginDay(int day)
         {
@@ -237,8 +277,9 @@ namespace QuanAnHope.Core
             switch (r)
             {
                 case SauceResult.Fail: return 0;
-                case SauceResult.Up1: return Math.Min(max, tier + 1);
-                case SauceResult.Up2: return Math.Min(max, tier + 2);
+                // 2.1: mon da Huyen thoai (nau ra) khong bi tut khi +1 / +2 cham tran Tuyet hao
+                case SauceResult.Up1: return Math.Max(tier, Math.Min(max, tier + 1));
+                case SauceResult.Up2: return Math.Max(tier, Math.Min(max, tier + 2));
                 case SauceResult.Legend: return b.dish.priceMult.Length - 1;
                 default: return tier;
             }
@@ -263,9 +304,9 @@ namespace QuanAnHope.Core
             {
                 case MachineResult.Trash: return -1;
                 case MachineResult.Down1: return Math.Max(0, tier - 1);
-                case MachineResult.Up1: return Math.Min(max, tier + 1);
-                case MachineResult.Up2: return Math.Min(max, tier + 2);
-                case MachineResult.Up3: return Math.Min(max, tier + 3);
+                case MachineResult.Up1: return Math.Max(tier, Math.Min(max, tier + 1));
+                case MachineResult.Up2: return Math.Max(tier, Math.Min(max, tier + 2));
+                case MachineResult.Up3: return Math.Max(tier, Math.Min(max, tier + 3));
                 default: return tier;
             }
         }

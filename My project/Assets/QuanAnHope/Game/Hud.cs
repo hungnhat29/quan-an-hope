@@ -21,12 +21,11 @@ namespace QuanAnHope.Game
         static readonly Vector2 Bottom = new Vector2(0.5f, 0f);
         static readonly Vector2 BottomLeft = new Vector2(0f, 0f);
 
-        const string ControlsHint = "W A S D: đi · Chuột: nhìn · Chuột trái: bấm / giữ · Chuột phải: đặt lại đồ đang cầm · Esc: tạm dừng";
 
         readonly GameController g;
         public Transform Canvas { get; private set; }
 
-        TextMeshProUGUI day, money, tickets, toast, prompt, held, hint, clickToPlay;
+        TextMeshProUGUI day, money, tickets, toast, prompt, held, clickToPlay;
         Image crosshair;
         GameObject toastBox, promptBox, heldBox;
 
@@ -102,9 +101,7 @@ namespace QuanAnHope.Game
             heldBox = h.gameObject;
             held = UiKit.Text(h.transform, "", 17f);
 
-            hint = UiKit.Label(Canvas, "DieuKhien", BottomLeft, new Vector2(16f, 8f), new Vector2(760f, 26f), ControlsHint, 14f, TextAlignmentOptions.Left);
-            hint.rectTransform.pivot = new Vector2(0f, 0f);
-            hint.color = UiKit.Cream;
+            // sau sprint 10 (yeu cau 23/11/2026): bo dong huong dan di chuyen mau trang goc duoi; phim nam trong Cai dat (MenuView.Controls)
 
             // Huong dan ngay 1 (F-053 AC-1): mot dong duoi thong bao, nen vang.
             Image tb = UiKit.Panel(Canvas, "HuongDan", Top, new Vector2(0f, -96f), new Vector2(720f, 44f), UiKit.Mustard, false);
@@ -154,17 +151,148 @@ namespace QuanAnHope.Game
 
         public Button OverlayButton { get { return overlayButton; } }
         public Button OverlayMenuButton { get { return overlayMenuButton; } }
-        public string TutorialText { get { return tutorialBox.activeSelf ? tutorialText.text : null; } }
+        /// <summary>
+        /// Dong huong dan dang chay (24/11/2026: bo hop chu vang tren HUD - huong dan bang tranh; dong chu chi con de test va bang ron).
+        /// </summary>
+        public string TutorialText { get { return g.Tutorial != null && g.Mode == GameMode.Playing && !overlayShown ? g.Tutorial.Line : null; } }
         /// <summary>Dong giai thich dang hien (B-07), null neu khong co.</summary>
-        public string TutorialNote { get { return noteBox != null && noteBox.activeSelf ? noteText.text : null; } }
-        public TextMeshProUGUI TutorialNoteLabel { get { return noteText; } }
+        /// <summary>Chu chu thich cua tranh khai niem dang hien (B-08); null neu khong co.</summary>
+        public string TutorialNote { get { return CardsVisible && shownConcept != null ? g.Tutorial.Note : null; } }
+
+        // Sprint 10 B-08: the tranh huong dan (khuon A) + tranh khai niem (khuon C) o ben trai, duoi o so lieu
+        RectTransform cardsRoot;
+        string shownCardsKey, shownPic, shownConcept;
+
+        /// <summary>Tranh buoc / khai niem dang hien tren HUD (test).</summary>
+        public string ShownPic { get { return CardsVisible ? shownPic : null; } }
+        public string ShownConcept { get { return CardsVisible ? shownConcept : null; } }
+        bool CardsVisible { get { return (cardsRoot != null && cardsRoot.gameObject.activeSelf) || TutorialBigShown; } }
+        public RectTransform TutorialCards { get { return cardsRoot; } }
 
         void RefreshNote()
         {
-            if (noteBox == null) return;
-            string note = g.Tutorial != null && g.Mode == GameMode.Playing && !overlayShown ? g.Tutorial.Note : null;
-            if (note != null && noteText.text != note) noteText.text = note;
-            if ((note != null) != noteBox.activeSelf) noteBox.SetActive(note != null);
+            if (noteBox != null && noteBox.activeSelf) noteBox.SetActive(false);
+            bool on = g.Tutorial != null && g.Mode == GameMode.Playing && !overlayShown && g.Tutorial.Line != null;
+            string pic = on ? g.Tutorial.Pic : null, concept = on ? g.Tutorial.Concept : null;
+            if (cardsRoot == null)
+            {
+                cardsRoot = UiKit.Box(Canvas, "TranhHuongDan", TopLeft, new Vector2(24f, -98f), new Vector2(320f, 520f));
+                cardsRoot.pivot = TopLeft;
+            }
+            string key = (on ? g.Tutorial.LessonId + ":" + g.Tutorial.Index : "") + ":" + pic + ":" + concept;
+            if (key != shownCardsKey)
+            {
+                shownCardsKey = key;
+                shownPic = pic;
+                shownConcept = concept;
+                UiKit.Clear(cardsRoot);
+                Vector2 size = new Vector2(300f, 210f);
+                // UiKit.Box dat pivot = anchor: vi tri la goc trai tren cua the
+                // paper-ui-pickit.md: the buoc trong game bo huy hieu so (bang ron da ghi "1/10"); the khai niem co "?" tim
+                if (pic != null) GuidePics.Card(g, cardsRoot, pic, TopLeft, Vector2.zero, size, 0);
+                if (concept != null) GuidePics.Card(g, cardsRoot, concept, TopLeft, new Vector2(0f, -size.y - 12f), size, -1);
+                BuildBig(pic, concept);
+                // buoc moi co tranh: hien to toan man hinh, tru khi nguoi choi da bam T tat (24/11/2026: tat roi thi chi T moi bat lai)
+                tutorialBig = bigWanted && (pic != null || concept != null);
+            }
+            bool show = pic != null || concept != null;
+            bool big = show && tutorialBig;
+            if (cardsRoot.gameObject.activeSelf != (show && !big)) cardsRoot.gameObject.SetActive(show && !big);
+            if (bigRoot != null && bigRoot.activeSelf != big)
+            {
+                bigRoot.SetActive(big);
+                if (big) bigRoot.transform.SetAsLastSibling();
+            }
+        }
+
+        // ---------------- sau sprint 10: tranh huong dan toan man hinh (T bat / tat) ----------------
+
+        GameObject bigRoot;
+        RectTransform bigCards;
+        TextMeshProUGUI bigLine;
+        bool tutorialBig, bigWanted = true;
+
+        /// <summary>Nguoi choi muon xem tranh to (T tat / bat; giu qua cac buoc).</summary>
+        public bool TutorialBigWanted { get { return bigWanted; } }
+
+        /// <summary>Tranh huong dan dang hien to toan man hinh.</summary>
+        public bool TutorialBigShown { get { return bigRoot != null && bigRoot.activeSelf; } }
+        public RectTransform TutorialBigCards { get { return bigCards; } }
+
+        /// <summary>Phim T: an / hien tranh to (chi khi buoc hien tai co tranh).</summary>
+        public void ToggleTutorialBig()
+        {
+            bigWanted = !bigWanted;
+            tutorialBig = bigWanted;
+            RefreshNote();
+        }
+
+        /// <summary>Kich thuoc mot the tranh to (tham chieu 1280 x 720).</summary>
+        public static readonly Vector2 BigCardSize = new Vector2(540f, 380f);
+
+        void BuildBig(string pic, string concept)
+        {
+            if (bigRoot == null)
+            {
+                RectTransform dim = UiKit.Stretch(Canvas, "TranhHuongDanLon");
+                var img = dim.gameObject.AddComponent<Image>();
+                img.color = new Color(UiKit.Ink.r, UiKit.Ink.g, UiKit.Ink.b, 0.45f);
+                img.raycastTarget = false;
+                bigRoot = dim.gameObject;
+                // bang ron buoc: dai giay xe, huy hieu "1/10" ben trai, tieu de 25 px (paper-ui-pickit.md muc 1)
+                RectTransform banner = UiKit.Box(dim, "BangRon", Center, new Vector2(0f, BigCardSize.y * 0.5f + 46f), new Vector2(560f, 58f));
+                Image paper = banner.gameObject.AddComponent<Image>();
+                paper.sprite = PaperKit.Torn;
+                paper.type = Image.Type.Sliced;
+                paper.color = PaperKit.TornPaper;
+                paper.raycastTarget = false;
+                PaperKit.AddShadow(paper, 1f, 0.6f);
+                banner.gameObject.AddComponent<PaperJitter>();
+                bigStep = PicKit.Tag(banner, new Vector2(-560f * 0.5f + 64f, 0f), new Vector2(84f, 32f), "", 17f, UiKit.Mustard);
+                bigLine = UiKit.Label(banner, "DongHuongDan", Center, new Vector2(40f, 0f), new Vector2(400f, 46f), "", 25f);
+                bigLine.enableAutoSizing = false;
+                bigLine.textWrappingMode = TextWrappingModes.NoWrap;
+                bigCards = UiKit.Box(dim, "The", Center, Vector2.zero, new Vector2(BigCardSize.x * 2f + 32f, BigCardSize.y));
+                // chip "T an / hien"
+                Image chip = UiKit.Panel(dim, "PhimT", Center, new Vector2(0f, -BigCardSize.y * 0.5f - 40f), new Vector2(230f, 44f), UiKit.Cream);
+                chip.raycastTarget = false;
+                Image key = UiKit.Panel(chip.transform, "Phim", new Vector2(0f, 0.5f), new Vector2(10f, 0f), new Vector2(30f, 30f), UiKit.Cream, false);
+                ((RectTransform)key.transform).pivot = new Vector2(0f, 0.5f);
+                UiKit.Text(key.transform, "T", 16f, TextAlignmentOptions.Center, 0f);
+                UiKit.Label(chip.transform, "Chu", Center, new Vector2(18f, 0f), new Vector2(170f, 36f), "ẩn / hiện", 17f);
+                bigRoot.SetActive(false);
+            }
+            UiKit.Clear(bigCards);
+            RefreshBigLine();
+            int n = (pic != null ? 1 : 0) + (concept != null ? 1 : 0);
+            float x = n == 2 ? -(BigCardSize.x + 32f) * 0.5f : 0f;
+            if (pic != null) { RoundBig(GuidePics.Card(g, bigCards, pic, Center, new Vector2(x, 0f), BigCardSize, 0)); x += BigCardSize.x + 32f; }
+            if (concept != null) RoundBig(GuidePics.Card(g, bigCards, concept, Center, new Vector2(x, 0f), BigCardSize, -1));
+        }
+
+        TextMeshProUGUI bigStep;
+
+        /// <summary>Bang ron: "1/10" trong huy hieu + tieu de buoc.</summary>
+        void RefreshBigLine()
+        {
+            if (bigLine == null) return;
+            Tutorial t = g.Tutorial;
+            bool has = t != null && t.Current != null;
+            string step = has ? (t.Index + 1) + "/" + t.Count : "";
+            string title = has ? t.Current.text : "";
+            if (bigStep.text != step) bigStep.text = step;
+            if (bigLine.text != title) bigLine.text = title;
+        }
+
+        /// <summary>Tieu de tren bang ron tranh to (test).</summary>
+        public string BigBannerText { get { return bigLine != null ? bigStep.text + " · " + bigLine.text : null; } }
+
+        /// <summary>The to: bo goc lon, min hon (sprite do phan giai cao).</summary>
+        static void RoundBig(RectTransform card)
+        {
+            foreach (Image i in card.GetComponentsInChildren<Image>(true))
+                // chi khung the (bia, khung kem, cua so); vien thuoc giu bo goc nho
+                if (i.sprite == UiKit.Rounded && (i.name == "Khung" || i.name == "BiaCarton" || i.name == "CuaSo")) { i.sprite = UiKit.RoundedLarge; i.pixelsPerUnitMultiplier = 1f; }
         }
         public string OverlayTitle { get { return overlay.activeSelf ? overlayTitle.text : null; } }
         public string OverlayBody { get { return overlay.activeSelf ? overlayBody.text : null; } }
@@ -177,8 +305,8 @@ namespace QuanAnHope.Game
             Canvas.gameObject.SetActive(visible);
             if (!visible) { overlayShown = false; return; }
             string line = g.Tutorial != null ? g.Tutorial.Line : null;
-            tutorialBox.SetActive(line != null && g.Mode == GameMode.Playing);
-            if (line != null) tutorialText.text = line;
+            tutorialBox.SetActive(false);
+            if (line != null) tutorialText.text = line + (g.Tutorial.Pic != null ? " · T: xem hình" : "");
             RefreshNote();
             DebtEntry debt = s.NextDebt();
             RefreshClock();
@@ -196,8 +324,70 @@ namespace QuanAnHope.Game
             string name = g.HeldName;
             heldBox.SetActive(name != null);
             if (name != null) held.text = "Đang cầm: " + name;
+            RefreshHotbar();
 
             RefreshOverlay();
+        }
+
+        // ---------------- 2.2: o do tay van nang (kieu hotbar Minecraft) ----------------
+
+        GameObject hotbar;
+        readonly Image[] slotBg = new Image[2];
+        readonly RawImage[] slotIcon = new RawImage[2];
+        readonly TextMeshProUGUI[] slotName = new TextMeshProUGUI[2];
+        string hotbarKey;
+
+        /// <summary>Thanh o do dang hien (test).</summary>
+        public bool HotbarShown { get { return hotbar != null && hotbar.activeSelf; } }
+        public string HotbarSlotName(int i) { return slotName[i] != null ? slotName[i].text : null; }
+        public bool HotbarSlotActive(int i) { return slotBg[i] != null && slotBg[i].color == UiKit.Mustard; }
+
+        void BuildHotbar()
+        {
+            RectTransform bar = UiKit.Box(Canvas, "OTayVanNang", Bottom, new Vector2(0f, 10f), new Vector2(2 * 84f + 12f, 84f));
+            hotbar = bar.gameObject;
+            for (int i = 0; i < 2; i++)
+            {
+                Image bg = UiKit.Panel(bar, "O_" + i, new Vector2(0f, 0f), new Vector2(i * 96f, 0f), new Vector2(84f, 84f), UiKit.Cream);
+                bg.raycastTarget = false;
+                slotBg[i] = bg;
+                RectTransform ic = UiKit.Box(bg.transform, "Icon", new Vector2(0.5f, 0.5f), new Vector2(0f, 4f), new Vector2(66f, 66f));
+                slotIcon[i] = ic.gameObject.AddComponent<RawImage>();
+                slotIcon[i].raycastTarget = false;
+                PicKit.Badge(bg.transform, new Vector2(-30f, 30f), (i + 1).ToString(), UiKit.Ink, 24f).GetComponentInChildren<TextMeshProUGUI>().color = UiKit.Cream;
+                slotName[i] = UiKit.Label(bg.transform, "Ten", new Vector2(0.5f, 0f), new Vector2(0f, 2f), new Vector2(84f, 18f), "", 14f);
+            }
+            hotbar.SetActive(false);
+        }
+
+        void RefreshHotbar()
+        {
+            if (hotbar == null) BuildHotbar();
+            bool show = g.HasGlove && g.Mode == GameMode.Playing;
+            if (hotbar.activeSelf != show) hotbar.SetActive(show);
+            // khung "Dang cam" nhich len tren thanh o do
+            ((RectTransform)heldBox.transform).anchoredPosition = new Vector2(0f, show ? 104f : 20f);
+            if (!show) return;
+            string key = g.ActiveSlot + "|" + g.SlotName(0) + "|" + g.SlotName(1) + "|" + (g.Slot(0).dish != null ? g.Slot(0).dish.tier : -1) + "|" + (g.Slot(1).dish != null ? g.Slot(1).dish.tier : -1);
+            if (key == hotbarKey) return;
+            hotbarKey = key;
+            for (int i = 0; i < 2; i++)
+            {
+                GameController.HandSlot s = g.Slot(i);
+                slotBg[i].color = i == g.ActiveSlot && s.kind != HandKind.Empty ? UiKit.Mustard : UiKit.Cream;
+                Texture tex = null;
+                switch (s.kind)
+                {
+                    case HandKind.Ingredient: tex = IconBook.Ingredient(s.ingredient.typeId, s.ingredient.prepared, s.ingredient.tier); break;
+                    case HandKind.Plate: tex = IconBook.Plate(); break;
+                    case HandKind.Dish: tex = IconBook.Dish(g.Session.Lookup.ById(s.dish.recipeId), g.Session.Recipes, s.dish.tier); break;
+                    case HandKind.Sauce: tex = IconBook.Jar("Nước sốt", UiKit.Coral); break;
+                }
+                slotIcon[i].texture = tex;
+                slotIcon[i].color = tex != null ? Color.white : new Color(0f, 0f, 0f, 0f);
+                string n = g.SlotName(i);
+                slotName[i].text = n ?? "";
+            }
         }
 
         string shownClock;
@@ -233,8 +423,11 @@ namespace QuanAnHope.Game
         {
             RefreshClock();
             string line = g.Tutorial != null ? g.Tutorial.Line : null;
+            if (line != null && g.Tutorial.Pic != null) line += " · T: xem hình";
             if (line != null && tutorialText.text != line) tutorialText.text = line;
-            if ((line != null && !overlayShown) != tutorialBox.activeSelf) tutorialBox.SetActive(line != null && !overlayShown);
+            RefreshBigLine();
+            // 24/11/2026: bo hop huong dan mau vang (da co tranh huong dan + bang ron)
+            if (tutorialBox.activeSelf) tutorialBox.SetActive(false);
             RefreshNote();
             Interactable focus = g.Player.Focus;
             bool show = focus != null && !overlayShown;

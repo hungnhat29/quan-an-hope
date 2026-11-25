@@ -13,7 +13,7 @@ namespace QuanAnHope.Tests
         static Balance B { get { return TestData.Balance; } }
         const string Recipe1 = "trung__ca_chua";
         const string Recipe2 = "heo__hanh_tay";
-        const string Recipe3 = "dau_phu__rau_muong";
+        const string Recipe3 = "dau_phu__hanh_tay";
 
         static void EndDay(GameSession s)
         {
@@ -125,8 +125,8 @@ namespace QuanAnHope.Tests
         static Stove FilledStove(GameSession s, out Recipe recipe)
         {
             // chinh bac 4 + phu bac 2: b = 0,6x4 + 0,4x2 + 0,8 = 4,0 -> chac chan Tuyet hao
-            Ingredient main = TestData.Main("heo", 4), side = TestData.Side("ca_chua", 2);
-            recipe = s.Lookup.Find("heo", "ca_chua");
+            Ingredient main = TestData.Main("heo", 4), side = TestData.Side("hanh_tay", 2);
+            recipe = s.Lookup.Find("heo", "hanh_tay");
             Stove st = s.Stove;
             st.SelectTool(recipe.tool);
             foreach (string step in recipe.steps)

@@ -22,7 +22,8 @@ namespace QuanAnHope.Tests
         {
             var mains = s.Stock.Items.Where(i => i.kind == IngredientKind.Main).Select(i => i.typeId).Distinct();
             var sides = s.Stock.Items.Where(i => i.kind == IngredientKind.Side).Select(i => i.typeId).Distinct().ToList();
-            return mains.SelectMany(m => sides.Select(p => m + "__" + p)).ToList();
+            var book = new HashSet<string>(TestData.Recipes.recipes.Select(r => r.id));
+            return mains.SelectMany(m => sides.Select(p => m + "__" + p)).Where(book.Contains).ToList();
         }
 
         // ---------- AC-1: goi mon lam duoc tu kho ----------
@@ -114,7 +115,7 @@ namespace QuanAnHope.Tests
             Assert.IsTrue(NaiveBot.CookOne(s));
             s.OpenShop();
             Assert.AreEqual(s.Counter.Dishes[0].recipeId, s.CurrentCustomer.orderId);
-            int expected = Payment.Settle(TestData.Balance, 1, s.CurrentCustomer.easiness, s.Counter.Dishes[0].tier).amount;
+            int expected = Payment.Settle(TestData.Balance, s.PriceOf(s.Counter.Dishes[0].recipeId), s.CurrentCustomer.easiness, s.Counter.Dishes[0].tier).amount;
 
             PaymentResult paid = s.Serve(0);
 
@@ -137,8 +138,9 @@ namespace QuanAnHope.Tests
 
             Assert.IsTrue(paid.wrongOrder);
             Assert.AreEqual(PaymentOutcome.Angry, paid.outcome);
-            Assert.AreEqual(-18, paid.amount, "30% x 60G gia goc vong 1");
-            Assert.AreEqual(money - 18, s.Money);
+            int penalty = (int)System.Math.Round(0.3 * s.PriceOf(first.orderId), System.MidpointRounding.AwayFromZero);
+            Assert.AreEqual(-penalty, paid.amount, "30% gia niem yet mon khach goi (constitution 2.0)");
+            Assert.AreEqual(money - penalty, s.Money);
             Assert.AreEqual(0, s.Counter.Dishes.Count, "khach nhan dia");
             Assert.AreEqual(1, s.ServedToday);
             s.Tick(TestData.NextSeat);

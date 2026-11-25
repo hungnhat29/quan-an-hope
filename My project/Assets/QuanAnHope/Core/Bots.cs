@@ -186,6 +186,8 @@ namespace QuanAnHope.Core
             int guard = 0;
             while (s.Phase == GamePhase.Open && guard++ < 2000)
             {
+                // constitution 2.0 muc 6.2: qua 21:00 het khach thi nguoi choi bam bien Dong quan (khong tu het ngay)
+                if (s.ReadyToClose) { s.CloseEarly(); break; }
                 if (s.CurrentCustomer == null)
                 {
                     s.Tick(s.Balance.day.nextCustomerSeconds);

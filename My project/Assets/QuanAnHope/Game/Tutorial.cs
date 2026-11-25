@@ -23,6 +23,8 @@ namespace QuanAnHope.Game
             public float readSeconds;
             /// <summary>Sprint 9 B-07: dong giai thich di kem (ti le, bac, do de tinh...), so lay tu du lieu luc hien.</summary>
             public Func<string> note;
+            /// <summary>Sprint 10 B-08: tranh cua buoc (GuidePics, khuon A) va tranh khai niem di kem (khuon C); null = khong co.</summary>
+            public string pic, concept;
         }
 
         public class Lesson
@@ -34,16 +36,16 @@ namespace QuanAnHope.Game
             public int day;
         }
 
-        public const string Day1 = "ngay1", Night = "troi_toi", Relic = "ngay2_relic", Round2 = "vong2", Blackout = "mat_dien", Boss = "chu_no";
+        public const string Day1 = "ngay1", Night = "troi_toi", Relic = "ngay2_relic", Round2 = "vong2", Blackout = "mat_dien", Boss = "chu_no",
+            CloseShop = "dong_quan", Sauce = "nuoc_sot", BossHint = "goi_y_mon_cuoi";
 
         readonly GameController g;
         readonly List<Lesson> lessons = new List<Lesson>();
         readonly HashSet<string> finished = new HashSet<string>();
         Lesson lesson;
         GameObject arrow;
-        bool lookedAtBook;
         float stepShown;
-        int tabOpensAtStart, shopViewsAtStart;
+        int tabOpensAtStart, shopViewsAtStart, menuViewsAtStart, relicsAtStart, saucesUsedAtStart;
 
         /// <summary>Huong dan bat cho van nay (Cai dat / van dau).</summary>
         public bool Enabled { get; private set; }
@@ -63,9 +65,16 @@ namespace QuanAnHope.Game
             {
                 if (!Enabled || lesson == null || Finished) return null;
                 Step st = lesson.steps[Index];
-                return st.note != null ? st.note() : null;
+                if (st.note != null) return st.note();
+                return st.concept != null ? GuidePics.Caption(st.concept) : null;
             }
         }
+
+        /// <summary>Tranh cua buoc dang hien (B-08); null neu khong co.</summary>
+        public string Pic { get { return Enabled && lesson != null && !Finished ? lesson.steps[Index].pic : null; } }
+
+        /// <summary>Tranh khai niem di kem buoc dang hien (B-08); null neu khong co.</summary>
+        public string Concept { get { return Enabled && lesson != null && !Finished ? lesson.steps[Index].concept : null; } }
         public bool HasFinished(string id) { return finished.Contains(id); }
         public IEnumerable<Lesson> Lessons { get { return lessons; } }
 
@@ -77,7 +86,7 @@ namespace QuanAnHope.Game
                 if (!Enabled) return null;
                 if (lesson == null) return finishedLeft > 0f ? finishedText : null;
                 if (Finished) return null;
-                return "Hướng dẫn " + (Index + 1) + "/" + lesson.steps.Count + " · " + lesson.steps[Index].text;
+                return (Index + 1) + "/" + lesson.steps.Count + " · " + lesson.steps[Index].text;
             }
         }
 
@@ -89,83 +98,84 @@ namespace QuanAnHope.Game
             g = controller;
             GameSession S() { return g.Session; }
 
-            // ---------- ngay 1 (F-053, giu nguyen 10 buoc) ----------
+            // Sprint 10 B-08 (yeu cau 22/11/2026, "Phong cach huong dan bang hinh.md"): moi buoc MOT hanh dong, chu <= 4 tu, tranh
+            // (khuon A) + tranh khai niem (khuon C); khong goi ten goc, khong day so dai - so nam trong tranh, sat vat.
+
+            // ---------- ngay 1 ----------
             Lesson d1 = NewLesson(Day1, () => S().Day == 1, 1);
-            Add(d1, "Đi tới máy nhét vé ở Góc 2 (bên phải quầy) và bấm để quay nguyên liệu.",
-                () => Station("Kiosk"),
-                () => S().Stock.Count > 0 || S().Stove.State != StoveState.Empty || S().Counter.Dishes.Count > 0);
-            Explain(d1, () => GuideText.RatesNote(S().Balance, S().Day));
-            Add(d1, "Lấy một nguyên liệu trong thùng vừa rơi xuống.",
-                FirstCrateItem,
-                () => g.Hand == HandKind.Ingredient || g.OnBoard != null || S().Stove.Added.Count > 0 || S().Counter.Dishes.Count > 0);
-            Explain(d1, GuideText.IngredientTiersNote);
-            Add(d1, "Đặt lên thớt ở Góc 4 rồi giữ chuột trái tới khi thanh đầy (sơ chế: dao thái, trứng gõ thớt…).",
-                () => Station("Board"),
+            Add(d1, "Nhét vé", () => Station("Kiosk"),
+                () => S().Stock.Count > 0 || S().Stove.State != StoveState.Empty || S().Counter.Dishes.Count > 0, 0f, GuidePics.Kiosk);
+            Add(d1, "Lấy 1 nguyên liệu", FirstCrateItem,
+                () => g.Hand == HandKind.Ingredient || g.OnBoard != null || S().Stove.Added.Count > 0 || S().Counter.Dishes.Count > 0, 0f,
+                GuidePics.Take, GuidePics.Tiers);
+            Add(d1, "Sơ chế trên thớt", () => Station("Board"),
                 () => (g.OnBoard != null && g.OnBoard.prepared) || (g.HeldIngredient != null && g.HeldIngredient.prepared)
-                    || S().Stove.Added.Count > 0 || S().Counter.Dishes.Count > 0);
-            Add(d1, "Chọn dụng cụ trên giá ở Góc 4 (chảo, nồi hoặc vỉ nướng: xem món trong sách).",
-                ToolForStock,
-                () => S().Stove.Tool != null || S().Counter.Dishes.Count > 0);
-            Add(d1, "Nhìn quyển sách ở Góc 3: các bước của món và giá theo bậc.",
-                () => Station("BookNext"),
-                () => lookedAtBook || S().Stove.Added.Count > 0 || S().Stove.State == StoveState.Cooking || S().Counter.Dishes.Count > 0);
-            Explain(d1, GuideText.BookNote);
-            Add(d1, "Cho nguyên liệu đã sơ chế và gia vị vào bếp đúng thứ tự trong sách.",
-                () => Station("Stove"),
-                () => S().Stove.Added.Count > 0 || S().Stove.State == StoveState.Cooking || S().Stove.State == StoveState.Ready || S().Counter.Dishes.Count > 0);
-            Explain(d1, () => GuideText.DishNote(S().Balance));
-            Add(d1, "Vặn núm bếp để bắt đầu nấu.",
-                () => Station("Knob"),
-                () => S().Stove.State == StoveState.Cooking || S().Stove.State == StoveState.Ready || S().Counter.Dishes.Count > 0 || g.Hand == HandKind.Dish);
-            Explain(d1, () => GuideText.DishNote(S().Balance));
-            Add(d1, "Món chín: lấy đĩa trống ở chồng đĩa rồi bấm vào bếp để múc.",
-                () => S().Stove.State == StoveState.Ready && g.Hand == HandKind.Plate ? Station("Stove") : Station("PlateStack"),
-                () => S().Counter.Dishes.Count > 0 || g.Hand == HandKind.Dish || S().ServedToday > 0);
-            Add(d1, "Bấm biển Mở quán ở Góc 1 để đón khách.",
-                () => Station("ShopSign"),
-                () => S().Phase == GamePhase.Open || S().ServedToday > 0);
-            Explain(d1, () => GuideText.EasinessNote(S().Balance));
-            Add(d1, "Cầm đĩa đúng món khách gọi tới khách (hoặc bấm chuông) để phục vụ.",
-                () => g.Hand == HandKind.Dish ? Station("Customer_0") : Station("Bell"),
-                () => S().ServedToday > 0);
-            Explain(d1, () => GuideText.EasinessNote(S().Balance) + " " + GuideText.PaymentNote(S().Balance));
+                    || S().Stove.Added.Count > 0 || S().Counter.Dishes.Count > 0, 0f, GuidePics.Prep);
+            Add(d1, "Tab: xem thực đơn", null,
+                () => g.TabMenuViews > menuViewsAtStart || S().Stove.Tool != null || S().Stove.Added.Count > 0 || S().Counter.Dishes.Count > 0, 0f,
+                GuidePics.Menu, GuidePics.Price);
+            Add(d1, "Chọn dụng cụ", ToolForStock,
+                () => S().Stove.Tool != null || S().Counter.Dishes.Count > 0, 0f, GuidePics.Tool);
+            Add(d1, "Cho vào đúng thứ tự", () => Station("Stove"),
+                () => S().Stove.Added.Count > 0 || S().Stove.State == StoveState.Cooking || S().Stove.State == StoveState.Ready || S().Counter.Dishes.Count > 0, 0f,
+                GuidePics.Order, GuidePics.DishTier);
+            Add(d1, "Vặn núm", () => Station("Knob"),
+                () => S().Stove.State == StoveState.Cooking || S().Stove.State == StoveState.Ready || S().Counter.Dishes.Count > 0 || g.Hand == HandKind.Dish, 0f,
+                GuidePics.Knob);
+            Add(d1, "Múc ra đĩa", () => S().Stove.State == StoveState.Ready && g.Hand == HandKind.Plate ? Station("Stove") : Station("PlateStack"),
+                () => S().Counter.Dishes.Count > 0 || g.Hand == HandKind.Dish || S().ServedToday > 0, 0f, GuidePics.Plate);
+            Add(d1, "Mở quán", () => Station("ShopSign"),
+                () => S().Phase == GamePhase.Open || S().ServedToday > 0, 0f, GuidePics.Open, GuidePics.Easy);
+            Add(d1, "Đặt trước mặt khách", () => g.Hand == HandKind.Dish ? Station("Table_0") : FirstCounterDish(),
+                () => S().ServedToday > 0, 0f, GuidePics.Serve, GuidePics.WrongRight);
+
+            // ---------- 21:00 het khach: dong quan (constitution 2.0 muc 6.2) ----------
+            Lesson close = NewLesson(CloseShop, () => S().ReadyToClose, 0);
+            Add(close, "Đóng quán", () => Station("ShopSign"), () => S().Phase != GamePhase.Open, 0f, GuidePics.Close);
 
             // ---------- troi toi: bat den (F-076) ----------
             Lesson night = NewLesson(Night, () => S().Phase == GamePhase.Open && !S().IsBlackout && !g.LightsOn
                 && RoomView.NightFactor(S().Clock.HourOfDay) > 0.3f, 0);
-            Add(night, "Trời tối rồi: bấm công tắc đèn trên tường cạnh cửa Góc 1 (đầu mỗi ngày đèn tắt).",
-                () => Station("LightSwitch"), () => g.LightsOn);
+            Add(night, "Trời tối: bật đèn", () => Station("LightSwitch"), () => g.LightsOn, 0f, GuidePics.Light);
 
-            // ---------- ngay 2: relic (F-077, F-078) ----------
-            Lesson relic = NewLesson(Relic, () => S().Shop.IsFreeDay && (S().Phase == GamePhase.Prep || S().Phase == GamePhase.Open), 0);
-            Add(relic, "Hôm nay relic miễn phí: tới Góc 3, chọn 1 trong 3 relic (chỉ lấy được 1). Không ưng thì bấm nút Đổi hàng ("
-                + "tốn tiền) để ra 3 relic khác.",
-                () => Station("Relic_1"), () => S().Shop.FreeDone || S().Relics.Owned.Count > 0);
-            Add(relic, "Nhấn Tab để xem relic đang có và hiệu ứng; giá đầy thì bỏ bớt ở đây.",
-                null, () => g.TabOpens > tabOpensAtStart);
-            Add(relic, "Từ ngày 3 relic trả bằng vé trắng; vé không dùng được cộng dồn sang hôm sau.", null, () => false, 8f);
+            // ---------- relic (F-077, F-078): yeu cau 23/11/2026 "chuyen phan art tutorial ngay 2 sang dau ngay 3 moi chieu" ----------
+            Lesson relic = NewLesson(Relic, () => S().Day == RelicLessonDay && S().Shop.IsOpen && (S().Phase == GamePhase.Prep || S().Phase == GamePhase.Open), 0);
+            Add(relic, "Trả vé: mua relic", () => Station("Relic_1"), () => S().Relics.Owned.Count > relicsAtStart, 20f, GuidePics.BuyRelic);
+            Add(relic, "Tab: xem relic", null, () => g.TabOpens > tabOpensAtStart, 0f, GuidePics.TabRelic);
+
+            // ---------- goi y mon cuoi (yeu cau 23/11/2026): tu dau vong 4 de kip chuan bi (dat truoc bai vong 2: chi chay tu vong 4) ----------
+            Lesson hint = NewLesson(BossHint, () => S().Round >= 4 && (S().Phase == GamePhase.Prep || S().Phase == GamePhase.Open), 0);
+            Add(hint, "Ngày " + g.Session.Balance.day.bossDay + ": món ngon nhất", null, () => false, 14f, GuidePics.BossBest);
 
             // ---------- ngay 4: vong 2 (F-078, F-079) ----------
             Lesson r2 = NewLesson(Round2, () => S().Day >= S().Balance.itemShopFromDay && S().Round >= 2
                 && (S().Phase == GamePhase.Prep || S().Phase == GamePhase.Open), 0);
-            Add(r2, "Cửa hàng mở: nhấn Tab rồi chọn Cửa hàng để mua nước sốt thần thánh, vé đen, máy gacha đồ ăn.",
-                null, () => g.Tab != null && g.TabShopViews > shopViewsAtStart);
-            Add(r2, "Vòng 2: tối đa 3 khách, vào cách nhau vài chục giây. Thanh dưới bong bóng là kiên nhẫn: chờ quá lâu khách khó tính hơn.",
-                () => S().Phase == GamePhase.Open ? Station("Customer_1") : Station("ShopSign"), () => S().ServedToday >= 2, 30f);
-            Explain(r2, () => GuideText.PatienceNote(S().Balance, S().Day) + " Nhấn Tab → Cách chơi để xem lại mọi bảng.");
-            Add(r2, "Bếp bốc khói là sắp quá lửa: múc ngay, để quá lâu món bị trừ 1 bậc.", () => Station("Stove"), () => false, 9f);
-            Add(r2, "Tủ lạnh trên tường Góc 4 giữ món qua đêm: cầm đĩa rồi bấm tủ (để dành món ngon cho khách khó tính).",
-                () => Station("Fridge"), () => S().Fridge.Dishes.Count > 0, 12f);
+            Add(r2, "Tab: cửa hàng", null, () => g.Tab != null && g.TabShopViews > shopViewsAtStart, 0f, GuidePics.TabShop);
+            Add(r2, "Phục vụ ai trước cũng được", () => S().Phase == GamePhase.Open ? Station("Table_1") : Station("ShopSign"), () => S().ServedToday >= 2, 30f,
+                GuidePics.Serve, GuidePics.Patience);
+            Add(r2, "Khói: múc ngay", () => Station("Stove"), () => false, 9f, GuidePics.Overheat);
+            Add(r2, "Cất tủ lạnh", () => Station("Fridge"), () => S().Fridge.Dishes.Count > 0, 12f, GuidePics.Fridge);
+
+            // ---------- nuoc sot (bug 23/11/2026 "khong tim duoc cach su dung nuoc sot") ----------
+            Lesson sauce = NewLesson(Sauce, () => S().Items.Sauces > 0 && (S().Phase == GamePhase.Prep || S().Phase == GamePhase.Open), 0);
+            Add(sauce, "Cầm lọ nước sốt", () => Station("Sauce"), () => g.Hand == HandKind.Sauce || SaucesUsed > saucesUsedAtStart, 0f, GuidePics.Sauce,
+                GuidePics.SauceLuck);
+            Add(sauce, "Bấm đĩa vừa nấu", FirstCounterDish, () => SaucesUsed > saucesUsedAtStart, 40f, GuidePics.Sauce);
+
 
             // ---------- ngay mat dien ----------
             Lesson dark = NewLesson(Blackout, () => S().IsBlackout && (S().Phase == GamePhase.Prep || S().Phase == GamePhase.Open), 0);
-            Add(dark, "Mất điện: nến sáng quanh bếp và quầy, công tắc đèn không dùng được, không thấy bậc món và nguyên liệu.", null, () => false, 10f);
+            Add(dark, "Mất điện: nấu bằng nến", null, () => false, 10f, GuidePics.Dark);
 
             // ---------- ngay chu no ----------
             Lesson boss = NewLesson(Boss, () => S().IsBossDay && (S().Phase == GamePhase.Prep || S().Phase == GamePhase.Open), 0);
-            Add(boss, "Đúng " + g.Session.Balance.day.bossHour + ":00 chủ nợ tới và chiếm một ghế: phục vụ món Tuyệt hảo trở lên (để sẵn trong tủ lạnh) để nhận thưởng.",
-                () => Station("Fridge"), () => S().BossServed, 14f);
+            Add(boss, g.Session.Balance.day.bossHour + ":00 chủ nợ tới", () => Station("Fridge"), () => S().BossServed, 14f, GuidePics.Boss, GuidePics.BossBest);
         }
+
+        /// <summary>Bai relic chieu dau ngay nay (yeu cau 23/11/2026: ngay 3 thay cho ngay 2).</summary>
+        public const int RelicLessonDay = 3;
+
+        int SaucesUsed { get { return g.Session.Items.SaucesBought - g.Session.Items.Sauces; } }
 
         Lesson NewLesson(string id, Func<bool> when, int day)
         {
@@ -180,9 +190,15 @@ namespace QuanAnHope.Game
             if (l.steps.Count > 0) l.steps[l.steps.Count - 1].note = note;
         }
 
-        static void Add(Lesson l, string text, Func<Interactable> target, Func<bool> done, float readSeconds = 0f)
+        static void Add(Lesson l, string text, Func<Interactable> target, Func<bool> done, float readSeconds = 0f, string pic = null, string concept = null)
         {
-            l.steps.Add(new Step { text = text, target = target, done = done, readSeconds = readSeconds });
+            l.steps.Add(new Step { text = text, target = target, done = done, readSeconds = readSeconds, pic = pic, concept = concept });
+        }
+
+        /// <summary>Dia dau tien tren quay (buoc phuc vu khi tay chua cam dia).</summary>
+        Interactable FirstCounterDish()
+        {
+            return Station("Dish_0") ?? Station("PlateStack");
         }
 
         Interactable Station(string id)
@@ -216,7 +232,6 @@ namespace QuanAnHope.Game
             finished.Clear();
             lesson = null;
             Index = 0;
-            lookedAtBook = false;
             finishedLeft = 0f;
             if (!on) HideArrow();
         }
@@ -237,6 +252,9 @@ namespace QuanAnHope.Game
             finishedLeft = 0f;
             tabOpensAtStart = g.TabOpens;
             shopViewsAtStart = g.TabShopViews;
+            menuViewsAtStart = g.TabMenuViews;
+            relicsAtStart = g.Session.Relics.Owned.Count;
+            saucesUsedAtStart = SaucesUsed;
         }
 
         void EndLesson(bool completed)
@@ -246,7 +264,7 @@ namespace QuanAnHope.Game
             if (completed)
             {
                 finishedLeft = 6f;
-                finishedText = lesson.id == Day1 ? "Hướng dẫn xong! Phục vụ thêm khách và gom tiền trả nợ ngày 4." : "Xong phần hướng dẫn này.";
+                finishedText = lesson.id == Day1 ? "Xong! Gom tiền trả nợ ngày " + g.Session.Balance.NextDebtAfter(0).day + "." : "Xong!";
             }
             lesson = null;
             HideArrow();
@@ -256,7 +274,6 @@ namespace QuanAnHope.Game
         public void Tick(float dt)
         {
             if (!Enabled) return;
-            if (g.Player != null && g.Player.Focus != null && (g.Player.Focus.Id == "BookNext" || g.Player.Focus.Id == "BookPrev")) lookedAtBook = true;
 
             if (lesson != null && lesson.day > 0 && (g.Session.Day != lesson.day || g.Session.Phase == GamePhase.DayEnd))
             {

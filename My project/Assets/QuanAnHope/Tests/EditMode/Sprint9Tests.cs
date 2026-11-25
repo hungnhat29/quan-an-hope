@@ -175,35 +175,7 @@ namespace QuanAnHope.Tests
             return h.ToString();
         }
 
-        // ---------------- B-07 giai thich ----------------
-
-        [Test]
-        public void B07_AC1_GiaiThich_TiLe_Bac_DoDeTinh_SoTuDuLieu()
-        {
-            Balance b = Data.balance;
-            string odds = GuideText.Odds(b, 1);
-            int[] p = b.OddsForDay(1).percents;
-            Assert.That(odds, Does.Contain("Ôi thiu " + p[0] + "%"));
-            Assert.That(odds, Does.Contain("Bình thường " + p[1] + "%"));
-            Assert.That(GuideText.IngredientTiersNote(), Does.Contain("Hiếm"));
-            Assert.That(GuideText.DishNote(b), Does.Contain("0,6").And.Contain("0,4").And.Contain("0,8"));
-            string req = GuideText.RequiredTable(b);
-            foreach (RequiredTier r in b.customers.requiredTier) Assert.That(req, Does.Contain(UiKit.DishTierName[r.tier]));
-            Assert.That(req, Does.StartWith("≥ 80%: Dở"));
-            Assert.That(GuideText.EasinessNote(b), Does.Contain("Dễ tính").And.Contain("càng cao càng dễ"));
-            string pay = GuideText.PaymentNote(b);
-            Assert.That(pay, Does.Contain("50%").And.Contain("30%").And.Contain("sai món"));
-            Assert.That(GuideText.PatienceNote(b, 4), Does.Contain(b.patience.dropEverySeconds.ToString()).And.Contain("120"));
-        }
-
-        [Test]
-        public void B07_AC3_TheCachChoi_DuCacBang()
-        {
-            string sheet = GuideText.Sheet(Data.balance, 5);
-            foreach (string part in new[] { "Tỉ lệ bậc nguyên liệu", "Bậc nguyên liệu", "Bậc món", "Ra bậc món", "Độ dễ tính", "tip", "khoảng an toàn" })
-                Assert.That(sheet, Does.Contain(part));
-            Assert.That(sheet, Does.Contain(GuideText.Odds(Data.balance, 5)), "ti le cua ngay hien tai");
-        }
+        // B-07 (giai thich bang chu dai) da thay bang huong dan bang hinh B-08 (sprint 10, yeu cau 22/11/2026): Sprint10PlayTests.B08_*
 
         // ---------------- F-080 / F-081 / F-082 nhan vat ----------------
 

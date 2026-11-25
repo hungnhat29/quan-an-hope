@@ -89,14 +89,11 @@ namespace QuanAnHope.Tests
 
         [TestCase("trung", "ca_chua", "Trứng chiên cà chua", "Chảo", 12f)]
         [TestCase("trung", "hanh_tay", "Trứng chiên hành tây", "Chảo", 12f)]
-        [TestCase("trung", "rau_muong", "Trứng chiên rau muống", "Chảo", 12f)]
-        [TestCase("heo", "ca_chua", "Heo xào cà chua", "Chảo", 15f)]
         [TestCase("heo", "hanh_tay", "Heo xào hành tây", "Chảo", 15f)]
         [TestCase("heo", "rau_muong", "Heo xào rau muống", "Chảo", 15f)]
         [TestCase("dau_phu", "ca_chua", "Đậu phụ sốt cà chua", "Nồi", 18f)]
         [TestCase("dau_phu", "hanh_tay", "Đậu phụ sốt hành tây", "Nồi", 18f)]
-        [TestCase("dau_phu", "rau_muong", "Đậu phụ sốt rau muống", "Nồi", 18f)]
-        public void AC8_ChinMonVong1(string mainId, string sideId, string name, string tool, float cookSeconds)
+        public void AC8_SauMonVong1(string mainId, string sideId, string name, string tool, float cookSeconds)
         {
             Recipe r = new RecipeLookup(TestData.Recipes).Find(mainId, sideId);
 
@@ -118,10 +115,10 @@ namespace QuanAnHope.Tests
         public void AC8_MoiCapChinhPhuDeuCoCongThuc()
         {
             var lookup = new RecipeLookup(TestData.Recipes);
-            foreach (MainIngredient m in TestData.Recipes.mains)
-                foreach (SideIngredient s in TestData.Recipes.sides)
-                    Assert.IsNotNull(lookup.Find(m.id, s.id), m.id + " + " + s.id);
-            Assert.AreEqual(TestData.Recipes.mains.Length * TestData.Recipes.sides.Length, TestData.Recipes.recipes.Length);
+            // constitution 2.0 muc 5.8: chi ~70% cap co mon; moi cong thuc tra lai duoc tu cap cua no
+            foreach (Recipe r in TestData.Recipes.recipes)
+                Assert.AreSame(r, lookup.Find(r.mainId, r.sideId), r.id);
+            Assert.AreEqual(84, TestData.Recipes.recipes.Length);
         }
     }
 }

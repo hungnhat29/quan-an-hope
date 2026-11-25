@@ -148,8 +148,20 @@ namespace QuanAnHope.Tests
 
             CollectionAssert.AreEquivalent(Round1Sides, sides.Keys);
             CollectionAssert.AreEquivalent(Round1Mains, mains.Keys);
-            foreach (int c in sides.Values.Concat(mains.Values))
-                Assert.AreEqual(100.0 / 3, 100.0 * c / N, 1.0, "moi loai phai xap xi 33,3%");
+            foreach (int c in sides.Values)
+                Assert.AreEqual(100.0 / 3, 100.0 * c / N, 1.0, "do phu chon deu: xap xi 33,3%");
+            // constitution 2.0 muc 4.2: loai chinh chon deu trong cac loai nau duoc voi do phu vua ra (Dieu 3: lech <= 1 diem)
+            var lookup = new RecipeLookup(TestData.Recipes);
+            foreach (string m in Round1Mains)
+            {
+                double expected = 0.0;
+                foreach (string p in Round1Sides)
+                {
+                    int fit = Round1Mains.Count(x => lookup.Pairs(x, p));
+                    if (lookup.Pairs(m, p)) expected += 1.0 / Round1Sides.Length / fit;
+                }
+                Assert.AreEqual(100.0 * expected, 100.0 * mains[m] / N, 1.0, m);
+            }
         }
 
         [Test]

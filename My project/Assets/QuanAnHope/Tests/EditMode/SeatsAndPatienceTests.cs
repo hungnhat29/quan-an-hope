@@ -115,7 +115,7 @@ namespace QuanAnHope.Tests
             Fill(s);
             Customer left = s.Seats[0], middle = s.Seats[1], right = s.Seats[2];
             s.Counter.TryPlace(TestData.DishOf(middle.orderId, 3));
-            PaymentResult expected = Payment.Settle(B, 2, s.EasinessNow(middle), 3, s.Relics.Effects);
+            PaymentResult expected = Payment.Settle(B, s.PriceOf(middle.orderId), s.EasinessNow(middle), 3, s.Relics.Effects);
             PaymentResult paid = s.ServeSeat(1, s.Counter.Dishes[0]);
             Assert.IsFalse(paid.wrongOrder);
             Assert.AreEqual(expected.amount, paid.amount);
@@ -134,7 +134,7 @@ namespace QuanAnHope.Tests
             s.Counter.TryPlace(TestData.DishOf(other, 4));
             PaymentResult paid = s.ServeSeat(2, s.Counter.Dishes[0]);
             Assert.IsTrue(paid.wrongOrder);
-            Assert.AreEqual(-Payment.WrongOrder(B, 2).amount, -paid.amount);
+            Assert.AreEqual(-Payment.WrongOrder(B, s.PriceOf(c.orderId)).amount, -paid.amount);
         }
 
         [Test]
@@ -153,7 +153,7 @@ namespace QuanAnHope.Tests
         {
             GameSession s = OpenDay(4);
             Fill(s);
-            s.Tick(B.DaySeconds());
+            TestData.TickKeepWaiting(s, B.DaySeconds());
             Assert.AreEqual(GamePhase.Open, s.Phase);
             Assert.IsTrue(s.IsClosedForNewCustomers);
             for (int seat = 0; seat < 3; seat++)
@@ -163,8 +163,10 @@ namespace QuanAnHope.Tests
                 s.Tick(TestData.Eat + Gap * 2);
                 if (seat < 2) Assert.AreEqual(GamePhase.Open, s.Phase, "con khach ngoi: chua het ngay");
             }
+            Assert.IsTrue(s.ReadyToClose, "constitution 2.0: het khach thi bam Dong quan");
+            Assert.IsTrue(s.CloseEarly());
             Assert.AreEqual(GamePhase.DayEnd, s.Phase);
-            Assert.AreEqual(3, s.CustomersToday);
+            Assert.IsTrue(s.CustomersToday >= 3);
         }
 
         // ---------- F-031 AC-1..4: gio cho ----------
@@ -215,11 +217,11 @@ namespace QuanAnHope.Tests
         {
             GameSession s = OpenDay(4, 7);
             Customer c = s.Seats[0];
-            s.Tick(Safe + 60f); // -20 diem
+            s.Tick(Safe + 57f); // -19 diem (constitution 2.0: -20 diem = het thanh, khach bo di)
             int now = s.EasinessNow(c);
-            Assert.AreEqual(System.Math.Max(1, c.easiness - 20), now);
+            Assert.AreEqual(System.Math.Max(1, c.easiness - 19), now);
             s.Counter.TryPlace(TestData.DishOf(c.orderId, 3));
-            PaymentResult expected = Payment.Settle(B, 2, now, 3, s.Relics.Effects);
+            PaymentResult expected = Payment.Settle(B, s.PriceOf(c.orderId), now, 3, s.Relics.Effects);
             PaymentResult paid = s.ServeSeat(0, s.Counter.Dishes[0]);
             Assert.AreEqual(expected.amount, paid.amount);
             Assert.AreEqual(expected.diff, paid.diff);

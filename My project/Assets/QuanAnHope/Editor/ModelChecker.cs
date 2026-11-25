@@ -20,6 +20,8 @@ namespace QuanAnHope.EditorTools
         {
             public string path, name, group;
             public int triangles, materials;
+            /// <summary>Tong tam giac ca file (nhan vat nhieu kieu: triangles = than + kieu nang nhat).</summary>
+            public int trianglesAll;
             public Bounds bounds;
             public bool hasFace;
             /// <summary>Sprint 9: so xuong va ten clip (nhan vat SK_).</summary>
@@ -30,12 +32,21 @@ namespace QuanAnHope.EditorTools
         }
 
         /// <summary>Ngan sach tam giac (Art Bible muc 14): nguyen lieu 600, do vat nho 800, mon an 1.500, khach 6.000, chu no 8.000.</summary>
-        public static int Budget(string group) { return group == "Ingredients" ? 600 : group == "Dishes" ? 1500 : group == "Characters" ? 6000 : 800; }
+        public static int Budget(string group) { return group == "Ingredients" ? 600 : group == "Dishes" ? 1500 : group == "Characters" ? 6000 : group == "Machines" ? 3000 : 800; }
 
         public static int Budget(string group, string name) { return name == "SK_ChuNo" ? 8000 : Budget(group); }
 
+        /// <summary>Khoa kieu cua mot mesh nhan vat: "Toc_Vip", "Toc_Vip_Chu", "Do_Vip_The" -> "Vip"; "Mu_Non" -> "Mu_Non"; than -> null.</summary>
+        public static string LookKey(string mesh)
+        {
+            if (mesh.StartsWith("Do_")) { string rest = mesh.Substring(3); int u = rest.IndexOf('_'); return u < 0 ? rest : rest.Substring(0, u); }
+            if (mesh.StartsWith("Toc_")) { string rest = mesh.Substring(4); int u = rest.IndexOf('_'); return u < 0 ? rest : rest.Substring(0, u); }
+            if (mesh.StartsWith("Mu_") || mesh == "Mam") return mesh;
+            return null;
+        }
+
         /// <summary>Kich thuoc lon nhat hop ly (m): nguyen lieu / mon &lt; 0,25 m; do bep &lt; 1,2 m; nhan vat &lt; 3,6 m. Nho hon 1 cm = sai ti le.</summary>
-        static float MaxSize(string group) { return group == "Ingredients" || group == "Dishes" ? 0.25f : group == "Characters" ? 3.6f : 1.2f; }
+        static float MaxSize(string group) { return group == "Ingredients" || group == "Dishes" ? 0.25f : group == "Characters" ? 3.6f : group == "Machines" ? 2.5f : 1.2f; }
 
         /// <summary>Xuong toi thieu / toi da cho nhan vat co xuong (Art Bible muc 14: 12-16).</summary>
         public const int MinBones = 12, MaxBones = 16;
@@ -96,6 +107,24 @@ namespace QuanAnHope.EditorTools
                 }
             }
             r.materials = mats.Count;
+            // Nhan vat nhieu kieu (Toc_* / Mu_* / Mam / Do_*): moi luc chi bat MOT kieu, ngan sach Art Bible muc 14 tinh cho khach dang
+            // hien = than + kieu nang nhat (Q-83, sau sprint 10). Tong ca file ghi rieng de tham khao.
+            r.trianglesAll = r.triangles;
+            if (character)
+            {
+                int baseTris = 0;
+                var looks = new Dictionary<string, int>();
+                for (int k = 0; k < meshes.Count; k++)
+                {
+                    string key = LookKey(meshes[k].Key.name);
+                    int t = meshes[k].Value.triangles.Length / 3;
+                    if (key == null) baseTris += t;
+                    else { int cur; looks.TryGetValue(key, out cur); looks[key] = cur + t; }
+                }
+                int worst = 0;
+                foreach (int t in looks.Values) worst = System.Math.Max(worst, t);
+                r.triangles = baseTris + worst;
+            }
             foreach (Transform t in go.GetComponentsInChildren<Transform>(true))
                 if (t.name == "Face") r.hasFace = true;
 

@@ -22,6 +22,8 @@ namespace QuanAnHope.Core
         public const string DishCenter = "dish_center";
         public const string DishRuin = "dish_ruin";
         public const string DishFloor = "dish_floor";
+        /// <summary>constitution 2.1 muc 5.3 / 7.3: cong them vao ti le Huyen thoai khi nau (tong toi da legend_cap).</summary>
+        public const string DishLegend = "dish_legend";
         public const string Tip = "tip";
         public const string Income = "income";
         public const string TicketEvery3 = "ticket_every3";
@@ -270,7 +272,8 @@ namespace QuanAnHope.Core
         public int Price(int slot)
         {
             if (slot < 0 || slot >= offers.Length || offers[slot] == null) return 0;
-            return IsFreeDay ? 0 : offers[slot].price;
+            // 2.2 (yeu cau 24/11/2026): ngay mien phi, lay xong relic mien phi thi hai be con lai hien lai gia ve, mua tiep duoc
+            return IsFreeDay && !FreeDone ? 0 : offers[slot].price;
         }
 
         bool Allowed(RelicDef r)
@@ -320,7 +323,7 @@ namespace QuanAnHope.Core
         /// </summary>
         public bool Reroll(RelicInventory inventory)
         {
-            if (!IsOpen || FreeDone || RerollPoolSize(inventory) == 0) return false;
+            if (!IsOpen || RerollPoolSize(inventory) == 0) return false;
             var shown = new List<RelicDef>();
             foreach (RelicDef r in offers) if (r != null) shown.Add(r);
             Fill(inventory, shown);
@@ -367,12 +370,8 @@ namespace QuanAnHope.Core
             if (price > 0) wallet.TrySpend(price);
             inventory.Add(relic);
             offers[slot] = null;
-            if (IsFreeDay)
-            {
-                // ngay mien phi chi duoc lay picks cai: cac be con lai dong toi het ngay
-                FreePicked++;
-                if (FreeDone) for (int i = 0; i < offers.Length; i++) offers[i] = null;
-            }
+            // ngay mien phi: picks cai dau tien mien phi; sau do cac be con lai ban bang ve nhu ngay thuong (2.2)
+            if (IsFreeDay && price == 0) FreePicked++;
             return RelicBuyResult.Bought;
         }
 
@@ -477,6 +476,7 @@ namespace QuanAnHope.Core
                 case "dish_center": return "Điểm món +" + v.ToString("0.0#");
                 case "dish_ruin": return Pct(v) + " món thành Lạc vị";
                 case "dish_floor": return "Món không bao giờ dưới Dở";
+                case "dish_legend": return "Huyền thoại khi nấu +" + Math.Round(v * 100f, 1).ToString("0.0#") + "%";
                 case "tip": return "Tip +" + Pct(v);
                 case "income": return "Tiền bán món +" + Pct(v);
                 case "ticket_every3": return "+" + v.ToString("0") + " vé trắng mỗi 3 ngày";

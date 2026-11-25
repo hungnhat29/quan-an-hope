@@ -89,7 +89,7 @@ namespace QuanAnHope.Tests
         }
 
         [Test]
-        public void F077_AC3_Ngay2_LayMotCai_ConLaiDong_KhongTonVe()
+        public void F077_AC3_Ngay2_LayMotCai_ConLaiHienGiaVe_MuaTiepDuoc()
         {
             GameSession s = NewGame(3);
             EndDay(s);
@@ -97,9 +97,14 @@ namespace QuanAnHope.Tests
             Assert.AreEqual(RelicBuyResult.Bought, s.BuyRelic(1));
             Assert.AreEqual(tickets, s.Wallet.Count, "mien phi");
             Assert.AreEqual(1, s.Relics.Owned.Count);
-            for (int i = 0; i < s.Shop.Offers.Count; i++) Assert.IsNull(s.Shop.Offers[i], "chi duoc lay 1");
-            Assert.AreEqual(RelicBuyResult.Empty, s.BuyRelic(0));
-            Assert.AreEqual(RerollResult.Closed, s.RerollShop(), "da lay relic mien phi thi khong doi hang nua");
+            Assert.IsTrue(s.Shop.FreeDone);
+            // 2.2 (yeu cau 24/11/2026): hai be con lai van tren ke, hien lai gia ve, mua bang ve
+            Assert.IsNotNull(s.Shop.Offers[0]);
+            Assert.AreEqual(s.Shop.Offers[0].price, s.Shop.Price(0), "hien lai gia");
+            int price = s.Shop.Price(0);
+            Assert.AreEqual(RelicBuyResult.Bought, s.BuyRelic(0));
+            Assert.AreEqual(tickets - price, s.Wallet.Count, "relic thu hai tra bang ve");
+            Assert.AreEqual(2, s.Relics.Owned.Count);
         }
 
         [Test]

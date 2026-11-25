@@ -52,6 +52,21 @@ namespace QuanAnHope.Tests
             return new Dish { recipeId = r.id, name = r.name, baseName = r.baseName, tier = tier };
         }
 
+        /// <summary>
+        /// Tua dong ho tung buoc 5 giay, khach thuong dang ngoi khong bi tinh gio cho (gia lap nguoi choi giu chan khach).
+        /// Tu constitution 2.0 khach het thanh cho thi bo di; test can khach ngoi lau (21:00, chu no) dung ham nay.
+        /// </summary>
+        public static void TickKeepWaiting(GameSession s, float seconds)
+        {
+            while (seconds > 1e-4f)
+            {
+                float step = System.Math.Min(5f, seconds);
+                foreach (Customer c in s.Seats) if (c != null && !c.isBoss) c.waitedSeconds = 0f;
+                s.Tick(step);
+                seconds -= step;
+            }
+        }
+
         public static Ingredient Main(string id, int tier, bool prepared = true)
         {
             Ingredient i = Ingredient.FromMain(Recipes.mains.Single(m => m.id == id), tier);

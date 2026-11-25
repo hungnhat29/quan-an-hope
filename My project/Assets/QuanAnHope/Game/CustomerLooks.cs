@@ -11,8 +11,30 @@ namespace QuanAnHope.Game
     /// </summary>
     public static class CustomerLooks
     {
-        public const int Count = 7;
-        public static readonly string[] Names = { "Bà cụ", "Cậu học sinh", "Cô văn phòng", "Chú nông dân", "Ông họa sĩ", "Em bé", "Anh thợ" };
+        /// <summary>7 kieu thuong + 5 kieu dac biet (sau sprint 10, yeu cau 23/11/2026 anh 1: xuat hien tu ngay 1 toi het).</summary>
+        public const int Count = 12;
+        public const int RegularCount = 7;
+        public const int SpecialCount = Count - RegularCount;
+
+        /// <summary>Phan tram khach la khach dac biet (Q-82: khoang 1/4, de giong noi khong lap lien tuc).</summary>
+        public const int SpecialPercent = 25;
+
+        public static readonly string[] Names = { "Bà cụ", "Cậu học sinh", "Cô văn phòng", "Chú nông dân", "Ông họa sĩ", "Em bé", "Anh thợ",
+            "Ông trùm VIP", "Anh streamer", "Nhà vô địch", "Fan Quỷ Đỏ", "Anh đại gia" };
+
+        /// <summary>Ao co dinh cua 5 kieu dac biet: vest xanh than, ba lo tim, ao dau trang, ao dau do, ao cam (anh 1).</summary>
+        public static readonly Color[] SpecialShirts =
+        {
+            UiKit.Hex("#33406E"), UiKit.Hex("#B9A3E3"), UiKit.Hex("#F7F3EC"), UiKit.Hex("#D9382C"), UiKit.Hex("#F2A65A"),
+        };
+
+        /// <summary>Tieng khi khach dac biet vao quan (Resources/Audio, file nguoi dung dua 23/11/2026); null = khong co tieng.</summary>
+        public static readonly string[] SpecialVoices = { "khach_vip", "khach_streamer", null, "khach_fan_quy_do", null };
+
+        public static bool IsSpecial(int look) { return look >= RegularCount && look < Count; }
+
+        /// <summary>Tieng vao quan cua kieu nay (null neu khong co).</summary>
+        public static string VoiceOf(int look) { return IsSpecial(look) ? SpecialVoices[look - RegularCount] : null; }
 
         static readonly Color Leaf = UiKit.Hex("#7DB87A"), Curtain = UiKit.Hex("#E9A0A0"), Cream = UiKit.Hex("#FFF3DC");
         static readonly Color WoodDark = UiKit.Hex("#B97F52"), Blush = UiKit.Hex("#F2A0A6"), Straw = UiKit.Hex("#D69B68");
@@ -21,11 +43,19 @@ namespace QuanAnHope.Game
         // sprint 9 (Q-63): ba cu bo ao bac ha #8CC9AE (trung mau bac 2, Art Bible muc 4) -> cam dao #E9B98C (mau nhan vat ban ve)
         public static readonly Color[] Shirts = { UiKit.Hex("#E9B98C"), Leaf, Curtain, Cream, WoodDark, Blush };
 
-        /// <summary>Kieu khach theo so thu tu khach trong ngay (tron deu, hai khach lien nhau khac kieu).</summary>
+        /// <summary>
+        /// Kieu khach theo so thu tu khach trong ngay: ~1/4 la khach dac biet (theo hat giong), con lai xoay vong 7 kieu thuong.
+        /// Hai khach lien nhau khac kieu (cung nhom: buoc 5 mod 7 / 3 mod 5 khong ve 0; khac nhom thi khac kieu).
+        /// </summary>
         public static int LookFor(int customerNumber, int day)
         {
-            int k = (customerNumber * 5 + day * 3) % Count;
-            return k < 0 ? k + Count : k;
+            if ((Seed(customerNumber, day) >> 8) % 100 < SpecialPercent)
+            {
+                int s = (customerNumber * 3 + day) % SpecialCount;
+                return RegularCount + (s < 0 ? s + SpecialCount : s);
+            }
+            int k = (customerNumber * 5 + day * 3) % RegularCount;
+            return k < 0 ? k + RegularCount : k;
         }
 
         /// <summary>Hat giong cua khach (ngay, so thu tu): tai lai ngay thi khach ra y nhu cu (sprint 9 F-080 AC-2).</summary>
@@ -44,7 +74,12 @@ namespace QuanAnHope.Game
         }
 
         /// <summary>Mau ao theo hat giong (6 mau nhan vat, khong dung mau bac).</summary>
-        public static Color ShirtFor(int customerNumber, int day) { return Shirts[Seed(customerNumber, day) % Shirts.Length]; }
+        public static Color ShirtFor(int customerNumber, int day)
+        {
+            int look = LookFor(customerNumber, day);
+            if (IsSpecial(look)) return SpecialShirts[look - RegularCount];
+            return Shirts[Seed(customerNumber, day) % Shirts.Length];
+        }
 
         /// <summary>Kieu mat (B-06): hai khach lien nhau khac kieu mat.</summary>
         public static int FaceFor(int customerNumber, int day)
@@ -77,7 +112,11 @@ namespace QuanAnHope.Game
         }
 
         /// <summary>Mau ao dang mac (test: tay cam dua cung mau ao).</summary>
-        public static Color ShirtOf(int look) { return Shirts[Mathf.Clamp(look, 0, Count - 1) % Shirts.Length]; }
+        public static Color ShirtOf(int look)
+        {
+            if (IsSpecial(look)) return SpecialShirts[look - RegularCount];
+            return Shirts[Mathf.Clamp(look, 0, Count - 1) % Shirts.Length];
+        }
 
         /// <summary>Rig khach (SK_Khach) duoi khoi khach, null neu chua co model.</summary>
         public static CharacterRig RigOf(GameObject model)

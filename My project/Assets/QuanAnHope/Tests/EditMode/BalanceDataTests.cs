@@ -48,14 +48,14 @@ namespace QuanAnHope.Tests
             var loaded = AssetDatabase.LoadAssetAtPath<BalanceData>(TempAssetPath);
             Assert.IsNotNull(loaded, "Asset phai nam o " + TempAssetPath);
             Assert.AreEqual(22, loaded.balance.days);
-            Assert.AreEqual(120, loaded.recipes.recipes.Length);
+            Assert.AreEqual(84, loaded.recipes.recipes.Length); // constitution 2.0: bo 30% cong thuc
         }
 
         [Test]
         public void AC1_TienTe_VaLichNo() // constitution muc 2, 3
         {
             Assert.AreEqual(22, balance.days);
-            Assert.AreEqual(7, balance.ticketsPerDay); // sprint 7 F-060 (cu: 6)
+            Assert.AreEqual(8, balance.ticketsPerDay); // 23/11/2026: 8 ve (sprint 7: 7, cu: 6)
             Assert.AreEqual(100, balance.start.money);
             Assert.AreEqual(5, balance.start.firstDayTickets);
             Assert.AreEqual(2, balance.start.relicShopFromDay);
@@ -149,9 +149,9 @@ namespace QuanAnHope.Tests
         [Test]
         public void AC1_CongThuc_Vong1() // constitution muc 5.8, 5.9
         {
-            Assert.AreEqual(120, recipes.recipes.Length);
+            Assert.AreEqual(84, recipes.recipes.Length);
             Recipe[] round1 = recipes.recipes.Where(r => r.group == "chinh" && r.unlockRound == 1).ToArray();
-            Assert.AreEqual(9, round1.Length);
+            Assert.AreEqual(6, round1.Length);
 
             Recipe trung = recipes.recipes.Single(r => r.id == "trung__ca_chua");
             Assert.AreEqual("Trứng chiên cà chua", trung.name);

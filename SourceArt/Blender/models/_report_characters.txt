@@ -1,4 +1,1 @@
-SK_Khach	(5448, 14)
-SK_ChuNo	(2426, 14)
-SM_Hope	None
-SM_ConGai	None
+SK_Khach	(18657, 14)

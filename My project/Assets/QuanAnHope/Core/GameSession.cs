@@ -38,8 +38,18 @@ namespace QuanAnHope.Core
 
         public TicketWallet Wallet { get; private set; }
         public IngredientStock Stock { get; private set; }
-        public PrepStation Board { get; private set; }
-        public Stove Stove { get; private set; }
+        /// <summary>Thot dau tien (co san). Thot mua them o <see cref="Boards"/> (constitution 2.0 muc 8).</summary>
+        public PrepStation Board { get { return boards[0]; } }
+
+        /// <summary>Moi thot dang co, chi so 0 = thot co san.</summary>
+        public IReadOnlyList<PrepStation> Boards { get { return boards; } }
+        readonly List<PrepStation> boards = new List<PrepStation> { new PrepStation() };
+        /// <summary>Bep dau tien (co san). Bep mua them o <see cref="Stoves"/> (constitution 2.1 muc 8).</summary>
+        public Stove Stove { get { return stoves[0]; } }
+
+        /// <summary>Moi bep dang co, chi so 0 = bep co san.</summary>
+        public IReadOnlyList<Stove> Stoves { get { return stoves; } }
+        readonly List<Stove> stoves = new List<Stove>();
         public Counter Counter { get; private set; }
 
         /// <summary>Gia relic 8 o va cua hang 3 be (constitution muc 7).</summary>
@@ -302,8 +312,7 @@ namespace QuanAnHope.Core
 
             Wallet = new TicketWallet(balance);
             Stock = new IngredientStock();
-            Board = new PrepStation();
-            Stove = new Stove(Lookup, Formula);
+            stoves.Add(new Stove(Lookup, Formula));
             Counter = new Counter(balance);
             Clock = new DayClock(balance.day);
             Fridge = new Fridge(balance, Relics);
@@ -328,10 +337,37 @@ namespace QuanAnHope.Core
             eatingDishes = new Dish[n];
             eatTimers = new float[n];
             for (int i = 0; i < n; i++) seatTimers[i] = -1f;
-            Stove.BurnEnabled = Round >= Recipes.timing.burnFromRound;
-            Stove.CookMultiplier = IsBlackout ? Balance.blackout.cookMultiplier : 1f;
             Formula.Blackout = IsBlackout;
             Items.BeginDay(Day);
+            SyncBoards();
+            SyncStoves();
+        }
+
+        /// <summary>So bep trong phong theo so bep da mua; luat ngay (qua lua, mat dien) ap cho moi bep.</summary>
+        void SyncStoves()
+        {
+            while (stoves.Count < Items.Stoves) stoves.Add(new Stove(Lookup, Formula));
+            foreach (Stove st in stoves)
+            {
+                st.BurnEnabled = Round >= Recipes.timing.burnFromRound;
+                st.CookMultiplier = IsBlackout ? Balance.blackout.cookMultiplier : 1f;
+            }
+        }
+
+        void ResetStoves()
+        {
+            foreach (Stove st in stoves) st.Reset();
+        }
+
+        /// <summary>So thot trong bep theo so thot da mua.</summary>
+        void SyncBoards()
+        {
+            while (boards.Count < Items.Boards) boards.Add(new PrepStation());
+        }
+
+        void CancelBoards()
+        {
+            foreach (PrepStation b in boards) b.Cancel();
         }
 
         // ---------- go loi / test (chi Editor va test goi) ----------
@@ -343,8 +379,8 @@ namespace QuanAnHope.Core
             ResetDayState();
             Stock.Clear();
             Counter.Clear();
-            Stove.Reset();
-            Board.Cancel();
+            ResetStoves();
+            CancelBoards();
             Day = day;
             Wallet.BeginDay(Day, Relics.Effects);
             Shop.Restock(Day, Relics);
@@ -413,6 +449,33 @@ namespace QuanAnHope.Core
             int cost;
             ItemBuyResult r = DayIsRunning ? Items.CheckMachine(Money, out cost) : Closed(out cost);
             if (r == ItemBuyResult.Bought) { Money -= cost; Items.AddMachine(); }
+            return r;
+        }
+
+        /// <summary>Mua them mot thot (constitution 2.0 muc 8): gia tang moi lan, toi da board.max; thot moi dung ngay.</summary>
+        public ItemBuyResult BuyBoard()
+        {
+            int cost;
+            ItemBuyResult r = DayIsRunning ? Items.CheckBoard(Money, out cost) : Closed(out cost);
+            if (r == ItemBuyResult.Bought) { Money -= cost; Items.AddBoard(); SyncBoards(); }
+            return r;
+        }
+
+        /// <summary>Mua tay van nang (constitution 2.2 muc 8): mot lan, cam duoc 2 do.</summary>
+        public ItemBuyResult BuyGlove()
+        {
+            int cost;
+            ItemBuyResult r = DayIsRunning ? Items.CheckGlove(Money, out cost) : Closed(out cost);
+            if (r == ItemBuyResult.Bought) { Money -= cost; Items.AddGlove(); }
+            return r;
+        }
+
+        /// <summary>Mua them mot bep (constitution 2.1 muc 8): 500G roi +300G, toi da stove.max; bep moi dung ngay.</summary>
+        public ItemBuyResult BuyStove()
+        {
+            int cost;
+            ItemBuyResult r = DayIsRunning ? Items.CheckStove(Money, out cost) : Closed(out cost);
+            if (r == ItemBuyResult.Bought) { Money -= cost; Items.AddStove(); SyncStoves(); }
             return r;
         }
 
@@ -505,7 +568,7 @@ namespace QuanAnHope.Core
         /// </summary>
         public RerollResult RerollShop()
         {
-            if (!DayIsRunning || !Shop.IsOpen || Shop.FreeDone) return RerollResult.Closed;
+            if (!DayIsRunning || !Shop.IsOpen) return RerollResult.Closed;
             int cost = Shop.RerollCost;
             if (Money < cost) return RerollResult.NotEnoughMoney;
             if (Shop.RerollPoolSize(Relics) == 0) return RerollResult.NoneLeft;
@@ -524,31 +587,33 @@ namespace QuanAnHope.Core
 
         // ---------- Goc 4: bep ----------
 
-        public bool BeginPrep(Ingredient ingredient)
+        /// <summary>Dat nguyen lieu len thot <paramref name="board"/>. Mot nguyen lieu chi nam tren mot thot.</summary>
+        public bool BeginPrep(Ingredient ingredient, int board = 0)
         {
-            if (!DayIsRunning || !Contains(ingredient)) return false;
-            return Board.Begin(ingredient);
+            if (!DayIsRunning || !Contains(ingredient) || board < 0 || board >= boards.Count) return false;
+            foreach (PrepStation b in boards) if (ReferenceEquals(b.Current, ingredient)) return false;
+            return boards[board].Begin(ingredient);
         }
 
         /// <summary>Giu thot them mot khoang thoi gian; true dung luc so che xong.</summary>
-        public bool HoldPrep(float seconds)
+        public bool HoldPrep(float seconds, int board = 0)
         {
-            return DayIsRunning && Board.Hold(seconds);
+            return DayIsRunning && board >= 0 && board < boards.Count && boards[board].Hold(seconds);
         }
 
         /// <summary>Cho nguyen lieu da so che tu kho vao bep.</summary>
-        public bool AddToStove(Ingredient ingredient)
+        public bool AddToStove(Ingredient ingredient, int stove = 0)
         {
-            if (!DayIsRunning || !Contains(ingredient)) return false;
-            if (!Stove.AddIngredient(ingredient)) return false;
+            if (!DayIsRunning || !Contains(ingredient) || stove < 0 || stove >= stoves.Count) return false;
+            if (!stoves[stove].AddIngredient(ingredient)) return false;
             Stock.Remove(ingredient);
             return true;
         }
 
-        public bool PlateDish(out Dish dish)
+        public bool PlateDish(out Dish dish, int stove = 0)
         {
             dish = null;
-            return DayIsRunning && Stove.TryPlate(Counter, rng, out dish);
+            return DayIsRunning && stove >= 0 && stove < stoves.Count && stoves[stove].TryPlate(Counter, rng, out dish);
         }
 
         // ---------- Goc 1: khach ----------
@@ -584,8 +649,10 @@ namespace QuanAnHope.Core
 
             if (Phase == GamePhase.Open)
             {
-                // Khach dang ngoi cho them (constitution muc 6.6).
+                // Khach dang ngoi cho them (constitution muc 6.6); het thanh cho thi gian bo di (2.0).
                 foreach (Customer c in seats) if (c != null) c.waitedSeconds += seconds;
+                for (int i = 0; i < seats.Length; i++)
+                    if (seats[i] != null && Patience.GivesUp(Balance, Day, seats[i], Relics.Effects)) GiveUp(i);
 
                 // Khach an xong thi roi ghe; khach moi vao sau nextCustomerSeconds tinh tu luc do (muc 6.2).
                 for (int i = 0; i < eaters.Length; i++)
@@ -625,7 +692,33 @@ namespace QuanAnHope.Core
                 }
             }
 
-            if (IsClosedForNewCustomers && CurrentCustomer == null && !AnyoneEating && !(Phase == GamePhase.Open && BossWaiting)) EndDay();
+            // constitution 2.0 muc 6.2: khong tu het ngay; qua 21:00 het khach thi cho nguoi choi bam bien Dong quan.
+        }
+
+        /// <summary>Qua 21:00, khong con khach ngoi / dang an, chu no khong doi: bam bien Dong quan de sang ngay (2.0 muc 6.2).</summary>
+        public bool ReadyToClose
+        {
+            get { return Phase == GamePhase.Open && IsClosedForNewCustomers && CurrentCustomer == null && !AnyoneEating && !BossWaiting; }
+        }
+
+        // ---------- khach bo di (constitution 2.0 muc 6.6) ----------
+
+        /// <summary>So khach het thanh cho bo di trong ngay.</summary>
+        public int LeftToday { get; private set; }
+
+        /// <summary>Lan khach bo di gan nhat (null neu chua co hom nay).</summary>
+        public LeaveEvent LastLeave { get; private set; }
+
+        void GiveUp(int seat)
+        {
+            Customer c = seats[seat];
+            int penalty = Patience.LeavePenalty(Balance, Day);
+            Money -= penalty;
+            IncomeToday -= penalty;
+            LeftToday++;
+            LastLeave = new LeaveEvent { seat = seat, customer = c, penalty = penalty, at = Clock.Elapsed };
+            seats[seat] = null;
+            FreeSeat(seat, 0f);
         }
 
         // Gio (giay tu luc mo quan) khach thuong gan nhat vao ghe; -vo cung dau ngay.
@@ -678,7 +771,7 @@ namespace QuanAnHope.Core
             var byId = new SortedDictionary<string, Recipe>(StringComparer.Ordinal);
             foreach (Dish d in Counter.Dishes) AddRecipe(byId, Lookup.ById(d.recipeId));
             foreach (Dish d in Fridge.Dishes) AddRecipe(byId, Lookup.ById(d.recipeId));
-            AddRecipe(byId, Stove.PendingRecipe);
+            foreach (Stove st in stoves) AddRecipe(byId, st.PendingRecipe);
 
             var mains = new List<string>();
             var sides = new List<string>();
@@ -707,6 +800,21 @@ namespace QuanAnHope.Core
             return list;
         }
 
+        /// <summary>Mon dot pha (son hao hai vi) cho thuc don (constitution 2.0 muc 5.8).</summary>
+        public List<Recipe> BreakthroughRecipes()
+        {
+            var list = new List<Recipe>();
+            foreach (Recipe r in Recipes.recipes) if (r.group != StandardGroup) list.Add(r);
+            return list;
+        }
+
+        /// <summary>Gia niem yet (bac Binh thuong) cua mon; mon khong co thi 0.</summary>
+        public int PriceOf(string recipeId)
+        {
+            Recipe r = Lookup.ById(recipeId);
+            return r != null ? r.price : 0;
+        }
+
         /// <summary>
         /// Chon mon cho khach: deu giua cac mon lam duoc; khong lam duoc mon nao thi deu giua cac mon trong sach.
         /// </summary>
@@ -724,6 +832,13 @@ namespace QuanAnHope.Core
             return ServeSeat(SeatOf(CurrentCustomer), Counter.Dishes[counterIndex]);
         }
 
+        /// <summary>Dia nay la "mon ngon nhat cua quan" chu no mong (constitution 2.1 muc 8: Trung chien ca chua bac Huyen thoai).</summary>
+        public bool IsBossBest(Dish dish)
+        {
+            BossBestRules b = Balance.bossBest;
+            return dish != null && b != null && !string.IsNullOrEmpty(b.recipe) && dish.recipeId == b.recipe && dish.tier >= b.tier;
+        }
+
         /// <summary>
         /// Dua dia (tren quay cho hoac trong tu lanh) cho khach o ghe <paramref name="seat"/> (constitution muc 6.7: nguoi choi
         /// chon phuc vu ai truoc). Tien va bac toi thieu tinh theo do de tinh luc phuc vu (muc 6.6). Null neu khong phuc vu duoc.
@@ -737,12 +852,14 @@ namespace QuanAnHope.Core
             RemoveDish(dish);
             // Sai mon: khach nhan dia nhung gian (constitution muc 6.7). Chu no nhan moi mon (Q-20).
             PaymentResult payment = c.isBoss || dish.recipeId == c.orderId
-                ? Payment.Settle(Balance, Round, EasinessNow(c), dish.tier, Relics.Effects)
-                : Payment.WrongOrder(Balance, Round);
+                ? Payment.Settle(Balance, PriceOf(dish.recipeId), EasinessNow(c), dish.tier, Relics.Effects)
+                : Payment.WrongOrder(Balance, PriceOf(c.orderId));
             if (c.isBoss)
             {
                 // Tuyet hao hoac Huyen thoai: thuong ngoai tien mon (constitution muc 8).
                 if (dish.tier >= Balance.dish.maxTier) payment.bossBonus = Balance.bossBonus;
+                // 2.1: "mon ngon nhat cua quan" (tranh goi y ngay 21): dung mon + dung bac -> thuong x bonusMult (Q-80)
+                if (IsBossBest(dish)) payment.bossBonus = (int)Math.Round(Balance.bossBonus * Balance.bossBest.bonusMult);
                 payment.amount += payment.bossBonus;
                 BossServed = true;
             }
@@ -772,11 +889,7 @@ namespace QuanAnHope.Core
         void FreeSeat(int seat, float offset)
         {
             if (BossWaiting) SeatBoss(seat); // chu no dang doi ghe: vao ngay (muc 6.2 "chiem mot ghe")
-            else if (IsClosedForNewCustomers)
-            {
-                seatTimers[seat] = -1f;
-                if (CurrentCustomer == null && !AnyoneEating) EndDay();
-            }
+            else if (IsClosedForNewCustomers) seatTimers[seat] = -1f;
             else seatTimers[seat] = offset + Balance.day.nextCustomerSeconds;
         }
 
@@ -796,8 +909,8 @@ namespace QuanAnHope.Core
             // Dia con tren quay cho vao tu lanh neu con o, khong thi bi bo (constitution muc 5.1, 5.7).
             foreach (Dish d in Counter.Dishes) Fridge.TryStore(d);
             Counter.Clear();
-            Stove.Reset();
-            Board.Cancel();
+            ResetStoves();
+            CancelBoards();
             LastBreakthrough = null;
             Phase = GamePhase.DayEnd;
         }
@@ -845,6 +958,8 @@ namespace QuanAnHope.Core
             ServedToday = 0;
             CustomersToday = 0;
             IncomeToday = 0;
+            LeftToday = 0;
+            LastLeave = null;
             ClosedAt = null;
             LastBreakthrough = null;
             BossArrived = false;
@@ -949,6 +1064,7 @@ namespace QuanAnHope.Core
             s.OpenShop();
             while (s.Phase == GamePhase.Open)
             {
+                if (s.ReadyToClose) { s.CloseEarly(); break; }
                 if (s.CurrentCustomer == null)
                 {
                     // ghe trong: cho khach ke tiep (hoac toi 21:00 thi het ngay)
@@ -1046,20 +1162,18 @@ namespace QuanAnHope.Core
         public static bool CookOne(GameSession s)
         {
             if (s.Counter.IsFull || s.Stove.State != StoveState.Empty) return false;
-            if (s.Stock.Count == 0)
+            while (true)
             {
+                // cap dau tien trong kho co mon (constitution 2.0 muc 5.8: khong phai cap nao cung co mon); chua co thi quay them
+                foreach (Ingredient m in s.Stock.Items)
+                {
+                    if (m.kind != IngredientKind.Main) continue;
+                    foreach (Ingredient p in s.Stock.Items)
+                        if (p.kind == IngredientKind.Side && s.Lookup.Pairs(m.typeId, p.typeId)) return Cook(s, m, p);
+                }
                 PullResult pull;
                 if (!s.PullCrates(out pull)) return false;
             }
-
-            Ingredient main = null, side = null;
-            foreach (Ingredient i in s.Stock.Items)
-            {
-                if (main == null && i.kind == IngredientKind.Main) main = i;
-                if (side == null && i.kind == IngredientKind.Side) side = i;
-            }
-            if (main == null || side == null) return false;
-            return Cook(s, main, side);
         }
 
         /// <summary>Nau dung mon co id nay tu kho (quay them thung neu thieu). False neu khong du do.</summary>
@@ -1121,5 +1235,19 @@ namespace QuanAnHope.Core
             s.HoldPrep(ingredient.prepSeconds);
             return ingredient.prepared;
         }
+    }
+}
+
+namespace QuanAnHope.Core
+{
+    /// <summary>Mot khach het thanh cho, gian bo di (constitution 2.0 muc 6.6).</summary>
+    public class LeaveEvent
+    {
+        public int seat;
+        public Customer customer;
+        public int penalty;
+
+        /// <summary>Giay tu luc mo quan.</summary>
+        public float at;
     }
 }

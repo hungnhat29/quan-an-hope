@@ -118,11 +118,20 @@ namespace QuanAnHope.Core
         readonly RecipeBook recipes;
         readonly IRandom rng;
 
+        readonly HashSet<string> pairs = new HashSet<string>();
+
         public IngredientGacha(Balance balance, RecipeBook recipes, IRandom rng)
         {
             this.balance = balance;
             this.recipes = recipes;
             this.rng = rng;
+            foreach (Recipe r in recipes.recipes) pairs.Add(r.mainId + "|" + r.sideId);
+        }
+
+        /// <summary>Cap (chinh, phu) co mon (constitution 2.0 muc 5.8).</summary>
+        bool Pairs(string mainId, string sideId)
+        {
+            return pairs.Count == 0 || pairs.Contains(mainId + "|" + sideId);
         }
 
         /// <summary>Tieu 1 ve va tha thung. Het ve thi tra ve false, khong tha gi.</summary>
@@ -159,13 +168,17 @@ namespace QuanAnHope.Core
             for (int i = 0; i < sideCount; i++)
                 sideCrate.items.Add(Ingredient.FromSide(sideType, RollTier(odds, fx, IngredientKind.Side)));
 
+            // constitution 2.0 muc 4.2 ("tinh toan voi loai nguyen lieu tuong ung", 22/11/2026): thung chinh chon deu trong cac loai
+            // da mo khoa NAU DUOC voi loai do phu vua ra -> moi luot quay luon co it nhat mot mon (khong thung "chet").
+            var fit = mains.FindAll(m => Pairs(m.id, sideType.id));
+            if (fit.Count > 0) mains = fit;
             MainIngredient mainType = mains[rng.NextInt(0, mains.Count - 1)];
             var mainCrate = new Crate { kind = IngredientKind.Main, typeId = mainType.id, name = mainType.name };
             int mainCount = CrateCount(black ? balance.crateSize.chinh : balance.MainCrateSize(day), fx, IngredientKind.Main);
             for (int i = 0; i < mainCount; i++)
                 mainCrate.items.Add(Ingredient.FromMain(mainType, RollTier(odds, fx, IngredientKind.Main)));
 
-            return new PullResult { side = sideCrate, main = mainCrate, breakthrough = RollBreakthrough(fx) };
+            return new PullResult { side = sideCrate, main = mainCrate, breakthrough = RollBreakthrough(fx, sideType.id) };
         }
 
         /// <summary>Ti le ra thung dot pha moi luot (constitution muc 4.4): co ban + tong bt_chance.</summary>
@@ -185,7 +198,7 @@ namespace QuanAnHope.Core
             return balance.breakthrough.items + (int)(fx ?? RelicFx.None).Get(RelicKeys.BtItems);
         }
 
-        Crate RollBreakthrough(RelicFx fx)
+        Crate RollBreakthrough(RelicFx fx, string sideId)
         {
             double chance = BreakthroughChance(fx);
             // Khong co relic: khong quay so, chuoi ngau nhien giong het ban truoc (F-022 AC-1).
@@ -193,6 +206,9 @@ namespace QuanAnHope.Core
 
             var types = new List<MainIngredient>();
             foreach (MainIngredient m in recipes.mains) if (m.group == BreakthroughGroup) types.Add(m);
+            // 2.0: uu tien loai dot pha nau duoc voi do phu cua luot nay
+            var fit = types.FindAll(m => Pairs(m.id, sideId));
+            if (fit.Count > 0) types = fit;
             if (types.Count == 0) return null;
             MainIngredient type = types[rng.NextInt(0, types.Count - 1)];
             var crate = new Crate { kind = IngredientKind.Main, typeId = type.id, name = type.name, isBreakthrough = true };

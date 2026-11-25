@@ -37,6 +37,9 @@ namespace QuanAnHope.Game
 
         /// <summary>Hieu ung truyen tranh (Animation_CotTruyen 1.2): 0 day du, 1 giam (tat boil / rung / zoom giat), 2 tat.</summary>
         public int comicMotion;
+
+        /// <summary>Hieu ung giay cua tranh huong dan (paper-ui-pickit.md muc 4): 0 Day du, 1 Giam, 2 Tat.</summary>
+        public int paperMotion;
         public static readonly string[] ComicMotionNames = { "Đầy đủ", "Giảm", "Tắt" };
 
         /// <summary>Ten khoa PlayerPrefs (test doi sang khoa rieng de khong dong vao cai dat that).</summary>
@@ -99,6 +102,7 @@ namespace QuanAnHope.Game
         public void Apply(PlayerController player, bool screen)
         {
             AudioListener.volume = masterVolume / 100f;
+            PaperKit.Motion = Mathf.Clamp(paperMotion, 0, PaperKit.MotionNames.Length - 1);
             if (player != null)
             {
                 player.LookDegreesPerPixel = sensitivity;

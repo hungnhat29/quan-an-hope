@@ -176,6 +176,13 @@ namespace QuanAnHope.Game
             Vector3 at = SoundAt("Stove");
             Audio.Loop("bep_xeo", "xeo_loop", at, cooking && !boil, stove != null && stove.IsOverheating ? 1f : 0.7f);
             Audio.Loop("bep_soi", "soi_loop", at, cooking && boil, 0.8f);
+            // sau sprint 10: bep thu hai cung keu
+            Stove st2 = playing && Session.Stoves.Count > 1 ? Session.Stoves[1] : null;
+            bool cooking2 = st2 != null && (st2.State == StoveState.Cooking || st2.IsOverheating);
+            bool boil2 = st2 != null && st2.Tool == "Nồi";
+            Vector3 at2 = st2 != null ? SoundAt(StoveId(1)) : at;
+            Audio.Loop("bep_xeo_2", "xeo_loop", at2, cooking2 && !boil2, st2 != null && st2.IsOverheating ? 1f : 0.7f);
+            Audio.Loop("bep_soi_2", "soi_loop", at2, cooking2 && boil2, 0.8f);
 
             // buoc chan: theo quang duong di tren mat san
             if (playing && Player != null)

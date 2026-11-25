@@ -22,6 +22,9 @@ namespace QuanAnHope.Game
 
         public const string GameTitle = "Quán ăn của Hope";
 
+        /// <summary>Dong "Phien ban x.y.z" goc duoi phai menu chinh (F-093 AC-4).</summary>
+        public TextMeshProUGUI VersionLabel { get; private set; }
+
         readonly GameController g;
         public Transform Canvas { get; private set; }
 
@@ -85,6 +88,9 @@ namespace QuanAnHope.Game
             title.color = UiKit.Cream;
             title.lineSpacing = -30f;
             TextMeshProUGUI sub = UiKit.Label(root, "PhuDe", new Vector2(0f, 1f), new Vector2(50f, -190f), new Vector2(400f, 40f), "22 ngày để trả hết nợ", 20f, TextAlignmentOptions.Left);
+            // F-093 AC-4: so phien ban o menu (nguoi choi thu gui kem khi bao loi)
+            VersionLabel = UiKit.Label(root, "PhienBan", new Vector2(1f, 0f), new Vector2(-16f, 10f), new Vector2(300f, 28f), "Phiên bản " + Application.version, 16f, TextAlignmentOptions.Right);
+            VersionLabel.color = UiKit.Cream;
             sub.color = UiKit.Mustard;
 
             float y = 80f;
@@ -135,7 +141,7 @@ namespace QuanAnHope.Game
         // =====================================================================
 
         Slider master, music, sfx, sensitivity;
-        Button invert, fullscreen, resolution, tutorial, comicMotion;
+        Button invert, fullscreen, resolution, tutorial, comicMotion, paperMotion;
         TextMeshProUGUI sensitivityValue;
         bool fromPause;
 
@@ -145,6 +151,7 @@ namespace QuanAnHope.Game
         public Button FullscreenButton { get { return fullscreen; } }
         public Button TutorialButton { get { return tutorial; } }
         public Button ComicMotionButton { get { return comicMotion; } }
+        public Button PaperMotionButton { get { return paperMotion; } }
 
         void BuildSettings()
         {
@@ -152,33 +159,83 @@ namespace QuanAnHope.Game
             var img = dim.gameObject.AddComponent<Image>();
             img.color = new Color(UiKit.Ink.r, UiKit.Ink.g, UiKit.Ink.b, 0.72f);
             settings = dim.gameObject;
-            Image card = UiKit.Panel(dim, "The", Center, Vector2.zero, new Vector2(760f, 700f), UiKit.Cream);
-            Transform c = card.transform;
+            // sau sprint 10 (yeu cau 23/11/2026): huong dan di chuyen chuyen tu HUD vao Cai dat -> the rong them cot Dieu khien
+            Image card = UiKit.Panel(dim, "The", Center, Vector2.zero, new Vector2(SettingsW, 700f), UiKit.Cream);
+            Transform cardT = card.transform;
+            RectTransform leftCol = UiKit.Box(cardT, "CotCaiDat", new Vector2(0f, 1f), Vector2.zero, new Vector2(760f, 700f));
+            Transform c = leftCol;
             UiKit.Label(c, "TieuDe", Top, new Vector2(0f, -20f), new Vector2(700f, 50f), "Cài đặt", 34f);
+            BuildControls(cardT);
 
             float y = -84f;
             master = SliderRow(c, "AmLuongTong", "Âm lượng tổng", y, 0f, 100f, true, v => { g.Settings.masterVolume = (int)v; Changed(); });
-            music = SliderRow(c, "AmLuongNhac", "Nhạc", y -= 52f, 0f, 100f, true, v => { g.Settings.musicVolume = (int)v; Changed(); });
-            sfx = SliderRow(c, "AmLuongHieuUng", "Hiệu ứng", y -= 52f, 0f, 100f, true, v => { g.Settings.sfxVolume = (int)v; Changed(); });
-            sensitivity = SliderRow(c, "DoNhay", "Độ nhạy chuột", y -= 52f, GameSettings.MinSensitivity, GameSettings.MaxSensitivity, false,
+            music = SliderRow(c, "AmLuongNhac", "Nhạc", y -= 48f, 0f, 100f, true, v => { g.Settings.musicVolume = (int)v; Changed(); });
+            sfx = SliderRow(c, "AmLuongHieuUng", "Hiệu ứng", y -= 48f, 0f, 100f, true, v => { g.Settings.sfxVolume = (int)v; Changed(); });
+            sensitivity = SliderRow(c, "DoNhay", "Độ nhạy chuột", y -= 48f, GameSettings.MinSensitivity, GameSettings.MaxSensitivity, false,
                 v => { g.Settings.sensitivity = Mathf.Round(v * 100f) / 100f; Changed(); });
             sensitivityValue = sensitivity.transform.parent.Find("GiaTri").GetComponentInChildren<TextMeshProUGUI>();
 
-            invert = ToggleRow(c, "DaoTruc", "Đảo trục dọc", y -= 60f, () => { g.Settings.invertY = !g.Settings.invertY; Changed(); });
-            fullscreen = ToggleRow(c, "ToanManHinh", "Toàn màn hình", y -= 60f, () => { g.Settings.fullscreen = !g.Settings.fullscreen; Changed(true); });
-            resolution = ToggleRow(c, "DoPhanGiai", "Độ phân giải", y -= 60f, () => { g.Settings.NextResolution(); Changed(true); });
-            tutorial = ToggleRow(c, "HuongDan", "Hướng dẫn ngày 1", y -= 60f, () =>
+            invert = ToggleRow(c, "DaoTruc", "Đảo trục dọc", y -= 56f, () => { g.Settings.invertY = !g.Settings.invertY; Changed(); });
+            fullscreen = ToggleRow(c, "ToanManHinh", "Toàn màn hình", y -= 54f, () => { g.Settings.fullscreen = !g.Settings.fullscreen; Changed(true); });
+            resolution = ToggleRow(c, "DoPhanGiai", "Độ phân giải", y -= 54f, () => { g.Settings.NextResolution(); Changed(true); });
+            tutorial = ToggleRow(c, "HuongDan", "Hướng dẫn ngày 1", y -= 54f, () =>
             {
                 g.Settings.tutorial = !g.Settings.tutorial;
                 g.Settings.tutorialChosen = true;
                 Changed();
             });
-            comicMotion = ToggleRow(c, "HieuUngTruyen", "Hiệu ứng truyện", y -= 60f, () =>
+            comicMotion = ToggleRow(c, "HieuUngTruyen", "Hiệu ứng truyện", y -= 54f, () =>
             {
                 g.Settings.comicMotion = (g.Settings.comicMotion + 1) % GameSettings.ComicMotionNames.Length;
                 Changed();
             });
-            SettingsDoneButton = UiKit.Button(c, "Btn_Xong", Bottom, new Vector2(0f, 18f), new Vector2(260f, 54f), "Xong", UiKit.Coral, () => CloseSettings(), 24f);
+            // paper-ui-pickit.md muc 4: hieu ung giay cua tranh huong dan
+            paperMotion = ToggleRow(c, "HieuUngGiay", "Hiệu ứng giấy", y -= 54f, () =>
+            {
+                g.Settings.paperMotion = (g.Settings.paperMotion + 1) % PaperKit.MotionNames.Length;
+                Changed();
+            });
+            SettingsDoneButton = UiKit.Button(cardT, "Btn_Xong", Bottom, new Vector2(0f, 18f), new Vector2(260f, 54f), "Xong", UiKit.Coral, () => CloseSettings(), 24f);
+        }
+
+        const float SettingsW = 1180f;
+
+        /// <summary>Phim dieu khien (truoc o dong chu trang goc duoi HUD).</summary>
+        public static readonly string[][] Controls =
+        {
+            new[] { "W A S D", "Đi" },
+            new[] { "Shift", "Chạy" },
+            new[] { "Space", "Nhảy" },
+            new[] { "Chuột", "Nhìn quanh" },
+            new[] { "Chuột trái", "Bấm · giữ để sơ chế" },
+            new[] { "Chuột phải", "Thả / đặt lại đồ" },
+            new[] { "Tab", "Thực đơn, relic, cửa hàng" },
+            new[] { "T", "Ẩn / hiện hướng dẫn" },
+            new[] { "Esc", "Tạm dừng" },
+        };
+
+        /// <summary>Cac dong trong cot Dieu khien (test).</summary>
+        public readonly System.Collections.Generic.List<string> ControlLines = new System.Collections.Generic.List<string>();
+
+        void BuildControls(Transform card)
+        {
+            RectTransform col = UiKit.Box(card, "CotDieuKhien", new Vector2(1f, 1f), new Vector2(-24f, -20f), new Vector2(390f, 580f));
+            Image bg = col.gameObject.AddComponent<Image>();
+            bg.sprite = UiKit.Rounded;
+            bg.type = Image.Type.Sliced;
+            bg.color = UiKit.Hex("#FBF0DA");
+            bg.raycastTarget = false;
+            UiKit.Label(col, "TieuDe", Top, new Vector2(0f, -10f), new Vector2(360f, 44f), "Điều khiển", 28f);
+            ControlLines.Clear();
+            for (int i = 0; i < Controls.Length; i++)
+            {
+                float y = -66f - i * 56f;
+                Image key = UiKit.Panel(col, "Phim_" + i, new Vector2(0f, 1f), new Vector2(16f, y), new Vector2(140f, 44f), UiKit.Mustard, false);
+                key.raycastTarget = false;
+                UiKit.Text(key.transform, Controls[i][0], 18f, TextAlignmentOptions.Center, 4f);
+                UiKit.Label(col, "Viec_" + i, new Vector2(0f, 1f), new Vector2(168f, y - 2f), new Vector2(210f, 48f), Controls[i][1], 18f, TextAlignmentOptions.Left);
+                ControlLines.Add(Controls[i][0] + ": " + Controls[i][1]);
+            }
         }
 
         Slider SliderRow(Transform parent, string name, string label, float y, float min, float max, bool whole, Action<float> onChange)
@@ -201,6 +258,9 @@ namespace QuanAnHope.Game
         }
 
         /// <summary>Thanh truot uGUI dung tay (nen kem, ruot bac ha, nut vang) theo Art Bible muc 13.</summary>
+        /// <summary>Duong kinh nut keo (hinh tron).</summary>
+        public const float HandleSize = 38f;
+
         static Slider MakeSlider(Transform parent, Vector2 pos, Vector2 size)
         {
             RectTransform rt = UiKit.Box(parent, "ThanhTruot", new Vector2(0f, 0.5f), pos, size);
@@ -233,6 +293,10 @@ namespace QuanAnHope.Game
             s.handleRect = handle;
             s.targetGraphic = hi;
             s.direction = Slider.Direction.LeftToRight;
+            // B-09 (yeu cau 22/11/2026): Slider keo nut theo chieu cao thanh (anchor y 0..1) nen sizeDelta.y la phan CONG THEM;
+            // de nut tron 38 x 38 px thi chieu cao cong them = 38 - chieu cao thanh. Giu ti le hinh tron.
+            handle.sizeDelta = new Vector2(HandleSize, HandleSize - size.y);
+            hi.preserveAspect = true;
             return s;
         }
 
@@ -264,6 +328,7 @@ namespace QuanAnHope.Game
             UiKit.SetLabel(resolution, s.ResolutionText);
             UiKit.SetLabel(tutorial, !s.tutorialChosen ? "Tự động (ván đầu)" : s.tutorial ? "Bật" : "Tắt");
             UiKit.SetLabel(comicMotion, GameSettings.ComicMotionNames[Mathf.Clamp(s.comicMotion, 0, GameSettings.ComicMotionNames.Length - 1)]);
+            UiKit.SetLabel(paperMotion, PaperKit.MotionNames[Mathf.Clamp(s.paperMotion, 0, PaperKit.MotionNames.Length - 1)]);
         }
 
         void Changed(bool screen = false)
@@ -336,9 +401,13 @@ namespace QuanAnHope.Game
             comic = new StoryComic(root);
             book = new ComicBook(root);
 
-            storyHint = UiKit.Label(root, "GoiY", Bottom, new Vector2(0f, 10f), new Vector2(900f, 30f), "Bấm để tiếp · Giữ để bỏ qua", 16f);
+            // bug 24/11/2026: goi y mau trang o day de len hop loi ke -> chuyen len goc phai tren, nen muc
+            Image hintBg = UiKit.Panel(root, "GoiYNen", new Vector2(1f, 1f), new Vector2(-12f, -8f), new Vector2(300f, 30f), UiKit.Ink, false);
+            hintBg.color = new Color(UiKit.Ink.r, UiKit.Ink.g, UiKit.Ink.b, 0.82f);
+            hintBg.raycastTarget = false;
+            storyHint = UiKit.Text(hintBg.transform, "Bấm để tiếp · Giữ để bỏ qua", 15f, TMPro.TextAlignmentOptions.Center, 6f);
             storyHint.color = UiKit.Cream;
-            RectTransform bar = UiKit.Box(root, "BoQua", new Vector2(1f, 0f), new Vector2(-40f, 14f), new Vector2(160f, 12f));
+            RectTransform bar = UiKit.Box(root, "BoQua", new Vector2(1f, 1f), new Vector2(-82f, -42f), new Vector2(160f, 10f));
             var barBg = bar.gameObject.AddComponent<Image>();
             barBg.color = new Color(1f, 1f, 1f, 0.15f);
             RectTransform fillRt = UiKit.Box(bar, "Ruot", new Vector2(0f, 0.5f), Vector2.zero, new Vector2(160f, 12f));

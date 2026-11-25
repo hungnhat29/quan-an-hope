@@ -383,6 +383,42 @@ def music():
     save('nhac_ngay21', song(C3, 116, 2, mel3, 'ngay21'), MSR, 0.6)
 
 
+def rainbow():
+    """Sau sprint 10 (23/11/2026): nuoc sot ra Huyen thoai - "7 sac cau vong sieu bung no": tieng no tron + chuoi 7 not di len + lap lanh."""
+    sec = 2.0
+    n = int(sec * SR)
+    boom = lp(noise(0.5), 900) * env(int(0.5 * SR), 0.004, 0.35) + sine(sweep(180, 60, 0.5), 0.5) * env(int(0.5 * SR), 0.004, 0.3) * 0.8
+    y = np.zeros(n)
+    y[:len(boom)] += boom
+    notes = [72, 74, 76, 79, 81, 84, 88]          # 7 not ~ 7 mau
+    for i, m in enumerate(notes):
+        f = 440.0 * 2 ** ((m - 69) / 12.0)
+        b = bell(f, 0.7, decay=0.5) * 0.45
+        at = int((0.12 + 0.1 * i) * SR)
+        y[at:at + len(b)] += b[:max(0, n - at)]
+    sparkle = hp(noise(sec), 6000) * (0.5 + 0.5 * np.sin(2 * np.pi * 23 * t_(sec))) * np.interp(t_(sec), [0, 0.3, 1.6, 2.0], [0, 0.25, 0.12, 0])
+    return fade(y + sparkle, b=0.1)
+
+
+def bomb_fizzle():
+    """Sau sprint 10 (23/11/2026): nuoc sot hong -> Lac vi "nhu qua bom xit": ngoi chay xeo xeo, roi "pfff" xit hoi nho, khong no."""
+    sec = 1.6
+    fuse = bp(noise(1.0), 2500, 7000) * (0.6 + 0.4 * np.sin(2 * np.pi * 31 * t_(1.0))) * np.interp(t_(1.0), [0, 0.05, 0.9, 1.0], [0, 0.5, 0.5, 0.1])
+    pff = lp(noise(0.6), 500) * np.interp(t_(0.6), [0, 0.04, 0.6], [0, 1, 0]) * 0.8
+    deflate = sine(sweep(420, 90, 0.6, curve=0.8), 0.6) * np.interp(t_(0.6), [0, 0.1, 0.6], [0, 0.35, 0])
+    y = np.zeros(int(sec * SR))
+    y[:len(fuse)] += fuse
+    at = int(1.0 * SR)
+    y[at:at + len(pff)] += (pff + deflate)[:len(y) - at]
+    return fade(y, b=0.05)
+
+
+def main_new():
+    """Chi sinh tieng moi (khong dung lai tieng cu)."""
+    save('cau_vong', rainbow())
+    save('bom_xit', bomb_fizzle(), peak=0.7)
+
+
 def main():
     for i in range(4): save('buoc_chan_%d' % i, footstep(i), peak=0.5)
     save('nhet_ve', ticket())
@@ -412,4 +448,5 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    import sys
+    main_new() if '--new' in sys.argv else main()

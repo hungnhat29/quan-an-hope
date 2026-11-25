@@ -60,6 +60,12 @@ namespace QuanAnHope.Game
             return Play(clip, at);
         }
 
+        /// <summary>F-092 AC-2: nap san du lieu mọi tieng (lan phat dau khong phai giai nen trong khung hinh dang choi).</summary>
+        public void Preload()
+        {
+            foreach (AudioClip c in clips.Values) if (c != null && c.loadState != AudioDataLoadState.Loaded) c.LoadAudioData();
+        }
+
         void Load()
         {
             foreach (AudioClip c in Resources.LoadAll<AudioClip>("Audio")) clips[c.name] = c;
@@ -213,6 +219,47 @@ namespace QuanAnHope.Game
         {
             foreach (AudioSource s in loops.Values) { if (paused) s.Pause(); else s.UnPause(); }
             foreach (AudioSource s in pool) { if (paused) s.Pause(); else s.UnPause(); }
+            if (voice != null) { if (paused) voice.Pause(); else voice.UnPause(); }
+        }
+
+        // ---------------- giong khach dac biet (sau sprint 10) ----------------
+
+        AudioSource voice;
+        float voiceLeft, voiceFade;
+
+        /// <summary>
+        /// Giong khach dac biet khi vao quan (file nguoi dung dua 23/11/2026): am 2D (nghe ro o moi cho trong phong), chi phat
+        /// <paramref name="maxSeconds"/> giay dau roi nho dan (clip goc dai 5-42 giay). Giong moi thay giong cu.
+        /// </summary>
+        public AudioSource PlayVoice(string clip, float maxSeconds, float fadeSeconds = 0.8f, float volume = 1f)
+        {
+            AudioClip c;
+            if (!clips.TryGetValue(clip, out c)) return null;
+            if (voice == null) voice = NewSource("GiongKhach", false);
+            voice.Stop();
+            voice.clip = c;
+            voice.loop = false;
+            voice.pitch = 1f;
+            voice.volume = sfx * Mathf.Clamp01(volume);
+            voice.Play();
+            voiceLeft = Mathf.Min(maxSeconds, c.length);
+            voiceFade = fadeSeconds;
+            int n;
+            counts.TryGetValue(clip, out n);
+            counts[clip] = n + 1;
+            LastPlayed = clip;
+            LastSource = voice;
+            return voice;
+        }
+
+        public bool VoicePlaying { get { return voice != null && voice.isPlaying; } }
+
+        void LateUpdate()
+        {
+            if (voice == null || !voice.isPlaying) return;
+            voiceLeft -= Time.unscaledDeltaTime;
+            if (voiceLeft <= 0f) { voice.Stop(); return; }
+            if (voiceLeft < voiceFade) voice.volume = sfx * Mathf.Clamp01(voiceLeft / Mathf.Max(0.01f, voiceFade));
         }
     }
 }

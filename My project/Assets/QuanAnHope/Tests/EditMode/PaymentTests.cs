@@ -12,7 +12,7 @@ namespace QuanAnHope.Tests
     {
         static PaymentResult Pay(int easiness, int dishTier, int round = 1)
         {
-            return Payment.Settle(TestData.Balance, round, easiness, dishTier);
+            return Payment.Settle(TestData.Balance, TestData.Balance.BasePrice(round), easiness, dishTier);
         }
 
         // ---------- AC-7 ----------
@@ -25,15 +25,15 @@ namespace QuanAnHope.Tests
         [TestCase(5, 360)]
         public void AC7_GiaVong1_Bang60NhanHeSoBac(int tier, int expectedPrice)
         {
-            Assert.AreEqual(expectedPrice, Payment.Price(TestData.Balance, 1, tier));
+            Assert.AreEqual(expectedPrice, Payment.Price(TestData.Balance, 60, tier));
         }
 
         [Test]
         public void AC7_GiaGocTheoVong()
         {
-            Assert.AreEqual(70, Payment.Price(TestData.Balance, 2, 2));
-            Assert.AreEqual(85, Payment.Price(TestData.Balance, 3, 2));
-            Assert.AreEqual(100, Payment.Price(TestData.Balance, 4, 2));
+            Assert.AreEqual(70, Payment.Price(TestData.Balance, 70, 2));
+            Assert.AreEqual(85, Payment.Price(TestData.Balance, 85, 2));
+            Assert.AreEqual(100, Payment.Price(TestData.Balance, 100, 2));
         }
 
         // ---------- AC-4: chenh >= 0 -> gia + tip = gia x kho x (0,3 + 0,2 x chenh) ----------

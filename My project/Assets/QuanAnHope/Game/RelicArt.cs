@@ -167,6 +167,19 @@ namespace QuanAnHope.Game
                     P(Box, t, "Ve", 0f, 0.12f, 0f, 0.2f, 0.24f, 0.012f, "#F2C14E", 0f, 0f, -8f);
                     P(Box, t, "Cao", 0f, 0.1f, -0.007f, 0.14f, 0.08f, 0.004f, "#C9C1B6", 0f, 0f, -8f);
                     break;
+                case "F11": // sao bang trong noi (2.1 muc 7.3): noi nho, ngoi sao vang bay ra co duoi cau vong
+                    P(Cyl, t, "Noi", 0f, 0.07f, 0f, 0.22f, 0.14f, 0.22f, "#E8604F");
+                    P(Cyl, t, "Vanh", 0f, 0.145f, 0f, 0.24f, 0.02f, 0.24f, "#C94A3B");
+                    P(Box, t, "Sao1", 0.02f, 0.27f, 0f, 0.09f, 0.09f, 0.03f, "#F2C14E", 0f, 0f, 45f);
+                    P(Box, t, "Sao2", 0.02f, 0.27f, 0f, 0.09f, 0.09f, 0.03f, "#F2C14E");
+                    P(Cyl, t, "Duoi", -0.05f, 0.2f, 0f, 0.025f, 0.12f, 0.025f, "#A77BD6", 0f, 0f, 40f);
+                    break;
+                case "F12": // bi kip gia truyen: cuon sach bia do day vang, dau trang lap lanh
+                    P(Box, t, "Bia", 0f, 0.04f, 0f, 0.24f, 0.08f, 0.18f, "#B8463C");
+                    P(Box, t, "Giay", 0.005f, 0.04f, 0f, 0.22f, 0.065f, 0.17f, "#FFF3DC");
+                    P(Box, t, "Day", 0f, 0.04f, 0f, 0.03f, 0.085f, 0.185f, "#F2C14E");
+                    P(Sph, t, "LapLanh", 0.06f, 0.13f, 0f, 0.06f, 0.06f, 0.06f, "#F2C14E");
+                    break;
                 default:
                     P(Sph, t, "Hop", 0f, 0.12f, 0f, 0.2f, 0.2f, 0.2f, "#C9B3F0");
                     break;

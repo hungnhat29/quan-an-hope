@@ -65,9 +65,10 @@ namespace QuanAnHope.Game
         }
 
         // Ba ghe doc quay (x), ti le khach khi ngoi 3 nguoi; vong 1 mot khach giua, co nhu canh cu.
-        static readonly float[] SeatX = { -1.45f, 0f, 1.45f };
+        // 24/11/2026 "mo rong ban ... khach hang bi nho di": quay 6,6 m, ghe cach 2,0 m, khach 3 nguoi ti le 0,88 (truoc 1,45 m / 0,72)
+        static readonly float[] SeatX = { -2.0f, 0f, 2.0f };
         const float SeatZ = 3.25f;
-        const float CrowdScale = 0.72f;
+        const float CrowdScale = 0.88f;
         static readonly Vector2 BubbleSize = new Vector2(1250f, 560f);
 
         readonly SeatView[] seatViews = new SeatView[3];
@@ -598,7 +599,7 @@ namespace QuanAnHope.Game
             fridgeLabel.text = "Tủ lạnh · " + f.Dishes.Count + "/" + f.Capacity + (f.NoDecay ? " · không tụt bậc" : " · quá " + s.Balance.fridge.decayDays + " ngày tụt 1 bậc");
 
             // Chi ve lai khi suc chua, dia, bac hoac dia dang cam doi.
-            var key = new System.Text.StringBuilder().Append(f.Capacity).Append('|').Append(g.HeldDish == null ? 0 : g.HeldDish.GetHashCode());
+            var key = new System.Text.StringBuilder().Append(f.Capacity).Append('|').Append(g.TakenKey);
             foreach (Dish d in f.Dishes) key.Append('|').Append(d.GetHashCode()).Append(':').Append(d.tier);
             if (key.ToString() == fridgeKey) return;
             fridgeKey = key.ToString();
@@ -618,12 +619,13 @@ namespace QuanAnHope.Game
                 fridgeSlotHits.Add(slot.gameObject);
                 if (i >= f.Dishes.Count) continue;
                 Dish dish = f.Dishes[i];
-                if (ReferenceEquals(dish, g.HeldDish)) continue;
+                if (g.DishTaken(dish)) continue;
                 GameObject model = DishModel.Create(slot, dish, s.Recipes);
                 model.transform.localScale = Vector3.one * Mathf.Min(1f, w / 0.42f);
                 Dish captured = dish;
                 Interactable.Add(model, "FridgeDish_" + i, new Vector3(0f, 0.08f, 0f), new Vector3(0.42f, 0.25f, 0.42f),
-                    () => "Lấy " + captured.Title + " · " + UiKit.DishTierName[captured.tier] + " (" + captured.daysInFridge + " ngày trong tủ)",
+                    () => g.Hand == HandKind.Sauce ? "Nhỏ nước sốt lên " + captured.Title
+                        : "Lấy " + captured.Title + " · " + UiKit.DishTierName[captured.tier] + " (" + captured.daysInFridge + " ngày trong tủ)",
                     () => g.TakeDish(captured));
                 fridgeDishes.Add(model);
             }
@@ -684,18 +686,15 @@ namespace QuanAnHope.Game
             Register(Interactable.Add(blackSlot, "BlackSlot", Vector3.zero, new Vector3(1.4f, 2.4f, 3f), BlackSlotPrompt, () => g.PullBlack()));
         }
 
+        // Bug 23/11/2026: bam lo da mua lai mua them -> lo chi de cam / nho sot (mua o Tab -> Cua hang)
         void OnSauce()
         {
-            if (g.Hand == HandKind.Dish && g.Session.Items.Sauces > 0) g.UseSauceOnHeld();
-            else g.BuyItem(GameController.ItemSauce);
+            g.PickSauce();
         }
 
         string SaucePrompt()
         {
-            ItemShop it = g.Session.Items;
-            if (!it.IsOpen) return "Nước sốt thần thánh · mở từ ngày " + g.Session.Balance.itemShopFromDay;
-            if (g.Hand == HandKind.Dish && it.Sauces > 0) return "Rưới nước sốt lên " + g.HeldDish.name + " (còn " + it.Sauces + " chai)";
-            return it.Sauces >= g.Session.Balance.sauce.max ? "Đã giữ tối đa nước sốt" : "Mua nước sốt · " + it.SaucePrice + "G";
+            return SauceStovePrompt();
         }
 
         string BlackPrompt()

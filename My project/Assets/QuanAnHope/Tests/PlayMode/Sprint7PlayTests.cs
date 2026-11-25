@@ -74,6 +74,7 @@ namespace QuanAnHope.PlayTests
             // cam mon da so che len roi dat lai vao thung (chuot phai) de nau bang kich ban chung
             yield return Use("Board");
             Assert.AreEqual(HandKind.Ingredient, g.Hand);
+            LookAtFloorAway();
             P.TapSecondary();
             yield return null;
 

@@ -31,9 +31,10 @@ namespace QuanAnHope.Tests
             double normal = day7.Formula.Score(2, 2), dark = day8.Formula.Score(2, 2);
             Assert.AreEqual(2.8, normal, 1e-4);
             Assert.AreEqual(2.5, dark, 1e-4, "ngay mat dien: b - 0,3 (muc 5.3)");
-            TierChance[] bar = day8.Formula.Bar(2, 2);
-            Assert.AreEqual(2, bar[0].tier);
-            Assert.AreEqual(0.5, bar[0].chance, 1e-4);
+            // 2.1: thanh 6 bac truot theo b; mat dien keo phan bo xuong (Ngon it hon ngay thuong)
+            TierChance[] bar = day8.Formula.Bar(2, 2), sunny = day7.Formula.Bar(2, 2);
+            Assert.AreEqual(6, bar.Length);
+            Assert.Less(bar[3].chance + bar[4].chance, sunny[3].chance + sunny[4].chance);
         }
 
         [Test]
@@ -64,8 +65,8 @@ namespace QuanAnHope.Tests
         {
             GameSession s = TestData.SessionAt(4);
             List<Recipe> book = s.BookRecipes();
-            Assert.AreEqual(25, book.Count, "5 chinh x 5 phu");
-            Assert.AreEqual(16, book.Count(r => r.unlockRound == 2), "16 mon moi");
+            Assert.AreEqual(18, book.Count, "5 chinh x 5 phu, bo 30% (constitution 2.0)");
+            Assert.AreEqual(12, book.Count(r => r.unlockRound == 2), "12 mon moi");
             foreach (string id in new[] { "khoai_tay", "nam_rom" })
                 Assert.AreEqual(2, TestData.Recipes.sides.Single(x => x.id == id).unlockRound);
             foreach (string id in new[] { "bo", "tom" })

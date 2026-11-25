@@ -52,7 +52,7 @@ namespace QuanAnHope.Game
                     return false;
                 default:
                     Say(!Session.Shop.OpensOn(Session.Day) ? "Cửa hàng relic mở từ ngày " + Session.Balance.start.relicShopFromDay + "."
-                        : Session.Shop.FreeDone ? "Hôm nay đã lấy relic miễn phí." : "Giờ này không đổi hàng được.");
+                        : "Giờ này không đổi hàng được.");
                     return false;
             }
         }
@@ -63,7 +63,10 @@ namespace QuanAnHope.Game
         /// <summary>Vua giu chuot tren thot trong 0,15 giay qua (dao chat theo nhip).</summary>
         public bool PrepHeldRecently { get { return Time.time - lastPrepHold < 0.15f; } }
 
-        void NotePrepHold() { lastPrepHold = Time.time; }
+        void NotePrepHold(int board = 0) { lastPrepHold = Time.time; LastPrepBoard = board; }
+
+        /// <summary>Thot vua duoc giu chuot gan nhat (dao chi chat tren thot do).</summary>
+        public int LastPrepBoard { get; private set; }
 
         // ---------- F-078: bang Tab ----------
 
@@ -77,7 +80,9 @@ namespace QuanAnHope.Game
 
         void OnTabKey()
         {
-            if (Mode == GameMode.Playing && !ShowsOverlay) OpenTab(TabMenu.Page.Relic);
+            // sprint 10: Tab mo Thuc don (dang cho bo relic thi mo the Relic); lan sau mo lai the vua xem
+            if (Mode == GameMode.Playing && !ShowsOverlay)
+                OpenTab(PendingRelicSlot >= 0 ? TabMenu.Page.Relic : Tab != null && Tab.Opened ? Tab.Current : TabMenu.Page.Menu);
             else if (Mode == GameMode.Tab) CloseTab();
         }
 
@@ -99,6 +104,10 @@ namespace QuanAnHope.Game
         public int TabShopViews { get; private set; }
         internal void NoteShopView() { TabShopViews++; }
 
+        /// <summary>So lan xem the Thuc don (huong dan ngay 1, sprint 10 B-11).</summary>
+        public int TabMenuViews { get; private set; }
+        internal void NoteMenuView() { TabMenuViews++; }
+
         public void CloseTab()
         {
             if (Mode != GameMode.Tab) return;
@@ -116,7 +125,7 @@ namespace QuanAnHope.Game
             RelicDef old = null;
             foreach (RelicDef d in Session.Relics.Owned) if (d.id == id) old = d;
             Session.Relics.Remove(id);
-            Sfx("bam", "Shelf_0");
+            SfxHand("bam");
             Say("Đã bỏ " + (old != null ? old.name : id) + " · còn " + Session.Relics.Owned.Count + "/" + Session.Relics.Capacity + " relic.");
             return true;
         }

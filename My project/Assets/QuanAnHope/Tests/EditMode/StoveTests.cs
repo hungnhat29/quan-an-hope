@@ -170,11 +170,12 @@ namespace QuanAnHope.Tests
 
             TierChance[] bar = stove.Bar();
 
-            Assert.AreEqual(2, bar.Length);
-            Assert.AreEqual(1, bar[0].tier);
-            Assert.AreEqual(0.2, bar[0].chance, 1e-6);
-            Assert.AreEqual(2, bar[1].tier);
-            Assert.AreEqual(0.8, bar[1].chance, 1e-6);
+            // 2.1: du 6 bac (mau chuan chinh 1 + phu 1: Do 14,36%, Binh thuong 62,61%)
+            Assert.AreEqual(6, bar.Length);
+            Assert.AreEqual(1, bar[1].tier);
+            Assert.AreEqual(0.1436, bar[1].chance, 2e-4);
+            Assert.AreEqual(2, bar[2].tier);
+            Assert.AreEqual(0.6261, bar[2].chance, 2e-4);
         }
 
         // ---------- AC-6 (logic): trinh tu thao tac ----------

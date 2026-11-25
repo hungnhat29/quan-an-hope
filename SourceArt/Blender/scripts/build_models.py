@@ -461,8 +461,63 @@ def ruong_dot_pha():
     return _crate("SM_RuongDotPha", "#C9B3F0", "#F2C14E", chest=True)
 
 
+# ---------------------------------------------------------------- sau sprint 10 (yeu cau 24/11/2026: "dung blender trau chuot vien den cho cac phan moi")
+# Do moi them o sprint 10 truoc day ghep khoi trong Unity (vien theo tung khoi, goc vuong): dung lai bang mesh bo canh, it manh
+# roi -> vien muc theo diem anh om sat hinh. Toa do theo Unity, goc = tam day (keep_origin: giu x / z nhu khung trong game).
+SAUCE_RED, SAUCE_DARK, MUSTARD, INK, MINT = "#D9382C", "#B02A20", "#F2C14E", "#2B2321", "#8CC9AE"
+M_BLUE, M_INSIDE, M_TURN, M_CREAM, M_STEEL = "#9CC7D8", "#FBE7B0", "#E3DCD2", "#FFF3DC", "#5A5250"
+
+
+def lo_nuoc_sot():
+    """Lo nuoc sot than thanh (canh bep, cam tren tay): than tron bo vai, co, nap mu tat, nhan kem. 3 vat lieu, < 800 tam giac."""
+    m = Model("SM_LoNuocSot", "Kitchen", keep_origin=True)
+    m.cyl(SAUCE_RED, (0.16, 0.2, 0.16), (0, 0.1, 0), seg=14, bevel=0.025)
+    m.sphere(SAUCE_RED, (0.16, 0.08, 0.16), (0, 0.2, 0), seg=14, rings=5)
+    m.cyl(SAUCE_RED, (0.07, 0.06, 0.07), (0, 0.25, 0), seg=10, bevel=0.008)
+    m.sphere(MUSTARD, (0.095, 0.06, 0.095), (0, 0.29, 0), seg=12, rings=5)
+    m.box(M_CREAM, (0.11, 0.08, 0.012), (0, 0.11, -0.078), round_=0.3)
+    return m
+
+
+def may_gacha_vo():
+    """Vo may gacha do an kieu lo vi song (D-01): chan de go + vo xanh bo canh (2 vat lieu)."""
+    m = Model("SM_MayGacha_Vo", "Machines", keep_origin=True)
+    m.box(WOOD_DARK, (1.3, 0.55, 0.8), (0, 0.275, 0.05), round_=0.06)
+    m.box(M_BLUE, (1.5, 1.45, 0.1), (0, 1.275, 0.42), round_=0.2)
+    m.box(M_BLUE, (1.5, 0.22, 0.95), (0, 1.89, 0), round_=0.25)
+    m.box(M_BLUE, (1.5, 0.22, 0.95), (0, 0.66, 0), round_=0.25)
+    m.box(M_BLUE, (0.12, 1.45, 0.95), (-0.69, 1.275, 0), round_=0.3)
+    m.box(M_BLUE, (0.42, 1.45, 0.95), (0.54, 1.275, 0), round_=0.12)
+    return m
+
+
+def may_gacha_long():
+    """Long may sang am + mam xoay + khung cua kinh kem (3 vat lieu). Nut, tay nam, can gat, den noc, man hinh: Unity."""
+    m = Model("SM_MayGacha_Long", "Machines", keep_origin=True)
+    m.box(M_INSIDE, (1.0, 1.0, 0.04), (-0.18, 1.28, 0.35), round_=0.2)
+    m.box(M_INSIDE, (1.0, 0.04, 0.75), (-0.18, 0.78, 0), round_=0.2)
+    m.cyl(M_TURN, (0.62, 0.03, 0.62), (-0.18, 0.81, -0.05), seg=28, bevel=0.008)
+    fz = -0.47
+    m.box(M_CREAM, (1.06, 0.08, 0.06), (-0.18, 1.79, fz), round_=0.3)
+    m.box(M_CREAM, (1.06, 0.08, 0.06), (-0.18, 0.77, fz), round_=0.3)
+    m.box(M_CREAM, (0.08, 1.06, 0.06), (-0.67, 1.28, fz), round_=0.3)
+    m.box(M_CREAM, (0.08, 1.06, 0.06), (0.31, 1.28, fz), round_=0.3)
+    return m
+
+
+def bep_thu_hai():
+    """Bep thu hai (C-06): than kem bo canh, mat bep + cua lo xam, mieng bep muc (3 vat lieu). Num bep: Unity (xoay khi nau)."""
+    m = Model("SM_Bep2", "Machines", keep_origin=True)
+    m.box(M_CREAM, (1.28, 1.0, 1.0), (0, 0.5, 0), round_=0.06)
+    m.box("#C9C1B6", (1.36, 0.1, 1.05), (0, 1.05, 0), round_=0.3)
+    m.box("#C9C1B6", (0.92, 0.55, 0.04), (0, 0.45, -0.51), round_=0.2)
+    m.cyl(INK, (0.95, 0.02, 0.95), (0, 1.11, 0), seg=32)
+    return m
+
+
 ALL = [ca_chua, ca_chua_so_che, hanh_tay, hanh_tay_so_che, rau_muong, rau_muong_so_che, trung, trung_so_che,
-       heo, heo_so_che, dau_phu, dau_phu_so_che, chao, noi, vi_nuong, thot, dao, dia, thung_phu, thung_chinh, ruong_dot_pha]
+       heo, heo_so_che, dau_phu, dau_phu_so_che, chao, noi, vi_nuong, thot, dao, dia, thung_phu, thung_chinh, ruong_dot_pha,
+       lo_nuoc_sot, may_gacha_vo, may_gacha_long, bep_thu_hai]
 
 
 def main():

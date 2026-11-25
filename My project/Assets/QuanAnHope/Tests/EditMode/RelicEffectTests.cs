@@ -208,9 +208,10 @@ namespace QuanAnHope.Tests
         {
             var f = new DishFormula(TestData.Balance) { Relics = Inventory("F4") };
             Assert.AreEqual(0.6 + 0.4 + 0.8 + 0.15, f.Score(1, 1), 1e-9);
-            TierChance[] bar = f.Bar(1, 1);
-            Assert.AreEqual(2, bar.Length);
-            Assert.AreEqual(0.95, bar[1].chance, 1e-9);
+            // 2.1: du 6 bac; diem cao hon -> phan "Ngon tro len" nhieu hon khong relic
+            TierChance[] bar = f.Bar(1, 1), plain = new DishFormula(TestData.Balance).Bar(1, 1);
+            Assert.AreEqual(6, bar.Length);
+            Assert.Greater(bar.Where(c => c.tier >= 3).Sum(c => c.chance), plain.Where(c => c.tier >= 3).Sum(c => c.chance));
         }
 
         [Test]
@@ -218,17 +219,16 @@ namespace QuanAnHope.Tests
         {
             var f = new DishFormula(TestData.Balance) { Relics = Inventory("F8") };
             Assert.AreEqual(0.6 + 0.4 + 0.8 + 0.6, f.Score(1, 1), 1e-9);
-            // b = 2,4: 60% bac 2, 40% bac 3; sau Ot ma: 10% Lac vi
-            TierChance[] bar = f.Bar(1, 1);
-            Assert.AreEqual(0.10, bar.Single(c => c.tier == 0).chance, 1e-9);
-            Assert.AreEqual(0.54, bar.Single(c => c.tier == 2).chance, 1e-9);
-            Assert.AreEqual(0.36, bar.Single(c => c.tier == 3).chance, 1e-9);
-            Assert.AreEqual(3, f.Roll(1, 1, new FixedRandom(0.1, 0.5)));
-            Assert.AreEqual(0, f.Roll(1, 1, new FixedRandom(0.1, 0.05)));
+            // b = 2,4 (nhu chinh 0 + phu 4 khong relic); Ot ma: 10% thanh Lac vi, phan con lai x 0,9
+            TierChance[] bar = f.Bar(1, 1), same = new DishFormula(TestData.Balance).Bar(0, 4);
+            double lac0 = same.Single(c => c.tier == 0).chance, ngon0 = same.Single(c => c.tier == 3).chance;
+            Assert.AreEqual(0.10 + 0.9 * lac0, bar.Single(c => c.tier == 0).chance, 5e-5);
+            Assert.AreEqual(0.9 * ngon0, bar.Single(c => c.tier == 3).chance, 5e-5);
+            Assert.AreEqual(0, f.Roll(1, 1, new FixedRandom(0.05)), "ve dau luoi: Lac vi");
             var rng = new SeededRandom(3);
             int ruined = 0;
             for (int i = 0; i < Items; i++) if (f.Roll(1, 1, rng) == 0) ruined++;
-            Assert.That(100.0 * ruined / Items, Is.InRange(10 - Tol, 10 + Tol));
+            Assert.That(100.0 * ruined / Items, Is.InRange(100 * (0.10 + 0.9 * lac0) - Tol, 100 * (0.10 + 0.9 * lac0) + Tol));
         }
 
         [Test]
@@ -257,9 +257,9 @@ namespace QuanAnHope.Tests
         public void F2_ChuongVang_Tip15PhanTram_F6_TuongMeo_TienMon8PhanTram()
         {
             Balance b = TestData.Balance;
-            PaymentResult plain = Payment.Settle(b, 1, 40, 3);
-            PaymentResult bell = Payment.Settle(b, 1, 40, 3, Fx("F2"));
-            PaymentResult cat = Payment.Settle(b, 1, 40, 3, Fx("F6"));
+            PaymentResult plain = Payment.Settle(b, 60, 40, 3);
+            PaymentResult bell = Payment.Settle(b, 60, 40, 3, Fx("F2"));
+            PaymentResult cat = Payment.Settle(b, 60, 40, 3, Fx("F6"));
             double rawPrice = b.dish.priceMult[3] * b.BasePrice(1);
             double rawTip = rawPrice * 0.6 * (b.payment.tipBase + b.payment.tipPerTier * plain.diff);
             Assert.AreEqual(plain.price, bell.price);
@@ -268,7 +268,7 @@ namespace QuanAnHope.Tests
             Assert.AreEqual(Math.Round(rawTip * 1.08, MidpointRounding.AwayFromZero), cat.tip);
             Assert.Greater(bell.amount, plain.amount);
             // khach that vong: khong co thuong relic (sim_balance.py pay)
-            Assert.AreEqual(Payment.Settle(b, 1, 95, 0).amount, Payment.Settle(b, 1, 95, 0, Fx("F2", "F6")).amount);
+            Assert.AreEqual(Payment.Settle(b, 60, 95, 0).amount, Payment.Settle(b, 60, 95, 0, Fx("F2", "F6")).amount);
         }
 
         [Test]

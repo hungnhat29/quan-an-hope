@@ -222,5 +222,25 @@
   "fx": {
    "ticket_every3": 1
   }
+ },
+ {
+  "id": "F11",
+  "name": "Sao băng trong nồi",
+  "set": "",
+  "price": 2,
+  "rarity": "hiem",
+  "fx": {
+   "dish_legend": 0.003
+  }
+ },
+ {
+  "id": "F12",
+  "name": "Bí kíp gia truyền",
+  "set": "",
+  "price": 4,
+  "rarity": "hiem",
+  "fx": {
+   "dish_legend": 0.01
+  }
  }
 ]

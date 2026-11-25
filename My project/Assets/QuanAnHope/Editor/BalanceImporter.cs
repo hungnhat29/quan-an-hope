@@ -126,6 +126,7 @@ namespace QuanAnHope.EditorTools
                 maxTier = Int(dish, "max_tier"),
                 priceMult = Arr(dish, "price_mult").Select(v => (float)v).ToArray(),
                 basePriceByRound = ByRound(Obj(dish, "base_price"), b.rounds),
+                odds = Odds(dish["odds"] as JObject),
             };
 
             JObject customers = Obj(root, "customers");
@@ -217,6 +218,23 @@ namespace QuanAnHope.EditorTools
                 maxDrop = Int(pat, "max_drop"),
                 blackoutExtraSeconds = Float(pat, "blackout_extra_s"),
             };
+            // truoc sprint 10 (constitution 2.0 muc 6.6): khach het thanh cho thi bo di, quan bi tru tien
+            JObject leave = pat["leave_penalty"] as JObject;
+            b.patience.leavePenaltyByRound = leave == null ? new int[0]
+                : b.rounds.Select(r => leave[r.round.ToString()] != null ? (int)leave[r.round.ToString()] : 0).ToArray();
+            // truoc sprint 10 (muc 8): thot mua them
+            JObject board = root["board"] as JObject;
+            if (board != null)
+                b.board = new BoardRules { start = Int(board, "start"), max = Int(board, "max"), price = Int(board, "price"), step = Int(board, "step") };
+            // sau sprint 10 (constitution 2.1 muc 8): bep mua them; mon ngon nhat cho chu no
+            JObject stove = root["stove"] as JObject;
+            if (stove != null)
+                b.stove = new BoardRules { start = Int(stove, "start"), max = Int(stove, "max"), price = Int(stove, "price"), step = Int(stove, "step") };
+            JObject glove = root["glove"] as JObject;
+            if (glove != null) b.glovePrice = Int(glove, "price");
+            JObject best = root["boss_best"] as JObject;
+            if (best != null)
+                b.bossBest = new BossBestRules { recipe = (string)Need(best, "recipe"), tier = Int(best, "tier"), bonusMult = Float(best, "bonus_mult") };
             JObject bo = Obj(root, "blackout");
             b.blackout = new BlackoutRules { day = Int(bo, "day"), cookMultiplier = Float(bo, "cook_mult"), dim = Float(bo, "dim") };
             JObject fr = Obj(root, "fridge");
@@ -334,6 +352,7 @@ namespace QuanAnHope.EditorTools
                 warnSeconds = Float(o, "warn_s"),
                 burnSeconds = Float(o, "burn_s"),
                 unlockRound = Int(o, "unlock_round"),
+                price = Int(o, "price"),
             };
         }
 
@@ -345,6 +364,24 @@ namespace QuanAnHope.EditorTools
             if (t == null || t.Type == JTokenType.Null)
                 throw new FormatException("Thieu truong \"" + key + "\" trong " + (string.IsNullOrEmpty(o.Path) ? "goc JSON" : o.Path));
             return t;
+        }
+
+        /// <summary>constitution 2.1 muc 5.3: hinh dang chia 6 bac mon (null neu du lieu cu).</summary>
+        static DishOddsRules Odds(JObject o)
+        {
+            if (o == null) return null;
+            return new DishOddsRules
+            {
+                shape = Arr(o, "shape").Select(v => (float)v).ToArray(),
+                shapeB = Float(o, "shape_b"),
+                shapeTier = Int(o, "shape_tier"),
+                tailDecay = Float(o, "tail_decay"),
+                legendBase = (double)Need(o, "legend_base"),
+                legendGrowth = (double)Need(o, "legend_growth"),
+                legendCap = (double)Need(o, "legend_cap"),
+                minChance = (double)Need(o, "min_chance"),
+                grid = Int(o, "grid"),
+            };
         }
 
         static int Int(JObject o, string key) { return (int)Need(o, key); }

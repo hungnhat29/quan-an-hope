@@ -36,6 +36,8 @@ namespace QuanAnHope.EditorTools
         public static void BuildWindows()
         {
             const string output = "Builds/Windows/QuanAnHope.exe";
+            // F-093 AC-1, AC-4: ten san pham, cong ty, phien ban, bieu tuong (Branding)
+            Branding.Apply();
             // Toan man hinh, do phan giai goc cua man hinh (nguoi dung yeu cau 14/11).
             PlayerSettings.fullScreenMode = FullScreenMode.FullScreenWindow;
             PlayerSettings.defaultIsNativeResolution = true;

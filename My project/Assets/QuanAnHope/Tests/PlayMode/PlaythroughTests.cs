@@ -75,6 +75,7 @@ namespace QuanAnHope.PlayTests
         IEnumerator WalkTo(Vector3 dest)
         {
             float t = 0f, sinceProgress = 0f;
+            int framesStuck = 0;
             float best = float.MaxValue;
             while (true)
             {
@@ -84,19 +85,30 @@ namespace QuanAnHope.PlayTests
                 if (dist < 0.06f) break;
                 // dich sat goc tuong (MinX / MaxZ): than nguoi choi ban kinh 0,3 m co the dung cach 0,1-0,25 m, coi la toi
                 if (sinceProgress > 2f && dist < 0.25f) break;
-                if (dist < best - 0.01f) { best = dist; sinceProgress = 0f; }
+                if (dist < best - 0.01f) { best = dist; sinceProgress = 0f; framesStuck = 0; }
                 Vector3 local = Quaternion.Euler(0f, -P.Yaw, 0f) * d;
                 float step = Mathf.Max(0.0001f, P.MoveSpeed * Mathf.Max(Time.deltaTime, 0.001f));
                 P.SimulatedMove = new Vector2(local.x, local.z).normalized * Mathf.Min(1f, dist / step);
                 yield return null;
                 t += Time.deltaTime;
                 sinceProgress += Time.deltaTime;
+                framesStuck++;
+                // khung hinh dai khi tua 25 lan (dt > 1 giay game): chi coi la ket khi qua 4 giay game VA 20 khung khong tien
+                if (framesStuck < 20) sinceProgress = Mathf.Min(sinceProgress, 3.9f);
                 Assert.Less(sinceProgress, 4f, "Bi ket khi di toi " + dest + ", dang o " + P.transform.position + " | mode " + g.Mode + " pha " + S.Phase
                     + " input " + P.InputEnabled + " overlay " + g.ShowsOverlay + " gio " + S.Clock.Text + " dt " + Time.deltaTime + " move " + P.SimulatedMove);
                 Assert.Less(t, 60f, "Di qua lau toi " + dest);
             }
             P.SimulatedMove = Vector2.zero;
             yield return null;
+        }
+
+        /// <summary>Nhin xuong san phia giua phong (tha do ra san, khong roi len thot / ban).</summary>
+        void LookAtFloorAway()
+        {
+            Vector3 p = P.transform.position;
+            Vector3 toCenter = new Vector3(-p.x, 0f, -p.z).normalized;
+            P.LookAt(new Vector3(p.x, 0f, p.z) + toCenter * 1.2f);
         }
 
         /// <summary>Di toi truoc do vat, nhin vao, kiem tra tam ngam trung dung no.</summary>
@@ -191,7 +203,8 @@ namespace QuanAnHope.PlayTests
             candidates.Insert(0, ing);
             foreach (Ingredient c in candidates)
             {
-                ItemView view = g.Room.ItemOf(c);
+                // sprint 10 B-16: nguyen lieu da tha nam o diem tha (nhat lai o do)
+                ItemView view = g.Dropped.ContainsKey(c) ? g.Room.DroppedView(c) : g.Room.ItemOf(c);
                 if (view == null || !view.gameObject.activeInHierarchy) continue;
                 Interactable target = view.GetComponent<Interactable>();
                 yield return WalkTo(StandFor(target.WorldCenter));
@@ -241,8 +254,19 @@ namespace QuanAnHope.PlayTests
             System.Func<IEnumerator> whileCooking = null)
         {
             Recipe want = recipeId != null ? S.Lookup.ById(recipeId) : null;
-            Ingredient main = S.Stock.Items.FirstOrDefault(i => i.kind == IngredientKind.Main && (want == null || i.typeId == want.mainId));
-            Ingredient side = S.Stock.Items.FirstOrDefault(i => i.kind == IngredientKind.Side && (want == null || i.typeId == want.sideId));
+            // constitution 2.0 muc 5.8: chi ~70% cap co mon -> lay cap dau tien co cong thuc; bo qua nguyen lieu da tha (B-16)
+            Ingredient main = null, side = null;
+            // uu tien nguyen lieu trong thung, het thi dung ca nguyen lieu da tha
+            foreach (bool allowDropped in new[] { false, true })
+            {
+                System.Func<Ingredient, bool> free = i => allowDropped || !g.Dropped.ContainsKey(i);
+                foreach (Ingredient m in S.Stock.Items.Where(i => i.kind == IngredientKind.Main && free(i) && (want == null || i.typeId == want.mainId)))
+                {
+                    side = S.Stock.Items.FirstOrDefault(i => i.kind == IngredientKind.Side && free(i) && (want == null ? S.Lookup.Pairs(m.typeId, i.typeId) : i.typeId == want.sideId));
+                    if (side != null) { main = m; break; }
+                }
+                if (main != null) break;
+            }
             Assert.IsNotNull(main, "Kho het nguyen lieu chinh");
             Assert.IsNotNull(side, "Kho het do phu");
             Recipe r = S.Lookup.Find(main.typeId, side.typeId);
@@ -425,19 +449,20 @@ namespace QuanAnHope.PlayTests
             Assert.LessOrEqual(rt.sizeDelta.y, 110f, "dai ti le thap (mm tren bang bep)");
             Assert.Greater(rt.sizeDelta.x / rt.sizeDelta.y, 10f, "dai ti le dai va mong");
             TierChance[] bar = S.Stove.Bar();
-            int total = 0;
+            double total = 0;
             for (int tier = 0; tier < 6; tier++)
             {
                 Transform cell = strip.Find("Bar_" + tier);
                 Assert.IsNotNull(cell, "thieu bac " + tier);
                 string text = cell.GetComponentInChildren<TextMeshProUGUI>().text;
                 StringAssert.Contains(UiKit.DishTierName[tier], text);
-                int expected = bar.Where(c => c.tier == tier).Select(c => Mathf.RoundToInt((float)(c.chance * 100.0))).DefaultIfEmpty(0).First();
-                StringAssert.EndsWith("\n" + expected + "%", text, "bac " + tier);
-                total += expected;
+                // constitution 2.1 muc 5.3: du 6 bac, dinh dang DishFormula.FormatPercent (>= 1%: 2 chu so; < 1%: du chu so)
+                double chance = bar.Where(c => c.tier == tier).Sum(c => c.chance);
+                string expected = chance > 0 ? DishFormula.FormatPercent(chance) : "0%";
+                StringAssert.EndsWith("\n" + expected, text, "bac " + tier);
+                total += chance;
             }
-            Assert.AreEqual(100f, total, 1f);
-            Assert.IsTrue(bar.Length < 6, "bo du lieu nay phai co it nhat 1 bac 0% de kiem");
+            Assert.AreEqual(1.0, total, 1e-9);
         }
 
         /// <summary>Moi dia tren quay cho: mat theo bac mon, hoi bay len theo bac (Art Bible muc 7).</summary>
@@ -474,7 +499,7 @@ namespace QuanAnHope.PlayTests
         /// </summary>
         IEnumerator WaitForCustomer()
         {
-            yield return WaitUntil(() => S.CurrentCustomer != null || S.Phase != GamePhase.Open,
+            yield return WaitUntil(() => S.CurrentCustomer != null || S.Phase != GamePhase.Open || S.ReadyToClose,
                 S.Balance.day.eatSeconds + S.Balance.day.nextCustomerSeconds + 1f, "khach truoc an xong, khach ke tiep vao sau 3 giay");
             CheckClock();
         }
@@ -490,7 +515,7 @@ namespace QuanAnHope.PlayTests
             }
             if (S.Phase == GamePhase.Open && S.IsClosedForNewCustomers && S.CurrentCustomer != null)
             {
-                StringAssert.StartsWith("ĐÃ ĐÓNG", TextOf("ChuBien").Trim(), "21:00 bien tu lat sang DA DONG");
+                StringAssert.StartsWith("21:00", TextOf("ChuBien").Trim(), "21:00 bien bao phuc vu not khach");
                 sawClosedSign = true;
             }
         }
@@ -500,6 +525,13 @@ namespace QuanAnHope.PlayTests
         {
             yield return WaitForCustomer();
             if (S.Phase != GamePhase.Open) yield break;
+            // constitution 2.0 muc 6.2: qua 21:00 het khach thi bam bien Dong quan (khong tu het ngay)
+            if (S.ReadyToClose)
+            {
+                StringAssert.StartsWith("ĐÓNG QUÁN", TextOf("ChuBien").Trim());
+                yield return Use("ShopSign");
+                yield break;
+            }
             // Kho khong con cap nguyen lieu cho mon goi: quay them thung (neu con ve), khong thi dong quan som.
             while (OrderedOnShelf() < 0 && !CanCook(S.CurrentCustomer.orderId))
             {
@@ -520,9 +552,9 @@ namespace QuanAnHope.PlayTests
             yield return UseShelfDish(index);
             Assert.AreEqual(HandKind.Dish, g.Hand);
             Assert.AreEqual(S.CurrentCustomer.orderId, g.HeldDish.recipeId);
-            StringAssert.StartsWith("Bấm chuông: phục vụ", BellPrompt());
+            StringAssert.StartsWith("Đặt " + g.HeldDish.Title, TablePrompt());
             int money = S.Money;
-            int expected = Payment.Settle(S.Balance, S.Round, S.EasinessNow(S.CurrentCustomer), g.HeldDish.tier).amount;
+            int expected = Payment.Settle(S.Balance, S.PriceOf(g.HeldDish.recipeId), S.EasinessNow(S.CurrentCustomer), g.HeldDish.tier).amount;
             int servedBefore = S.ServedToday;
             CheckClock();
             if (S.IsClosedForNewCustomers && shot21h)
@@ -530,7 +562,7 @@ namespace QuanAnHope.PlayTests
                 shot21h = false;
                 yield return Shot("3d_21h_da_dong.png", g.Room.Station("ShopSign").WorldCenter);
             }
-            yield return Use("Bell");
+            yield return Use(TableOf(S.CurrentCustomer));
             Assert.AreEqual(money + expected, S.Money, "tien doi dung bang tinh tien");
             Assert.AreEqual(servedBefore + 1, S.ServedToday);
             maxServedInDay = Mathf.Max(maxServedInDay, S.ServedToday);
@@ -543,9 +575,15 @@ namespace QuanAnHope.PlayTests
                 && S.Stock.Items.Any(i => i.kind == IngredientKind.Side && i.typeId == r.sideId);
         }
 
-        string BellPrompt()
+        /// <summary>Sprint 10 B-17: dat dia len ban truoc mat khach (bo chuong).</summary>
+        string TableOf(Customer c)
         {
-            return g.Room.Station("Bell").Prompt();
+            return "Table_" + Mathf.Max(0, S.SeatOf(c));
+        }
+
+        string TablePrompt()
+        {
+            return g.Room.Station(TableOf(S.CurrentCustomer)).Prompt();
         }
 
         /// <summary>Dua mot dia khac mon khach goi: goi y o chuong canh bao, khach nhan nhung gian (constitution muc 6.7).</summary>
@@ -556,11 +594,12 @@ namespace QuanAnHope.PlayTests
                 if (S.Counter.Dishes[i].recipeId != S.CurrentCustomer.orderId) index = i;
             Assert.GreaterOrEqual(index, 0, "can mot dia khac mon de thu");
             yield return UseShelfDish(index);
-            StringAssert.StartsWith("Sai món: khách gọi " + S.CurrentCustomer.orderName, BellPrompt());
+            StringAssert.StartsWith("Sai món! Khách gọi " + S.CurrentCustomer.orderName, TablePrompt());
             int money = S.Money;
             int served = S.ServedToday;
-            yield return Use("Bell");
-            Assert.AreEqual(money - 18, S.Money, "sai mon: quan den 30% x 60G");
+            int penalty = Mathf.RoundToInt(0.3f * S.PriceOf(S.CurrentCustomer.orderId));
+            yield return Use(TableOf(S.CurrentCustomer));
+            Assert.AreEqual(money - penalty, S.Money, "sai mon: quan den 30% gia mon khach goi (constitution 2.0)");
             Assert.AreEqual(served + 1, S.ServedToday);
             StringAssert.StartsWith("Sai món", g.Toast);
         }
@@ -734,21 +773,14 @@ namespace QuanAnHope.PlayTests
             string odds = TextOf("BangTiLe");
             foreach (string pct in new[] { "25%", "57%", "15%", "3%" }) StringAssert.Contains(pct, odds);
 
-            // Sach nau an: trang trai ten mon, trang phai thu tu cho vao co so tron (constitution muc 5.8)
-            yield return Approach(g.Room.Station("BookNext"));
-            string page1 = TextOf("TrangSach");
-            StringAssert.Contains("Trang 1 / 9", page1);
-            StringAssert.Contains("Thứ tự cho vào", page1);
-            // Gia ban theo bac mon tren trang sach (vong 1: gia goc 60G x he so bac, constitution muc 5.2)
-            StringAssert.Contains("Giá bán", page1);
-            foreach (string price in new[] { "12G", "30G", "60G", "108G", "192G" }) StringAssert.Contains(price, page1);
-            yield return Shot("3d_sach.png", g.Room.Station("BookNext").WorldCenter + new Vector3(0.45f, 0f, 0f));
-            P.TapPrimary();
+            // Sprint 10 B-11: sach trong phong da bo, thuc don o bang Tab (constitution 2.0 muc 5.8): 6 mon vong 1, gia niem yet
+            Assert.IsTrue(g.OpenTab(TabMenu.Page.Menu));
             yield return null;
-            string page2 = TextOf("TrangSach");
-            StringAssert.Contains("Trang 2 / 9", page2);
-            Assert.AreNotEqual(page1, page2);
-            StringAssert.DoesNotContain("Tôm hùm", page2);
+            Assert.AreEqual(6, g.Tab.MenuButtons.Count, "vong 1: 6 mon");
+            Recipe first = S.Recipes.recipes.First(r => r.id == g.Tab.MenuRecipe);
+            StringAssert.Contains(first.price + "G", g.Tab.MenuPrice.text, "gia niem yet");
+            Assert.IsTrue(g.Tab.MenuButtons.Keys.All(id => !id.StartsWith("tom_hum")), "chua co mon dot pha");
+            g.CloseTab();
 
             // Anh toan canh tu goc phong
             yield return WalkTo(new Vector3(-2.1f, 0f, -2.0f));
@@ -784,10 +816,16 @@ namespace QuanAnHope.PlayTests
             yield return Shot("3d_thot.png");
             yield return HoldOn("Board", () => firstMain.prepared, 10f);
             yield return Use("Board");
-            P.TapSecondary();   // dat lai vao thung (da so che)
+            P.TapSecondary();   // sprint 10 B-16: tha roi xuong cho dang nhin (da so che)
             yield return null;
             Assert.AreEqual(HandKind.Empty, g.Hand);
-            Assert.IsTrue(g.Room.ItemOf(firstMain).gameObject.activeInHierarchy, "dat lai thi nguyen lieu ve thung");
+            Assert.IsTrue(g.Dropped.ContainsKey(firstMain), "chuot phai: nguyen lieu roi tai cho");
+            Assert.IsFalse(g.Room.ItemOf(firstMain).gameObject.activeInHierarchy, "khong ve thung");
+            Assert.IsNotNull(g.Room.DroppedView(firstMain), "nam o diem tha");
+            Assert.IsTrue(g.TakeIngredient(firstMain), "nhat lai duoc");
+            LookAtFloorAway();   // 24/11: tha ra san (nguyen lieu nam tren thot thi tay trong bam thot = nhat lai)
+            P.TapSecondary();
+            yield return null;
 
             cookShots = "nau_sai_thu_tu";
             yield return CookOne(correctOrder: false);
@@ -821,9 +859,10 @@ namespace QuanAnHope.PlayTests
                     if (S.Phase != GamePhase.Open) break;
                     if (OrderedOnShelf() < 0) yield return CookOne(true, S.CurrentCustomer.orderId);
                     yield return UseShelfDish(OrderedOnShelf());
-                    yield return Approach(g.Room.Station("Bell"));
+                    string table = TableOf(S.CurrentCustomer);
+                    yield return Approach(g.Room.Station(table));
                     yield return Shot("3d_cam_dia_toi_chuong.png");
-                    yield return Use("Bell");
+                    yield return Use(table);
                 }
                 if (S.ServedToday == 2 && S.Phase == GamePhase.Open && !wrongTried)
                 {
@@ -897,7 +936,7 @@ namespace QuanAnHope.PlayTests
             Assert.AreEqual(4, S.Day);
             Assert.AreEqual(before - 750, S.Money);
             Assert.IsFalse(g.ShowsOverlay);
-            StringAssert.Contains("Chủ nợ đã thu 750G", g.Toast);
+            StringAssert.Contains("Đã trả 750G", g.Toast);
             Assert.AreEqual(3, S.SeatCount);
             yield return Shot("ngay4_dau_vong2.png", null, Sprint4);
             Debug.Log("Gia lap 3D: qua vong 1 voi " + before + "G truoc khi tra no, sang ngay 4.");
@@ -976,7 +1015,7 @@ namespace QuanAnHope.PlayTests
 
             Assert.AreEqual(GamePhase.Open, S.Phase, "con khach ngoi thi chua het ngay");
             Assert.AreSame(seated, S.CurrentCustomer);
-            StringAssert.StartsWith("ĐÃ ĐÓNG", TextOf("ChuBien").Trim(), "21:00 bien tu lat sang DA DONG");
+            StringAssert.StartsWith("21:00", TextOf("ChuBien").Trim(), "21:00 bien bao phuc vu not khach");
             StringAssert.Contains("<color=", HudText("HUD_Trai"), "sau 20:00 gio doi mau");
             StringAssert.Contains("21:", HudText("HUD_Trai"));
             StringAssert.Contains("phục vụ nốt", g.Toast);
@@ -984,8 +1023,14 @@ namespace QuanAnHope.PlayTests
 
             yield return ServeOne();
             Assert.AreEqual(GamePhase.Open, S.Phase, "khach cuoi dang an: chua het ngay");
-            yield return WaitUntil(() => S.Phase == GamePhase.DayEnd, S.Balance.day.eatSeconds + 1f, "khach cuoi an xong thi het ngay");
-            Assert.AreEqual(GamePhase.DayEnd, S.Phase, "phuc vu xong khach cuoi sau 21:00, an xong thi het ngay");
+            // constitution 2.0 muc 6.2: an xong khong tu het ngay - bien doi sang DONG QUAN, bam moi sang ngay
+            yield return WaitUntil(() => S.ReadyToClose, S.Balance.day.eatSeconds + 1f, "khach cuoi an xong: cho dong quan");
+            yield return null;
+            Assert.AreEqual(GamePhase.Open, S.Phase, "khong tu het ngay");
+            StringAssert.StartsWith("ĐÓNG QUÁN", TextOf("ChuBien").Trim());
+            StringAssert.Contains("đóng quán", g.Toast);
+            yield return Use("ShopSign");
+            Assert.AreEqual(GamePhase.DayEnd, S.Phase, "bam bien Dong quan thi het ngay");
             StringAssert.Contains("Đã phục vụ 1 khách", HudText("ManPhu"));
             StringAssert.Contains("đóng quán lúc " + S.ClosedAt, HudText("ManPhu"));
             yield return Shot("3d_het_ngay_21h.png");
@@ -998,7 +1043,7 @@ namespace QuanAnHope.PlayTests
             {
                 yield return Use("ShopSign");      // mo quan
                 Assert.AreEqual(GamePhase.Open, S.Phase);
-                yield return Use("Bell");          // tay khong: khong phuc vu duoc
+                yield return Use("Table_0");       // tay khong: khong phuc vu duoc
                 Assert.AreEqual(0, S.ServedToday);
                 yield return Use("ShopSign");      // dong quan som
                 Assert.AreEqual(GamePhase.DayEnd, S.Phase);
@@ -1023,7 +1068,7 @@ namespace QuanAnHope.PlayTests
             Assert.IsNotNull(target, "Khong co tram " + stationId);
             Transform goc3 = GameObject.Find("NhaHang").transform.Find("Goc3");
             Vector3 local = goc3.InverseTransformPoint(target.WorldCenter);
-            Vector3 stand = goc3.TransformPoint(new Vector3(Mathf.Clamp(local.x, -1.6f, 2.4f), 0f, 2.35f));
+            Vector3 stand = goc3.TransformPoint(new Vector3(Mathf.Clamp(local.x, -2.5f, 2.5f), 0f, 2.35f));
             stand.y = 0f;
             yield return WalkTo(stand);
             P.LookAt(target.WorldCenter);
@@ -1085,7 +1130,7 @@ namespace QuanAnHope.PlayTests
                 StringAssert.Contains(RelicText.Effect(o), card.EffectText);
                 Assert.AreEqual(RelicArt.RarityColor(o.rarity), card.FrameColor, "vien the theo do hiem");
             }
-            yield return WalkTo(Goc3Point(1.15f, 1.3f));
+            yield return WalkTo(Goc3Point(0f, 1.3f));
             yield return Shot("goc3_ngay2_ba_be.png", PedestalsView(), Sprint3);
 
             // AC-3: bam mua relic re nhat
@@ -1099,19 +1144,20 @@ namespace QuanAnHope.PlayTests
             Assert.IsTrue(S.Relics.Has(buy.id));
             Assert.IsNull(g.Room.PedestalRelics[slot], "be trong toi het ngay");
             StringAssert.Contains("đã bán", be.CurrentPrompt);
-            Assert.IsNotNull(g.Room.ShelfRelics[0], "relic len o dau cua gia");
-            for (float t = 0f; t < 1.2f; t += Time.deltaTime) yield return null; // bay tu be len gia 0,7 giay
-            Assert.IsNull(g.Room.ShelfRelics[0].GetComponent<RelicFly>(), "bay xong");
-            Assert.Less(g.Room.ShelfRelics[0].transform.localPosition.magnitude, 1e-4f, "nam dung o dau cua gia");
-            StringAssert.Contains("Giá relic 1/8", g.Room.ShelfHeaderText);
+            // sprint 10 (yeu cau 22/11/2026): bo gia relic tren tuong, relic dang co chi xem o bang Tab (co hinh relic)
+            Assert.IsTrue(g.OpenTab(TabMenu.Page.Relic));
+            yield return null;
+            Assert.IsTrue(g.Tab.RelicIcons.ContainsKey(buy.id), "relic vua mua co hinh trong Tab");
+            StringAssert.Contains("1/8", g.Tab.HeaderText);
             // yeu cau 21/11/2026: khong lo relic nao thuoc bo, relic nao le
-            if (!string.IsNullOrEmpty(buy.set)) StringAssert.DoesNotContain(RelicKeys.SetName(buy.set), g.Room.ShelfHeaderText);
+            if (!string.IsNullOrEmpty(buy.set)) StringAssert.DoesNotContain(RelicKeys.SetName(buy.set), g.Tab.HeaderText);
+            g.CloseTab();
             yield return null;
             yield return Shot("goc3_vua_mua.png", PedestalsView(), Sprint3);
 
             // AC-4 (F-021) doi 21/11/2026: gia khong ghi tien do bo; tac dung bo van tinh (bang ti le duoi day)
             foreach (string id in new[] { "C1", "C2" }) if (!S.Relics.Has(id)) g.DebugGiveRelic(id);
-            StringAssert.DoesNotContain("Chợ Sớm", g.Room.ShelfHeaderText);
+            StringAssert.DoesNotContain("Chợ Sớm", RoomView.ShelfSummary(S.Relics));
             foreach (RelicCard card in Object.FindObjectsByType<RelicCard>(FindObjectsInactive.Exclude))
             {
                 StringAssert.DoesNotContain("Bộ ", card.SetText);
@@ -1145,7 +1191,7 @@ namespace QuanAnHope.PlayTests
             yield return UseGoc3("Relic_" + other);
             Assert.AreEqual(other, g.PendingRelicSlot);
             Assert.AreEqual(tickets, S.Wallet.Count, "chua mua khi chua chon relic bo");
-            yield return Shot("goc3_day_chon_bo.png", g.Room.Station("Shelf_3").WorldCenter + new Vector3(0f, -0.6f, 0f), Sprint3);
+            yield return Shot("goc3_day_chon_bo.png", PedestalsView(), Sprint3);
             P.TapSecondary(); // huy
             yield return null;
             Assert.AreEqual(-1, g.PendingRelicSlot);
@@ -1154,14 +1200,18 @@ namespace QuanAnHope.PlayTests
 
             yield return UseGoc3("Relic_" + other);
             RelicDef dropped = S.Relics.Owned[2];
-            StringAssert.Contains("Bỏ " + dropped.name + " để lấy " + want.name, g.Room.Station("Shelf_2").CurrentPrompt);
-            yield return UseGoc3("Shelf_2");
+            // sprint 10: gia relic tren tuong da bo; Tab tu mo the Relic de chon relic bo
+            Assert.IsTrue(g.OpenTab(TabMenu.Page.Relic));
+            yield return null;
+            StringAssert.Contains(want.name, g.Tab.HeaderText);
+            g.Tab.DiscardButtons[dropped.id].onClick.Invoke();
+            yield return null;
             Assert.IsTrue(S.Relics.Has(want.id));
             Assert.IsFalse(S.Relics.Has(dropped.id));
             Assert.AreEqual(8, S.Relics.Owned.Count);
             Assert.AreEqual(tickets - want.price, S.Wallet.Count);
             yield return null;
-            yield return Shot("goc3_gia_8_o.png", g.Room.Station("Shelf_3").WorldCenter + new Vector3(0f, -0.6f, 0f), Sprint3);
+            yield return Shot("goc3_gia_8_o.png", PedestalsView(), Sprint3);
         }
 
         [UnityTest]
@@ -1279,7 +1329,7 @@ namespace QuanAnHope.PlayTests
             Assert.IsNull(S.Seats[1], "khach giua da nhan dia");
             Assert.AreSame(left, S.Seats[0]);
             Assert.AreSame(right, S.Seats[2]);
-            int expected = Payment.Settle(S.Balance, S.Round, S.EasinessNow(middle), dish.tier, S.Relics.Effects).amount;
+            int expected = Payment.Settle(S.Balance, S.PriceOf(dish.recipeId), S.EasinessNow(middle), dish.tier, S.Relics.Effects).amount;
             Assert.AreEqual(money + expected, S.Money, "tien theo do de tinh luc phuc vu cua khach giua (F-031 AC-3)");
             PaymentOutcome outcome;
             Assert.IsTrue(g.IsReacting(1, out outcome), "khach giua hien mat vui / gian");
@@ -1366,7 +1416,7 @@ namespace QuanAnHope.PlayTests
             yield return WaitUntil(() => S.Stove.IsBurnt, S.Stove.CookSeconds + 5f, "qua 2 lan thoi gian nau");
             yield return null;
             Assert.AreEqual(UiKit.Coral, g.Room.StovePanelColor);
-            StringAssert.Contains("Quá lửa", g.Toast);
+            StringAssert.Contains("Cháy", g.Toast);
         }
 
         /// <summary>F-034 AC-1..4 tren canh that: quay vat pham Goc 2 (gia, ti le nuoc sot va ve den hien, may gacha giau ti le).</summary>
@@ -1379,7 +1429,7 @@ namespace QuanAnHope.PlayTests
             Assert.IsTrue(g.OpenTab(TabMenu.Page.Shop));
             string sauceLine = g.Tab.ShopLines[GameController.ItemSauce].text, blackLine = g.Tab.ShopLines[GameController.ItemBlack].text;
             StringAssert.Contains("Nước sốt thần thánh</b> · 450G", sauceLine);
-            StringAssert.Contains("hỏng 12% · giữ 18% · +1 bậc 50% · +2 bậc 20%", sauceLine, "Dieu 4: hien ti le nuoc sot");
+            StringAssert.Contains("Hỏng 12% · giữ 18% · +1 bậc 50% · +2 bậc 20%", sauceLine, "Dieu 4: hien ti le nuoc sot");
             StringAssert.Contains("Vé đen</b> · 700G", blackLine);
             StringAssert.Contains("Tươi 62% · Xuất sắc 30% · Hiếm 8%", blackLine, "Dieu 4: hien ti le ve den");
             StringAssert.Contains("800G", g.Tab.ShopLines[GameController.ItemMachine].text);
@@ -1412,7 +1462,7 @@ namespace QuanAnHope.PlayTests
             yield return CookOne(true);
             Dish d = S.Counter.Dishes.Last();
             yield return UseShelfDish(S.Counter.Dishes.Count - 1);
-            StringAssert.StartsWith("Rưới nước sốt lên " + d.name, g.Room.Station("Sauce").CurrentPrompt);
+            StringAssert.StartsWith("Nhỏ nước sốt lên " + d.name, g.Room.Station("Sauce").CurrentPrompt);
             yield return Use("Sauce");
             Assert.AreEqual(0, S.Items.Sauces);
             StringAssert.StartsWith("Nước sốt: " + d.name, g.Toast);
@@ -1430,15 +1480,27 @@ namespace QuanAnHope.PlayTests
             Assert.AreEqual(before - 800, S.Money);
             StringAssert.Contains("3/3 lượt", g.Room.MachineSignText);
             Assert.AreSame(d, g.HeldDish, "mua may khong lam roi dia");
+            // 24/11/2026: may kieu lo vi song - bam may cho dia vao (tay trong, thay dia trong may), gat can quay, bam may lay ra
             yield return Use("FoodMachine");
+            Assert.AreEqual(HandKind.Empty, g.Hand, "dia roi khoi tay, nam trong may");
+            Assert.AreSame(d, g.MachineDish);
+            yield return null;
+            Assert.IsTrue(g.Room.MachineDishShown, "thay dia trong may");
+            yield return Use("FoodMachineLever");
             Assert.IsTrue(d.machined);
             Assert.AreEqual(2, S.Items.MachineUsesLeft);
+            Assert.IsTrue(g.MachineSpinning, "dang quay");
+            yield return new WaitForSeconds(GameController.MachineSpinSeconds + 0.2f);
+            yield return null;
             StringAssert.StartsWith("machine:", g.LastItemEffect);
-            if (g.Hand == HandKind.Dish)
+            Assert.IsNotNull(g.Room.MachineBannerText, "bang ket qua thanh cong / xit");
+            if (g.MachineDish != null)
             {
-                yield return Use("FoodMachine");
+                yield return Use("FoodMachineLever");
                 Assert.AreEqual(2, S.Items.MachineUsesLeft, "moi mon chi vao may 1 lan");
-                StringAssert.Contains("đã vào máy", g.Toast);
+                StringAssert.Contains("đã quay", g.Toast);
+                yield return Use("FoodMachine");
+                Assert.AreSame(d, g.HeldDish, "lay dia ra");
             }
             else Assert.IsFalse(S.HasDish(d), "hong: mat mon");
             yield return WalkTo(new Vector3(1.0f, 0f, -1.3f));
@@ -1551,7 +1613,13 @@ namespace QuanAnHope.PlayTests
             Assert.AreEqual(GamePhase.Open, S.Phase);
             yield return CookOne(true, "ga__bi_do");
             g.ClockScale = 60f;
-            yield return WaitUntil(() => S.BossArrived, 60f, "20:00 chu no toi");
+            // constitution 2.0 muc 6.6: khach het thanh cho thi bo di; kich ban nay can ba ghe kin luc 20:00 nen giu chan khach
+            for (float t = 0f; !S.BossArrived && t < 60f; t += Time.unscaledDeltaTime)
+            {
+                foreach (Customer c in S.Seats) if (c != null && !c.isBoss) c.waitedSeconds = 0f;
+                yield return null;
+            }
+            Assert.IsTrue(S.BossArrived, "20:00 chu no toi");
             g.ClockScale = 1f;
             Assert.AreEqual(20, S.Clock.Hour);
             Assert.IsTrue(S.BossWaiting, "ba ghe kin: chu no doi ghe");
@@ -1585,7 +1653,7 @@ namespace QuanAnHope.PlayTests
             StringAssert.Contains("Phục vụ chủ nợ: " + top.name, seat.CurrentPrompt);
             StringAssert.Contains("được thưởng 11500G", seat.CurrentPrompt);
             int money = S.Money;
-            int plain = Payment.Settle(S.Balance, S.Round, 5, top.tier, S.Relics.Effects).amount;
+            int plain = Payment.Settle(S.Balance, S.PriceOf(top.recipeId), 5, top.tier, S.Relics.Effects).amount;
             // phan ung chi 0,8 giay: chup ngay sau khi bam, thoi gian thuong
             yield return WalkTo(new Vector3(0f, 0f, 0.6f + BepNhanPham.RoomSize.Grow));
             Vector3 aimBoss = seat.WorldCenter + new Vector3(0f, 0.3f, 0f);
@@ -1657,14 +1725,17 @@ namespace QuanAnHope.PlayTests
             yield return null;
             StringAssert.Contains("Vé đen", TextOf("TheRelic_0"));
             StringAssert.Contains("Vé đen", TextOf("BienRelic"));
-            yield return WalkTo(Goc3Point(0.6f, 1.3f));
+            yield return WalkTo(Goc3Point(-0.6f, 1.3f));
             yield return Shot("goc3_ve_den_3_relic.png", PedestalsView() + new Vector3(-0.4f, 0.1f, 0f), Sprint5);
 
             RelicDef pick = S.BlackRelicOffers[0];
             yield return UseGoc3("Relic_0");
             Assert.IsTrue(g.PendingIsBlack, "gia day: phai bo mot relic");
             string drop = S.Relics.Owned[0].id;
-            yield return UseGoc3("Shelf_0");
+            Assert.IsTrue(g.OpenTab(TabMenu.Page.Relic));
+            yield return null;
+            g.Tab.DiscardButtons[drop].onClick.Invoke();
+            yield return null;
             Assert.IsTrue(S.Relics.Has(pick.id));
             Assert.IsFalse(S.Relics.Has(drop));
             Assert.AreEqual(0, S.BlackRelicOffers.Count);
@@ -1694,7 +1765,7 @@ namespace QuanAnHope.PlayTests
             yield return Shot("mon_hy_vong.png", plate.transform.position, Sprint5);
             yield return UseShelfDish(0);
             Assert.AreSame(legend, g.HeldDish);
-            Assert.AreEqual(Dish.LegendName, g.HeldName);
+            Assert.AreEqual(legend.name, g.HeldName, "2.1: mon Huyen thoai giu ten mon");
         }
 
         /// <summary>F-040 AC-3, AC-4: vong 4 ga ta nuong tren vi (lat giua chung, lo vet nuong); cua hoang de hap trong noi co nap va hoi.</summary>

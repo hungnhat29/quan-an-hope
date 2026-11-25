@@ -92,23 +92,28 @@ namespace QuanAnHope.Core
         public int bossBonus;
     }
 
-    /// <summary>Tra tien va tip (constitution muc 5.2, 6.5). Tien lam tron den 1G.</summary>
+    /// <summary>
+    /// Tra tien va tip (constitution 2.0 muc 5.2, 6.5). Moi mon co gia niem yet o bac Binh thuong (<see cref="Recipe.price"/>);
+    /// bac khac = gia niem yet x he so bac. Tien lam tron den 1G.
+    /// </summary>
     public static class Payment
     {
-        public static int Price(Balance b, int round, int dishTier)
+        /// <summary>Gia ban mon co gia niem yet <paramref name="listedPrice"/> o bac <paramref name="dishTier"/>.</summary>
+        public static int Price(Balance b, int listedPrice, int dishTier)
         {
-            return RoundMoney(RawPrice(b, round, dishTier));
+            return RoundMoney(RawPrice(b, listedPrice, dishTier));
         }
 
+        /// <param name="listedPrice">Gia niem yet cua mon (bac Binh thuong).</param>
         /// <param name="fx">Relic (Chuong vang: tip x (1 + tip); Tuong meo: tien mon + tip x (1 + income), chi khi khach hai long,
         /// nhu sim_balance.py pay()). Null = khong co relic.</param>
-        public static PaymentResult Settle(Balance b, int round, int easiness, int dishTier, RelicFx fx = null)
+        public static PaymentResult Settle(Balance b, int listedPrice, int easiness, int dishTier, RelicFx fx = null)
         {
             if (fx == null) fx = RelicFx.None;
             int required = b.RequiredTierFor(easiness);
             // Huyen thoai tinh nhu Tuyet hao khi so voi yeu cau (muc 6.4: "Huyen thoai cung dat").
             int diff = Math.Min(dishTier, b.dish.maxTier) - required;
-            double price = RawPrice(b, round, dishTier);
+            double price = RawPrice(b, listedPrice, dishTier);
             var result = new PaymentResult { diff = diff, price = RoundMoney(price) };
 
             if (diff >= 0)
@@ -130,28 +135,30 @@ namespace QuanAnHope.Core
             else
             {
                 result.outcome = PaymentOutcome.Angry;
-                result.amount = -RoundMoney((double)b.payment.penaltyBaseShare * b.BasePrice(round));
+                result.amount = -RoundMoney((double)b.payment.penaltyBaseShare * listedPrice);
             }
             return result;
         }
 
-        /// <summary>Mang sai mon: khach nhan dia nhung khong tra, quan den bu nhu khach gian (constitution muc 6.5, 6.7).</summary>
-        public static PaymentResult WrongOrder(Balance b, int round)
+        /// <summary>
+        /// Mang sai mon: khach nhan dia nhung khong tra, quan den bu 30% gia niem yet cua mon khach goi (constitution 2.0 muc 6.5, 6.7).
+        /// </summary>
+        public static PaymentResult WrongOrder(Balance b, int orderedListedPrice)
         {
             return new PaymentResult
             {
                 outcome = PaymentOutcome.Angry,
                 wrongOrder = true,
-                amount = -RoundMoney((double)b.payment.penaltyBaseShare * b.BasePrice(round)),
+                amount = -RoundMoney((double)b.payment.penaltyBaseShare * orderedListedPrice),
             };
         }
 
-        static double RawPrice(Balance b, int round, int dishTier)
+        static double RawPrice(Balance b, int listedPrice, int dishTier)
         {
             float[] mult = b.dish.priceMult;
             if (dishTier < 0 || dishTier >= mult.Length)
                 throw new ArgumentOutOfRangeException("dishTier", "Khong co he so gia cho bac " + dishTier);
-            return (double)mult[dishTier] * b.BasePrice(round);
+            return (double)mult[dishTier] * listedPrice;
         }
 
         static int RoundMoney(double value)

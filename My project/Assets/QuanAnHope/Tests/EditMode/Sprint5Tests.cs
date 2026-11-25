@@ -76,8 +76,8 @@ namespace QuanAnHope.Tests
             CollectionAssert.AreEquivalent(new[] { "ga" },
                 TestData.Recipes.mains.Where(x => x.group == "chinh" && x.unlockRound == 4).Select(x => x.id).ToArray());
 
-            Assert.AreEqual(49, Day(9).BookRecipes().Count, "vong 3: 7 chinh x 7 phu");
-            Assert.AreEqual(80, Day(15).BookRecipes().Count, "vong 4: 8 chinh x 10 phu (muc 4.5)");
+            Assert.AreEqual(34, Day(9).BookRecipes().Count, "vong 3: 7 chinh x 7 phu, bo 30% (constitution 2.0)");
+            Assert.AreEqual(56, Day(15).BookRecipes().Count, "vong 4: 8 chinh x 10 phu, bo 30% (constitution 2.0)");
             Assert.AreEqual(85, B.BasePrice(3));
             Assert.AreEqual(100, B.BasePrice(4));
             Assert.AreEqual("Vỉ nướng", Day(15).Lookup.Find("ga", "bi_do").tool);
@@ -150,10 +150,10 @@ namespace QuanAnHope.Tests
             d.tier = ItemRolls.ApplySauce(SauceResult.Legend, d.tier, B);
             Assert.AreEqual(5, d.tier);
             Assert.IsTrue(d.IsLegend);
-            Assert.AreEqual("Món Hy Vọng", d.Title);
+            Assert.AreEqual("Trứng chiên cà chua", d.Title, "2.1: Huyen thoai la bac cua moi mon, giu ten mon");
             Assert.AreEqual("Trứng chiên cà chua", TestData.DishOf("trung__ca_chua", 4).Title);
-            Assert.AreEqual(510, Payment.Price(B, 3, 5), "85G x 6,0");
-            PaymentResult p = Payment.Settle(B, 3, 20, 5);
+            Assert.AreEqual(510, Payment.Price(B, 85, 5), "85G x 6,0");
+            PaymentResult p = Payment.Settle(B, 85, 20, 5);
             Assert.AreEqual(PaymentOutcome.Satisfied, p.outcome, "Huyen thoai cung dat yeu cau Tuyet hao (muc 6.4)");
             Assert.AreEqual(0, p.diff);
         }
@@ -274,7 +274,7 @@ namespace QuanAnHope.Tests
         public void F043_AC1_Ngay21_20Gio_ChuNoVao_DeTinh5_ChiemMotGhe()
         {
             GameSession s = Day21Open();
-            s.Tick(BossAt - 1f);
+            TestData.TickKeepWaiting(s, BossAt - 1f);
             Assert.IsFalse(s.BossArrived, "truoc 20:00 chua toi");
             Assert.IsTrue(s.Seats.All(c => c == null || !c.isBoss));
             Assert.AreEqual(3, s.Seats.Count(c => c != null), "3 ghe da co khach thuong");
@@ -312,7 +312,7 @@ namespace QuanAnHope.Tests
                 s.Tick(TestData.Eat);
             }
             Assert.IsNotNull(s.Boss);
-            s.Tick(B.DaySeconds());
+            TestData.TickKeepWaiting(s, B.DaySeconds());
             Assert.IsTrue(s.Clock.IsPastClose);
             Assert.AreEqual(GamePhase.Open, s.Phase, "chu no con ngoi thi ngay chua het");
             Assert.IsNotNull(s.Boss);
@@ -332,7 +332,9 @@ namespace QuanAnHope.Tests
             s.Counter.TryPlace(top);
             s.ServeSeat(s.SeatOf(s.Boss), top);
             s.Tick(TestData.Eat);
-            Assert.AreEqual(GamePhase.DayEnd, s.Phase, "phuc vu chu no (nguoi cuoi), an xong thi het ngay");
+            Assert.IsTrue(s.ReadyToClose, "phuc vu chu no (nguoi cuoi), an xong thi dong quan duoc");
+            Assert.IsTrue(s.CloseEarly());
+            Assert.AreEqual(GamePhase.DayEnd, s.Phase);
         }
 
         [Test]
@@ -370,7 +372,7 @@ namespace QuanAnHope.Tests
             Dish d = TestData.DishOf("ca_hoi__ot_chuong", tier);
             s.Counter.TryPlace(d);
             PaymentResult p = s.ServeSeat(s.SeatOf(s.Boss), d);
-            PaymentResult plain = Payment.Settle(B, 4, 5, tier, s.Relics.Effects);
+            PaymentResult plain = Payment.Settle(B, s.PriceOf("ca_hoi__ot_chuong"), 5, tier, s.Relics.Effects);
             Assert.AreEqual(11500, p.bossBonus);
             Assert.AreEqual(plain.amount + 11500, p.amount);
             Assert.AreEqual(before + plain.amount + 11500, s.Money);
@@ -389,7 +391,7 @@ namespace QuanAnHope.Tests
             s.Counter.TryPlace(d);
             PaymentResult p = s.ServeSeat(s.SeatOf(s.Boss), d);
             Assert.AreEqual(0, p.bossBonus);
-            Assert.AreEqual(Payment.Settle(B, 4, 5, tier).amount, p.amount);
+            Assert.AreEqual(Payment.Settle(B, s.PriceOf("muc__bong_cai"), 5, tier).amount, p.amount);
             Assert.IsTrue(s.BossServed);
         }
 

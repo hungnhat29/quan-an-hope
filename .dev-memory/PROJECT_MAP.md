@@ -93,3 +93,20 @@ Cập nhật: 2026-11-18
 - Game/Sprint9Room.cs: Hope menu chính (TickAlways), ShowFinale (màn thắng), PrewarmFaces
 - Tests: EditMode Sprint9Tests; PlayMode Sprint9PlayTests (ảnh docs/sprint-9/ui; b03_do_vien_debug.png = ảnh đo viền)
 
+
+## Truoc sprint 10 + sprint 10 (22-23/11) — constitution 2.0, specs/sprint-10/spec.md
+- Du lieu: make_next.py PAIRS (84 mon), gia niem yet recipes.json `price` (PRICE_X 1,05), balance.json `board`, `patience.leave_penalty`; Recipe.price, BoardRules, PatienceRules.leavePenaltyByRound (importer doc)
+- Core: Payment.Settle(b, listedPrice, ...), WrongOrder(b, orderedPrice); RecipeLookup.Pairs; Stove.Accepts/MainIn/SideIn (tu choi cap khong co mon); IngredientGacha ghep loai chinh hop do phu; GameSession.Boards/BuyBoard/BeginPrep(ing, board)/HoldPrep(s, board), ReadyToClose (khong tu het ngay), LeftToday/LastLeave + LeaveEvent (khach bo di), PriceOf, BreakthroughRecipes; ItemShop.Boards/BoardPrice; SaveData.boards; Patience.LeavePenalty/GivesUp
+- Game: Sprint10Room.cs (thot 0..2 + ban noi, nguyen lieu tha DropFall/SurfaceAt, Table_i dat dia, CustomerLeft), GameControllerSprint10.cs (OnCustomerLeft, PrewarmIcons), IconBook.cs (chup model -> Texture2D), PicKit.cs (khung / so / mui ten / dau dung-sai / GhostHand), GuidePics.cs (tranh buoc + khai niem), TabMenu 4 the (Menu, Relic co hinh, Shop + Thot, Guide tranh), BuildChecks.cs (-botrun N, -benchmark, -out), PlayerController Shift / Space / DropPoint; Tutorial Step.pic/concept; Hud the tranh trai (ShownPic/ShownConcept); MenuView nut tron + VersionLabel; UiKit.Glyphs (nap font). Bo: GuideText, sach Goc 3, gia relic, chuong, nhan "Nau"/"Quay cho"
+- BuildNhaHang: RoomSize.Grow 1,4; ban nhan hang hop 3,9 m (x -2,35); be relic x -1,25/0/1,25; bo Cookbook / OwnedRack
+- Editor/Branding.cs (ten, cong ty, 0.10.0, AppIcon.png) goi trong BuildWindows
+- Tools: tools/check_constitution.py (98 dong), tools/playtest_tong_hop.py; docs/KNOWN-ISSUES.md, docs/sprint-10/{constitution-audit.md, HUONG-DAN.txt, ui/}
+- Tests: EditMode Sprint10Tests, Sprint10BuildTests (luu/tai 50 lan); PlayMode Sprint10PlayTests (B08..B19, anh docs/sprint-10/ui)
+
+## Sau sprint 10 (23-24/11) — constitution 2.1, specs/sprint-10b/spec.md
+- Ti le 6 bac: balance/cookodds.py (bang + kiem), Core/Cooking.cs DishFormula (Chances/Tickets/Roll/FormatPercent), balance.json dish.odds; relic dish_legend (F11, F12)
+- Bep 2: Core GameSession.Stoves/BuyStove, ItemShop.Stoves (balance.stove), SaveData.stoves; Game/Sprint11Room.cs (BuildStove2, PanSpec2, FillBar, lo sot canh bep SauceSpot, HideDecorUnderStove2); GameControllerSprint11.cs (ActiveStove, StoveId/KnobId, PickSauce/DripSauce, ShowSauceResult, OnCustomerArrived giong, ToggleTutorialPics)
+- Hieu ung: Game/Sprint11Fx.cs (RainbowBurst, BombFizzle); tieng cau_vong / bom_xit (make_audio.py --new); giong khach Resources/Audio/khach_*.mp3 (GameAudio.PlayVoice)
+- 5 khach dac biet: build_characters.py khach_dac_biet() (Toc_* + Do_*), CharacterRig extras, CustomerLooks (Count 12, RegularCount 7, SpecialPercent 25); ModelChecker.LookKey (ngan sach theo kieu dang hien)
+- Huong dan: Hud tranh to (BuildBig, phim T), Tutorial bai relic ngay 3 / nuoc sot / goi y mon cuoi; GuidePics BuyRelic, Sauce, SauceLuck, BossBest; MenuView cot Dieu khien (Controls); boss_best (GameSession.IsBossBest)
+- Test: Tests/EditMode/Sprint11Tests.cs, Tests/PlayMode/Sprint11PlayTests.cs (anh docs/sprint-10b/ui)

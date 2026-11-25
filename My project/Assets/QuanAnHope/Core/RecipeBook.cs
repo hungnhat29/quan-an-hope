@@ -74,5 +74,8 @@ namespace QuanAnHope.Core
         public float warnSeconds;
         public float burnSeconds;
         public int unlockRound;
+
+        /// <summary>Gia niem yet (G) o bac Binh thuong; bac khac = gia x he so bac (constitution 2.0 muc 5.2).</summary>
+        public int price;
     }
 }

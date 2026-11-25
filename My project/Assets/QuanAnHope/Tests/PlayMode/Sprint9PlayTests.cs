@@ -124,7 +124,7 @@ namespace QuanAnHope.PlayTests
             root.position = cam.position + fwd * 1.05f + Vector3.down * 1.05f;
             root.rotation = Quaternion.LookRotation(fwd);
             MainIngredient[] mains = S.Recipes.mains;
-            string[] sides = { "ca_chua", "hanh_tay", "rau_muong", "khoai_tay", "nam_rom", "bong_cai", "ot_chuong", "bi_do", "mang_tay", "nam_dong_co", "ca_chua", "hanh_tay" };
+            string[] sides = { "ca_chua", "hanh_tay", "nam_rom", "khoai_tay", "nam_rom", "bong_cai", "ot_chuong", "bi_do", "mang_tay", "nam_dong_co", "ca_chua", "hanh_tay" };
             for (int i = 0; i < mains.Length; i++)
             {
                 Recipe r = S.Lookup.Find(mains[i].id, sides[i]);
@@ -441,46 +441,7 @@ namespace QuanAnHope.PlayTests
             yield return Shot("f082_man_thang.png", null, Sprint9);
         }
 
-        // ---------------- B-07 giai thich ----------------
-
-        [UnityTest]
-        public IEnumerator B07_HuongDan_GiaiThichTiLeBacDoDeTinh_TheCachChoi()
-        {
-            g.Tutorial.Begin(true);
-            yield return Frames(3);
-            Assert.AreEqual(Tutorial.Day1, g.Tutorial.LessonId);
-            string note = g.Hud.TutorialNote;
-            Assert.IsNotNull(note, "AC-1: o giai thich hien cung buoc");
-            StringAssert.Contains("tỉ lệ bậc", note);
-            StringAssert.Contains(GuideText.Odds(S.Balance, S.Day), note);
-            Time.timeScale = 1f;
-            yield return Shot("b07_giai_thich_ti_le.png", g.Room.Station("Kiosk").WorldCenter, Sprint9);
-            yield return Frames(2);
-            Assert.GreaterOrEqual(g.Hud.TutorialNoteLabel.fontSize, 14f, "AC-4 chu >= 14 px");
-            Time.timeScale = FastForward;
-            // buoc mo quan / phuc vu: giai thich do de tinh + tra tien
-            var steps = g.Tutorial.Lessons.First(l => l.id == Tutorial.Day1).steps;
-            Assert.AreEqual(10, steps.Count, "van 10 buoc lam");
-            string serve = steps[9].note();
-            StringAssert.Contains("Dễ tính", serve);
-            StringAssert.Contains("trừ", serve);
-            StringAssert.Contains("Dải 6 ô", steps[5].note());
-            StringAssert.Contains("Đế".ToLower(), steps[1].note().ToLower());
-
-            // AC-3 Tab -> Cach choi
-            g.OpenTab(TabMenu.Page.Relic);
-            yield return null;
-            g.Tab.GuideTab.onClick.Invoke();
-            yield return null;
-            Assert.AreEqual(TabMenu.Page.Guide, g.Tab.Current);
-            string sheet = g.Tab.GuideLabel.text;
-            StringAssert.Contains("Độ dễ tính", sheet);
-            StringAssert.Contains(GuideText.RequiredTable(S.Balance), sheet);
-            Time.timeScale = 1f;
-            yield return Shot("b07_tab_cach_choi.png", null, Sprint9);
-            Assert.GreaterOrEqual(g.Tab.GuideLabel.fontSize, 14f, "chu the Cach choi >= 14 px");
-            g.CloseTab();
-        }
+        // B-07 (giai thich bang chu) duoc thay bang huong dan bang hinh B-08 (sprint 10): xem Sprint10PlayTests.B08_*
     }
 }
 

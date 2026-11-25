@@ -64,8 +64,61 @@ namespace QuanAnHope.Game
                     Debug.LogWarning("Quán Ăn Hope: không tạo được font Baloo 2, dùng font mặc định của TextMeshPro.");
                     font = TMP_Settings.defaultFontAsset;
                 }
-                else font.name = "Baloo2-Bold (dynamic)";
+                else
+                {
+                    font.name = "Baloo2-Bold (dynamic)";
+                    // F-092 AC-2: nap san moi chu tieng Viet + so + dau dung trong game vao atlas, de lan dau hien chu moi (ten thung,
+                    // bong bong, thuc don) khong lam khung hinh khung > 50 ms
+                    font.TryAddCharacters(Glyphs);
+                }
                 return font;
+            }
+        }
+
+        /// <summary>Bo chu nap san vao font dong (ASCII + chu Viet co dau + vai dau dung tren UI).</summary>
+        public static string Glyphs
+        {
+            get
+            {
+                var sb = new System.Text.StringBuilder();
+                for (char c = ' '; c <= '~'; c++) sb.Append(c);
+                const string vi = "àáảãạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđ";
+                sb.Append(vi).Append(vi.ToUpperInvariant()).Append("·→›‹×−–—…%°");
+                return sb.ToString();
+            }
+        }
+
+        static Sprite roundedLarge;
+
+        /// <summary>Khung bo goc lon do phan giai cao (sau sprint 10: the tranh huong dan toan man hinh "tron trinh hon").</summary>
+        public static Sprite RoundedLarge
+        {
+            get
+            {
+                if (roundedLarge != null) return roundedLarge;
+                const int size = 160, radius = 48, border = 6, slice = 56;
+                var tex = new Texture2D(size, size, TextureFormat.RGBA32, false) { name = "UI_RoundedLarge", wrapMode = TextureWrapMode.Clamp };
+                var px = new Color32[size * size];
+                float half = size * 0.5f;
+                for (int y = 0; y < size; y++)
+                    for (int x = 0; x < size; x++)
+                    {
+                        float qx = Mathf.Abs(x + 0.5f - half) - (half - radius);
+                        float qy = Mathf.Abs(y + 0.5f - half) - (half - radius);
+                        float outside = new Vector2(Mathf.Max(qx, 0f), Mathf.Max(qy, 0f)).magnitude;
+                        float d = outside + Mathf.Min(Mathf.Max(qx, qy), 0f) - radius;
+                        float alpha = Mathf.Clamp01(0.5f - d);
+                        float fill = Mathf.Clamp01(-d - border + 0.5f);
+                        Color c = Color.Lerp(Ink, Color.white, fill);
+                        c.a = alpha;
+                        px[y * size + x] = c;
+                    }
+                tex.SetPixels32(px);
+                tex.Apply();
+                roundedLarge = Sprite.Create(tex, new Rect(0, 0, size, size), new Vector2(0.5f, 0.5f), 100f, 0, SpriteMeshType.FullRect,
+                    new Vector4(slice, slice, slice, slice));
+                roundedLarge.name = "UI_RoundedLarge";
+                return roundedLarge;
             }
         }
 
@@ -77,7 +130,7 @@ namespace QuanAnHope.Game
             get
             {
                 if (circle != null) return circle;
-                const int size = 128;
+                const int size = 256;
                 var tex = new Texture2D(size, size, TextureFormat.RGBA32, false) { name = "UI_Circle", wrapMode = TextureWrapMode.Clamp };
                 var px = new Color32[size * size];
                 float r = size * 0.5f;
@@ -348,10 +401,15 @@ namespace QuanAnHope.Game
             Image back = UiKit.Panel(parent, name, anchor, pos, size, UiKit.Cream, false);
             back.raycastTarget = false;
             var bar = back.gameObject.AddComponent<ProgressBar>();
+            // 24/11/2026: ruot thanh bo tron theo vo (truoc la khoi vuong trong vo bo tron) + mat na bo tron cat phan thua
+            back.gameObject.AddComponent<Mask>().showMaskGraphic = true;
             RectTransform f = UiKit.Stretch(back.transform, "Fill");
             f.offsetMin = new Vector2(4f, 4f);
             f.offsetMax = new Vector2(-4f, -4f);
             var img = f.gameObject.AddComponent<Image>();
+            img.sprite = UiKit.Rounded;
+            img.type = Image.Type.Sliced;
+            img.pixelsPerUnitMultiplier = Mathf.Max(1f, 48f / Mathf.Max(8f, size.y));
             img.color = color;
             img.raycastTarget = false;
             bar.fill = f;

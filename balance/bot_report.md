@@ -1,37 +1,37 @@
-# Bot C# tren luat that — 4000 van moi kieu (61 giay)
+# Bot C# tren luat that — 4000 van moi kieu (95 giay)
 
 ```
-naive  win=0.01 progress=0.80 pass(d4,d9,d15,d22)=[1.0, 0.99, 0.39, 0.01] combo3+=0.12 win|combo=0.02
-        khach/ngay=8.1 toi ngay 21=1578 thuong chu no=1253 (79%) | chu no: khong duoc phuc vu=224, bac mon dua [0..4]=[2,4,10,85,1253], dau ngay 21 co dia Tuyet hao trong tu=715 (trong do duoc thuong 584) | diem de tinh mat vi cho=3.0 tien phat sai mon / van=1 mon Hy Vong=0 dong quan som=46190 dua dia de trong ghe cho chu no=181 | khach bi giam de tinh / ngay (vong 2-4)=2.6 nau san / ngay=1.0 so che san / ngay=0.0
-        tien truoc thu no 4: [1010, 1076, 1151, 1303, 1460, n=4000] · 9: [3356, 3558, 3835, 4292, 4760, n=3996] · 15: [7258, 7831, 8524, 10000, 11634, n=3963] · 22: [16884, 18240, 23006, 29582, 32064, n=1578]
-        dau ngay (trung vi) ngay 9: 1397G [F7,F5,F1] (n=3963) · ngay 15: 1138G [F4,F5,S4,F7,F6,F1,F8] (n=1578) · ngay 21: 15895G [S1,S4,F5,F6,S2,F7,V3] (n=1578)
-nocombo win=0.34 progress=1.00 pass(d4,d9,d15,d22)=[1.0, 1.0, 1.0, 0.34] combo3+=0.01 win|combo=0.52
-        khach/ngay=10.5 toi ngay 21=3999 thuong chu no=3918 (98%) | chu no: khong duoc phuc vu=55, bac mon dua [0..4]=[1,1,2,22,3918], dau ngay 21 co dia Tuyet hao trong tu=3915 (trong do duoc thuong 3899) | diem de tinh mat vi cho=1.2 tien phat sai mon / van=306 mon Hy Vong=818 dong quan som=78984 dua dia de trong ghe cho chu no=45215 | khach bi giam de tinh / ngay (vong 2-4)=0.9 nau san / ngay=0.0 so che san / ngay=27.3
-        tien truoc thu no 4: [1426, 1498, 1587, 1752, 1929, n=4000] · 9: [4279, 4417, 4589, 4956, 5440, n=4000] · 15: [12759, 13245, 13809, 14593, 15296, n=4000] · 22: [31306, 32320, 33320, 35153, 36982, n=3999]
-        dau ngay (trung vi) ngay 9: 2056G [F4,V1,C1,F2,F10,S2,F8] (n=4000) · ngay 15: 4093G [F3,F1,F2,F4,V2,C3,C2,F9] (n=3999) · ngay 21: 20463G [F2,F4,F1,F3,F9,C3,V1,V4] (n=3999)
-smart  win=0.87 progress=1.00 pass(d4,d9,d15,d22)=[1.0, 1.0, 1.0, 0.87] combo3+=0.96 win|combo=0.88
-        khach/ngay=10.7 toi ngay 21=4000 thuong chu no=3936 (98%) | chu no: khong duoc phuc vu=36, bac mon dua [0..4]=[0,0,5,23,3936], dau ngay 21 co dia Tuyet hao trong tu=3873 (trong do duoc thuong 3868) | diem de tinh mat vi cho=1.7 tien phat sai mon / van=303 mon Hy Vong=1088 dong quan som=78704 dua dia de trong ghe cho chu no=44501 | khach bi giam de tinh / ngay (vong 2-4)=1.3 nau san / ngay=0.0 so che san / ngay=27.9
-        tien truoc thu no 4: [1469, 1541, 1625, 1795, 1975, n=4000] · 9: [4354, 4483, 4655, 5047, 5582, n=4000] · 15: [13724, 14120, 14518, 15253, 16012, n=4000] · 22: [34274, 35536, 36912, 39154, 41382, n=4000]
-        dau ngay (trung vi) ngay 9: 2147G [C1,F10,V1,C3,F3,F9,S4] (n=4000) · ngay 15: 4753G [S1,S2,F2,F9,F4,F1,C2,C3] (n=4000) · ngay 21: 23994G [C2,F1,F4,C3,F2,C1,C4,F10] (n=4000)
+naive  win=0.02 progress=0.90 pass(d4,d9,d15,d22)=[1.0, 1.0, 0.67, 0.02] combo3+=0.08 win|combo=0.03
+        khach/ngay=8.3 toi ngay 21=2695 thuong chu no=2270 (84%) | chu no: khong duoc phuc vu=184, bac mon dua [0..4]=[3,11,36,191,2270], dau ngay 21 co dia Tuyet hao trong tu=1197 (trong do duoc thuong 1049) | diem de tinh mat vi cho=2.8 tien phat sai mon / van=1 mon Hy Vong=0 dong quan som=40501 dua dia de trong ghe cho chu no=183 | khach bi giam de tinh / ngay (vong 2-4)=2.8 nau san / ngay=1.0 so che san / ngay=0.0
+        tien truoc thu no 4: [1263, 1361, 1482, 1744, 2017, n=4000] · 9: [4179, 4394, 4673, 5287, 5946, n=3999] · 15: [7897, 8671, 9612, 11528, 13415, n=3999] · 22: [17114, 19922, 24609, 30137, 32823, n=2695]
+        dau ngay (trung vi) ngay 9: 2387G [C2,V3,F7,F5,F9,S3] (n=3999) · ngay 15: 1989G [F6,C2,C4,V4,F7,S3] (n=2695) · ngay 21: 16364G [F6,S3,V4,C4,F9,F12,F7,F5] (n=2695)
+nocombo win=0.32 progress=1.00 pass(d4,d9,d15,d22)=[1.0, 1.0, 1.0, 0.32] combo3+=0.00 win|combo=0.27
+        khach/ngay=10.9 toi ngay 21=4000 thuong chu no=3927 (98%) | chu no: khong duoc phuc vu=33, bac mon dua [0..4]=[2,1,8,29,3927], dau ngay 21 co dia Tuyet hao trong tu=3884 (trong do duoc thuong 3865) | diem de tinh mat vi cho=0.8 tien phat sai mon / van=291 mon Hy Vong=1533 dong quan som=74567 dua dia de trong ghe cho chu no=51705 | khach bi giam de tinh / ngay (vong 2-4)=0.8 nau san / ngay=0.0 so che san / ngay=29.0
+        tien truoc thu no 4: [1815, 1934, 2096, 2404, 2755, n=4000] · 9: [5973, 6334, 6823, 7840, 8931, n=4000] · 15: [13779, 14059, 14394, 15030, 15775, n=4000] · 22: [31145, 32137, 33129, 34979, 36798, n=4000]
+        dau ngay (trung vi) ngay 9: 4940G [F10,F1,F8,V3,C1,S2] (n=4000) · ngay 15: 4530G [F10,F4,F9,F3,F1,V4,S3,V3] (n=4000) · ngay 21: 20271G [F4,F10,F1,F3,F2,F9,V1,S1] (n=4000)
+smart  win=0.91 progress=1.00 pass(d4,d9,d15,d22)=[1.0, 1.0, 1.0, 0.91] combo3+=0.99 win|combo=0.91
+        khach/ngay=11.1 toi ngay 21=4000 thuong chu no=3966 (99%) | chu no: khong duoc phuc vu=13, bac mon dua [0..4]=[0,0,4,17,3966], dau ngay 21 co dia Tuyet hao trong tu=3849 (trong do duoc thuong 3847) | diem de tinh mat vi cho=1.3 tien phat sai mon / van=274 mon Hy Vong=1736 dong quan som=72012 dua dia de trong ghe cho chu no=50123 | khach bi giam de tinh / ngay (vong 2-4)=1.4 nau san / ngay=0.0 so che san / ngay=30.2
+        tien truoc thu no 4: [1830, 1944, 2108, 2424, 2770, n=4000] · 9: [6231, 6605, 7070, 8069, 9111, n=4000] · 15: [14318, 14648, 15039, 15881, 17217, n=4000] · 22: [34953, 36095, 37348, 39633, 41906, n=4000]
+        dau ngay (trung vi) ngay 9: 5169G [V1,F4,F3,S2,F1,V3,V2,F2] (n=4000) · ngay 15: 5381G [V2,F10,F4,V3,V1,V4,F1,C1] (n=4000) · ngay 21: 24317G [V1,F1,V3,F4,V4,V2,F10,C1] (n=4000)
 ```
 
 ## So voi sim_balance.py (diem %, bot - mo phong)
 
 | Kieu | Moc | Bot | Mo phong | Chenh |
 | --- | --- | --- | --- | --- |
-| naive | thang | 0.5 | 0 | +0.5 |
-| naive | qua d4 | 99.9 | 100 | -0.1 |
-| naive | qua d9 | 99.1 | 99 | +0.1 |
-| naive | qua d15 | 39.5 | 33 | +6.5 **> 5** |
-| naive | qua d22 | 0.5 | 0 | +0.5 |
-| nocombo | thang | 34.1 | 83 | -48.9 **> 5** |
+| naive | thang | 1.9 | 0 | +1.9 |
+| naive | qua d4 | 100.0 | 99 | +1.0 |
+| naive | qua d9 | 100.0 | 96 | +4.0 |
+| naive | qua d15 | 67.4 | 12 | +55.4 **> 5** |
+| naive | qua d22 | 1.9 | 0 | +1.9 |
+| nocombo | thang | 31.6 | 35 | -3.5 |
 | nocombo | qua d4 | 100.0 | 100 | 0 |
 | nocombo | qua d9 | 100.0 | 100 | 0 |
 | nocombo | qua d15 | 100.0 | 100 | 0 |
-| nocombo | qua d22 | 34.1 | 83 | -48.9 **> 5** |
-| smart | thang | 87.4 | 98 | -10.6 **> 5** |
+| nocombo | qua d22 | 31.6 | 35 | -3.5 |
+| smart | thang | 90.7 | 96 | -5.3 **> 5** |
 | smart | qua d4 | 100.0 | 100 | 0 |
 | smart | qua d9 | 100.0 | 100 | 0 |
 | smart | qua d15 | 100.0 | 100 | 0 |
-| smart | qua d22 | 87.4 | 98 | -10.6 **> 5** |
+| smart | qua d22 | 90.7 | 96 | -5.3 **> 5** |
 

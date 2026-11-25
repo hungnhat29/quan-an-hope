@@ -85,8 +85,15 @@ namespace QuanAnHope.Game
         /// <summary>Vien muc theo diem anh (sprint 9 B-03): ban sao phap tuyen lam muot, shader OutlinePx (ca mesh co xuong).</summary>
         static void AddHull(Renderer r, float width)
         {
-            BepNhanPham.OutlineMesh.Attach(r, width);
+            // 24/11/2026 "trau chuot vien den": mesh Blender dat ten "_KhongVien" (chu in, not ruoi, son ma, khuy) thi khong vien,
+            // "_VienMong" (kinh, tai nghe, mic, logo, the) thi vien mong ~ nua do day - chi tiet nho khong bi vet muc day de len
+            string n = r.name;
+            if (n.Contains(NoOutlineTag)) return;
+            BepNhanPham.OutlineMesh.Attach(r, n.Contains(ThinOutlineTag) ? width * ThinOutlineScale : width);
         }
+
+        public const string NoOutlineTag = "_KhongVien", ThinOutlineTag = "_VienMong";
+        public const float ThinOutlineScale = 0.55f;
 
         public static Material OutlineMat(float width)
         {

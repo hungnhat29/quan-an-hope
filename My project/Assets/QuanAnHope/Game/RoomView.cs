@@ -81,17 +81,9 @@ namespace QuanAnHope.Game
         // Goc 1
         TextMeshProUGUI signText;
 
-        // Goc 3
-        TextMeshProUGUI pageTitle, pageInfo, pageFooter, rightTitle;
-        Transform stepList;
-        Image dishFood, dishBase;
-        TextMeshProUGUI priceHeader;
-        // Gia theo 5 bac Lac vi -> Tuyet hao; Huyen thoai chi co mot mon rieng (constitution muc 5.4) nen khong ghi o day.
-        readonly TextMeshProUGUI[] priceCells = new TextMeshProUGUI[5];
-        int page;
-
-        // Goc 3 - cua hang relic (F-020): be, the dung, gia 8 o. Toa do lay tu canh (BuildNhaHang: Pedestal0..2, OwnedRack).
-        static readonly float[] PedestalX = { -0.1f, 1.15f, 2.4f };
+        // Goc 3 - cua hang relic (F-020): 3 be giua tuong (yeu cau 22/11/2026: bo sach + gia relic, relic ra giua).
+        // Toa do lay tu canh (BuildNhaHang: Pedestal0..2).
+        public static readonly float[] PedestalX = { -1.25f, 0f, 1.25f };
         const float PedestalTopY = 1.6f;
         const float PedestalZ = 3.2f;
         const float ShopRelicScale = 1.7f;
@@ -101,18 +93,9 @@ namespace QuanAnHope.Game
         readonly List<GameObject> pedestalRelics = new List<GameObject>();
         readonly List<string> pedestalShown = new List<string>();
         readonly List<RelicCard> cards = new List<RelicCard>();
-        readonly List<Transform> shelfSpots = new List<Transform>();
-        readonly List<GameObject> shelfRelics = new List<GameObject>();
-        readonly List<string> shelfShown = new List<string>();
-        readonly List<TextMeshProUGUI> shelfNames = new List<TextMeshProUGUI>();
-        readonly List<GameObject> shelfDiscs = new List<GameObject>();
-        TextMeshProUGUI shelfHeader;
-        RelicDef sparkledFor;
 
         public IReadOnlyList<RelicCard> Cards { get { return cards; } }
-        public IReadOnlyList<GameObject> ShelfRelics { get { return shelfRelics; } }
         public IReadOnlyList<GameObject> PedestalRelics { get { return pedestalRelics; } }
-        public string ShelfHeaderText { get { return shelfHeader != null ? shelfHeader.text : ""; } }
         public string ShopSignText { get { return shopSign != null ? shopSign.text : ""; } }
         public string OddsHeaderText { get { return oddsHeader != null ? oddsHeader.text + " " + oddsRelic.text : ""; } }
         public string OddsCellText(int tier) { return oddsCells[tier].text; }
@@ -139,13 +122,14 @@ namespace QuanAnHope.Game
             BuildFridge();
             BuildItemShop();
             BuildOverheat();
-            BuildBookAndRelics();
+            BuildRelicShop();
             BuildShadows();
             BuildCandles();
             BuildShopName();
             BuildSway();
             BuildSkyCycle();
             BuildSprint8();
+            BuildSprint10();
 
             handAnchor = Toon.Empty(g.Player.Cam.transform, "Tay", new Vector3(0.3f, -0.26f, 0.55f)).transform;
         }
@@ -333,7 +317,7 @@ namespace QuanAnHope.Game
 
             // Ke bac thang tren ban nhan hang: hang truoc do phu, hang sau (cao hon) nguyen lieu chinh.
             crateRoot = Toon.Empty(goc2, "ThungNguyenLieu", Vector3.zero).transform;
-            Toon.Prim(PrimitiveType.Cube, crateRoot, "BacKe", new Vector3(-1.45f, 0.97f, 3.42f), new Vector3(1.95f, 0.12f, 0.6f), WoodDark, Toon.OutlineSmall);
+            Toon.Prim(PrimitiveType.Cube, crateRoot, "BacKe", new Vector3(-2.3f, 0.97f, 3.42f), new Vector3(CratesPerRow * CrateStep + 0.2f, 0.12f, 0.6f), WoodDark, Toon.OutlineSmall);
 
             // May gacha do an: mo tu vong 2 (constitution muc 8). Anh cu trong cua so may co chu ve san (trai Dieu 6) nen an di.
             Transform oldIcon = goc2.Find("UpgradeMachine/DishInside");
@@ -344,11 +328,15 @@ namespace QuanAnHope.Game
             machineSignText.lineSpacing = -30f;
         }
 
+        /// <summary>Ban nhan hang dai (yeu cau 22/11/2026: vong sau nhieu nguyen lieu hon): moi hang 6 thung, du thi chong tang.</summary>
+        public const int CratesPerRow = 6;
+        const float CrateStep = 0.6f;
+
         /// <summary>Vi tri thung thu index trong hang cua loai nguyen lieu.</summary>
-        static Vector3 CrateSlot(IngredientKind kind, int index)
+        public static Vector3 CrateSlot(IngredientKind kind, int index)
         {
-            float x = -0.8f - 0.6f * (index % 4);
-            float layer = 0.28f * (index / 4);
+            float x = -0.8f - CrateStep * (index % CratesPerRow);
+            float layer = 0.28f * (index / CratesPerRow);
             return kind == IngredientKind.Side
                 ? new Vector3(x, 0.95f + layer, 2.82f)
                 : new Vector3(x, 1.12f + layer, 3.42f);
@@ -420,7 +408,7 @@ namespace QuanAnHope.Game
                     }
                     view.transform.SetParent(crate.ItemRoot, false);
                     view.transform.localPosition = CrateView.ItemPosition(n);
-                    bool visible = !ReferenceEquals(ing, g.HeldIngredient) && !ReferenceEquals(ing, g.OnBoard);
+                    bool visible = !ReferenceEquals(ing, g.HeldIngredient) && !g.IsOnBoard(ing) && !g.Dropped.ContainsKey(ing);
                     view.gameObject.SetActive(visible);
                     view.SetPrepared(ing.prepared);
                 }
@@ -591,10 +579,7 @@ namespace QuanAnHope.Game
             knob = k;
             GameObject knobHit = Toon.Empty(goc4, "NumBep", new Vector3(-1f, 0.86f, 2.74f));
             Register(Interactable.Add(knobHit, "Knob", Vector3.zero, new Vector3(0.3f, 0.3f, 0.2f),
-                () => g.Session.Stove.State == StoveState.Cooking ? "Đang nấu" : "Vặn núm: nấu", () => g.StartCooking()));
-            Canvas knobLabel = UiKit.WorldCanvas(goc4, "NhanNum", new Vector3(-1f, 0.63f, 2.76f), Quaternion.identity, new Vector2(380f, 90f));
-            Image kl = UiKit.Panel(knobLabel.transform, "Nen", new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(380f, 90f), UiKit.Coral, false);
-            UiKit.Text(kl.transform, "Nấu", 60f).color = UiKit.Cream;
+                () => g.Session.Stove.State == StoveState.Cooking ? "Đang nấu" : "Vặn núm", () => g.StartCooking()));
 
             // Thung rac giua quay trai va bep.
             GameObject bin = Toon.Prim(PrimitiveType.Cylinder, goc4, "ThungRac", new Vector3(-1.52f, 0.3f, 3.35f), new Vector3(0.4f, 0.6f, 0.4f),
@@ -627,9 +612,6 @@ namespace QuanAnHope.Game
                 shelfSlots[i] = Toon.Empty(goc4, "QuayCho_" + i, new Vector3(1.95f + 0.5f * i, 1.1f, 3.05f)).transform;
                 Toon.Prim(PrimitiveType.Cylinder, shelfSlots[i], "Lot", Vector3.zero, new Vector3(0.44f, 0.01f, 0.44f), UiKit.Hex("#E9CE9E"), 0f);
             }
-            Canvas shelfLabel = UiKit.WorldCanvas(goc4, "NhanQuayCho", new Vector3(2.45f, 0.86f, 2.77f), Quaternion.identity, new Vector2(1500f, 120f));
-            Image sl = UiKit.Panel(shelfLabel.transform, "Nen", new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1500f, 120f), UiKit.Cream, false);
-            UiKit.Text(sl.transform, "Quầy chờ", 70f);
         }
 
         static bool SameDishes(List<Dish> a, List<Dish> b)
@@ -717,8 +699,9 @@ namespace QuanAnHope.Game
         /// Goi ngay khi bep nhan them mot thu (truoc khi ve lai tay): nguyen lieu bay tu tay vao dung cu,
         /// gia vi thi lo nghieng va mot giot mau lo bay vao. Do nam lai trong dung cu toi khi muc / do bo.
         /// </summary>
-        public void OnAddedToStove(Ingredient ingredient, string pantryItem)
+        public void OnAddedToStove(Ingredient ingredient, string pantryItem, int si = 0)
         {
+            if (si > 0) { OnAddedToStove2(ingredient, pantryItem); return; }
             Stove stove = g.Session.Stove;
             PlacePanRoot(stove.Tool);
             Vector3 center;
@@ -760,9 +743,7 @@ namespace QuanAnHope.Game
 
         string BoardPrompt()
         {
-            if (g.OnBoard == null)
-                return g.Hand == HandKind.Ingredient && !g.HeldIngredient.prepared ? "Đặt " + g.HeldIngredient.name + " lên thớt" : "Thớt";
-            return g.OnBoard.prepared ? "Cầm " + g.OnBoard.name + " đã sơ chế" : "Giữ chuột trái: sơ chế " + g.OnBoard.name;
+            return BoardPrompt(0);
         }
 
         string StovePrompt()
@@ -780,21 +761,6 @@ namespace QuanAnHope.Game
             GameSession s = g.Session;
             Stove stove = s.Stove;
 
-            // Thot
-            if (!ReferenceEquals(boardItemFor, g.OnBoard) || (boardItem != null && g.OnBoard != null))
-            {
-                if (boardItem != null) Object.Destroy(boardItem);
-                boardItem = null;
-                boardItemFor = g.OnBoard;
-                if (g.OnBoard != null)
-                {
-                    ItemView v = ItemView.Create(boardSpot, g.OnBoard, 2.2f, false);
-                    v.SetPrepared(g.OnBoard.prepared);
-                    boardItem = v.gameObject;
-                }
-            }
-            boardBarRoot.SetActive(g.OnBoard != null);
-
             // Dung cu
             foreach (string tool in Tools)
             {
@@ -807,23 +773,14 @@ namespace QuanAnHope.Game
             if (steam != null) steam.SetActive(stove.State == StoveState.Cooking);
 
             // Bang tren bep
-            if (stove.Tool == null) stoveSteps.text = "Chọn dụng cụ trên giá → cho từng thứ vào đúng thứ tự → vặn núm";
-            else if (stove.Added.Count == 0) stoveSteps.text = stove.Tool + ": chưa cho gì vào";
+            if (stove.Tool == null) stoveSteps.text = "1 Chọn dụng cụ  ›  2 Cho đúng thứ tự  ›  3 Vặn núm";
+            else if (stove.Added.Count == 0) stoveSteps.text = stove.Tool + " · trống";
             else stoveSteps.text = stove.Tool + ": " + string.Join(" → ", stove.Added);
 
             TierChance[] bar = s.IsBlackout ? null : stove.Bar();
             stoveBarRoot.SetActive(bar != null);
-            if (bar != null)
-            {
-                var pct = new int[barCells.Length];
-                foreach (TierChance c in bar)
-                    if (c.tier >= 0 && c.tier < pct.Length) pct[c.tier] = Mathf.RoundToInt((float)(c.chance * 100.0));
-                for (int tier = 0; tier < barCells.Length; tier++)
-                {
-                    barCells[tier].text = "<size=28>" + UiKit.DishTierName[tier] + "</size>\n" + pct[tier] + "%";
-                    barCells[tier].alpha = pct[tier] > 0 ? 1f : 0.45f;
-                }
-            }
+            // constitution 2.1 muc 5.3: du 6 bac, >= 1% hai chu so thap phan, < 1% du chu so, khong hien 0% cho bac con ra duoc
+            if (bar != null) FillBar(barCells, bar);
 
             RefreshPan(stove);
 
@@ -832,14 +789,16 @@ namespace QuanAnHope.Game
                 case StoveState.Cooking: stoveStatus.text = "Đang nấu " + stove.Recipe.name; break;
                 case StoveState.Ready: stoveStatus.text = stove.Recipe.name + " đã chín"; break;
                 default:
-                    stoveStatus.text = bar != null ? "Khoảng bậc món nếu nấu đúng công thức"
+                    stoveStatus.text = bar != null ? "Món sẽ ra bậc nào (nếu đúng thứ tự)"
                         : s.IsBlackout && stove.Bar() != null ? "Mất điện: không nhìn rõ bậc món" : "";
                     break;
             }
 
             // Quay cho: chi dung lai khi danh sach dia hoac dia dang cam doi.
             var signature = new List<Dish>(s.Counter.Dishes);
-            signature.Add(g.HeldDish);
+            signature.Add(g.Slot(0).dish);
+            signature.Add(g.Slot(1).dish);
+            signature.Add(g.MachineDish);
             if (SameDishes(signature, shownDishes)) return;
             var previous = new List<Dish>(shownDishes);
             shownDishes.Clear();
@@ -849,11 +808,12 @@ namespace QuanAnHope.Game
             for (int i = 0; i < s.Counter.Dishes.Count && i < shelfSlots.Length; i++)
             {
                 Dish dish = s.Counter.Dishes[i];
-                if (ReferenceEquals(dish, g.HeldDish)) continue;
+                if (g.DishTaken(dish)) continue;
                 GameObject model = DishModel.Create(shelfSlots[i], dish, s.Recipes);
                 Dish captured = dish;
                 Interactable.Add(model, "Dish_" + i, new Vector3(0f, 0.08f, 0f), new Vector3(0.42f, 0.22f, 0.42f),
-                    () => "Cầm " + captured.name + " · " + UiKit.DishTierName[captured.tier], () => g.TakeDish(captured));
+                    () => g.Hand == HandKind.Sauce ? "Nhỏ nước sốt lên " + captured.name + " · " + UiKit.DishTierName[captured.tier]
+                        : "Cầm " + captured.name + " · " + UiKit.DishTierName[captured.tier], () => g.TakeDish(captured));
                 Canvas tag = UiKit.WorldCanvas(model.transform, "TenMon", new Vector3(0f, -0.2f, -0.3f), Quaternion.identity, new Vector2(470f, 120f));
                 Image tb = UiKit.Panel(tag.transform, "Nen", new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(470f, 120f), UiKit.Cream, false);
                 UiKit.Text(tb.transform, captured.name, 50f, TextAlignmentOptions.Center, 6f);
@@ -872,7 +832,7 @@ namespace QuanAnHope.Game
             Vector3 signPos = new Vector3(3.25f, 1.05f, 3.35f);
             GameObject signHit = Toon.Empty(goc1, "BienMoQuan", signPos);
             Register(Interactable.Add(signHit, "ShopSign", Vector3.zero, new Vector3(1.0f, 2.1f, 0.6f),
-                () => g.Session.Phase == GamePhase.Prep ? "Mở quán" : g.Session.Phase == GamePhase.Open ? "Đóng quán sớm" : "Quán đã đóng",
+                () => g.Session.Phase == GamePhase.Prep ? "Mở quán" : g.Session.Phase == GamePhase.Open ? (g.Session.ReadyToClose ? "Đóng quán · sang ngày mới" : "Đóng quán sớm") : "Quán đã đóng",
                 () => g.ToggleShop()));
             Canvas sign = UiKit.WorldCanvas(goc1, "ChuBien", new Vector3(3.25f, 1.25f, 3.07f), Quaternion.identity, new Vector2(700f, 420f));
             Image sb = UiKit.Panel(sign.transform, "Nen", new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(700f, 420f), UiKit.Cream);
@@ -880,23 +840,7 @@ namespace QuanAnHope.Game
             signText.lineSpacing = -30f;
             if (signBody != null) signBody.gameObject.SetActive(true);
 
-            GameObject bell = Toon.Empty(goc1, "Chuong", new Vector3(1.3f, 1.35f, 2.15f));
-            Register(Interactable.Add(bell, "Bell", Vector3.zero, new Vector3(0.55f, 0.45f, 0.55f),
-                BellPrompt,
-                () => g.RingBell()));
-
             // Bong bong, khach va dia vua phuc vu: moi ghe mot bo (BuildSeats, sprint 4).
-        }
-
-        string BellPrompt()
-        {
-            Customer c = g.Session.CurrentCustomer;
-            // Nhieu khach: chuong phuc vu nguoi den som nhat; nhin vao tung khach de chon (F-030 AC-3).
-            string who = g.Session.SeatCount > 1 && c != null ? g.SeatName(g.Session.SeatOf(c)) : "khách";
-            if (g.Hand != HandKind.Dish) return c != null ? "Chuông · mang " + c.orderName + " từ quầy chờ tới đây" : "Chuông · cầm đĩa từ quầy chờ tới đây";
-            if (c == null) return "Chưa có khách";
-            if (g.HeldDish.recipeId != c.orderId) return "Sai món: " + who + " gọi " + c.orderName + " (bấm vẫn đưa, khách sẽ giận)";
-            return "Bấm chuông: phục vụ " + (g.Session.SeatCount > 1 ? who + " " : "") + g.HeldDish.name;
         }
 
         void RefreshServe()
@@ -907,8 +851,9 @@ namespace QuanAnHope.Game
                 case GamePhase.Prep: signText.text = "MỞ QUÁN\n<size=60>bấm để đón khách</size>"; break;
                 case GamePhase.Open:
                     // 21:00: bien tu lat sang DA DONG, khach dang ngoi van cho mon (constitution 1.4 muc 6.2)
-                    signText.text = s.IsClosedForNewCustomers
-                        ? "ĐÃ ĐÓNG\n<size=60>phục vụ nốt khách</size>"
+                    // constitution 2.0 muc 6.2: khong tu het ngay - bien nhac bam de dong quan
+                    signText.text = s.ReadyToClose ? "ĐÓNG QUÁN\n<size=60>bấm để nghỉ</size>"
+                        : s.IsClosedForNewCustomers ? "21:00\n<size=60>phục vụ nốt khách</size>"
                         : "ĐANG MỞ\n<size=60>bấm để đóng sớm</size>";
                     break;
                 default: signText.text = "ĐÃ ĐÓNG"; break;
@@ -920,74 +865,22 @@ namespace QuanAnHope.Game
         // Goc 3 - sach nau an, cua hang relic (sprint 2)
         // =====================================================================
 
-        void BuildBookAndRelics()
-        {
-            // Trang sach nam tren bia sach, nghieng theo gia sach (giong anh BookPages cu: 1,78 x 1,087 m, nghieng 47 do).
-            Quaternion tilt = Quaternion.Euler(47.03f, 0f, 0f);
-            Vector3 center = new Vector3(-2.2f, 1.479f, 2.973f) - tilt * Vector3.forward * 0.006f;
-            Canvas book = UiKit.WorldCanvas(goc3, "TrangSach", center, tilt, new Vector2(1780f, 1087f));
-            var paper = UiKit.Box(book.transform, "Giay", new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1780f, 1087f)).gameObject.AddComponent<Image>();
-            paper.color = UiKit.Hex("#FFF3DC");
-            paper.raycastTarget = false;
-            var spine = UiKit.Box(book.transform, "Gay", new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(10f, 1087f)).gameObject.AddComponent<Image>();
-            spine.color = UiKit.Ink;
-
-            // Trang trai: ten mon, dung cu, de mon, thoi gian, hinh dia mon (nhu ban phac).
-            RectTransform left = UiKit.Box(book.transform, "TrangTrai", new Vector2(0f, 0.5f), new Vector2(0f, 0f), new Vector2(890f, 1087f));
-            pageTitle = UiKit.Label(left, "TenMon", new Vector2(0.5f, 1f), new Vector2(0f, -40f), new Vector2(820f, 170f), "", 92f);
-            pageInfo = UiKit.Label(left, "ThongTin", new Vector2(0.5f, 1f), new Vector2(0f, -215f), new Vector2(820f, 90f), "", 48f);
-            // Hinh dia mon nhu ban phac: dia trang hinh bau duc, mon u len o giua.
-            dishBase = UiKit.Box(left, "Dia", new Vector2(0.5f, 0.5f), new Vector2(0f, -40f), new Vector2(480f, 150f)).gameObject.AddComponent<Image>();
-            dishBase.sprite = UiKit.Circle;
-            dishBase.color = PlateWhite;
-            dishFood = UiKit.Box(left, "Mon", new Vector2(0.5f, 0.5f), new Vector2(0f, 0f), new Vector2(280f, 150f)).gameObject.AddComponent<Image>();
-            dishFood.sprite = UiKit.Circle;
-
-            // Gia ban theo bac mon (tin nhan nguoi dung 14/11; constitution muc 5.2, 5.8): moi o to mau bac mon.
-            priceHeader = UiKit.Label(left, "TieuDeGia", new Vector2(0.5f, 0f), new Vector2(0f, 260f), new Vector2(820f, 70f), "", 48f);
-            RectTransform prices = UiKit.Box(left, "GiaBan", new Vector2(0.5f, 0f), new Vector2(0f, 120f), new Vector2(820f, 130f));
-            float cell = 820f / priceCells.Length;
-            for (int tier = 0; tier < priceCells.Length; tier++)
-            {
-                Image c = UiKit.Panel(prices, "Gia_" + tier, new Vector2(0f, 0.5f), new Vector2(cell * tier + 4f, 0f), new Vector2(cell - 8f, 126f),
-                    UiKit.DishTier[tier], false);
-                c.raycastTarget = false;
-                // Ten bac va gia la hai dong chu rieng: ten dai ("Binh thuong") tu thu nho, khong lam nho so gia.
-                UiKit.Label(c.transform, "Ten", new Vector2(0.5f, 1f), new Vector2(0f, -6f), new Vector2(cell - 16f, 44f), UiKit.DishTierName[tier], 28f);
-                priceCells[tier] = UiKit.Label(c.transform, "Gia", new Vector2(0.5f, 0f), new Vector2(0f, 8f), new Vector2(cell - 16f, 66f), "", 50f);
-            }
-            pageFooter = UiKit.Label(left, "Trang", new Vector2(0.5f, 0f), new Vector2(0f, 40f), new Vector2(820f, 70f), "", 44f);
-
-            // Trang phai: thu tu cho vao, moi buoc mot so tron.
-            RectTransform right = UiKit.Box(book.transform, "TrangPhai", new Vector2(1f, 0.5f), new Vector2(0f, 0f), new Vector2(890f, 1087f));
-            rightTitle = UiKit.Label(right, "TieuDe", new Vector2(0.5f, 1f), new Vector2(0f, -40f), new Vector2(820f, 130f), "", 74f, TextAlignmentOptions.Left);
-            stepList = UiKit.Box(right, "CacBuoc", new Vector2(0.5f, 1f), new Vector2(0f, -190f), new Vector2(820f, 820f));
-            var layout = stepList.gameObject.AddComponent<VerticalLayoutGroup>();
-            layout.spacing = 24f;
-            layout.childControlHeight = false;
-            layout.childControlWidth = true;
-            layout.childForceExpandHeight = false;
-
-            // Bam nua trang de lat (constitution muc 5.8).
-            GameObject prev = Toon.Empty(book.transform, "LatLui", new Vector3(-445f, 0f, 0f));
-            prev.transform.localRotation = Quaternion.identity;
-            Register(Interactable.Add(prev, "BookPrev", Vector3.zero, new Vector3(880f, 1080f, 40f), () => "Lật trang trước", () => TurnPage(-1)));
-            GameObject next = Toon.Empty(book.transform, "LatToi", new Vector3(445f, 0f, 0f));
-            Register(Interactable.Add(next, "BookNext", Vector3.zero, new Vector3(880f, 1080f, 40f), () => "Lật trang sau", () => TurnPage(1)));
-
-            BuildRelicShop();
-        }
-
         // ---------- cua hang relic (F-020; constitution muc 7.1, Dieu 4, Dieu 9; Art Bible muc 8, 13) ----------
 
         void BuildRelicShop()
         {
-            Canvas shop = UiKit.WorldCanvas(goc3, "BienRelic", new Vector3(1.15f, 2.95f, 3.95f), Quaternion.identity, new Vector2(2200f, 420f));
+            Canvas shop = UiKit.WorldCanvas(goc3, "BienRelic", new Vector3(0f, 2.95f, 3.95f), Quaternion.identity, new Vector2(2200f, 420f));
             Image shb = UiKit.Panel(shop.transform, "Nen", new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(2200f, 420f), UiKit.Lilac);
             shopSign = UiKit.Text(shb.transform, "", 130f);
             shopSign.lineSpacing = -30f;
 
             // Do vat mau cua canh dung tren be (lo muoi, chao, ot) duoc thay bang relic that cua ngay.
+            // Sach nau an va gia relic tren tuong da bo (thuc don va relic dang co xem o bang Tab); canh cu con thi an di.
+            foreach (string old in new[] { "Cookbook", "OwnedRack" })
+            {
+                Transform t = goc3.Find(old);
+                if (t != null) t.gameObject.SetActive(false);
+            }
             Transform shopRoot = goc3.Find("RelicShop");
             if (shopRoot != null)
                 foreach (Transform t in shopRoot)
@@ -1009,30 +902,8 @@ namespace QuanAnHope.Game
                 cards.Add(RelicCard.Create(goc3, "TheRelic_" + i, new Vector3(PedestalX[i], 1.05f, PedestalZ - 0.53f)));
             }
 
-            // Gia relic 8 o tren tuong (Art Bible muc 8): disc co san trong canh, relic nho dung truoc moi disc.
-            Transform rack = goc3.Find("OwnedRack");
-            int cap = g.Session.Relics.Capacity;
-            for (int i = 0; i < cap; i++)
-            {
-                float x = -1.5f + 0.5f * i;
-                Transform disc = rack != null ? (rack.Find("Slot" + i) ?? rack.Find("SlotEmpty" + i)) : null;
-                shelfDiscs.Add(disc != null ? disc.gameObject : null);
-                GameObject spot = Toon.Empty(goc3, "GiaRelic_" + i, new Vector3(x, 3.665f, 3.84f));
-                int index = i;
-                Register(Interactable.Add(spot, "Shelf_" + i, new Vector3(0f, 0.18f, 0f), new Vector3(0.46f, 0.46f, 0.3f),
-                    () => ShelfPrompt(index), () => UseShelf(index)));
-                shelfSpots.Add(spot.transform);
-                shelfRelics.Add(null);
-                shelfShown.Add(null);
-                Canvas tag = UiKit.WorldCanvas(goc3, "TenGia_" + i, new Vector3(x, 3.5f, 3.86f), Quaternion.identity, new Vector2(470f, 120f));
-                Image tb = UiKit.Panel(tag.transform, "Nen", new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(470f, 120f), UiKit.Cream, false);
-                shelfNames.Add(UiKit.Text(tb.transform, "", 46f, TextAlignmentOptions.Center, 4f));
-            }
             BuildBlackRelicSlot();
 
-            Canvas head = UiKit.WorldCanvas(goc3, "TienDoBo", new Vector3(0.25f, 4.32f, 3.9f), Quaternion.identity, new Vector2(4200f, 230f));
-            Image hb = UiKit.Panel(head.transform, "Nen", new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(4200f, 230f), UiKit.Cream);
-            shelfHeader = UiKit.Text(hb.transform, "", 110f, TextAlignmentOptions.Center, 20f);
         }
 
         // ---------- relic bang ve den (F-042, constitution muc 7.1) ----------
@@ -1042,8 +913,8 @@ namespace QuanAnHope.Game
         /// <summary>Khe ve den gan tren tuong giua bien cua hang va be relic: bam de dung 1 ve den, ba be doi sang 3 relic Hiem tro len.</summary>
         void BuildBlackRelicSlot()
         {
-            // Cot nhan ve den dung giua quyen sach va be dau (tia nhin tu cho dung truoc be khong vuong be / sach).
-            Vector3 at = new Vector3(-1.02f, 1.15f, 3.3f);
+            // Cot nhan ve den ben trai be dau (sach da bo, sprint 10).
+            Vector3 at = new Vector3(-2.45f, 1.15f, 3.3f);
             GameObject slot = Toon.Empty(goc3, "KheVeDenRelic", at);
             Toon.Prim(PrimitiveType.Cylinder, slot.transform, "Cot", new Vector3(0f, -0.575f, 0f), new Vector3(0.12f, 0.575f, 0.12f), UiKit.Hex("#4A3F3A"), Toon.OutlineSmall);
             Toon.Prim(PrimitiveType.Cube, slot.transform, "Hop", new Vector3(0f, 0.15f, 0f), new Vector3(0.5f, 0.3f, 0.25f), UiKit.Ink, Toon.OutlineSmall);
@@ -1058,7 +929,7 @@ namespace QuanAnHope.Game
         {
             GameSession s = g.Session;
             if (s.BlackRelicOffers.Count > 0) return "Đang chọn: bấm 1 trong 3 relic trên bệ";
-            if (s.Items.BlackTickets <= 0) return "Khe vé đen · cần 1 vé đen (mua ở quầy vật phẩm Góc 2)";
+            if (s.Items.BlackTickets <= 0) return "Khe vé đen · cần 1 vé đen (Tab → Cửa hàng)";
             return "Dùng 1 vé đen: chọn 1 trong 3 relic Hiếm trở lên (còn " + s.Items.BlackTickets + " vé đen)";
         }
 
@@ -1069,40 +940,19 @@ namespace QuanAnHope.Game
             {
                 RelicDef b = slot < s.BlackRelicOffers.Count ? s.BlackRelicOffers[slot] : null;
                 if (b == null) return "Bệ trống";
-                if (g.PendingRelicSlot == slot && g.PendingIsBlack) return "Bấm một relic trên giá để bỏ, lấy " + b.name;
+                if (g.PendingRelicSlot == slot && g.PendingIsBlack) return "Nhấn Tab, chọn relic để bỏ, lấy " + b.name;
                 return "Lấy " + b.name + " bằng vé đen" + (s.Relics.IsFull ? " · giá đầy, phải bỏ 1 relic" : "");
             }
             if (!s.Shop.OpensOn(s.Day)) return "Cửa hàng relic mở từ ngày " + s.Balance.start.relicShopFromDay;
             RelicDef r = slot < s.Shop.Offers.Count ? s.Shop.Offers[slot] : null;
-            if (r == null) return s.Shop.FreeDone ? "Hôm nay đã lấy relic miễn phí" : "Bệ trống · đã bán hôm nay";
-            if (s.Shop.IsFreeDay && g.PendingRelicSlot != slot)
+            if (r == null) return "Bệ trống · đã bán hôm nay";
+            if (s.Shop.IsFreeDay && !s.Shop.FreeDone && g.PendingRelicSlot != slot)
                 return "Lấy miễn phí · " + r.name + " (chỉ được lấy 1)" + (s.Relics.IsFull ? " · giá đầy, phải bỏ 1 relic" : "");
             if (g.PendingRelicSlot == slot) return "Bấm lại để huỷ mua " + r.name;
             int missing = s.Shop.Missing(slot, s.Wallet);
             if (missing > 0) return r.name + " · thiếu " + missing + " vé";
             return "Mua · " + r.price + " vé (còn " + s.Wallet.Count + ")"
                 + (s.Relics.IsFull ? " · giá đầy, phải bỏ 1 relic" : "");
-        }
-
-        string ShelfPrompt(int index)
-        {
-            IReadOnlyList<RelicDef> owned = g.Session.Relics.Owned;
-            if (index >= owned.Count) return "Giá relic · ô trống";
-            RelicDef r = owned[index];
-            if (g.PendingRelicSlot >= 0)
-            {
-                RelicDef offer = g.PendingIsBlack
-                    ? (g.PendingRelicSlot < g.Session.BlackRelicOffers.Count ? g.Session.BlackRelicOffers[g.PendingRelicSlot] : null)
-                    : g.Session.Shop.Offers[g.PendingRelicSlot];
-                return "Bỏ " + r.name + " để lấy " + (offer != null ? offer.name : "relic mới");
-            }
-            return r.name + " · " + RelicText.Effect(r);
-        }
-
-        void UseShelf(int index)
-        {
-            IReadOnlyList<RelicDef> owned = g.Session.Relics.Owned;
-            if (index < owned.Count) g.UseShelfRelic(owned[index].id);
         }
 
         void RefreshRelics()
@@ -1114,18 +964,12 @@ namespace QuanAnHope.Game
             if (blackRelicSign != null)
                 blackRelicSign.text = black ? "Chọn 1 relic trên bệ" : "Vé đen → relic Hiếm · " + s.Items.BlackTickets + " vé";
             shopSign.text = black
-                ? "Vé đen\n<size=70>chọn 1 trong 3 relic Hiếm trở lên</size>"
+                ? "Vé đen\n<size=70>chọn 1 relic Hiếm</size>"
                 : opens
-                ? (s.Shop.IsFreeDay
-                    ? "Relic miễn phí hôm nay\n<size=70>chọn 1 trong " + s.Shop.Slots + " · nút Đổi hàng: " + s.Shop.RerollCost + "G</size>"
-                    : "Cửa hàng relic\n<size=70>" + s.Shop.Slots + " relic · trả bằng vé · Đổi hàng: " + s.Shop.RerollCost + "G</size>")
-                : "Cửa hàng relic\n<size=80>mở từ ngày " + s.Balance.start.relicShopFromDay + "</size>";
-
-            // Relic vua mua bay tu be len gia (kich ban 10 giay, impl plan sprint 3): nho vi tri be truoc khi xoa.
-            Vector3? flyFrom = null;
-            for (int i = 0; i < pedestalShown.Count; i++)
-                if (g.LastBoughtRelic != null && (pedestalShown[i] == g.LastBoughtRelic.id || pedestalShown[i] == "den:" + g.LastBoughtRelic.id))
-                    flyFrom = pedestalSpots[i].position;
+                ? (s.Shop.IsFreeDay && !s.Shop.FreeDone
+                    ? "Relic miễn phí\n<size=70>chọn 1</size>"
+                    : "Relic\n<size=70>trả bằng vé</size>")
+                : "Relic\n<size=80>mở từ ngày " + s.Balance.start.relicShopFromDay + "</size>";
 
             for (int i = 0; i < pedestalSpots.Count; i++)
             {
@@ -1138,97 +982,20 @@ namespace QuanAnHope.Game
                     pedestalRelics[i] = r != null ? RelicArt.Create(pedestalSpots[i], r, ShopRelicScale) : null;
                     pedestalShown[i] = key;
                 }
-                if (r != null) cards[i].Show(r, inv, g.PendingRelicSlot == i, black, !black && s.Shop.IsFreeDay);
-                else cards[i].ShowEmpty(!opens ? "Mở từ ngày " + s.Balance.start.relicShopFromDay : s.Shop.FreeDone ? "Đã lấy relic miễn phí" : "Đã bán");
+                if (r != null) cards[i].Show(r, inv, g.PendingRelicSlot == i, black, !black && s.Shop.IsFreeDay && !s.Shop.FreeDone);
+                else cards[i].ShowEmpty(!opens ? "Mở từ ngày " + s.Balance.start.relicShopFromDay : "Đã bán");
             }
 
-            for (int i = 0; i < shelfSpots.Count; i++)
-            {
-                RelicDef r = i < inv.Owned.Count ? inv.Owned[i] : null;
-                string key = r != null ? r.id : null;
-                if (shelfShown[i] != key)
-                {
-                    if (shelfRelics[i] != null) Object.Destroy(shelfRelics[i]);
-                    shelfRelics[i] = r != null ? RelicArt.Create(shelfSpots[i], r, ShelfRelicScale) : null;
-                    shelfShown[i] = key;
-                    if (shelfDiscs[i] != null) Toon.Recolor(shelfDiscs[i], r != null ? RelicArt.RarityColor(r.rarity) : UiKit.Hex("#E3CFA6"));
-                }
-                shelfNames[i].text = r != null ? r.name : "";
-                shelfNames[i].transform.parent.parent.gameObject.SetActive(r != null);
-                if (r != null && g.LastBoughtRelic == r && sparkledFor != r)
-                {
-                    sparkledFor = r;
-                    if (flyFrom.HasValue) RelicFly.Play(shelfRelics[i], flyFrom.Value, shelfSpots[i], ShopRelicScale / ShelfRelicScale);
-                    else Pop.Play(shelfRelics[i], 0.6f);
-                }
-            }
+            if (g.LastBoughtRelic != null && sparkledFor != g.LastBoughtRelic) sparkledFor = g.LastBoughtRelic;
             if (g.LastBoughtRelic == null) sparkledFor = null;
-            shelfHeader.text = ShelfSummary(inv) + (g.PendingRelicSlot >= 0 ? " · <color=#E8604F>bấm relic để bỏ</color>" : "");
         }
+
+        RelicDef sparkledFor;
 
         /// <summary>Dong tren gia: "Gia relic 3/8". Khong ghi tien do bo combo (yeu cau 21/11/2026, constitution 1.7 muc 7.1).</summary>
         public static string ShelfSummary(RelicInventory inv)
         {
             return "Giá relic " + inv.Owned.Count + "/" + inv.Capacity;
-        }
-
-        List<Recipe> BookRecipes()
-        {
-            var list = new List<Recipe>();
-            int round = g.Session.Round;
-            foreach (Recipe r in g.Session.Recipes.recipes)
-                if (r.group == StandardGroup && r.unlockRound >= 1 && r.unlockRound <= round) list.Add(r);
-            return list;
-        }
-
-        void TurnPage(int delta)
-        {
-            int count = BookRecipes().Count;
-            if (count == 0) return;
-            page = ((page + delta) % count + count) % count;
-            RefreshBook();
-        }
-
-        public int Page { get { return page; } }
-
-        void RefreshBook()
-        {
-            List<Recipe> recipes = BookRecipes();
-            if (recipes.Count == 0) return;
-            page = Mathf.Clamp(page, 0, recipes.Count - 1);
-            Recipe r = recipes[page];
-            pageTitle.text = r.name;
-            pageInfo.text = r.tool + " · đế " + r.baseName + " · nấu " + r.cookSeconds.ToString("0.#") + " giây";
-            pageFooter.text = "Trang " + (page + 1) + " / " + recipes.Count + " công thức";
-            dishFood.color = IngredientArt.ColorOf(r.mainId);
-            GameSession s = g.Session;
-            priceHeader.text = "Giá bán · vòng " + s.Round + " (khách trả thêm tip)";
-            for (int tier = 0; tier < priceCells.Length; tier++)
-                priceCells[tier].text = Payment.Price(s.Balance, s.Round, tier) + "G";
-            rightTitle.text = "Thứ tự cho vào " + r.tool.ToLowerInvariant();
-
-            UiKit.Clear(stepList);
-            for (int i = 0; i < r.steps.Length; i++)
-            {
-                RectTransform row = UiKit.Box(stepList, "Buoc_" + (i + 1), new Vector2(0.5f, 1f), Vector2.zero, new Vector2(820f, 150f));
-                row.gameObject.AddComponent<LayoutElement>().preferredHeight = 150f;
-                Color c = StepColor(r, r.steps[i]);
-                Image circle = UiKit.Panel(row, "So", new Vector2(0f, 0.5f), new Vector2(75f, 0f), new Vector2(150f, 150f), c, false);
-                circle.rectTransform.pivot = new Vector2(0.5f, 0.5f);
-                UiKit.Text(circle.transform, (i + 1).ToString(), 84f);
-                UiKit.Label(row, "Ten", new Vector2(0f, 0.5f), new Vector2(190f, 0f), new Vector2(620f, 150f), r.steps[i], 70f, TextAlignmentOptions.Left)
-                    .rectTransform.pivot = new Vector2(0f, 0.5f);
-            }
-        }
-
-        Color StepColor(Recipe r, string step)
-        {
-            Color c = UiKit.Hex("#F3DFB8");
-            foreach (SideIngredient s in g.Session.Recipes.sides) if (s.name == step) c = IngredientArt.ColorOf(s.id);
-            foreach (MainIngredient m in g.Session.Recipes.mains) if (m.name == step) c = IngredientArt.ColorOf(m.id);
-            // Mau qua nhat (trung, dau phu) se lan vao giay sach: dung mau go nhat thay the.
-            float luminance = 0.299f * c.r + 0.587f * c.g + 0.114f * c.b;
-            return luminance > 0.9f ? UiKit.Hex("#E9CE9E") : c;
         }
 
         // =====================================================================
@@ -1240,8 +1007,7 @@ namespace QuanAnHope.Game
             Toon.BlobShadow(goc1, "Bong_Bien", new Vector3(3.25f, 0.01f, 3.35f), 1.0f);
             Toon.BlobShadow(goc2, "Bong_MayNhetVe", new Vector3(-0.1f, 0.01f, 2.8f), 0.7f);
             Toon.BlobShadow(goc2, "Bong_MayGacha", new Vector3(1.6f, 0.01f, 3.2f), 1.8f);
-            Toon.BlobShadow(goc3, "Bong_GiaSach", new Vector3(-2.2f, 0.01f, 3f), 1.0f);
-            for (int i = 0; i < 3; i++) Toon.BlobShadow(goc3, "Bong_Be" + i, new Vector3(-0.1f + 1.25f * i, 0.01f, 3.2f), 1.1f);
+            for (int i = 0; i < 3; i++) Toon.BlobShadow(goc3, "Bong_Be" + i, new Vector3(PedestalX[i], 0.01f, 3.2f), 1.1f);
             Toon.BlobShadow(goc4, "Bong_ThungRac", new Vector3(-1.52f, 0.01f, 3.35f), 0.55f);
         }
 
@@ -1260,9 +1026,9 @@ namespace QuanAnHope.Game
             RefreshSeats();
             RefreshFridge();
             RefreshItemShop();
-            RefreshBook();
             RefreshHand();
             RefreshSprint8();
+            RefreshSprint10();
         }
 
         void RefreshHand()
@@ -1273,6 +1039,7 @@ namespace QuanAnHope.Game
                 case HandKind.Ingredient: key = "I" + g.HeldIngredient.GetHashCode() + (g.HeldIngredient.prepared ? "p" : ""); break;
                 case HandKind.Plate: key = "P"; break;
                 case HandKind.Dish: key = "D" + g.HeldDish.GetHashCode(); break;
+                case HandKind.Sauce: key = "S"; break;
                 default: key = null; break;
             }
             if (key == handKey) return;
@@ -1292,6 +1059,9 @@ namespace QuanAnHope.Game
                 case HandKind.Dish:
                     handModel = DishModel.Create(handAnchor, g.HeldDish, g.Session.Recipes, false);
                     break;
+                case HandKind.Sauce:
+                    handModel = SauceHandModel(handAnchor);
+                    break;
             }
             if (handModel != null)
             {
@@ -1304,7 +1074,6 @@ namespace QuanAnHope.Game
         public void Tick(float dt)
         {
             GameSession s = g.Session;
-            boardBar.Set((float)s.Board.Progress + (g.OnBoard != null && g.OnBoard.prepared ? 1f : 0f));
             Stove stove = s.Stove;
             if (stove.State == StoveState.Cooking && stove.CookSeconds > 0f) cookBar.Set(stove.Elapsed / stove.CookSeconds);
             else cookBar.Set(stove.State == StoveState.Ready ? 1f : 0f);
@@ -1316,6 +1085,7 @@ namespace QuanAnHope.Game
             for (int i = 0; i < seatViews.Length; i++) UpdateBubble(i);
             TickSeats(dt);
             TickSprint8(dt);
+            TickSprint10(dt);
             foreach (CrateView c in crates.Values) c.Tick(dt);
             foreach (ItemView i in items.Values) if (i != null) i.Tick(dt);
         }

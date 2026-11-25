@@ -1,0 +1,45 @@
+QUÁN ĂN CỦA HOPE — bản chơi thử 0.10.0
+=======================================
+
+Cảm ơn bạn đã chơi thử! Bạn là Hope: 22 ngày để trả hết nợ bằng một quán ăn nhỏ.
+
+CÁCH MỞ
+- Giải nén cả thư mục (đừng chạy thẳng trong file nén).
+- Mở QuanAnHope.exe. Game chạy toàn màn hình theo độ phân giải màn hình của bạn.
+- Windows có thể hỏi "Windows protected your PC": bấm "More info" → "Run anyway".
+- Cần Windows 10/11 64-bit, card đồ hoạ hỗ trợ DirectX 11.
+
+PHÍM
+- W A S D (hoặc phím mũi tên): đi       - Chuột: nhìn
+- Shift: chạy                           - Space: nhảy
+- Chuột trái: bấm vào đồ vật / giữ để sơ chế
+- Chuột phải: thả nguyên liệu xuống chỗ đang nhìn (đĩa thì đặt lại chỗ cũ)
+- Tab: Thực đơn, Relic, Cửa hàng, Cách chơi
+- T: ẩn / hiện tranh hướng dẫn toàn màn hình
+- 1 / 2: chọn ô đồ (khi đã mua Tay vạn năng)
+- Esc: tạm dừng, cài đặt (âm lượng, độ nhạy chuột, cửa sổ / toàn màn hình, danh sách phím)
+
+MỘT NGÀY TRONG QUÁN
+1. Nhét vé vào máy → thùng nguyên liệu rơi xuống bàn.
+2. Lấy nguyên liệu, sơ chế trên thớt, chọn dụng cụ, cho vào bếp đúng thứ tự (Tab → Thực đơn), vặn núm.
+3. Múc ra đĩa, mở quán, đặt đĩa trước mặt khách gọi món đó.
+4. Hết giờ (21:00) và hết khách: bấm biển ĐÓNG QUÁN để sang ngày mới.
+Lần đầu chơi sẽ có tranh hướng dẫn từng bước ở góc trái màn hình.
+
+LƯU GAME
+- Game tự lưu đầu mỗi ngày. Menu chính → "Chơi tiếp" để quay lại đầu ngày đã lưu.
+
+GỬI PHẢN HỒI (quan trọng nhất!)
+Khi chơi xong (thắng, thua hoặc chán thì dừng), gửi cho mình:
+1. File nhật ký: mở File Explorer, dán vào thanh địa chỉ
+       %USERPROFILE%\AppData\LocalLow\hungnhat29\Quán ăn của Hope
+   rồi gửi file  playtest-log.csv  (không có thông tin cá nhân, chỉ thời gian nấu từng món).
+2. Trả lời 5 câu ngắn:
+   a. Bạn bị kẹt ở đâu (không biết phải làm gì tiếp)?
+   b. Ngày nào thấy chán nhất? Vì sao?
+   c. Bạn có hiểu bậc nguyên liệu (màu đế) và tỉ lệ trên bảng không?
+   d. Bạn thua ở đâu (nếu thua)? Thiếu bao nhiêu tiền?
+   e. Bạn có muốn chơi lại không? Thang 1–5.
+3. Nếu gặp lỗi: ghi số phiên bản (góc dưới phải menu chính) và mô tả bạn vừa làm gì.
+
+Gửi qua tin nhắn / email cho người đã đưa bạn bản game này.

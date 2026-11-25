@@ -366,7 +366,8 @@
    "burn_s": 24.0,
    "warn_s": 18.0,
    "unlock_round": 1,
-   "total_s": 22.5
+   "total_s": 22.5,
+   "price": 55
   },
   {
    "id": "trung__hanh_tay",
@@ -397,38 +398,8 @@
    "burn_s": 24.0,
    "warn_s": 18.0,
    "unlock_round": 1,
-   "total_s": 22.5
-  },
-  {
-   "id": "trung__rau_muong",
-   "name": "Trứng chiên rau muống",
-   "group": "chinh",
-   "main": "Trứng gà",
-   "side": "Rau muống",
-   "tool": "Chảo",
-   "method": "chiên",
-   "base": "Cơm",
-   "steps": [
-    "Dầu ăn",
-    "Rau muống",
-    "Trứng gà",
-    "Nước mắm"
-   ],
-   "prep": {
-    "Trứng gà": [
-     "Đập, đánh",
-     1.5
-    ],
-    "Rau muống": [
-     "Nhặt, rửa",
-     3.0
-    ]
-   },
-   "cook_s": 12,
-   "burn_s": 24.0,
-   "warn_s": 18.0,
-   "unlock_round": 1,
-   "total_s": 21.0
+   "total_s": 22.5,
+   "price": 55
   },
   {
    "id": "trung__khoai_tay",
@@ -459,7 +430,8 @@
    "burn_s": 24.0,
    "warn_s": 18.0,
    "unlock_round": 2,
-   "total_s": 24.0
+   "total_s": 24.0,
+   "price": 65
   },
   {
    "id": "trung__nam_rom",
@@ -490,38 +462,8 @@
    "burn_s": 24.0,
    "warn_s": 18.0,
    "unlock_round": 2,
-   "total_s": 21.0
-  },
-  {
-   "id": "trung__bong_cai",
-   "name": "Trứng chiên bông cải",
-   "group": "chinh",
-   "main": "Trứng gà",
-   "side": "Bông cải xanh",
-   "tool": "Chảo",
-   "method": "chiên",
-   "base": "Cơm",
-   "steps": [
-    "Dầu ăn",
-    "Bông cải xanh",
-    "Trứng gà",
-    "Nước mắm"
-   ],
-   "prep": {
-    "Trứng gà": [
-     "Đập, đánh",
-     1.5
-    ],
-    "Bông cải xanh": [
-     "Tách bông",
-     4.5
-    ]
-   },
-   "cook_s": 12,
-   "burn_s": 24.0,
-   "warn_s": 18.0,
-   "unlock_round": 3,
-   "total_s": 22.5
+   "total_s": 21.0,
+   "price": 60
   },
   {
    "id": "trung__ot_chuong",
@@ -552,38 +494,8 @@
    "burn_s": 24.0,
    "warn_s": 18.0,
    "unlock_round": 3,
-   "total_s": 22.5
-  },
-  {
-   "id": "trung__bi_do",
-   "name": "Trứng chiên bí đỏ",
-   "group": "chinh",
-   "main": "Trứng gà",
-   "side": "Bí đỏ",
-   "tool": "Chảo",
-   "method": "chiên",
-   "base": "Cơm",
-   "steps": [
-    "Dầu ăn",
-    "Bí đỏ",
-    "Trứng gà",
-    "Nước mắm"
-   ],
-   "prep": {
-    "Trứng gà": [
-     "Đập, đánh",
-     1.5
-    ],
-    "Bí đỏ": [
-     "Gọt, thái",
-     6.0
-    ]
-   },
-   "cook_s": 12,
-   "burn_s": 24.0,
-   "warn_s": 18.0,
-   "unlock_round": 4,
-   "total_s": 24.0
+   "total_s": 22.5,
+   "price": 80
   },
   {
    "id": "trung__mang_tay",
@@ -614,7 +526,8 @@
    "burn_s": 24.0,
    "warn_s": 18.0,
    "unlock_round": 4,
-   "total_s": 21.0
+   "total_s": 21.0,
+   "price": 95
   },
   {
    "id": "trung__nam_dong_co",
@@ -645,38 +558,8 @@
    "burn_s": 24.0,
    "warn_s": 18.0,
    "unlock_round": 4,
-   "total_s": 21.0
-  },
-  {
-   "id": "heo__ca_chua",
-   "name": "Heo xào cà chua",
-   "group": "chinh",
-   "main": "Thịt heo",
-   "side": "Cà chua",
-   "tool": "Chảo",
-   "method": "xào",
-   "base": "Cơm",
-   "steps": [
-    "Dầu ăn",
-    "Tỏi",
-    "Thịt heo",
-    "Cà chua"
-   ],
-   "prep": {
-    "Thịt heo": [
-     "Thái mỏng",
-     4.5
-    ],
-    "Cà chua": [
-     "Thái múi",
-     4.5
-    ]
-   },
-   "cook_s": 15,
-   "burn_s": 30.0,
-   "warn_s": 22.5,
-   "unlock_round": 1,
-   "total_s": 28.5
+   "total_s": 21.0,
+   "price": 95
   },
   {
    "id": "heo__hanh_tay",
@@ -707,7 +590,8 @@
    "burn_s": 30.0,
    "warn_s": 22.5,
    "unlock_round": 1,
-   "total_s": 28.5
+   "total_s": 28.5,
+   "price": 60
   },
   {
    "id": "heo__rau_muong",
@@ -738,7 +622,8 @@
    "burn_s": 30.0,
    "warn_s": 22.5,
    "unlock_round": 1,
-   "total_s": 27.0
+   "total_s": 27.0,
+   "price": 60
   },
   {
    "id": "heo__khoai_tay",
@@ -769,7 +654,8 @@
    "burn_s": 30.0,
    "warn_s": 22.5,
    "unlock_round": 2,
-   "total_s": 30.0
+   "total_s": 30.0,
+   "price": 75
   },
   {
    "id": "heo__nam_rom",
@@ -800,7 +686,8 @@
    "burn_s": 30.0,
    "warn_s": 22.5,
    "unlock_round": 2,
-   "total_s": 27.0
+   "total_s": 27.0,
+   "price": 70
   },
   {
    "id": "heo__bong_cai",
@@ -831,7 +718,8 @@
    "burn_s": 30.0,
    "warn_s": 22.5,
    "unlock_round": 3,
-   "total_s": 28.5
+   "total_s": 28.5,
+   "price": 95
   },
   {
    "id": "heo__ot_chuong",
@@ -862,7 +750,8 @@
    "burn_s": 30.0,
    "warn_s": 22.5,
    "unlock_round": 3,
-   "total_s": 28.5
+   "total_s": 28.5,
+   "price": 95
   },
   {
    "id": "heo__bi_do",
@@ -893,38 +782,8 @@
    "burn_s": 30.0,
    "warn_s": 22.5,
    "unlock_round": 4,
-   "total_s": 30.0
-  },
-  {
-   "id": "heo__mang_tay",
-   "name": "Heo xào măng tây",
-   "group": "chinh",
-   "main": "Thịt heo",
-   "side": "Măng tây",
-   "tool": "Chảo",
-   "method": "xào",
-   "base": "Cơm",
-   "steps": [
-    "Dầu ăn",
-    "Tỏi",
-    "Thịt heo",
-    "Măng tây"
-   ],
-   "prep": {
-    "Thịt heo": [
-     "Thái mỏng",
-     4.5
-    ],
-    "Măng tây": [
-     "Cắt khúc",
-     3.0
-    ]
-   },
-   "cook_s": 15,
-   "burn_s": 30.0,
-   "warn_s": 22.5,
-   "unlock_round": 4,
-   "total_s": 27.0
+   "total_s": 30.0,
+   "price": 110
   },
   {
    "id": "heo__nam_dong_co",
@@ -955,7 +814,8 @@
    "burn_s": 30.0,
    "warn_s": 22.5,
    "unlock_round": 4,
-   "total_s": 27.0
+   "total_s": 27.0,
+   "price": 105
   },
   {
    "id": "dau_phu__ca_chua",
@@ -986,7 +846,8 @@
    "burn_s": 36.0,
    "warn_s": 27.0,
    "unlock_round": 1,
-   "total_s": 30.0
+   "total_s": 30.0,
+   "price": 60
   },
   {
    "id": "dau_phu__hanh_tay",
@@ -1017,69 +878,8 @@
    "burn_s": 36.0,
    "warn_s": 27.0,
    "unlock_round": 1,
-   "total_s": 30.0
-  },
-  {
-   "id": "dau_phu__rau_muong",
-   "name": "Đậu phụ sốt rau muống",
-   "group": "chinh",
-   "main": "Đậu phụ",
-   "side": "Rau muống",
-   "tool": "Nồi",
-   "method": "sốt",
-   "base": "Cơm",
-   "steps": [
-    "Dầu ăn",
-    "Rau muống",
-    "Đậu phụ",
-    "Nước mắm"
-   ],
-   "prep": {
-    "Đậu phụ": [
-     "Cắt miếng",
-     3.0
-    ],
-    "Rau muống": [
-     "Nhặt, rửa",
-     3.0
-    ]
-   },
-   "cook_s": 18,
-   "burn_s": 36.0,
-   "warn_s": 27.0,
-   "unlock_round": 1,
-   "total_s": 28.5
-  },
-  {
-   "id": "dau_phu__khoai_tay",
-   "name": "Đậu phụ sốt khoai tây",
-   "group": "chinh",
-   "main": "Đậu phụ",
-   "side": "Khoai tây",
-   "tool": "Nồi",
-   "method": "sốt",
-   "base": "Cơm",
-   "steps": [
-    "Dầu ăn",
-    "Khoai tây",
-    "Đậu phụ",
-    "Nước mắm"
-   ],
-   "prep": {
-    "Đậu phụ": [
-     "Cắt miếng",
-     3.0
-    ],
-    "Khoai tây": [
-     "Gọt, thái",
-     6.0
-    ]
-   },
-   "cook_s": 18,
-   "burn_s": 36.0,
-   "warn_s": 27.0,
-   "unlock_round": 2,
-   "total_s": 31.5
+   "total_s": 30.0,
+   "price": 60
   },
   {
    "id": "dau_phu__nam_rom",
@@ -1110,7 +910,8 @@
    "burn_s": 36.0,
    "warn_s": 27.0,
    "unlock_round": 2,
-   "total_s": 28.5
+   "total_s": 28.5,
+   "price": 75
   },
   {
    "id": "dau_phu__bong_cai",
@@ -1141,38 +942,8 @@
    "burn_s": 36.0,
    "warn_s": 27.0,
    "unlock_round": 3,
-   "total_s": 30.0
-  },
-  {
-   "id": "dau_phu__ot_chuong",
-   "name": "Đậu phụ sốt ớt chuông",
-   "group": "chinh",
-   "main": "Đậu phụ",
-   "side": "Ớt chuông",
-   "tool": "Nồi",
-   "method": "sốt",
-   "base": "Cơm",
-   "steps": [
-    "Dầu ăn",
-    "Ớt chuông",
-    "Đậu phụ",
-    "Nước mắm"
-   ],
-   "prep": {
-    "Đậu phụ": [
-     "Cắt miếng",
-     3.0
-    ],
-    "Ớt chuông": [
-     "Bỏ hạt, thái",
-     4.5
-    ]
-   },
-   "cook_s": 18,
-   "burn_s": 36.0,
-   "warn_s": 27.0,
-   "unlock_round": 3,
-   "total_s": 30.0
+   "total_s": 30.0,
+   "price": 95
   },
   {
    "id": "dau_phu__bi_do",
@@ -1203,38 +974,8 @@
    "burn_s": 36.0,
    "warn_s": 27.0,
    "unlock_round": 4,
-   "total_s": 31.5
-  },
-  {
-   "id": "dau_phu__mang_tay",
-   "name": "Đậu phụ sốt măng tây",
-   "group": "chinh",
-   "main": "Đậu phụ",
-   "side": "Măng tây",
-   "tool": "Nồi",
-   "method": "sốt",
-   "base": "Cơm",
-   "steps": [
-    "Dầu ăn",
-    "Măng tây",
-    "Đậu phụ",
-    "Nước mắm"
-   ],
-   "prep": {
-    "Đậu phụ": [
-     "Cắt miếng",
-     3.0
-    ],
-    "Măng tây": [
-     "Cắt khúc",
-     3.0
-    ]
-   },
-   "cook_s": 18,
-   "burn_s": 36.0,
-   "warn_s": 27.0,
-   "unlock_round": 4,
-   "total_s": 28.5
+   "total_s": 31.5,
+   "price": 115
   },
   {
    "id": "dau_phu__nam_dong_co",
@@ -1265,7 +1006,8 @@
    "burn_s": 36.0,
    "warn_s": 27.0,
    "unlock_round": 4,
-   "total_s": 28.5
+   "total_s": 28.5,
+   "price": 110
   },
   {
    "id": "bo__ca_chua",
@@ -1296,7 +1038,8 @@
    "burn_s": 30.0,
    "warn_s": 22.5,
    "unlock_round": 2,
-   "total_s": 28.5
+   "total_s": 28.5,
+   "price": 75
   },
   {
    "id": "bo__hanh_tay",
@@ -1327,7 +1070,8 @@
    "burn_s": 30.0,
    "warn_s": 22.5,
    "unlock_round": 2,
-   "total_s": 28.5
+   "total_s": 28.5,
+   "price": 75
   },
   {
    "id": "bo__rau_muong",
@@ -1358,7 +1102,8 @@
    "burn_s": 30.0,
    "warn_s": 22.5,
    "unlock_round": 2,
-   "total_s": 27.0
+   "total_s": 27.0,
+   "price": 70
   },
   {
    "id": "bo__khoai_tay",
@@ -1389,38 +1134,8 @@
    "burn_s": 30.0,
    "warn_s": 22.5,
    "unlock_round": 2,
-   "total_s": 30.0
-  },
-  {
-   "id": "bo__nam_rom",
-   "name": "Mì Ý bò xào nấm rơm",
-   "group": "chinh",
-   "main": "Thịt bò",
-   "side": "Nấm rơm",
-   "tool": "Chảo",
-   "method": "xào",
-   "base": "Mì Ý",
-   "steps": [
-    "Bơ",
-    "Tỏi",
-    "Thịt bò",
-    "Nấm rơm"
-   ],
-   "prep": {
-    "Thịt bò": [
-     "Thái mỏng",
-     4.5
-    ],
-    "Nấm rơm": [
-     "Rửa, bổ đôi",
-     3.0
-    ]
-   },
-   "cook_s": 15,
-   "burn_s": 30.0,
-   "warn_s": 22.5,
-   "unlock_round": 2,
-   "total_s": 27.0
+   "total_s": 30.0,
+   "price": 75
   },
   {
    "id": "bo__bong_cai",
@@ -1451,7 +1166,8 @@
    "burn_s": 30.0,
    "warn_s": 22.5,
    "unlock_round": 3,
-   "total_s": 28.5
+   "total_s": 28.5,
+   "price": 95
   },
   {
    "id": "bo__ot_chuong",
@@ -1482,38 +1198,8 @@
    "burn_s": 30.0,
    "warn_s": 22.5,
    "unlock_round": 3,
-   "total_s": 28.5
-  },
-  {
-   "id": "bo__bi_do",
-   "name": "Mì Ý bò xào bí đỏ",
-   "group": "chinh",
-   "main": "Thịt bò",
-   "side": "Bí đỏ",
-   "tool": "Chảo",
-   "method": "xào",
-   "base": "Mì Ý",
-   "steps": [
-    "Bơ",
-    "Tỏi",
-    "Thịt bò",
-    "Bí đỏ"
-   ],
-   "prep": {
-    "Thịt bò": [
-     "Thái mỏng",
-     4.5
-    ],
-    "Bí đỏ": [
-     "Gọt, thái",
-     6.0
-    ]
-   },
-   "cook_s": 15,
-   "burn_s": 30.0,
-   "warn_s": 22.5,
-   "unlock_round": 4,
-   "total_s": 30.0
+   "total_s": 28.5,
+   "price": 95
   },
   {
    "id": "bo__mang_tay",
@@ -1544,7 +1230,8 @@
    "burn_s": 30.0,
    "warn_s": 22.5,
    "unlock_round": 4,
-   "total_s": 27.0
+   "total_s": 27.0,
+   "price": 105
   },
   {
    "id": "bo__nam_dong_co",
@@ -1575,38 +1262,8 @@
    "burn_s": 30.0,
    "warn_s": 22.5,
    "unlock_round": 4,
-   "total_s": 27.0
-  },
-  {
-   "id": "tom__ca_chua",
-   "name": "Bún xào tôm cà chua",
-   "group": "chinh",
-   "main": "Tôm",
-   "side": "Cà chua",
-   "tool": "Chảo",
-   "method": "xào",
-   "base": "Bún",
-   "steps": [
-    "Dầu ăn",
-    "Tôm",
-    "Cà chua",
-    "Nước mắm"
-   ],
-   "prep": {
-    "Tôm": [
-     "Bóc vỏ",
-     6.0
-    ],
-    "Cà chua": [
-     "Thái múi",
-     4.5
-    ]
-   },
-   "cook_s": 15,
-   "burn_s": 30.0,
-   "warn_s": 22.5,
-   "unlock_round": 2,
-   "total_s": 30.0
+   "total_s": 27.0,
+   "price": 105
   },
   {
    "id": "tom__hanh_tay",
@@ -1637,7 +1294,8 @@
    "burn_s": 30.0,
    "warn_s": 22.5,
    "unlock_round": 2,
-   "total_s": 30.0
+   "total_s": 30.0,
+   "price": 75
   },
   {
    "id": "tom__rau_muong",
@@ -1668,38 +1326,8 @@
    "burn_s": 30.0,
    "warn_s": 22.5,
    "unlock_round": 2,
-   "total_s": 28.5
-  },
-  {
-   "id": "tom__khoai_tay",
-   "name": "Bún xào tôm khoai tây",
-   "group": "chinh",
-   "main": "Tôm",
-   "side": "Khoai tây",
-   "tool": "Chảo",
-   "method": "xào",
-   "base": "Bún",
-   "steps": [
-    "Dầu ăn",
-    "Tôm",
-    "Khoai tây",
-    "Nước mắm"
-   ],
-   "prep": {
-    "Tôm": [
-     "Bóc vỏ",
-     6.0
-    ],
-    "Khoai tây": [
-     "Gọt, thái",
-     6.0
-    ]
-   },
-   "cook_s": 15,
-   "burn_s": 30.0,
-   "warn_s": 22.5,
-   "unlock_round": 2,
-   "total_s": 31.5
+   "total_s": 28.5,
+   "price": 75
   },
   {
    "id": "tom__nam_rom",
@@ -1730,7 +1358,8 @@
    "burn_s": 30.0,
    "warn_s": 22.5,
    "unlock_round": 2,
-   "total_s": 28.5
+   "total_s": 28.5,
+   "price": 75
   },
   {
    "id": "tom__bong_cai",
@@ -1761,38 +1390,8 @@
    "burn_s": 30.0,
    "warn_s": 22.5,
    "unlock_round": 3,
-   "total_s": 30.0
-  },
-  {
-   "id": "tom__ot_chuong",
-   "name": "Bún xào tôm ớt chuông",
-   "group": "chinh",
-   "main": "Tôm",
-   "side": "Ớt chuông",
-   "tool": "Chảo",
-   "method": "xào",
-   "base": "Bún",
-   "steps": [
-    "Dầu ăn",
-    "Tôm",
-    "Ớt chuông",
-    "Nước mắm"
-   ],
-   "prep": {
-    "Tôm": [
-     "Bóc vỏ",
-     6.0
-    ],
-    "Ớt chuông": [
-     "Bỏ hạt, thái",
-     4.5
-    ]
-   },
-   "cook_s": 15,
-   "burn_s": 30.0,
-   "warn_s": 22.5,
-   "unlock_round": 3,
-   "total_s": 30.0
+   "total_s": 30.0,
+   "price": 95
   },
   {
    "id": "tom__bi_do",
@@ -1823,7 +1422,8 @@
    "burn_s": 30.0,
    "warn_s": 22.5,
    "unlock_round": 4,
-   "total_s": 31.5
+   "total_s": 31.5,
+   "price": 115
   },
   {
    "id": "tom__mang_tay",
@@ -1854,38 +1454,8 @@
    "burn_s": 30.0,
    "warn_s": 22.5,
    "unlock_round": 4,
-   "total_s": 28.5
-  },
-  {
-   "id": "tom__nam_dong_co",
-   "name": "Bún xào tôm nấm đông cô",
-   "group": "chinh",
-   "main": "Tôm",
-   "side": "Nấm đông cô",
-   "tool": "Chảo",
-   "method": "xào",
-   "base": "Bún",
-   "steps": [
-    "Dầu ăn",
-    "Tôm",
-    "Nấm đông cô",
-    "Nước mắm"
-   ],
-   "prep": {
-    "Tôm": [
-     "Bóc vỏ",
-     6.0
-    ],
-    "Nấm đông cô": [
-     "Thái lát",
-     3.0
-    ]
-   },
-   "cook_s": 15,
-   "burn_s": 30.0,
-   "warn_s": 22.5,
-   "unlock_round": 4,
-   "total_s": 28.5
+   "total_s": 28.5,
+   "price": 110
   },
   {
    "id": "ca_hoi__ca_chua",
@@ -1916,69 +1486,8 @@
    "burn_s": 42.0,
    "warn_s": 31.5,
    "unlock_round": 3,
-   "total_s": 37.5
-  },
-  {
-   "id": "ca_hoi__hanh_tay",
-   "name": "Cá hồi áp chảo hành tây",
-   "group": "chinh",
-   "main": "Cá hồi",
-   "side": "Hành tây",
-   "tool": "Chảo",
-   "method": "áp chảo",
-   "base": "Cơm",
-   "steps": [
-    "Bơ",
-    "Cá hồi",
-    "Hành tây",
-    "Muối"
-   ],
-   "prep": {
-    "Cá hồi": [
-     "Lọc xương",
-     7.5
-    ],
-    "Hành tây": [
-     "Thái lát",
-     4.5
-    ]
-   },
-   "cook_s": 21,
-   "burn_s": 42.0,
-   "warn_s": 31.5,
-   "unlock_round": 3,
-   "total_s": 37.5
-  },
-  {
-   "id": "ca_hoi__rau_muong",
-   "name": "Cá hồi áp chảo rau muống",
-   "group": "chinh",
-   "main": "Cá hồi",
-   "side": "Rau muống",
-   "tool": "Chảo",
-   "method": "áp chảo",
-   "base": "Cơm",
-   "steps": [
-    "Bơ",
-    "Cá hồi",
-    "Rau muống",
-    "Muối"
-   ],
-   "prep": {
-    "Cá hồi": [
-     "Lọc xương",
-     7.5
-    ],
-    "Rau muống": [
-     "Nhặt, rửa",
-     3.0
-    ]
-   },
-   "cook_s": 21,
-   "burn_s": 42.0,
-   "warn_s": 31.5,
-   "unlock_round": 3,
-   "total_s": 36.0
+   "total_s": 37.5,
+   "price": 105
   },
   {
    "id": "ca_hoi__khoai_tay",
@@ -2009,7 +1518,8 @@
    "burn_s": 42.0,
    "warn_s": 31.5,
    "unlock_round": 3,
-   "total_s": 39.0
+   "total_s": 39.0,
+   "price": 110
   },
   {
    "id": "ca_hoi__nam_rom",
@@ -2040,7 +1550,8 @@
    "burn_s": 42.0,
    "warn_s": 31.5,
    "unlock_round": 3,
-   "total_s": 36.0
+   "total_s": 36.0,
+   "price": 105
   },
   {
    "id": "ca_hoi__bong_cai",
@@ -2071,7 +1582,8 @@
    "burn_s": 42.0,
    "warn_s": 31.5,
    "unlock_round": 3,
-   "total_s": 37.5
+   "total_s": 37.5,
+   "price": 105
   },
   {
    "id": "ca_hoi__ot_chuong",
@@ -2102,38 +1614,8 @@
    "burn_s": 42.0,
    "warn_s": 31.5,
    "unlock_round": 3,
-   "total_s": 37.5
-  },
-  {
-   "id": "ca_hoi__bi_do",
-   "name": "Cá hồi áp chảo bí đỏ",
-   "group": "chinh",
-   "main": "Cá hồi",
-   "side": "Bí đỏ",
-   "tool": "Chảo",
-   "method": "áp chảo",
-   "base": "Cơm",
-   "steps": [
-    "Bơ",
-    "Cá hồi",
-    "Bí đỏ",
-    "Muối"
-   ],
-   "prep": {
-    "Cá hồi": [
-     "Lọc xương",
-     7.5
-    ],
-    "Bí đỏ": [
-     "Gọt, thái",
-     6.0
-    ]
-   },
-   "cook_s": 21,
-   "burn_s": 42.0,
-   "warn_s": 31.5,
-   "unlock_round": 4,
-   "total_s": 39.0
+   "total_s": 37.5,
+   "price": 105
   },
   {
    "id": "ca_hoi__mang_tay",
@@ -2164,7 +1646,8 @@
    "burn_s": 42.0,
    "warn_s": 31.5,
    "unlock_round": 4,
-   "total_s": 36.0
+   "total_s": 36.0,
+   "price": 120
   },
   {
    "id": "ca_hoi__nam_dong_co",
@@ -2195,38 +1678,8 @@
    "burn_s": 42.0,
    "warn_s": 31.5,
    "unlock_round": 4,
-   "total_s": 36.0
-  },
-  {
-   "id": "muc__ca_chua",
-   "name": "Mực xào cà chua",
-   "group": "chinh",
-   "main": "Mực",
-   "side": "Cà chua",
-   "tool": "Chảo",
-   "method": "xào",
-   "base": "Cơm",
-   "steps": [
-    "Dầu ăn",
-    "Tỏi",
-    "Mực",
-    "Cà chua"
-   ],
-   "prep": {
-    "Mực": [
-     "Làm sạch, khứa",
-     7.5
-    ],
-    "Cà chua": [
-     "Thái múi",
-     4.5
-    ]
-   },
-   "cook_s": 12,
-   "burn_s": 24.0,
-   "warn_s": 18.0,
-   "unlock_round": 3,
-   "total_s": 28.5
+   "total_s": 36.0,
+   "price": 120
   },
   {
    "id": "muc__hanh_tay",
@@ -2257,69 +1710,8 @@
    "burn_s": 24.0,
    "warn_s": 18.0,
    "unlock_round": 3,
-   "total_s": 28.5
-  },
-  {
-   "id": "muc__rau_muong",
-   "name": "Mực xào rau muống",
-   "group": "chinh",
-   "main": "Mực",
-   "side": "Rau muống",
-   "tool": "Chảo",
-   "method": "xào",
-   "base": "Cơm",
-   "steps": [
-    "Dầu ăn",
-    "Tỏi",
-    "Mực",
-    "Rau muống"
-   ],
-   "prep": {
-    "Mực": [
-     "Làm sạch, khứa",
-     7.5
-    ],
-    "Rau muống": [
-     "Nhặt, rửa",
-     3.0
-    ]
-   },
-   "cook_s": 12,
-   "burn_s": 24.0,
-   "warn_s": 18.0,
-   "unlock_round": 3,
-   "total_s": 27.0
-  },
-  {
-   "id": "muc__khoai_tay",
-   "name": "Mực xào khoai tây",
-   "group": "chinh",
-   "main": "Mực",
-   "side": "Khoai tây",
-   "tool": "Chảo",
-   "method": "xào",
-   "base": "Cơm",
-   "steps": [
-    "Dầu ăn",
-    "Tỏi",
-    "Mực",
-    "Khoai tây"
-   ],
-   "prep": {
-    "Mực": [
-     "Làm sạch, khứa",
-     7.5
-    ],
-    "Khoai tây": [
-     "Gọt, thái",
-     6.0
-    ]
-   },
-   "cook_s": 12,
-   "burn_s": 24.0,
-   "warn_s": 18.0,
-   "unlock_round": 3,
-   "total_s": 30.0
+   "total_s": 28.5,
+   "price": 95
   },
   {
    "id": "muc__nam_rom",
@@ -2350,7 +1742,8 @@
    "burn_s": 24.0,
    "warn_s": 18.0,
    "unlock_round": 3,
-   "total_s": 27.0
+   "total_s": 27.0,
+   "price": 90
   },
   {
    "id": "muc__bong_cai",
@@ -2381,7 +1774,8 @@
    "burn_s": 24.0,
    "warn_s": 18.0,
    "unlock_round": 3,
-   "total_s": 28.5
+   "total_s": 28.5,
+   "price": 95
   },
   {
    "id": "muc__ot_chuong",
@@ -2412,38 +1806,8 @@
    "burn_s": 24.0,
    "warn_s": 18.0,
    "unlock_round": 3,
-   "total_s": 28.5
-  },
-  {
-   "id": "muc__bi_do",
-   "name": "Mực xào bí đỏ",
-   "group": "chinh",
-   "main": "Mực",
-   "side": "Bí đỏ",
-   "tool": "Chảo",
-   "method": "xào",
-   "base": "Cơm",
-   "steps": [
-    "Dầu ăn",
-    "Tỏi",
-    "Mực",
-    "Bí đỏ"
-   ],
-   "prep": {
-    "Mực": [
-     "Làm sạch, khứa",
-     7.5
-    ],
-    "Bí đỏ": [
-     "Gọt, thái",
-     6.0
-    ]
-   },
-   "cook_s": 12,
-   "burn_s": 24.0,
-   "warn_s": 18.0,
-   "unlock_round": 4,
-   "total_s": 30.0
+   "total_s": 28.5,
+   "price": 95
   },
   {
    "id": "muc__mang_tay",
@@ -2474,7 +1838,8 @@
    "burn_s": 24.0,
    "warn_s": 18.0,
    "unlock_round": 4,
-   "total_s": 27.0
+   "total_s": 27.0,
+   "price": 105
   },
   {
    "id": "muc__nam_dong_co",
@@ -2505,7 +1870,8 @@
    "burn_s": 24.0,
    "warn_s": 18.0,
    "unlock_round": 4,
-   "total_s": 27.0
+   "total_s": 27.0,
+   "price": 105
   },
   {
    "id": "ga__ca_chua",
@@ -2535,7 +1901,8 @@
    "burn_s": 54.0,
    "warn_s": 40.5,
    "unlock_round": 4,
-   "total_s": 41.5
+   "total_s": 41.5,
+   "price": 130
   },
   {
    "id": "ga__hanh_tay",
@@ -2565,37 +1932,8 @@
    "burn_s": 54.0,
    "warn_s": 40.5,
    "unlock_round": 4,
-   "total_s": 41.5
-  },
-  {
-   "id": "ga__rau_muong",
-   "name": "Gà nướng mật ong rau muống",
-   "group": "chinh",
-   "main": "Gà ta",
-   "side": "Rau muống",
-   "tool": "Vỉ nướng",
-   "method": "nướng",
-   "base": "Bánh mì",
-   "steps": [
-    "Mật ong",
-    "Gà ta",
-    "Rau muống"
-   ],
-   "prep": {
-    "Gà ta": [
-     "Chặt miếng",
-     6.0
-    ],
-    "Rau muống": [
-     "Nhặt, rửa",
-     3.0
-    ]
-   },
-   "cook_s": 27,
-   "burn_s": 54.0,
-   "warn_s": 40.5,
-   "unlock_round": 4,
-   "total_s": 40.0
+   "total_s": 41.5,
+   "price": 130
   },
   {
    "id": "ga__khoai_tay",
@@ -2625,37 +1963,8 @@
    "burn_s": 54.0,
    "warn_s": 40.5,
    "unlock_round": 4,
-   "total_s": 43.0
-  },
-  {
-   "id": "ga__nam_rom",
-   "name": "Gà nướng mật ong nấm rơm",
-   "group": "chinh",
-   "main": "Gà ta",
-   "side": "Nấm rơm",
-   "tool": "Vỉ nướng",
-   "method": "nướng",
-   "base": "Bánh mì",
-   "steps": [
-    "Mật ong",
-    "Gà ta",
-    "Nấm rơm"
-   ],
-   "prep": {
-    "Gà ta": [
-     "Chặt miếng",
-     6.0
-    ],
-    "Nấm rơm": [
-     "Rửa, bổ đôi",
-     3.0
-    ]
-   },
-   "cook_s": 27,
-   "burn_s": 54.0,
-   "warn_s": 40.5,
-   "unlock_round": 4,
-   "total_s": 40.0
+   "total_s": 43.0,
+   "price": 135
   },
   {
    "id": "ga__bong_cai",
@@ -2685,7 +1994,8 @@
    "burn_s": 54.0,
    "warn_s": 40.5,
    "unlock_round": 4,
-   "total_s": 41.5
+   "total_s": 41.5,
+   "price": 130
   },
   {
    "id": "ga__ot_chuong",
@@ -2715,7 +2025,8 @@
    "burn_s": 54.0,
    "warn_s": 40.5,
    "unlock_round": 4,
-   "total_s": 41.5
+   "total_s": 41.5,
+   "price": 130
   },
   {
    "id": "ga__bi_do",
@@ -2745,7 +2056,8 @@
    "burn_s": 54.0,
    "warn_s": 40.5,
    "unlock_round": 4,
-   "total_s": 43.0
+   "total_s": 43.0,
+   "price": 135
   },
   {
    "id": "ga__mang_tay",
@@ -2775,7 +2087,8 @@
    "burn_s": 54.0,
    "warn_s": 40.5,
    "unlock_round": 4,
-   "total_s": 40.0
+   "total_s": 40.0,
+   "price": 130
   },
   {
    "id": "ga__nam_dong_co",
@@ -2805,7 +2118,8 @@
    "burn_s": 54.0,
    "warn_s": 40.5,
    "unlock_round": 4,
-   "total_s": 40.0
+   "total_s": 40.0,
+   "price": 130
   },
   {
    "id": "tom_hum__ca_chua",
@@ -2836,7 +2150,8 @@
    "burn_s": 60.0,
    "warn_s": 45.0,
    "unlock_round": 1,
-   "total_s": 48.0
+   "total_s": 48.0,
+   "price": 100
   },
   {
    "id": "tom_hum__hanh_tay",
@@ -2867,38 +2182,8 @@
    "burn_s": 60.0,
    "warn_s": 45.0,
    "unlock_round": 1,
-   "total_s": 48.0
-  },
-  {
-   "id": "tom_hum__rau_muong",
-   "name": "Tôm hùm nướng bơ tỏi rau muống",
-   "group": "dotpha",
-   "main": "Tôm hùm",
-   "side": "Rau muống",
-   "tool": "Vỉ nướng",
-   "method": "nướng",
-   "base": "Bánh mì",
-   "steps": [
-    "Bơ",
-    "Tỏi",
-    "Tôm hùm",
-    "Rau muống"
-   ],
-   "prep": {
-    "Tôm hùm": [
-     "Bổ đôi",
-     9.0
-    ],
-    "Rau muống": [
-     "Nhặt, rửa",
-     3.0
-    ]
-   },
-   "cook_s": 30,
-   "burn_s": 60.0,
-   "warn_s": 45.0,
-   "unlock_round": 1,
-   "total_s": 46.5
+   "total_s": 48.0,
+   "price": 100
   },
   {
    "id": "tom_hum__khoai_tay",
@@ -2929,38 +2214,8 @@
    "burn_s": 60.0,
    "warn_s": 45.0,
    "unlock_round": 2,
-   "total_s": 49.5
-  },
-  {
-   "id": "tom_hum__nam_rom",
-   "name": "Tôm hùm nướng bơ tỏi nấm rơm",
-   "group": "dotpha",
-   "main": "Tôm hùm",
-   "side": "Nấm rơm",
-   "tool": "Vỉ nướng",
-   "method": "nướng",
-   "base": "Bánh mì",
-   "steps": [
-    "Bơ",
-    "Tỏi",
-    "Tôm hùm",
-    "Nấm rơm"
-   ],
-   "prep": {
-    "Tôm hùm": [
-     "Bổ đôi",
-     9.0
-    ],
-    "Nấm rơm": [
-     "Rửa, bổ đôi",
-     3.0
-    ]
-   },
-   "cook_s": 30,
-   "burn_s": 60.0,
-   "warn_s": 45.0,
-   "unlock_round": 2,
-   "total_s": 46.5
+   "total_s": 49.5,
+   "price": 100
   },
   {
    "id": "tom_hum__bong_cai",
@@ -2991,7 +2246,8 @@
    "burn_s": 60.0,
    "warn_s": 45.0,
    "unlock_round": 3,
-   "total_s": 48.0
+   "total_s": 48.0,
+   "price": 100
   },
   {
    "id": "tom_hum__ot_chuong",
@@ -3022,38 +2278,8 @@
    "burn_s": 60.0,
    "warn_s": 45.0,
    "unlock_round": 3,
-   "total_s": 48.0
-  },
-  {
-   "id": "tom_hum__bi_do",
-   "name": "Tôm hùm nướng bơ tỏi bí đỏ",
-   "group": "dotpha",
-   "main": "Tôm hùm",
-   "side": "Bí đỏ",
-   "tool": "Vỉ nướng",
-   "method": "nướng",
-   "base": "Bánh mì",
-   "steps": [
-    "Bơ",
-    "Tỏi",
-    "Tôm hùm",
-    "Bí đỏ"
-   ],
-   "prep": {
-    "Tôm hùm": [
-     "Bổ đôi",
-     9.0
-    ],
-    "Bí đỏ": [
-     "Gọt, thái",
-     6.0
-    ]
-   },
-   "cook_s": 30,
-   "burn_s": 60.0,
-   "warn_s": 45.0,
-   "unlock_round": 4,
-   "total_s": 49.5
+   "total_s": 48.0,
+   "price": 100
   },
   {
    "id": "tom_hum__mang_tay",
@@ -3084,7 +2310,8 @@
    "burn_s": 60.0,
    "warn_s": 45.0,
    "unlock_round": 4,
-   "total_s": 46.5
+   "total_s": 46.5,
+   "price": 100
   },
   {
    "id": "tom_hum__nam_dong_co",
@@ -3115,38 +2342,8 @@
    "burn_s": 60.0,
    "warn_s": 45.0,
    "unlock_round": 4,
-   "total_s": 46.5
-  },
-  {
-   "id": "wagyu__ca_chua",
-   "name": "Bò Wagyu áp chảo cà chua",
-   "group": "dotpha",
-   "main": "Bò Wagyu",
-   "side": "Cà chua",
-   "tool": "Chảo",
-   "method": "áp chảo",
-   "base": "Cơm",
-   "steps": [
-    "Muối",
-    "Bò Wagyu",
-    "Bơ",
-    "Cà chua"
-   ],
-   "prep": {
-    "Bò Wagyu": [
-     "Cắt miếng dày",
-     6.0
-    ],
-    "Cà chua": [
-     "Thái múi",
-     4.5
-    ]
-   },
-   "cook_s": 21,
-   "burn_s": 42.0,
-   "warn_s": 31.5,
-   "unlock_round": 1,
-   "total_s": 36.0
+   "total_s": 46.5,
+   "price": 100
   },
   {
    "id": "wagyu__hanh_tay",
@@ -3177,38 +2374,8 @@
    "burn_s": 42.0,
    "warn_s": 31.5,
    "unlock_round": 1,
-   "total_s": 36.0
-  },
-  {
-   "id": "wagyu__rau_muong",
-   "name": "Bò Wagyu áp chảo rau muống",
-   "group": "dotpha",
-   "main": "Bò Wagyu",
-   "side": "Rau muống",
-   "tool": "Chảo",
-   "method": "áp chảo",
-   "base": "Cơm",
-   "steps": [
-    "Muối",
-    "Bò Wagyu",
-    "Bơ",
-    "Rau muống"
-   ],
-   "prep": {
-    "Bò Wagyu": [
-     "Cắt miếng dày",
-     6.0
-    ],
-    "Rau muống": [
-     "Nhặt, rửa",
-     3.0
-    ]
-   },
-   "cook_s": 21,
-   "burn_s": 42.0,
-   "warn_s": 31.5,
-   "unlock_round": 1,
-   "total_s": 34.5
+   "total_s": 36.0,
+   "price": 100
   },
   {
    "id": "wagyu__khoai_tay",
@@ -3239,7 +2406,8 @@
    "burn_s": 42.0,
    "warn_s": 31.5,
    "unlock_round": 2,
-   "total_s": 37.5
+   "total_s": 37.5,
+   "price": 100
   },
   {
    "id": "wagyu__nam_rom",
@@ -3270,38 +2438,8 @@
    "burn_s": 42.0,
    "warn_s": 31.5,
    "unlock_round": 2,
-   "total_s": 34.5
-  },
-  {
-   "id": "wagyu__bong_cai",
-   "name": "Bò Wagyu áp chảo bông cải",
-   "group": "dotpha",
-   "main": "Bò Wagyu",
-   "side": "Bông cải xanh",
-   "tool": "Chảo",
-   "method": "áp chảo",
-   "base": "Cơm",
-   "steps": [
-    "Muối",
-    "Bò Wagyu",
-    "Bơ",
-    "Bông cải xanh"
-   ],
-   "prep": {
-    "Bò Wagyu": [
-     "Cắt miếng dày",
-     6.0
-    ],
-    "Bông cải xanh": [
-     "Tách bông",
-     4.5
-    ]
-   },
-   "cook_s": 21,
-   "burn_s": 42.0,
-   "warn_s": 31.5,
-   "unlock_round": 3,
-   "total_s": 36.0
+   "total_s": 34.5,
+   "price": 100
   },
   {
    "id": "wagyu__ot_chuong",
@@ -3332,7 +2470,8 @@
    "burn_s": 42.0,
    "warn_s": 31.5,
    "unlock_round": 3,
-   "total_s": 36.0
+   "total_s": 36.0,
+   "price": 100
   },
   {
    "id": "wagyu__bi_do",
@@ -3363,7 +2502,8 @@
    "burn_s": 42.0,
    "warn_s": 31.5,
    "unlock_round": 4,
-   "total_s": 37.5
+   "total_s": 37.5,
+   "price": 100
   },
   {
    "id": "wagyu__mang_tay",
@@ -3394,7 +2534,8 @@
    "burn_s": 42.0,
    "warn_s": 31.5,
    "unlock_round": 4,
-   "total_s": 34.5
+   "total_s": 34.5,
+   "price": 100
   },
   {
    "id": "wagyu__nam_dong_co",
@@ -3425,7 +2566,8 @@
    "burn_s": 42.0,
    "warn_s": 31.5,
    "unlock_round": 4,
-   "total_s": 34.5
+   "total_s": 34.5,
+   "price": 100
   },
   {
    "id": "ca_ngu__ca_chua",
@@ -3456,7 +2598,8 @@
    "burn_s": 24.0,
    "warn_s": 18.0,
    "unlock_round": 1,
-   "total_s": 28.5
+   "total_s": 28.5,
+   "price": 100
   },
   {
    "id": "ca_ngu__hanh_tay",
@@ -3487,7 +2630,8 @@
    "burn_s": 24.0,
    "warn_s": 18.0,
    "unlock_round": 1,
-   "total_s": 28.5
+   "total_s": 28.5,
+   "price": 100
   },
   {
    "id": "ca_ngu__rau_muong",
@@ -3518,38 +2662,8 @@
    "burn_s": 24.0,
    "warn_s": 18.0,
    "unlock_round": 1,
-   "total_s": 27.0
-  },
-  {
-   "id": "ca_ngu__khoai_tay",
-   "name": "Cá ngừ vây xanh tataki khoai tây",
-   "group": "dotpha",
-   "main": "Cá ngừ vây xanh",
-   "side": "Khoai tây",
-   "tool": "Chảo",
-   "method": "áp chảo nhanh",
-   "base": "Cơm",
-   "steps": [
-    "Dầu ăn",
-    "Cá ngừ vây xanh",
-    "Khoai tây",
-    "Nước tương"
-   ],
-   "prep": {
-    "Cá ngừ vây xanh": [
-     "Lọc thăn",
-     7.5
-    ],
-    "Khoai tây": [
-     "Gọt, thái",
-     6.0
-    ]
-   },
-   "cook_s": 12,
-   "burn_s": 24.0,
-   "warn_s": 18.0,
-   "unlock_round": 2,
-   "total_s": 30.0
+   "total_s": 27.0,
+   "price": 100
   },
   {
    "id": "ca_ngu__nam_rom",
@@ -3580,7 +2694,8 @@
    "burn_s": 24.0,
    "warn_s": 18.0,
    "unlock_round": 2,
-   "total_s": 27.0
+   "total_s": 27.0,
+   "price": 100
   },
   {
    "id": "ca_ngu__bong_cai",
@@ -3611,7 +2726,8 @@
    "burn_s": 24.0,
    "warn_s": 18.0,
    "unlock_round": 3,
-   "total_s": 28.5
+   "total_s": 28.5,
+   "price": 100
   },
   {
    "id": "ca_ngu__ot_chuong",
@@ -3642,38 +2758,8 @@
    "burn_s": 24.0,
    "warn_s": 18.0,
    "unlock_round": 3,
-   "total_s": 28.5
-  },
-  {
-   "id": "ca_ngu__bi_do",
-   "name": "Cá ngừ vây xanh tataki bí đỏ",
-   "group": "dotpha",
-   "main": "Cá ngừ vây xanh",
-   "side": "Bí đỏ",
-   "tool": "Chảo",
-   "method": "áp chảo nhanh",
-   "base": "Cơm",
-   "steps": [
-    "Dầu ăn",
-    "Cá ngừ vây xanh",
-    "Bí đỏ",
-    "Nước tương"
-   ],
-   "prep": {
-    "Cá ngừ vây xanh": [
-     "Lọc thăn",
-     7.5
-    ],
-    "Bí đỏ": [
-     "Gọt, thái",
-     6.0
-    ]
-   },
-   "cook_s": 12,
-   "burn_s": 24.0,
-   "warn_s": 18.0,
-   "unlock_round": 4,
-   "total_s": 30.0
+   "total_s": 28.5,
+   "price": 100
   },
   {
    "id": "ca_ngu__mang_tay",
@@ -3704,38 +2790,8 @@
    "burn_s": 24.0,
    "warn_s": 18.0,
    "unlock_round": 4,
-   "total_s": 27.0
-  },
-  {
-   "id": "ca_ngu__nam_dong_co",
-   "name": "Cá ngừ vây xanh tataki nấm đông cô",
-   "group": "dotpha",
-   "main": "Cá ngừ vây xanh",
-   "side": "Nấm đông cô",
-   "tool": "Chảo",
-   "method": "áp chảo nhanh",
-   "base": "Cơm",
-   "steps": [
-    "Dầu ăn",
-    "Cá ngừ vây xanh",
-    "Nấm đông cô",
-    "Nước tương"
-   ],
-   "prep": {
-    "Cá ngừ vây xanh": [
-     "Lọc thăn",
-     7.5
-    ],
-    "Nấm đông cô": [
-     "Thái lát",
-     3.0
-    ]
-   },
-   "cook_s": 12,
-   "burn_s": 24.0,
-   "warn_s": 18.0,
-   "unlock_round": 4,
-   "total_s": 27.0
+   "total_s": 27.0,
+   "price": 100
   },
   {
    "id": "cua__ca_chua",
@@ -3766,7 +2822,8 @@
    "burn_s": 60.0,
    "warn_s": 45.0,
    "unlock_round": 1,
-   "total_s": 48.0
+   "total_s": 48.0,
+   "price": 100
   },
   {
    "id": "cua__hanh_tay",
@@ -3797,7 +2854,8 @@
    "burn_s": 60.0,
    "warn_s": 45.0,
    "unlock_round": 1,
-   "total_s": 48.0
+   "total_s": 48.0,
+   "price": 100
   },
   {
    "id": "cua__rau_muong",
@@ -3828,38 +2886,8 @@
    "burn_s": 60.0,
    "warn_s": 45.0,
    "unlock_round": 1,
-   "total_s": 46.5
-  },
-  {
-   "id": "cua__khoai_tay",
-   "name": "Cua hoàng đế hấp khoai tây",
-   "group": "dotpha",
-   "main": "Cua hoàng đế",
-   "side": "Khoai tây",
-   "tool": "Nồi",
-   "method": "hấp",
-   "base": "Bún",
-   "steps": [
-    "Nước dùng",
-    "Cua hoàng đế",
-    "Khoai tây",
-    "Hành lá"
-   ],
-   "prep": {
-    "Cua hoàng đế": [
-     "Tách mai",
-     9.0
-    ],
-    "Khoai tây": [
-     "Gọt, thái",
-     6.0
-    ]
-   },
-   "cook_s": 30,
-   "burn_s": 60.0,
-   "warn_s": 45.0,
-   "unlock_round": 2,
-   "total_s": 49.5
+   "total_s": 46.5,
+   "price": 100
   },
   {
    "id": "cua__nam_rom",
@@ -3890,69 +2918,8 @@
    "burn_s": 60.0,
    "warn_s": 45.0,
    "unlock_round": 2,
-   "total_s": 46.5
-  },
-  {
-   "id": "cua__bong_cai",
-   "name": "Cua hoàng đế hấp bông cải",
-   "group": "dotpha",
-   "main": "Cua hoàng đế",
-   "side": "Bông cải xanh",
-   "tool": "Nồi",
-   "method": "hấp",
-   "base": "Bún",
-   "steps": [
-    "Nước dùng",
-    "Cua hoàng đế",
-    "Bông cải xanh",
-    "Hành lá"
-   ],
-   "prep": {
-    "Cua hoàng đế": [
-     "Tách mai",
-     9.0
-    ],
-    "Bông cải xanh": [
-     "Tách bông",
-     4.5
-    ]
-   },
-   "cook_s": 30,
-   "burn_s": 60.0,
-   "warn_s": 45.0,
-   "unlock_round": 3,
-   "total_s": 48.0
-  },
-  {
-   "id": "cua__ot_chuong",
-   "name": "Cua hoàng đế hấp ớt chuông",
-   "group": "dotpha",
-   "main": "Cua hoàng đế",
-   "side": "Ớt chuông",
-   "tool": "Nồi",
-   "method": "hấp",
-   "base": "Bún",
-   "steps": [
-    "Nước dùng",
-    "Cua hoàng đế",
-    "Ớt chuông",
-    "Hành lá"
-   ],
-   "prep": {
-    "Cua hoàng đế": [
-     "Tách mai",
-     9.0
-    ],
-    "Ớt chuông": [
-     "Bỏ hạt, thái",
-     4.5
-    ]
-   },
-   "cook_s": 30,
-   "burn_s": 60.0,
-   "warn_s": 45.0,
-   "unlock_round": 3,
-   "total_s": 48.0
+   "total_s": 46.5,
+   "price": 100
   },
   {
    "id": "cua__bi_do",
@@ -3983,7 +2950,8 @@
    "burn_s": 60.0,
    "warn_s": 45.0,
    "unlock_round": 4,
-   "total_s": 49.5
+   "total_s": 49.5,
+   "price": 100
   },
   {
    "id": "cua__mang_tay",
@@ -4014,7 +2982,8 @@
    "burn_s": 60.0,
    "warn_s": 45.0,
    "unlock_round": 4,
-   "total_s": 46.5
+   "total_s": 46.5,
+   "price": 100
   },
   {
    "id": "cua__nam_dong_co",
@@ -4045,7 +3014,8 @@
    "burn_s": 60.0,
    "warn_s": 45.0,
    "unlock_round": 4,
-   "total_s": 46.5
+   "total_s": 46.5,
+   "price": 100
   }
  ]
 }

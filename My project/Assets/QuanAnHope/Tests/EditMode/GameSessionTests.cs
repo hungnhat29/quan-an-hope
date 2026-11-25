@@ -82,7 +82,7 @@ namespace QuanAnHope.Tests
             s.OpenShop();
             int easiness = s.CurrentCustomer.easiness;
             int tier = s.Counter.Dishes[0].tier;
-            int expected = Payment.Settle(TestData.Balance, 1, easiness, tier).amount;
+            int expected = Payment.Settle(TestData.Balance, s.PriceOf(s.Counter.Dishes[0].recipeId), easiness, tier).amount;
 
             PaymentResult paid = s.Serve(0);
 
@@ -114,6 +114,8 @@ namespace QuanAnHope.Tests
                 s.Tick(TestData.NextSeat);
             }
 
+            Assert.IsTrue(s.ReadyToClose, "constitution 2.0: qua 21:00 het khach thi cho bam Dong quan");
+            Assert.IsTrue(s.CloseEarly());
             Assert.AreEqual(GamePhase.DayEnd, s.Phase);
             Assert.AreEqual(6, s.ServedToday);
             Assert.IsNull(s.CurrentCustomer);

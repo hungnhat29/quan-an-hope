@@ -7,7 +7,7 @@
   "22": 36000
  },
  "boss_bonus": 11500,
- "tickets_per_day": 7,
+ "tickets_per_day": 8,
  "rounds": {
   "1": [
    1,
@@ -106,7 +106,24 @@
    "3": 85,
    "4": 100
   },
-  "max_tier": 4
+  "max_tier": 4,
+  "odds": {
+   "shape": [
+    4.95,
+    17.05,
+    74.35,
+    13.25,
+    9.15
+   ],
+   "shape_b": 1.8,
+   "shape_tier": 2,
+   "tail_decay": 3.0,
+   "legend_base": 1e-05,
+   "legend_growth": 2000,
+   "legend_cap": 0.05,
+   "min_chance": 1e-05,
+   "grid": 100000
+  }
  },
  "customers": {
   "easy_bands": {
@@ -325,7 +342,12 @@
   },
   "drop_every_s": 3,
   "max_drop": 20,
-  "blackout_extra_s": 20
+  "blackout_extra_s": 20,
+  "leave_penalty": {
+   "2": 20,
+   "3": 25,
+   "4": 30
+  }
  },
  "blackout": {
   "day": 8,
@@ -347,5 +369,25 @@
   "day": 2,
   "rarity": "thuong",
   "picks": 1
+ },
+ "board": {
+  "start": 1,
+  "max": 3,
+  "price": 300,
+  "step": 200
+ },
+ "stove": {
+  "start": 1,
+  "max": 2,
+  "price": 500,
+  "step": 300
+ },
+ "boss_best": {
+  "recipe": "trung__ca_chua",
+  "tier": 5,
+  "bonus_mult": 1.5
+ },
+ "glove": {
+  "price": 600
  }
 }

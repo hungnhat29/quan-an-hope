@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: QuanAnHope.Data::QuanAnHope.Data.BalanceData
   balance:
     days: 22
-    ticketsPerDay: 7
+    ticketsPerDay: 8
     bossBonus: 11500
     stormDay: 3
     counterSlots: 3
@@ -82,6 +82,21 @@ MonoBehaviour:
       - 3.2
       - 6
       basePriceByRound: 3c000000460000005500000064000000i
+      odds:
+        shape:
+        - 4.95
+        - 17.05
+        - 74.35
+        - 13.25
+        - 9.15
+        shapeB: 1.8
+        shapeTier: 2
+        tailDecay: 3
+        legendBase: 0.00001
+        legendGrowth: 2000
+        legendCap: 0.05
+        minChance: 0.00001
+        grid: 100000
     customers:
       easyBands:
       - round: 1
@@ -340,6 +355,22 @@ MonoBehaviour:
       effects:
       - key: ticket_every3
         value: 1
+    - id: F11
+      name: "Sao b\u0103ng trong n\u1ED3i"
+      set: 
+      price: 2
+      rarity: hiem
+      effects:
+      - key: dish_legend
+        value: 0.003
+    - id: F12
+      name: "B\xED k\xEDp gia truy\u1EC1n"
+      set: 
+      price: 4
+      rarity: hiem
+      effects:
+      - key: dish_legend
+        value: 0.01
     setBonuses:
     - set: vuon
       count: 2
@@ -408,6 +439,7 @@ MonoBehaviour:
       dropEverySeconds: 3
       maxDrop: 20
       blackoutExtraSeconds: 20
+      leavePenaltyByRound: 0000000014000000190000001e000000i
     blackout:
       day: 8
       cookMultiplier: 1.25
@@ -453,6 +485,21 @@ MonoBehaviour:
       day: 2
       rarity: thuong
       picks: 1
+    board:
+      start: 1
+      max: 3
+      price: 300
+      step: 200
+    stove:
+      start: 1
+      max: 2
+      price: 500
+      step: 300
+    bossBest:
+      recipe: trung__ca_chua
+      tier: 5
+      bonusMult: 1.5
+    glovePrice: 600
   recipes:
     timing:
       stepSeconds: 0.5
@@ -665,6 +712,7 @@ MonoBehaviour:
       warnSeconds: 18
       burnSeconds: 24
       unlockRound: 1
+      price: 55
     - id: trung__hanh_tay
       name: "Tr\u1EE9ng chi\xEAn h\xE0nh t\xE2y"
       group: chinh
@@ -681,22 +729,7 @@ MonoBehaviour:
       warnSeconds: 18
       burnSeconds: 24
       unlockRound: 1
-    - id: trung__rau_muong
-      name: "Tr\u1EE9ng chi\xEAn rau mu\u1ED1ng"
-      group: chinh
-      mainId: trung
-      sideId: rau_muong
-      tool: "Ch\u1EA3o"
-      baseName: "C\u01A1m"
-      steps:
-      - "D\u1EA7u \u0103n"
-      - "Rau mu\u1ED1ng"
-      - "Tr\u1EE9ng g\xE0"
-      - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 12
-      warnSeconds: 18
-      burnSeconds: 24
-      unlockRound: 1
+      price: 55
     - id: trung__khoai_tay
       name: "Tr\u1EE9ng chi\xEAn khoai t\xE2y"
       group: chinh
@@ -713,6 +746,7 @@ MonoBehaviour:
       warnSeconds: 18
       burnSeconds: 24
       unlockRound: 2
+      price: 65
     - id: trung__nam_rom
       name: "Tr\u1EE9ng chi\xEAn n\u1EA5m r\u01A1m"
       group: chinh
@@ -729,22 +763,7 @@ MonoBehaviour:
       warnSeconds: 18
       burnSeconds: 24
       unlockRound: 2
-    - id: trung__bong_cai
-      name: "Tr\u1EE9ng chi\xEAn b\xF4ng c\u1EA3i"
-      group: chinh
-      mainId: trung
-      sideId: bong_cai
-      tool: "Ch\u1EA3o"
-      baseName: "C\u01A1m"
-      steps:
-      - "D\u1EA7u \u0103n"
-      - "B\xF4ng c\u1EA3i xanh"
-      - "Tr\u1EE9ng g\xE0"
-      - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 12
-      warnSeconds: 18
-      burnSeconds: 24
-      unlockRound: 3
+      price: 60
     - id: trung__ot_chuong
       name: "Tr\u1EE9ng chi\xEAn \u1EDBt chu\xF4ng"
       group: chinh
@@ -761,22 +780,7 @@ MonoBehaviour:
       warnSeconds: 18
       burnSeconds: 24
       unlockRound: 3
-    - id: trung__bi_do
-      name: "Tr\u1EE9ng chi\xEAn b\xED \u0111\u1ECF"
-      group: chinh
-      mainId: trung
-      sideId: bi_do
-      tool: "Ch\u1EA3o"
-      baseName: "C\u01A1m"
-      steps:
-      - "D\u1EA7u \u0103n"
-      - "B\xED \u0111\u1ECF"
-      - "Tr\u1EE9ng g\xE0"
-      - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 12
-      warnSeconds: 18
-      burnSeconds: 24
-      unlockRound: 4
+      price: 80
     - id: trung__mang_tay
       name: "Tr\u1EE9ng chi\xEAn m\u0103ng t\xE2y"
       group: chinh
@@ -793,6 +797,7 @@ MonoBehaviour:
       warnSeconds: 18
       burnSeconds: 24
       unlockRound: 4
+      price: 95
     - id: trung__nam_dong_co
       name: "Tr\u1EE9ng chi\xEAn n\u1EA5m \u0111\xF4ng c\xF4"
       group: chinh
@@ -809,22 +814,7 @@ MonoBehaviour:
       warnSeconds: 18
       burnSeconds: 24
       unlockRound: 4
-    - id: heo__ca_chua
-      name: "Heo x\xE0o c\xE0 chua"
-      group: chinh
-      mainId: heo
-      sideId: ca_chua
-      tool: "Ch\u1EA3o"
-      baseName: "C\u01A1m"
-      steps:
-      - "D\u1EA7u \u0103n"
-      - "T\u1ECFi"
-      - "Th\u1ECBt heo"
-      - "C\xE0 chua"
-      cookSeconds: 15
-      warnSeconds: 22.5
-      burnSeconds: 30
-      unlockRound: 1
+      price: 95
     - id: heo__hanh_tay
       name: "Heo x\xE0o h\xE0nh t\xE2y"
       group: chinh
@@ -841,6 +831,7 @@ MonoBehaviour:
       warnSeconds: 22.5
       burnSeconds: 30
       unlockRound: 1
+      price: 60
     - id: heo__rau_muong
       name: "Heo x\xE0o rau mu\u1ED1ng"
       group: chinh
@@ -857,6 +848,7 @@ MonoBehaviour:
       warnSeconds: 22.5
       burnSeconds: 30
       unlockRound: 1
+      price: 60
     - id: heo__khoai_tay
       name: "Heo x\xE0o khoai t\xE2y"
       group: chinh
@@ -873,6 +865,7 @@ MonoBehaviour:
       warnSeconds: 22.5
       burnSeconds: 30
       unlockRound: 2
+      price: 75
     - id: heo__nam_rom
       name: "Heo x\xE0o n\u1EA5m r\u01A1m"
       group: chinh
@@ -889,6 +882,7 @@ MonoBehaviour:
       warnSeconds: 22.5
       burnSeconds: 30
       unlockRound: 2
+      price: 70
     - id: heo__bong_cai
       name: "Heo x\xE0o b\xF4ng c\u1EA3i"
       group: chinh
@@ -905,6 +899,7 @@ MonoBehaviour:
       warnSeconds: 22.5
       burnSeconds: 30
       unlockRound: 3
+      price: 95
     - id: heo__ot_chuong
       name: "Heo x\xE0o \u1EDBt chu\xF4ng"
       group: chinh
@@ -921,6 +916,7 @@ MonoBehaviour:
       warnSeconds: 22.5
       burnSeconds: 30
       unlockRound: 3
+      price: 95
     - id: heo__bi_do
       name: "Heo x\xE0o b\xED \u0111\u1ECF"
       group: chinh
@@ -937,22 +933,7 @@ MonoBehaviour:
       warnSeconds: 22.5
       burnSeconds: 30
       unlockRound: 4
-    - id: heo__mang_tay
-      name: "Heo x\xE0o m\u0103ng t\xE2y"
-      group: chinh
-      mainId: heo
-      sideId: mang_tay
-      tool: "Ch\u1EA3o"
-      baseName: "C\u01A1m"
-      steps:
-      - "D\u1EA7u \u0103n"
-      - "T\u1ECFi"
-      - "Th\u1ECBt heo"
-      - "M\u0103ng t\xE2y"
-      cookSeconds: 15
-      warnSeconds: 22.5
-      burnSeconds: 30
-      unlockRound: 4
+      price: 110
     - id: heo__nam_dong_co
       name: "Heo x\xE0o n\u1EA5m \u0111\xF4ng c\xF4"
       group: chinh
@@ -969,6 +950,7 @@ MonoBehaviour:
       warnSeconds: 22.5
       burnSeconds: 30
       unlockRound: 4
+      price: 105
     - id: dau_phu__ca_chua
       name: "\u0110\u1EADu ph\u1EE5 s\u1ED1t c\xE0 chua"
       group: chinh
@@ -985,6 +967,7 @@ MonoBehaviour:
       warnSeconds: 27
       burnSeconds: 36
       unlockRound: 1
+      price: 60
     - id: dau_phu__hanh_tay
       name: "\u0110\u1EADu ph\u1EE5 s\u1ED1t h\xE0nh t\xE2y"
       group: chinh
@@ -1001,38 +984,7 @@ MonoBehaviour:
       warnSeconds: 27
       burnSeconds: 36
       unlockRound: 1
-    - id: dau_phu__rau_muong
-      name: "\u0110\u1EADu ph\u1EE5 s\u1ED1t rau mu\u1ED1ng"
-      group: chinh
-      mainId: dau_phu
-      sideId: rau_muong
-      tool: "N\u1ED3i"
-      baseName: "C\u01A1m"
-      steps:
-      - "D\u1EA7u \u0103n"
-      - "Rau mu\u1ED1ng"
-      - "\u0110\u1EADu ph\u1EE5"
-      - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 18
-      warnSeconds: 27
-      burnSeconds: 36
-      unlockRound: 1
-    - id: dau_phu__khoai_tay
-      name: "\u0110\u1EADu ph\u1EE5 s\u1ED1t khoai t\xE2y"
-      group: chinh
-      mainId: dau_phu
-      sideId: khoai_tay
-      tool: "N\u1ED3i"
-      baseName: "C\u01A1m"
-      steps:
-      - "D\u1EA7u \u0103n"
-      - "Khoai t\xE2y"
-      - "\u0110\u1EADu ph\u1EE5"
-      - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 18
-      warnSeconds: 27
-      burnSeconds: 36
-      unlockRound: 2
+      price: 60
     - id: dau_phu__nam_rom
       name: "\u0110\u1EADu ph\u1EE5 s\u1ED1t n\u1EA5m r\u01A1m"
       group: chinh
@@ -1049,6 +1001,7 @@ MonoBehaviour:
       warnSeconds: 27
       burnSeconds: 36
       unlockRound: 2
+      price: 75
     - id: dau_phu__bong_cai
       name: "\u0110\u1EADu ph\u1EE5 s\u1ED1t b\xF4ng c\u1EA3i"
       group: chinh
@@ -1065,22 +1018,7 @@ MonoBehaviour:
       warnSeconds: 27
       burnSeconds: 36
       unlockRound: 3
-    - id: dau_phu__ot_chuong
-      name: "\u0110\u1EADu ph\u1EE5 s\u1ED1t \u1EDBt chu\xF4ng"
-      group: chinh
-      mainId: dau_phu
-      sideId: ot_chuong
-      tool: "N\u1ED3i"
-      baseName: "C\u01A1m"
-      steps:
-      - "D\u1EA7u \u0103n"
-      - "\u1EDAt chu\xF4ng"
-      - "\u0110\u1EADu ph\u1EE5"
-      - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 18
-      warnSeconds: 27
-      burnSeconds: 36
-      unlockRound: 3
+      price: 95
     - id: dau_phu__bi_do
       name: "\u0110\u1EADu ph\u1EE5 s\u1ED1t b\xED \u0111\u1ECF"
       group: chinh
@@ -1097,22 +1035,7 @@ MonoBehaviour:
       warnSeconds: 27
       burnSeconds: 36
       unlockRound: 4
-    - id: dau_phu__mang_tay
-      name: "\u0110\u1EADu ph\u1EE5 s\u1ED1t m\u0103ng t\xE2y"
-      group: chinh
-      mainId: dau_phu
-      sideId: mang_tay
-      tool: "N\u1ED3i"
-      baseName: "C\u01A1m"
-      steps:
-      - "D\u1EA7u \u0103n"
-      - "M\u0103ng t\xE2y"
-      - "\u0110\u1EADu ph\u1EE5"
-      - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 18
-      warnSeconds: 27
-      burnSeconds: 36
-      unlockRound: 4
+      price: 115
     - id: dau_phu__nam_dong_co
       name: "\u0110\u1EADu ph\u1EE5 s\u1ED1t n\u1EA5m \u0111\xF4ng c\xF4"
       group: chinh
@@ -1129,6 +1052,7 @@ MonoBehaviour:
       warnSeconds: 27
       burnSeconds: 36
       unlockRound: 4
+      price: 110
     - id: bo__ca_chua
       name: "M\xEC \xDD b\xF2 s\u1ED1t c\xE0 chua"
       group: chinh
@@ -1145,6 +1069,7 @@ MonoBehaviour:
       warnSeconds: 22.5
       burnSeconds: 30
       unlockRound: 2
+      price: 75
     - id: bo__hanh_tay
       name: "M\xEC \xDD b\xF2 x\xE0o h\xE0nh t\xE2y"
       group: chinh
@@ -1161,6 +1086,7 @@ MonoBehaviour:
       warnSeconds: 22.5
       burnSeconds: 30
       unlockRound: 2
+      price: 75
     - id: bo__rau_muong
       name: "M\xEC \xDD b\xF2 x\xE0o rau mu\u1ED1ng"
       group: chinh
@@ -1177,6 +1103,7 @@ MonoBehaviour:
       warnSeconds: 22.5
       burnSeconds: 30
       unlockRound: 2
+      price: 70
     - id: bo__khoai_tay
       name: "M\xEC \xDD b\xF2 x\xE0o khoai t\xE2y"
       group: chinh
@@ -1193,22 +1120,7 @@ MonoBehaviour:
       warnSeconds: 22.5
       burnSeconds: 30
       unlockRound: 2
-    - id: bo__nam_rom
-      name: "M\xEC \xDD b\xF2 x\xE0o n\u1EA5m r\u01A1m"
-      group: chinh
-      mainId: bo
-      sideId: nam_rom
-      tool: "Ch\u1EA3o"
-      baseName: "M\xEC \xDD"
-      steps:
-      - "B\u01A1"
-      - "T\u1ECFi"
-      - "Th\u1ECBt b\xF2"
-      - "N\u1EA5m r\u01A1m"
-      cookSeconds: 15
-      warnSeconds: 22.5
-      burnSeconds: 30
-      unlockRound: 2
+      price: 75
     - id: bo__bong_cai
       name: "M\xEC \xDD b\xF2 x\xE0o b\xF4ng c\u1EA3i"
       group: chinh
@@ -1225,6 +1137,7 @@ MonoBehaviour:
       warnSeconds: 22.5
       burnSeconds: 30
       unlockRound: 3
+      price: 95
     - id: bo__ot_chuong
       name: "M\xEC \xDD b\xF2 x\xE0o \u1EDBt chu\xF4ng"
       group: chinh
@@ -1241,22 +1154,7 @@ MonoBehaviour:
       warnSeconds: 22.5
       burnSeconds: 30
       unlockRound: 3
-    - id: bo__bi_do
-      name: "M\xEC \xDD b\xF2 x\xE0o b\xED \u0111\u1ECF"
-      group: chinh
-      mainId: bo
-      sideId: bi_do
-      tool: "Ch\u1EA3o"
-      baseName: "M\xEC \xDD"
-      steps:
-      - "B\u01A1"
-      - "T\u1ECFi"
-      - "Th\u1ECBt b\xF2"
-      - "B\xED \u0111\u1ECF"
-      cookSeconds: 15
-      warnSeconds: 22.5
-      burnSeconds: 30
-      unlockRound: 4
+      price: 95
     - id: bo__mang_tay
       name: "M\xEC \xDD b\xF2 x\xE0o m\u0103ng t\xE2y"
       group: chinh
@@ -1273,6 +1171,7 @@ MonoBehaviour:
       warnSeconds: 22.5
       burnSeconds: 30
       unlockRound: 4
+      price: 105
     - id: bo__nam_dong_co
       name: "M\xEC \xDD b\xF2 x\xE0o n\u1EA5m \u0111\xF4ng c\xF4"
       group: chinh
@@ -1289,22 +1188,7 @@ MonoBehaviour:
       warnSeconds: 22.5
       burnSeconds: 30
       unlockRound: 4
-    - id: tom__ca_chua
-      name: "B\xFAn x\xE0o t\xF4m c\xE0 chua"
-      group: chinh
-      mainId: tom
-      sideId: ca_chua
-      tool: "Ch\u1EA3o"
-      baseName: "B\xFAn"
-      steps:
-      - "D\u1EA7u \u0103n"
-      - "T\xF4m"
-      - "C\xE0 chua"
-      - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 15
-      warnSeconds: 22.5
-      burnSeconds: 30
-      unlockRound: 2
+      price: 105
     - id: tom__hanh_tay
       name: "B\xFAn x\xE0o t\xF4m h\xE0nh t\xE2y"
       group: chinh
@@ -1321,6 +1205,7 @@ MonoBehaviour:
       warnSeconds: 22.5
       burnSeconds: 30
       unlockRound: 2
+      price: 75
     - id: tom__rau_muong
       name: "B\xFAn x\xE0o t\xF4m rau mu\u1ED1ng"
       group: chinh
@@ -1337,22 +1222,7 @@ MonoBehaviour:
       warnSeconds: 22.5
       burnSeconds: 30
       unlockRound: 2
-    - id: tom__khoai_tay
-      name: "B\xFAn x\xE0o t\xF4m khoai t\xE2y"
-      group: chinh
-      mainId: tom
-      sideId: khoai_tay
-      tool: "Ch\u1EA3o"
-      baseName: "B\xFAn"
-      steps:
-      - "D\u1EA7u \u0103n"
-      - "T\xF4m"
-      - "Khoai t\xE2y"
-      - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 15
-      warnSeconds: 22.5
-      burnSeconds: 30
-      unlockRound: 2
+      price: 75
     - id: tom__nam_rom
       name: "B\xFAn x\xE0o t\xF4m n\u1EA5m r\u01A1m"
       group: chinh
@@ -1369,6 +1239,7 @@ MonoBehaviour:
       warnSeconds: 22.5
       burnSeconds: 30
       unlockRound: 2
+      price: 75
     - id: tom__bong_cai
       name: "B\xFAn x\xE0o t\xF4m b\xF4ng c\u1EA3i"
       group: chinh
@@ -1385,22 +1256,7 @@ MonoBehaviour:
       warnSeconds: 22.5
       burnSeconds: 30
       unlockRound: 3
-    - id: tom__ot_chuong
-      name: "B\xFAn x\xE0o t\xF4m \u1EDBt chu\xF4ng"
-      group: chinh
-      mainId: tom
-      sideId: ot_chuong
-      tool: "Ch\u1EA3o"
-      baseName: "B\xFAn"
-      steps:
-      - "D\u1EA7u \u0103n"
-      - "T\xF4m"
-      - "\u1EDAt chu\xF4ng"
-      - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 15
-      warnSeconds: 22.5
-      burnSeconds: 30
-      unlockRound: 3
+      price: 95
     - id: tom__bi_do
       name: "B\xFAn x\xE0o t\xF4m b\xED \u0111\u1ECF"
       group: chinh
@@ -1417,6 +1273,7 @@ MonoBehaviour:
       warnSeconds: 22.5
       burnSeconds: 30
       unlockRound: 4
+      price: 115
     - id: tom__mang_tay
       name: "B\xFAn x\xE0o t\xF4m m\u0103ng t\xE2y"
       group: chinh
@@ -1433,22 +1290,7 @@ MonoBehaviour:
       warnSeconds: 22.5
       burnSeconds: 30
       unlockRound: 4
-    - id: tom__nam_dong_co
-      name: "B\xFAn x\xE0o t\xF4m n\u1EA5m \u0111\xF4ng c\xF4"
-      group: chinh
-      mainId: tom
-      sideId: nam_dong_co
-      tool: "Ch\u1EA3o"
-      baseName: "B\xFAn"
-      steps:
-      - "D\u1EA7u \u0103n"
-      - "T\xF4m"
-      - "N\u1EA5m \u0111\xF4ng c\xF4"
-      - "N\u01B0\u1EDBc m\u1EAFm"
-      cookSeconds: 15
-      warnSeconds: 22.5
-      burnSeconds: 30
-      unlockRound: 4
+      price: 110
     - id: ca_hoi__ca_chua
       name: "C\xE1 h\u1ED3i \xE1p ch\u1EA3o c\xE0 chua"
       group: chinh
@@ -1465,38 +1307,7 @@ MonoBehaviour:
       warnSeconds: 31.5
       burnSeconds: 42
       unlockRound: 3
-    - id: ca_hoi__hanh_tay
-      name: "C\xE1 h\u1ED3i \xE1p ch\u1EA3o h\xE0nh t\xE2y"
-      group: chinh
-      mainId: ca_hoi
-      sideId: hanh_tay
-      tool: "Ch\u1EA3o"
-      baseName: "C\u01A1m"
-      steps:
-      - "B\u01A1"
-      - "C\xE1 h\u1ED3i"
-      - "H\xE0nh t\xE2y"
-      - "Mu\u1ED1i"
-      cookSeconds: 21
-      warnSeconds: 31.5
-      burnSeconds: 42
-      unlockRound: 3
-    - id: ca_hoi__rau_muong
-      name: "C\xE1 h\u1ED3i \xE1p ch\u1EA3o rau mu\u1ED1ng"
-      group: chinh
-      mainId: ca_hoi
-      sideId: rau_muong
-      tool: "Ch\u1EA3o"
-      baseName: "C\u01A1m"
-      steps:
-      - "B\u01A1"
-      - "C\xE1 h\u1ED3i"
-      - "Rau mu\u1ED1ng"
-      - "Mu\u1ED1i"
-      cookSeconds: 21
-      warnSeconds: 31.5
-      burnSeconds: 42
-      unlockRound: 3
+      price: 105
     - id: ca_hoi__khoai_tay
       name: "C\xE1 h\u1ED3i \xE1p ch\u1EA3o khoai t\xE2y"
       group: chinh
@@ -1513,6 +1324,7 @@ MonoBehaviour:
       warnSeconds: 31.5
       burnSeconds: 42
       unlockRound: 3
+      price: 110
     - id: ca_hoi__nam_rom
       name: "C\xE1 h\u1ED3i \xE1p ch\u1EA3o n\u1EA5m r\u01A1m"
       group: chinh
@@ -1529,6 +1341,7 @@ MonoBehaviour:
       warnSeconds: 31.5
       burnSeconds: 42
       unlockRound: 3
+      price: 105
     - id: ca_hoi__bong_cai
       name: "C\xE1 h\u1ED3i \xE1p ch\u1EA3o b\xF4ng c\u1EA3i"
       group: chinh
@@ -1545,6 +1358,7 @@ MonoBehaviour:
       warnSeconds: 31.5
       burnSeconds: 42
       unlockRound: 3
+      price: 105
     - id: ca_hoi__ot_chuong
       name: "C\xE1 h\u1ED3i \xE1p ch\u1EA3o \u1EDBt chu\xF4ng"
       group: chinh
@@ -1561,22 +1375,7 @@ MonoBehaviour:
       warnSeconds: 31.5
       burnSeconds: 42
       unlockRound: 3
-    - id: ca_hoi__bi_do
-      name: "C\xE1 h\u1ED3i \xE1p ch\u1EA3o b\xED \u0111\u1ECF"
-      group: chinh
-      mainId: ca_hoi
-      sideId: bi_do
-      tool: "Ch\u1EA3o"
-      baseName: "C\u01A1m"
-      steps:
-      - "B\u01A1"
-      - "C\xE1 h\u1ED3i"
-      - "B\xED \u0111\u1ECF"
-      - "Mu\u1ED1i"
-      cookSeconds: 21
-      warnSeconds: 31.5
-      burnSeconds: 42
-      unlockRound: 4
+      price: 105
     - id: ca_hoi__mang_tay
       name: "C\xE1 h\u1ED3i \xE1p ch\u1EA3o m\u0103ng t\xE2y"
       group: chinh
@@ -1593,6 +1392,7 @@ MonoBehaviour:
       warnSeconds: 31.5
       burnSeconds: 42
       unlockRound: 4
+      price: 120
     - id: ca_hoi__nam_dong_co
       name: "C\xE1 h\u1ED3i \xE1p ch\u1EA3o n\u1EA5m \u0111\xF4ng c\xF4"
       group: chinh
@@ -1609,22 +1409,7 @@ MonoBehaviour:
       warnSeconds: 31.5
       burnSeconds: 42
       unlockRound: 4
-    - id: muc__ca_chua
-      name: "M\u1EF1c x\xE0o c\xE0 chua"
-      group: chinh
-      mainId: muc
-      sideId: ca_chua
-      tool: "Ch\u1EA3o"
-      baseName: "C\u01A1m"
-      steps:
-      - "D\u1EA7u \u0103n"
-      - "T\u1ECFi"
-      - "M\u1EF1c"
-      - "C\xE0 chua"
-      cookSeconds: 12
-      warnSeconds: 18
-      burnSeconds: 24
-      unlockRound: 3
+      price: 120
     - id: muc__hanh_tay
       name: "M\u1EF1c x\xE0o h\xE0nh t\xE2y"
       group: chinh
@@ -1641,38 +1426,7 @@ MonoBehaviour:
       warnSeconds: 18
       burnSeconds: 24
       unlockRound: 3
-    - id: muc__rau_muong
-      name: "M\u1EF1c x\xE0o rau mu\u1ED1ng"
-      group: chinh
-      mainId: muc
-      sideId: rau_muong
-      tool: "Ch\u1EA3o"
-      baseName: "C\u01A1m"
-      steps:
-      - "D\u1EA7u \u0103n"
-      - "T\u1ECFi"
-      - "M\u1EF1c"
-      - "Rau mu\u1ED1ng"
-      cookSeconds: 12
-      warnSeconds: 18
-      burnSeconds: 24
-      unlockRound: 3
-    - id: muc__khoai_tay
-      name: "M\u1EF1c x\xE0o khoai t\xE2y"
-      group: chinh
-      mainId: muc
-      sideId: khoai_tay
-      tool: "Ch\u1EA3o"
-      baseName: "C\u01A1m"
-      steps:
-      - "D\u1EA7u \u0103n"
-      - "T\u1ECFi"
-      - "M\u1EF1c"
-      - "Khoai t\xE2y"
-      cookSeconds: 12
-      warnSeconds: 18
-      burnSeconds: 24
-      unlockRound: 3
+      price: 95
     - id: muc__nam_rom
       name: "M\u1EF1c x\xE0o n\u1EA5m r\u01A1m"
       group: chinh
@@ -1689,6 +1443,7 @@ MonoBehaviour:
       warnSeconds: 18
       burnSeconds: 24
       unlockRound: 3
+      price: 90
     - id: muc__bong_cai
       name: "M\u1EF1c x\xE0o b\xF4ng c\u1EA3i"
       group: chinh
@@ -1705,6 +1460,7 @@ MonoBehaviour:
       warnSeconds: 18
       burnSeconds: 24
       unlockRound: 3
+      price: 95
     - id: muc__ot_chuong
       name: "M\u1EF1c x\xE0o \u1EDBt chu\xF4ng"
       group: chinh
@@ -1721,22 +1477,7 @@ MonoBehaviour:
       warnSeconds: 18
       burnSeconds: 24
       unlockRound: 3
-    - id: muc__bi_do
-      name: "M\u1EF1c x\xE0o b\xED \u0111\u1ECF"
-      group: chinh
-      mainId: muc
-      sideId: bi_do
-      tool: "Ch\u1EA3o"
-      baseName: "C\u01A1m"
-      steps:
-      - "D\u1EA7u \u0103n"
-      - "T\u1ECFi"
-      - "M\u1EF1c"
-      - "B\xED \u0111\u1ECF"
-      cookSeconds: 12
-      warnSeconds: 18
-      burnSeconds: 24
-      unlockRound: 4
+      price: 95
     - id: muc__mang_tay
       name: "M\u1EF1c x\xE0o m\u0103ng t\xE2y"
       group: chinh
@@ -1753,6 +1494,7 @@ MonoBehaviour:
       warnSeconds: 18
       burnSeconds: 24
       unlockRound: 4
+      price: 105
     - id: muc__nam_dong_co
       name: "M\u1EF1c x\xE0o n\u1EA5m \u0111\xF4ng c\xF4"
       group: chinh
@@ -1769,6 +1511,7 @@ MonoBehaviour:
       warnSeconds: 18
       burnSeconds: 24
       unlockRound: 4
+      price: 105
     - id: ga__ca_chua
       name: "G\xE0 n\u01B0\u1EDBng m\u1EADt ong c\xE0 chua"
       group: chinh
@@ -1784,6 +1527,7 @@ MonoBehaviour:
       warnSeconds: 40.5
       burnSeconds: 54
       unlockRound: 4
+      price: 130
     - id: ga__hanh_tay
       name: "G\xE0 n\u01B0\u1EDBng m\u1EADt ong h\xE0nh t\xE2y"
       group: chinh
@@ -1799,21 +1543,7 @@ MonoBehaviour:
       warnSeconds: 40.5
       burnSeconds: 54
       unlockRound: 4
-    - id: ga__rau_muong
-      name: "G\xE0 n\u01B0\u1EDBng m\u1EADt ong rau mu\u1ED1ng"
-      group: chinh
-      mainId: ga
-      sideId: rau_muong
-      tool: "V\u1EC9 n\u01B0\u1EDBng"
-      baseName: "B\xE1nh m\xEC"
-      steps:
-      - "M\u1EADt ong"
-      - "G\xE0 ta"
-      - "Rau mu\u1ED1ng"
-      cookSeconds: 27
-      warnSeconds: 40.5
-      burnSeconds: 54
-      unlockRound: 4
+      price: 130
     - id: ga__khoai_tay
       name: "G\xE0 n\u01B0\u1EDBng m\u1EADt ong khoai t\xE2y"
       group: chinh
@@ -1829,21 +1559,7 @@ MonoBehaviour:
       warnSeconds: 40.5
       burnSeconds: 54
       unlockRound: 4
-    - id: ga__nam_rom
-      name: "G\xE0 n\u01B0\u1EDBng m\u1EADt ong n\u1EA5m r\u01A1m"
-      group: chinh
-      mainId: ga
-      sideId: nam_rom
-      tool: "V\u1EC9 n\u01B0\u1EDBng"
-      baseName: "B\xE1nh m\xEC"
-      steps:
-      - "M\u1EADt ong"
-      - "G\xE0 ta"
-      - "N\u1EA5m r\u01A1m"
-      cookSeconds: 27
-      warnSeconds: 40.5
-      burnSeconds: 54
-      unlockRound: 4
+      price: 135
     - id: ga__bong_cai
       name: "G\xE0 n\u01B0\u1EDBng m\u1EADt ong b\xF4ng c\u1EA3i"
       group: chinh
@@ -1859,6 +1575,7 @@ MonoBehaviour:
       warnSeconds: 40.5
       burnSeconds: 54
       unlockRound: 4
+      price: 130
     - id: ga__ot_chuong
       name: "G\xE0 n\u01B0\u1EDBng m\u1EADt ong \u1EDBt chu\xF4ng"
       group: chinh
@@ -1874,6 +1591,7 @@ MonoBehaviour:
       warnSeconds: 40.5
       burnSeconds: 54
       unlockRound: 4
+      price: 130
     - id: ga__bi_do
       name: "G\xE0 n\u01B0\u1EDBng m\u1EADt ong b\xED \u0111\u1ECF"
       group: chinh
@@ -1889,6 +1607,7 @@ MonoBehaviour:
       warnSeconds: 40.5
       burnSeconds: 54
       unlockRound: 4
+      price: 135
     - id: ga__mang_tay
       name: "G\xE0 n\u01B0\u1EDBng m\u1EADt ong m\u0103ng t\xE2y"
       group: chinh
@@ -1904,6 +1623,7 @@ MonoBehaviour:
       warnSeconds: 40.5
       burnSeconds: 54
       unlockRound: 4
+      price: 130
     - id: ga__nam_dong_co
       name: "G\xE0 n\u01B0\u1EDBng m\u1EADt ong n\u1EA5m \u0111\xF4ng c\xF4"
       group: chinh
@@ -1919,6 +1639,7 @@ MonoBehaviour:
       warnSeconds: 40.5
       burnSeconds: 54
       unlockRound: 4
+      price: 130
     - id: tom_hum__ca_chua
       name: "T\xF4m h\xF9m n\u01B0\u1EDBng b\u01A1 t\u1ECFi c\xE0 chua"
       group: dotpha
@@ -1935,6 +1656,7 @@ MonoBehaviour:
       warnSeconds: 45
       burnSeconds: 60
       unlockRound: 1
+      price: 100
     - id: tom_hum__hanh_tay
       name: "T\xF4m h\xF9m n\u01B0\u1EDBng b\u01A1 t\u1ECFi h\xE0nh t\xE2y"
       group: dotpha
@@ -1951,22 +1673,7 @@ MonoBehaviour:
       warnSeconds: 45
       burnSeconds: 60
       unlockRound: 1
-    - id: tom_hum__rau_muong
-      name: "T\xF4m h\xF9m n\u01B0\u1EDBng b\u01A1 t\u1ECFi rau mu\u1ED1ng"
-      group: dotpha
-      mainId: tom_hum
-      sideId: rau_muong
-      tool: "V\u1EC9 n\u01B0\u1EDBng"
-      baseName: "B\xE1nh m\xEC"
-      steps:
-      - "B\u01A1"
-      - "T\u1ECFi"
-      - "T\xF4m h\xF9m"
-      - "Rau mu\u1ED1ng"
-      cookSeconds: 30
-      warnSeconds: 45
-      burnSeconds: 60
-      unlockRound: 1
+      price: 100
     - id: tom_hum__khoai_tay
       name: "T\xF4m h\xF9m n\u01B0\u1EDBng b\u01A1 t\u1ECFi khoai t\xE2y"
       group: dotpha
@@ -1983,22 +1690,7 @@ MonoBehaviour:
       warnSeconds: 45
       burnSeconds: 60
       unlockRound: 2
-    - id: tom_hum__nam_rom
-      name: "T\xF4m h\xF9m n\u01B0\u1EDBng b\u01A1 t\u1ECFi n\u1EA5m r\u01A1m"
-      group: dotpha
-      mainId: tom_hum
-      sideId: nam_rom
-      tool: "V\u1EC9 n\u01B0\u1EDBng"
-      baseName: "B\xE1nh m\xEC"
-      steps:
-      - "B\u01A1"
-      - "T\u1ECFi"
-      - "T\xF4m h\xF9m"
-      - "N\u1EA5m r\u01A1m"
-      cookSeconds: 30
-      warnSeconds: 45
-      burnSeconds: 60
-      unlockRound: 2
+      price: 100
     - id: tom_hum__bong_cai
       name: "T\xF4m h\xF9m n\u01B0\u1EDBng b\u01A1 t\u1ECFi b\xF4ng c\u1EA3i"
       group: dotpha
@@ -2015,6 +1707,7 @@ MonoBehaviour:
       warnSeconds: 45
       burnSeconds: 60
       unlockRound: 3
+      price: 100
     - id: tom_hum__ot_chuong
       name: "T\xF4m h\xF9m n\u01B0\u1EDBng b\u01A1 t\u1ECFi \u1EDBt chu\xF4ng"
       group: dotpha
@@ -2031,22 +1724,7 @@ MonoBehaviour:
       warnSeconds: 45
       burnSeconds: 60
       unlockRound: 3
-    - id: tom_hum__bi_do
-      name: "T\xF4m h\xF9m n\u01B0\u1EDBng b\u01A1 t\u1ECFi b\xED \u0111\u1ECF"
-      group: dotpha
-      mainId: tom_hum
-      sideId: bi_do
-      tool: "V\u1EC9 n\u01B0\u1EDBng"
-      baseName: "B\xE1nh m\xEC"
-      steps:
-      - "B\u01A1"
-      - "T\u1ECFi"
-      - "T\xF4m h\xF9m"
-      - "B\xED \u0111\u1ECF"
-      cookSeconds: 30
-      warnSeconds: 45
-      burnSeconds: 60
-      unlockRound: 4
+      price: 100
     - id: tom_hum__mang_tay
       name: "T\xF4m h\xF9m n\u01B0\u1EDBng b\u01A1 t\u1ECFi m\u0103ng t\xE2y"
       group: dotpha
@@ -2063,6 +1741,7 @@ MonoBehaviour:
       warnSeconds: 45
       burnSeconds: 60
       unlockRound: 4
+      price: 100
     - id: tom_hum__nam_dong_co
       name: "T\xF4m h\xF9m n\u01B0\u1EDBng b\u01A1 t\u1ECFi n\u1EA5m \u0111\xF4ng c\xF4"
       group: dotpha
@@ -2079,22 +1758,7 @@ MonoBehaviour:
       warnSeconds: 45
       burnSeconds: 60
       unlockRound: 4
-    - id: wagyu__ca_chua
-      name: "B\xF2 Wagyu \xE1p ch\u1EA3o c\xE0 chua"
-      group: dotpha
-      mainId: wagyu
-      sideId: ca_chua
-      tool: "Ch\u1EA3o"
-      baseName: "C\u01A1m"
-      steps:
-      - "Mu\u1ED1i"
-      - "B\xF2 Wagyu"
-      - "B\u01A1"
-      - "C\xE0 chua"
-      cookSeconds: 21
-      warnSeconds: 31.5
-      burnSeconds: 42
-      unlockRound: 1
+      price: 100
     - id: wagyu__hanh_tay
       name: "B\xF2 Wagyu \xE1p ch\u1EA3o h\xE0nh t\xE2y"
       group: dotpha
@@ -2111,22 +1775,7 @@ MonoBehaviour:
       warnSeconds: 31.5
       burnSeconds: 42
       unlockRound: 1
-    - id: wagyu__rau_muong
-      name: "B\xF2 Wagyu \xE1p ch\u1EA3o rau mu\u1ED1ng"
-      group: dotpha
-      mainId: wagyu
-      sideId: rau_muong
-      tool: "Ch\u1EA3o"
-      baseName: "C\u01A1m"
-      steps:
-      - "Mu\u1ED1i"
-      - "B\xF2 Wagyu"
-      - "B\u01A1"
-      - "Rau mu\u1ED1ng"
-      cookSeconds: 21
-      warnSeconds: 31.5
-      burnSeconds: 42
-      unlockRound: 1
+      price: 100
     - id: wagyu__khoai_tay
       name: "B\xF2 Wagyu \xE1p ch\u1EA3o khoai t\xE2y"
       group: dotpha
@@ -2143,6 +1792,7 @@ MonoBehaviour:
       warnSeconds: 31.5
       burnSeconds: 42
       unlockRound: 2
+      price: 100
     - id: wagyu__nam_rom
       name: "B\xF2 Wagyu \xE1p ch\u1EA3o n\u1EA5m r\u01A1m"
       group: dotpha
@@ -2159,22 +1809,7 @@ MonoBehaviour:
       warnSeconds: 31.5
       burnSeconds: 42
       unlockRound: 2
-    - id: wagyu__bong_cai
-      name: "B\xF2 Wagyu \xE1p ch\u1EA3o b\xF4ng c\u1EA3i"
-      group: dotpha
-      mainId: wagyu
-      sideId: bong_cai
-      tool: "Ch\u1EA3o"
-      baseName: "C\u01A1m"
-      steps:
-      - "Mu\u1ED1i"
-      - "B\xF2 Wagyu"
-      - "B\u01A1"
-      - "B\xF4ng c\u1EA3i xanh"
-      cookSeconds: 21
-      warnSeconds: 31.5
-      burnSeconds: 42
-      unlockRound: 3
+      price: 100
     - id: wagyu__ot_chuong
       name: "B\xF2 Wagyu \xE1p ch\u1EA3o \u1EDBt chu\xF4ng"
       group: dotpha
@@ -2191,6 +1826,7 @@ MonoBehaviour:
       warnSeconds: 31.5
       burnSeconds: 42
       unlockRound: 3
+      price: 100
     - id: wagyu__bi_do
       name: "B\xF2 Wagyu \xE1p ch\u1EA3o b\xED \u0111\u1ECF"
       group: dotpha
@@ -2207,6 +1843,7 @@ MonoBehaviour:
       warnSeconds: 31.5
       burnSeconds: 42
       unlockRound: 4
+      price: 100
     - id: wagyu__mang_tay
       name: "B\xF2 Wagyu \xE1p ch\u1EA3o m\u0103ng t\xE2y"
       group: dotpha
@@ -2223,6 +1860,7 @@ MonoBehaviour:
       warnSeconds: 31.5
       burnSeconds: 42
       unlockRound: 4
+      price: 100
     - id: wagyu__nam_dong_co
       name: "B\xF2 Wagyu \xE1p ch\u1EA3o n\u1EA5m \u0111\xF4ng c\xF4"
       group: dotpha
@@ -2239,6 +1877,7 @@ MonoBehaviour:
       warnSeconds: 31.5
       burnSeconds: 42
       unlockRound: 4
+      price: 100
     - id: ca_ngu__ca_chua
       name: "C\xE1 ng\u1EEB v\xE2y xanh tataki c\xE0 chua"
       group: dotpha
@@ -2255,6 +1894,7 @@ MonoBehaviour:
       warnSeconds: 18
       burnSeconds: 24
       unlockRound: 1
+      price: 100
     - id: ca_ngu__hanh_tay
       name: "C\xE1 ng\u1EEB v\xE2y xanh tataki h\xE0nh t\xE2y"
       group: dotpha
@@ -2271,6 +1911,7 @@ MonoBehaviour:
       warnSeconds: 18
       burnSeconds: 24
       unlockRound: 1
+      price: 100
     - id: ca_ngu__rau_muong
       name: "C\xE1 ng\u1EEB v\xE2y xanh tataki rau mu\u1ED1ng"
       group: dotpha
@@ -2287,22 +1928,7 @@ MonoBehaviour:
       warnSeconds: 18
       burnSeconds: 24
       unlockRound: 1
-    - id: ca_ngu__khoai_tay
-      name: "C\xE1 ng\u1EEB v\xE2y xanh tataki khoai t\xE2y"
-      group: dotpha
-      mainId: ca_ngu
-      sideId: khoai_tay
-      tool: "Ch\u1EA3o"
-      baseName: "C\u01A1m"
-      steps:
-      - "D\u1EA7u \u0103n"
-      - "C\xE1 ng\u1EEB v\xE2y xanh"
-      - "Khoai t\xE2y"
-      - "N\u01B0\u1EDBc t\u01B0\u01A1ng"
-      cookSeconds: 12
-      warnSeconds: 18
-      burnSeconds: 24
-      unlockRound: 2
+      price: 100
     - id: ca_ngu__nam_rom
       name: "C\xE1 ng\u1EEB v\xE2y xanh tataki n\u1EA5m r\u01A1m"
       group: dotpha
@@ -2319,6 +1945,7 @@ MonoBehaviour:
       warnSeconds: 18
       burnSeconds: 24
       unlockRound: 2
+      price: 100
     - id: ca_ngu__bong_cai
       name: "C\xE1 ng\u1EEB v\xE2y xanh tataki b\xF4ng c\u1EA3i"
       group: dotpha
@@ -2335,6 +1962,7 @@ MonoBehaviour:
       warnSeconds: 18
       burnSeconds: 24
       unlockRound: 3
+      price: 100
     - id: ca_ngu__ot_chuong
       name: "C\xE1 ng\u1EEB v\xE2y xanh tataki \u1EDBt chu\xF4ng"
       group: dotpha
@@ -2351,22 +1979,7 @@ MonoBehaviour:
       warnSeconds: 18
       burnSeconds: 24
       unlockRound: 3
-    - id: ca_ngu__bi_do
-      name: "C\xE1 ng\u1EEB v\xE2y xanh tataki b\xED \u0111\u1ECF"
-      group: dotpha
-      mainId: ca_ngu
-      sideId: bi_do
-      tool: "Ch\u1EA3o"
-      baseName: "C\u01A1m"
-      steps:
-      - "D\u1EA7u \u0103n"
-      - "C\xE1 ng\u1EEB v\xE2y xanh"
-      - "B\xED \u0111\u1ECF"
-      - "N\u01B0\u1EDBc t\u01B0\u01A1ng"
-      cookSeconds: 12
-      warnSeconds: 18
-      burnSeconds: 24
-      unlockRound: 4
+      price: 100
     - id: ca_ngu__mang_tay
       name: "C\xE1 ng\u1EEB v\xE2y xanh tataki m\u0103ng t\xE2y"
       group: dotpha
@@ -2383,22 +1996,7 @@ MonoBehaviour:
       warnSeconds: 18
       burnSeconds: 24
       unlockRound: 4
-    - id: ca_ngu__nam_dong_co
-      name: "C\xE1 ng\u1EEB v\xE2y xanh tataki n\u1EA5m \u0111\xF4ng c\xF4"
-      group: dotpha
-      mainId: ca_ngu
-      sideId: nam_dong_co
-      tool: "Ch\u1EA3o"
-      baseName: "C\u01A1m"
-      steps:
-      - "D\u1EA7u \u0103n"
-      - "C\xE1 ng\u1EEB v\xE2y xanh"
-      - "N\u1EA5m \u0111\xF4ng c\xF4"
-      - "N\u01B0\u1EDBc t\u01B0\u01A1ng"
-      cookSeconds: 12
-      warnSeconds: 18
-      burnSeconds: 24
-      unlockRound: 4
+      price: 100
     - id: cua__ca_chua
       name: "Cua ho\xE0ng \u0111\u1EBF h\u1EA5p c\xE0 chua"
       group: dotpha
@@ -2415,6 +2013,7 @@ MonoBehaviour:
       warnSeconds: 45
       burnSeconds: 60
       unlockRound: 1
+      price: 100
     - id: cua__hanh_tay
       name: "Cua ho\xE0ng \u0111\u1EBF h\u1EA5p h\xE0nh t\xE2y"
       group: dotpha
@@ -2431,6 +2030,7 @@ MonoBehaviour:
       warnSeconds: 45
       burnSeconds: 60
       unlockRound: 1
+      price: 100
     - id: cua__rau_muong
       name: "Cua ho\xE0ng \u0111\u1EBF h\u1EA5p rau mu\u1ED1ng"
       group: dotpha
@@ -2447,22 +2047,7 @@ MonoBehaviour:
       warnSeconds: 45
       burnSeconds: 60
       unlockRound: 1
-    - id: cua__khoai_tay
-      name: "Cua ho\xE0ng \u0111\u1EBF h\u1EA5p khoai t\xE2y"
-      group: dotpha
-      mainId: cua
-      sideId: khoai_tay
-      tool: "N\u1ED3i"
-      baseName: "B\xFAn"
-      steps:
-      - "N\u01B0\u1EDBc d\xF9ng"
-      - "Cua ho\xE0ng \u0111\u1EBF"
-      - "Khoai t\xE2y"
-      - "H\xE0nh l\xE1"
-      cookSeconds: 30
-      warnSeconds: 45
-      burnSeconds: 60
-      unlockRound: 2
+      price: 100
     - id: cua__nam_rom
       name: "Cua ho\xE0ng \u0111\u1EBF h\u1EA5p n\u1EA5m r\u01A1m"
       group: dotpha
@@ -2479,38 +2064,7 @@ MonoBehaviour:
       warnSeconds: 45
       burnSeconds: 60
       unlockRound: 2
-    - id: cua__bong_cai
-      name: "Cua ho\xE0ng \u0111\u1EBF h\u1EA5p b\xF4ng c\u1EA3i"
-      group: dotpha
-      mainId: cua
-      sideId: bong_cai
-      tool: "N\u1ED3i"
-      baseName: "B\xFAn"
-      steps:
-      - "N\u01B0\u1EDBc d\xF9ng"
-      - "Cua ho\xE0ng \u0111\u1EBF"
-      - "B\xF4ng c\u1EA3i xanh"
-      - "H\xE0nh l\xE1"
-      cookSeconds: 30
-      warnSeconds: 45
-      burnSeconds: 60
-      unlockRound: 3
-    - id: cua__ot_chuong
-      name: "Cua ho\xE0ng \u0111\u1EBF h\u1EA5p \u1EDBt chu\xF4ng"
-      group: dotpha
-      mainId: cua
-      sideId: ot_chuong
-      tool: "N\u1ED3i"
-      baseName: "B\xFAn"
-      steps:
-      - "N\u01B0\u1EDBc d\xF9ng"
-      - "Cua ho\xE0ng \u0111\u1EBF"
-      - "\u1EDAt chu\xF4ng"
-      - "H\xE0nh l\xE1"
-      cookSeconds: 30
-      warnSeconds: 45
-      burnSeconds: 60
-      unlockRound: 3
+      price: 100
     - id: cua__bi_do
       name: "Cua ho\xE0ng \u0111\u1EBF h\u1EA5p b\xED \u0111\u1ECF"
       group: dotpha
@@ -2527,6 +2081,7 @@ MonoBehaviour:
       warnSeconds: 45
       burnSeconds: 60
       unlockRound: 4
+      price: 100
     - id: cua__mang_tay
       name: "Cua ho\xE0ng \u0111\u1EBF h\u1EA5p m\u0103ng t\xE2y"
       group: dotpha
@@ -2543,6 +2098,7 @@ MonoBehaviour:
       warnSeconds: 45
       burnSeconds: 60
       unlockRound: 4
+      price: 100
     - id: cua__nam_dong_co
       name: "Cua ho\xE0ng \u0111\u1EBF h\u1EA5p n\u1EA5m \u0111\xF4ng c\xF4"
       group: dotpha
@@ -2559,3 +2115,4 @@ MonoBehaviour:
       warnSeconds: 45
       burnSeconds: 60
       unlockRound: 4
+      price: 100

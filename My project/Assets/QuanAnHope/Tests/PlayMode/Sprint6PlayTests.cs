@@ -209,20 +209,31 @@ namespace QuanAnHope.PlayTests
             Ingredient onBoard = g.OnBoard;
             yield return HoldOn("Board", () => onBoard.prepared, onBoard.prepSeconds + 5f);
             yield return Frames(2);
-            Assert.AreEqual(3, t.Index, "so che xong: sang buoc dung cu");
+            // sprint 10 B-08: buoc 4 la "Tab: xem thuc don" (sach trong phong da bo), tranh khuon A + tranh gia
+            Assert.AreEqual(3, t.Index, "so che xong: sang buoc thuc don");
+            Assert.AreEqual(GuidePics.Menu, g.Hud.ShownPic);
+            Assert.AreEqual(GuidePics.Price, g.Hud.ShownConcept);
+            Assert.IsTrue(g.OpenTab(TabMenu.Page.Menu));
+            yield return Frames(2);
+            g.CloseTab();
+            yield return Frames(2);
+            Assert.AreEqual(4, t.Index, "xem thuc don: sang buoc dung cu");
             AssertArrowOver("Tool_" + r.tool);
             yield return Use("Board");                  // cam len (da so che)
-            g.PutDown();                                // dat lai vao thung de lam theo thu tu sach
+            Ingredient prepped = g.HeldIngredient;
+            LookAtFloorAway();
+            g.PutDown();                                // B-16: tha xuong ngay cho dang nhin (ra san), nhat lai khi toi luot
+            Assert.IsTrue(g.Dropped.ContainsKey(prepped));
             yield return Use("Tool_" + r.tool);
             yield return Frames(2);
-            Assert.AreEqual(4, t.Index, "chon dung cu: sang buoc sach");
-
-            yield return Approach(g.Room.Station("BookNext"));
-            yield return Frames(2);
-            Assert.AreEqual(5, t.Index, "nhin sach: sang buoc cho vao bep");
+            Assert.AreEqual(5, t.Index, "chon dung cu: sang buoc cho vao bep");
             foreach (string step in r.steps)
             {
-                if (step == main.name) yield return PrepareAndAdd(S.Stock.Items.First(i => i.typeId == main.typeId));
+                if (step == main.name)
+                {
+                    Assert.IsTrue(g.TakeIngredient(prepped), "nhat nguyen lieu da tha");
+                    yield return Use("Stove");
+                }
                 else if (step == side.name) yield return PrepareAndAdd(side);
                 else yield return Use("Jar_" + step);
             }
@@ -248,7 +259,7 @@ namespace QuanAnHope.PlayTests
             Time.timeScale = 1f;                        // khach an 5 giay: ve toc do that ngay (L-022)
             yield return Frames(2);
             Assert.IsTrue(t.Finished, "phuc vu xong: het huong dan");
-            StringAssert.Contains("Hướng dẫn xong", g.Hud.TutorialText ?? "");
+            StringAssert.Contains("Xong", g.Hud.TutorialText ?? "");
 
             // khach vua phuc vu ngoi an (sua truoc sprint 6)
             Assert.IsNotNull(S.Eaters[0], "khach dang an");

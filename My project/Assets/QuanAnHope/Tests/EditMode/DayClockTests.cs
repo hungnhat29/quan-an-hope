@@ -174,7 +174,11 @@ namespace QuanAnHope.Tests
             Assert.AreEqual(GamePhase.Open, s.Phase, "khach cuoi dang an: ngay chua het");
             s.Tick(Eat);
 
-            Assert.AreEqual(GamePhase.DayEnd, s.Phase, "khach cuoi an xong thi het ngay");
+            // constitution 2.0 muc 6.2: khong tu het ngay, bam bien Dong quan
+            Assert.AreEqual(GamePhase.Open, s.Phase, "khach cuoi an xong: cho bam Dong quan");
+            Assert.IsTrue(s.ReadyToClose);
+            Assert.IsTrue(s.CloseEarly());
+            Assert.AreEqual(GamePhase.DayEnd, s.Phase);
             Assert.IsNull(s.CurrentCustomer);
             Assert.AreEqual(1, s.ServedToday);
             Assert.AreEqual(0, s.Stock.Count, "het ngay bo nguyen lieu (muc 4.2)");
@@ -189,7 +193,7 @@ namespace QuanAnHope.Tests
             s.Tick(DaySeconds - 1f);                     // 20:58,5
             ServeCurrent(s);
             s.Tick(Eat + Gap);                           // an xong qua 21:00, khach ke tiep le ra vao sau do
-            Assert.AreEqual(GamePhase.DayEnd, s.Phase, "21:00 trong luc cho khach ke tiep -> het ngay");
+            Assert.IsTrue(s.ReadyToClose, "21:00 trong luc cho khach ke tiep -> khong khach moi, cho dong quan");
             Assert.AreEqual(1, s.CustomersToday);
         }
 
@@ -214,10 +218,14 @@ namespace QuanAnHope.Tests
             s.Tick(1f);                                  // dung 21:00
             Assert.AreEqual(GamePhase.Open, s.Phase, "khach con dang an");
             s.Tick(Eat - 1f);                            // an xong
-            Assert.AreEqual(GamePhase.DayEnd, s.Phase, "an xong la het ngay, khong doi them 3 giay");
+            Assert.IsTrue(s.ReadyToClose, "an xong la dong duoc ngay, khong doi them 3 giay");
+            Assert.AreEqual(GamePhase.Open, s.Phase, "constitution 2.0: chi bam Dong quan moi het ngay");
+            s.Tick(10f);
+            Assert.AreEqual(1, s.CustomersToday, "khong khach moi sau 21:00");
+            Assert.IsTrue(s.CloseEarly());
             var expect = new DayClock(TestData.Balance.day);
-            expect.Advance(DaySeconds - 1f + Eat);
-            Assert.AreEqual(expect.Text, s.ClosedAt, "gio dong = luc khach cuoi an xong");
+            expect.Advance(DaySeconds - 1f + Eat + 10f);
+            Assert.AreEqual(expect.Text, s.ClosedAt, "gio dong = luc bam Dong quan");
         }
 
         [Test]

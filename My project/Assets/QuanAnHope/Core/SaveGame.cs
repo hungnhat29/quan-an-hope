@@ -32,6 +32,15 @@ namespace QuanAnHope.Core
         public int blackBought;
         public bool hasMachine;
 
+        /// <summary>So thot dang co (constitution 2.0 muc 8); 0 o ban luu cu = so co san.</summary>
+        public int boards;
+
+        /// <summary>So bep dang co (constitution 2.1 muc 8); 0 o ban luu cu = so co san.</summary>
+        public int stoves;
+
+        /// <summary>Da mua tay van nang (constitution 2.2 muc 8).</summary>
+        public bool glove;
+
         public SaveDish[] fridge = new SaveDish[0];
 
         /// <summary>Gio luu (ISO 8601, chi de hien "Choi tiep: ngay 5 · 18/11 21:30").</summary>
@@ -94,6 +103,9 @@ namespace QuanAnHope.Core
                 blackTickets = Items.BlackTickets,
                 blackBought = Items.BlackBought,
                 hasMachine = Items.HasMachine,
+                boards = Items.Boards,
+                stoves = Items.Stoves,
+                glove = Items.HasGlove,
                 savedAt = DateTime.Now.ToString("s"),
             };
             var relics = new List<string>();
@@ -135,6 +147,9 @@ namespace QuanAnHope.Core
             foreach (string id in data.shopOffers ?? new string[0]) shown.Add(FindRelic(balance, id));
             s.Shop.Restore(s.Day, shown);
             s.Items.Restore(s.Day, data.sauces, data.saucesBought, data.blackTickets, data.blackBought, data.hasMachine);
+            s.Items.RestoreBoards(data.boards);
+            s.Items.RestoreStoves(data.stoves);
+            s.Items.RestoreGlove(data.glove);
             var dishes = new List<Dish>();
             foreach (SaveDish d in data.fridge ?? new SaveDish[0]) dishes.Add(d.ToDish());
             s.Fridge.Restore(dishes);

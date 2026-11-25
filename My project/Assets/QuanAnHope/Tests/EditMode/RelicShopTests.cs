@@ -34,7 +34,7 @@ namespace QuanAnHope.Tests
         public void Data_22Relic_Gia8_3Be_ThuongBo9Nguong()
         {
             Balance b = TestData.Balance;
-            Assert.AreEqual(22, b.relics.Length);
+            Assert.AreEqual(24, b.relics.Length); // 2.1: +2 relic Huyen thoai (F11, F12)
             Assert.AreEqual(8, b.relicCap);
             Assert.AreEqual(3, b.relicShopOffers);
             Assert.AreEqual(9, b.setBonuses.Length);
@@ -86,7 +86,7 @@ namespace QuanAnHope.Tests
                 NextDay(s); NextDay(s); // ngay 3: ngay 2 relic mien phi (constitution 1.8 muc 7.1)
                 foreach (RelicDef o in s.Shop.Offers) seen.Add(o.id);
             }
-            Assert.AreEqual(22, seen.Count);
+            Assert.AreEqual(24, seen.Count);
         }
 
         [Test]

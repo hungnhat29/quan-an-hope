@@ -170,7 +170,7 @@ namespace QuanAnHope.Game
 
         void BuildRerollButton()
         {
-            GameObject stand = Toon.Empty(goc3, "NutDoiHang", new Vector3(3.3f, 0f, 3.2f));
+            GameObject stand = Toon.Empty(goc3, "NutDoiHang", new Vector3(2.45f, 0f, 3.2f));
             Toon.Prim(PrimitiveType.Cylinder, stand.transform, "Cot", new Vector3(0f, 0.55f, 0f), new Vector3(0.16f, 1.1f, 0.16f), UiKit.Hex("#B97F52"), Toon.OutlineSmall);
             Toon.Prim(PrimitiveType.Cylinder, stand.transform, "De", new Vector3(0f, 1.13f, 0f), new Vector3(0.42f, 0.06f, 0.42f), UiKit.Cream, Toon.OutlineSmall);
             Toon.Prim(PrimitiveType.Sphere, stand.transform, "Nut", new Vector3(0f, 1.2f, 0f), new Vector3(0.28f, 0.16f, 0.28f), UiKit.Coral, Toon.OutlineSmall);
@@ -187,7 +187,7 @@ namespace QuanAnHope.Game
         {
             GameSession s = g.Session;
             if (!s.Shop.OpensOn(s.Day)) return "Đổi hàng relic · mở từ ngày " + s.Balance.start.relicShopFromDay;
-            if (s.Shop.FreeDone) return "Đã lấy relic miễn phí hôm nay";
+
             return "Đổi 3 relic khác · " + s.Shop.RerollCost + "G (ví " + s.Money + "G)";
         }
 
@@ -196,7 +196,6 @@ namespace QuanAnHope.Game
             if (rerollText == null) return;
             GameSession s = g.Session;
             rerollText.text = !s.Shop.OpensOn(s.Day) ? "Đổi hàng\n<size=44>mở từ ngày " + s.Balance.start.relicShopFromDay + "</size>"
-                : s.Shop.FreeDone ? "Đổi hàng\n<size=44>đã lấy relic hôm nay</size>"
                 : "Đổi hàng\n<size=50>" + s.Shop.RerollCost + "G</size>";
         }
 
@@ -230,8 +229,9 @@ namespace QuanAnHope.Game
             if (machineGroup != null && machineGroup.activeSelf != machine) machineGroup.SetActive(machine);
             if (machineSign != null) machineSign.SetActive(machine);
             if (machineStation != null) machineStation.SetActive(machine);
-            bool sauce = it.Sauces > 0, black = it.BlackTickets > 0;
-            if (itemTable != null) itemTable.SetActive(sauce || black);
+            // sau sprint 10: lo sot o ben phai bep (Sprint11Room), an khi dang cam tren tay; quay Goc 2 chi con ve den
+            bool sauce = it.Sauces > 0 && g.Hand != HandKind.Sauce, black = it.BlackTickets > 0;
+            if (itemTable != null) itemTable.SetActive(black);
             if (sauceBottle != null) sauceBottle.SetActive(sauce);
             if (blackStack != null) blackStack.SetActive(black);
             if (sauceTagCanvas != null) sauceTagCanvas.SetActive(sauce);
@@ -259,11 +259,7 @@ namespace QuanAnHope.Game
 
         void TickPrep(float dt)
         {
-            if (prepFx == null) return;
-            ItemView v = boardItem != null ? boardItem.GetComponent<ItemView>() : null;
-            Ingredient ing = g.OnBoard;
-            float progress = ing == null ? 0f : ing.prepared ? 1f : (float)g.Session.Board.Progress;
-            prepFx.Tick(ing, v, progress, g.PrepHeldRecently, dt);
+            // sprint 10: moi thot mot bo dao (Sprint10Room.TickBoards)
         }
 
         // =====================================================================

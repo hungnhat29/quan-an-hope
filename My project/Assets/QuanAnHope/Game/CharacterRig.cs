@@ -16,7 +16,10 @@ namespace QuanAnHope.Game
     {
         public const string Customer = "SK_Khach", Boss = "SK_ChuNo", Group = "Characters";
         public const string ClipWait = "Cho", ClipWalk = "Di", ClipHappy = "Vui", ClipAngry = "Gian", ClipWave = "VayChao", ClipSurprised = "NgacNhien";
-        public static readonly string[] HairStyles = { "Toc_BuiBac", "Mu_LuoiTrai", "Toc_HaiBui", "Mu_Non", "Mu_Noi", "Mam", "Toc_Ngan" };
+        public static readonly string[] HairStyles = { "Toc_BuiBac", "Mu_LuoiTrai", "Toc_HaiBui", "Mu_Non", "Mu_Noi", "Mam", "Toc_Ngan",
+            // sau sprint 10 (yeu cau 23/11/2026, anh 1): 5 khach dac biet; do tren nguoi cung ten "Do_" + phan sau "Toc_"
+            "Toc_Vip", "Toc_Streamer", "Toc_VoDich", "Toc_FanQuyDo", "Toc_DaiGia" };
+        public const string ExtrasPrefix = "Do_";
         public static readonly Color ShirtKey = UiKit.Hex("#E9A0A0");
         public const float StepFps = 12f;
 
@@ -42,6 +45,9 @@ namespace QuanAnHope.Game
         readonly Dictionary<string, string> clipNames = new Dictionary<string, string>();
         readonly List<KeyValuePair<Renderer, int>> shirtSlots = new List<KeyValuePair<Renderer, int>>();
         readonly Dictionary<string, GameObject> hair = new Dictionary<string, GameObject>();
+        // toc / mu co phan phu (vd chu tren bang do "Toc_VoDich_Chu") va do tren nguoi ("Do_Vip", "Do_Vip_The"...)
+        readonly List<KeyValuePair<string, GameObject>> hairParts = new List<KeyValuePair<string, GameObject>>();
+        readonly List<KeyValuePair<string, GameObject>> extras = new List<KeyValuePair<string, GameObject>>();
         Lively motion;
         string oneShot;
         float oneT, loopT;
@@ -104,7 +110,12 @@ namespace QuanAnHope.Game
                 else if (t.name == ModelLibrary.FaceNode && FacePoint == null) FacePoint = t;
                 else if (t.name == "Mieng" && MouthPoint == null) MouthPoint = t;
                 else if (t.name == "TayPhai") EatingArm = t.gameObject;
-                foreach (string h in HairStyles) if (t.name == h) hair[h] = t.gameObject;
+                foreach (string h in HairStyles)
+                {
+                    if (t.name == h) hair[h] = t.gameObject;
+                    else if (t.name.StartsWith(h + "_")) hairParts.Add(new KeyValuePair<string, GameObject>(h, t.gameObject));
+                }
+                if (t.name.StartsWith(ExtrasPrefix) && t.GetComponent<Renderer>() != null) extras.Add(new KeyValuePair<string, GameObject>(t.name, t.gameObject));
             }
             // Face / Mieng phai di theo xuong dau (FBX co the dat empty o goc): gan vao xuong Head, giu vi tri the gioi
             if (Head != null)
@@ -151,6 +162,14 @@ namespace QuanAnHope.Game
         public IEnumerable<string> Clips { get { return clipNames.Keys; } }
         public bool HasHair(string name) { return hair.ContainsKey(name); }
 
+        /// <summary>Do tren nguoi dang hien (ten "Do_..."), cho test.</summary>
+        public IEnumerable<string> ShownExtras
+        {
+            get { foreach (var kv in extras) if (kv.Value.activeSelf) yield return kv.Key; }
+        }
+
+        public bool HasExtras(string look) { foreach (var kv in extras) if (kv.Key.StartsWith(ExtrasPrefix + look)) return true; return false; }
+
         public float ClipLength(string name)
         {
             string full;
@@ -164,6 +183,19 @@ namespace QuanAnHope.Game
         {
             Hair = hairName;
             foreach (var kv in hair) kv.Value.SetActive(kv.Key == hairName);
+            foreach (var kv in hairParts) kv.Value.SetActive(kv.Key == hairName);
+            // do tren nguoi theo kieu toc: "Toc_Vip" -> "Do_Vip*"
+            string look = hairName != null && hairName.StartsWith("Toc_") ? hairName.Substring(4) : null;
+            foreach (var kv in extras)
+            {
+                bool on = false;
+                if (look != null && kv.Key.StartsWith(ExtrasPrefix + look))
+                {
+                    string rest = kv.Key.Substring(ExtrasPrefix.Length + look.Length);
+                    on = rest.Length == 0 || rest[0] == '_';
+                }
+                kv.Value.SetActive(on);
+            }
             SetShirt(shirt);
         }
 

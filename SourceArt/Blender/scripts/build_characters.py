@@ -466,7 +466,7 @@ def khach():
     hx, hy, hz = HEAD_C
 
     def hair_cap(m, col, back=0.1, top=0.62, ry=0.36):
-        m.sphere(col, (1.4, ry * 2, 1.3), (0, hy + top - 0.02, back), seg=16, rings=8)
+        m.sphere(col, (1.4, ry * 2, 1.3), (0, hy + top - 0.02, back), seg=20, rings=10)
 
     styles = []
     m = Model("Toc_BuiBac", "x")                 # ba cu: toc bac, bui tron, tram cai
@@ -511,6 +511,8 @@ def khach():
     styles.append(m)
     for st in styles:
         objs.append(to_object(st, st.name, rig, ["Head"]))
+    # sau sprint 10 (yeu cau 23/11/2026, anh 1): 5 khach dac biet - toc / mu / kinh (xuong Head) + do tren nguoi (Do_*)
+    objs += khach_dac_biet(rig, hy)
     skin([o for o in objs if o.type == 'MESH'], arm)
     face = empty("Face", (0, hy - 0.02, -0.6), arm, "Head")
     mouth = empty("Mieng", (0, hy - 0.22, -0.62), arm, "Head")
@@ -525,8 +527,187 @@ def khach():
     for o in objs:
         if o.name.startswith(("Toc_", "Mu_", "Mam")):
             o.hide_render = o.name != "Mu_Non"
+        elif o.name.startswith("Do_"):
+            o.hide_render = True
     render_pose(arm, "SK_Khach_MuNon", "Cho", 0, (0.7, 1.0, 0.4))
+    # 5 khach dac biet: anh nhin chinh dien (kiem tra chu, logo, kinh, not ruoi)
+    for look in ("Vip", "Streamer", "VoDich", "FanQuyDo", "DaiGia"):
+        for o in objs:
+            if o.name.startswith(("Toc_", "Mu_", "Mam")):
+                o.hide_render = not o.name.startswith("Toc_" + look)
+            elif o.name.startswith("Do_"):
+                o.hide_render = not o.name.startswith("Do_" + look)
+        render_pose(arm, "SK_Khach_" + look, "Cho", 0, (0.12, 1.0, 0.18))
     return tris, bones
+
+
+# ================================================================ 5 khach dac biet (sau sprint 10)
+
+FONT = os.path.join(bmod.ROOT, "My project", "Assets", "QuanAnHope", "Resources", "Fonts", "Baloo2-Bold.ttf")
+NAVY, GOLD_DARK, LILAC_SHIRT, ORANGE, RED_KIT, MONEY, MONEY_DARK = "#33406E", "#C9962E", "#B9A3E3", "#F28C38", "#D9382C", "#9BD3A8", "#4E8F63"
+JERSEY_WHITE, HAIR_GREY, HAIR_BLACK, LOGO_RED = "#F7F3EC", "#B8B2AD", "#2F2724", "#E0261E"
+
+
+def text_obj(name, body, size, pos, hexcode, bone, depth=0.012, align='CENTER'):
+    """Chu (font Baloo 2 cua game) dung thang, mat nhin ve -z Unity, dat tai pos (Unity); skin 100% vao bone."""
+    curve = bpy.data.curves.new(name, type='FONT')
+    curve.body = body
+    curve.font = bpy.data.fonts.load(FONT, check_existing=True)
+    curve.size = size
+    curve.extrude = 0.0          # chu phang mot mat (nhin tu truoc), it tam giac (Art Bible muc 14)
+    curve.resolution_u = 2
+    curve.align_x = align
+    curve.align_y = 'CENTER'
+    obj = bpy.data.objects.new(name, curve)
+    bpy.context.scene.collection.objects.link(obj)
+    dg = bpy.context.evaluated_depsgraph_get()
+    mesh = bpy.data.meshes.new_from_object(obj.evaluated_get(dg))
+    bpy.data.objects.remove(obj)
+    # chu: +X -> Unity +x (phai nguoi nhin) = Blender -X; len -> Blender +Z; mat chu -> Unity -z = Blender +Y
+    m = Matrix(((-1, 0, 0, 0), (0, 0, 1, 0), (0, 1, 0, 0), (0, 0, 0, 1)))
+    mesh.transform(Matrix.Translation(U(*pos)) @ m)
+    mesh.materials.append(make_material(hexcode.lstrip('#').upper()))
+    for p in mesh.polygons:
+        p.material_index = 0
+    out = bpy.data.objects.new(name, mesh)
+    bpy.context.scene.collection.objects.link(out)
+    g = out.vertex_groups.new(name=bone)
+    g.add([v.index for v in mesh.vertices], 1.0, 'REPLACE')
+    return out
+
+
+def ring_pts(cx, cy, cz, r, n=14):
+    """Vong tron dung (mat phang xy Unity) qua n diem, khep kin."""
+    pts = [(cx + r * math.cos(2 * math.pi * k / n), cy + r * math.sin(2 * math.pi * k / n), cz) for k in range(n)]
+    return pts + [pts[0], pts[1]]
+
+
+def khach_dac_biet(rig, hy):
+    """
+    5 khach dac biet (anh 1, 24/11/2026). Vien muc (yeu cau "trau chuot lai phan vien den"): moi vat la mot mesh rieng de Unity ve vien
+    dung do day - ten "_VienMong" = vien mong (chi tiet nho: kinh, tai nghe, mic, logo), "_KhongVien" = khong vien (chu in, not ruoi,
+    son ma, khuy) -> khong con vet muc day de len chi tiet nho. Mat cong tang so doan cho vien muot.
+    """
+    out = []
+
+    def part(name, weights, build):
+        m = Model(name, "x")
+        build(m)
+        out.append(to_object(m, name, rig, weights))
+
+    def cap(m, col, back=0.1, top=0.62, ry=0.36):
+        m.sphere(col, (1.4, ry * 2, 1.3), (0, hy + top - 0.02, back), seg=22, rings=11)
+
+    H = ["Head"]
+    # 1 Ong trum VIP: toc xam chai nguoc, kinh ram gac tren dau
+    part("Toc_Vip", H, lambda m: (cap(m, HAIR_GREY, back=0.14), m.sphere(HAIR_GREY, (1.0, 0.5, 0.7), (0, hy + 0.55, 0.42), seg=16, rings=8)))
+
+    def kinh_ram(m):
+        for s in (-1, 1):
+            m.sphere(INK, (0.36, 0.22, 0.1), (s * 0.22, hy + 0.56, -0.5), (12, 0, 0), seg=16, rings=8)
+        m.box(INK, (0.16, 0.045, 0.05), (0, hy + 0.6, -0.55), round_=0.3)
+    part("Toc_Vip_Kinh_VienMong", H, kinh_ram)
+
+    # 2 Streamer: toc nau; tai nghe cam tai meo + mic (vien mong); not ruoi duoi mieng (khong vien)
+    part("Toc_Streamer", H, lambda m: cap(m, BROWN))
+
+    def tai_nghe(m):
+        tube(m, INK, [(-0.74, hy - 0.02, 0.05), (-0.6, hy + 0.5, 0.05), (0, hy + 0.8, 0.05), (0.6, hy + 0.5, 0.05), (0.74, hy - 0.02, 0.05)], 0.055, seg=10, sub=6)
+        for s in (-1, 1):
+            m.cyl(ORANGE, (0.36, 0.16, 0.36), (s * 0.74, hy - 0.05, 0.05), rot=(0, 0, 90), seg=20, bevel=0.03)
+            m.cyl(ORANGE, (0.2, 0.32, 0.12), (s * 0.4, hy + 0.83, 0.05), rot=(0, 0, -s * 22), seg=12, top=0.0)
+        tube(m, INK, [(0.74, hy - 0.15, -0.05), (0.62, hy - 0.32, -0.38), (0.32, hy - 0.3, -0.6)], 0.025, seg=8, sub=6)
+        m.sphere(INK, (0.09, 0.09, 0.09), (0.3, hy - 0.3, -0.62), seg=12, rings=6)
+    part("Toc_Streamer_TaiNghe_VienMong", H, tai_nghe)
+    part("Toc_Streamer_NotRuoi_KhongVien", H, lambda m: m.sphere(INK, (0.075, 0.075, 0.035), (0.13, hy - 0.36, -0.53), seg=12, rings=6))
+
+    # 3 Nha vo dich: toc den; bang do cam (vien mong) + chu VO DICH (khong vien)
+    part("Toc_VoDich", H, lambda m: cap(m, HAIR_BLACK))
+    part("Toc_VoDich_BangDo_VienMong", H, lambda m: m.torus(ORANGE, 0.66, 0.07, (0, hy + 0.3, 0.02), seg=36, rseg=8, scale_y=1.7))
+    out.append(text_obj("Toc_VoDich_Chu_KhongVien", "VÔ ĐỊCH", 0.15, (0, hy + 0.28, -0.72), JERSEY_WHITE, "Head", depth=0.01))
+
+    # 4 Fan Quy Do: toc dung (vien thuong); son ke ma (khong vien)
+    def toc_dung(m):
+        cap(m, BROWN)
+        for x, y, z, tilt in ((-0.32, 0.8, -0.1, 25), (-0.1, 0.9, -0.2, 8), (0.12, 0.9, -0.15, -8), (0.33, 0.8, -0.05, -25), (0.0, 0.85, 0.2, 0)):
+            m.cyl(BROWN, (0.2, 0.34, 0.2), (x, hy + y, z), rot=(0, 0, tilt), seg=10, top=0.0)
+    part("Toc_FanQuyDo", H, toc_dung)
+
+    def son_ma(m):
+        for s in (-1, 1):
+            m.box(RED_KIT, (0.16, 0.04, 0.03), (s * 0.38, hy - 0.24, -0.5), (0, -s * 34, 0), round_=0.3)
+            m.box(JERSEY_WHITE, (0.16, 0.04, 0.03), (s * 0.38, hy - 0.3, -0.48), (0, -s * 34, 0), round_=0.3)
+    part("Toc_FanQuyDo_SonMa_KhongVien", H, son_ma)
+
+    # 5 Anh dai gia: toc den re ngoi; kinh tron (vien mong)
+    part("Toc_DaiGia", H, lambda m: (cap(m, HAIR_BLACK), m.sphere(HAIR_BLACK, (0.5, 0.3, 0.5), (-0.3, hy + 0.62, -0.32), (0, 0, 15), seg=14, rings=7)))
+
+    def kinh_tron(m):
+        for s in (-1, 1):
+            tube(m, INK, ring_pts(s * 0.27, hy - 0.1, -0.64, 0.18, n=20), 0.028, seg=8, sub=2)
+            tube(m, INK, [(s * 0.45, hy - 0.08, -0.6), (s * 0.62, hy - 0.04, -0.3)], 0.025, seg=8, sub=3)
+        tube(m, INK, [(-0.09, hy - 0.06, -0.66), (0, hy - 0.03, -0.67), (0.09, hy - 0.06, -0.66)], 0.025, seg=8, sub=3)
+    part("Toc_DaiGia_Kinh_VienMong", H, kinh_tron)
+
+    # ---- do tren nguoi (mau ao doi trong game) ----
+    chest = 1.52
+    S, HL = ["Spine"], ["Hand_L"]
+
+    def no_vang(m):
+        for s in (-1, 1):
+            m.sphere(GOLD, (0.2, 0.14, 0.08), (s * 0.1, 1.66, -0.44), seg=14, rings=7)
+        m.sphere(GOLD, (0.08, 0.08, 0.08), (0, 1.66, -0.47), seg=10, rings=6)
+    part("Do_Vip", S, no_vang)
+
+    def khuy(m):
+        for k in range(3):
+            m.sphere(GOLD, (0.07, 0.07, 0.04), (0, 1.48 - 0.16 * k, -0.47 + 0.02 * k), seg=10, rings=5)
+        m.box(CORAL, (0.14, 0.08, 0.03), (0.28, chest, -0.43), round_=0.3)
+    part("Do_Vip_Khuy_KhongVien", S, khuy)
+
+    def the_vip(m):
+        m.box(GOLD, (0.34, 0.22, 0.03), (0.8, 1.02, -0.22), (0, 0, -15), round_=0.2)
+        m.box(GOLD_DARK, (0.08, 0.06, 0.035), (0.71, 1.04, -0.24), (0, 0, -15), round_=0.2)
+    part("Do_Vip_The_VienMong", HL, the_vip)
+    out.append(text_obj("Do_Vip_TheChu_KhongVien", "VIP", 0.12, (0.84, 1.0, -0.245), INK, "Hand_L", depth=0.006))
+
+    out.append(text_obj("Do_Streamer_GG_KhongVien", "GG", 0.24, (0, chest - 0.04, -0.49), INK, "Spine", depth=0.015))
+
+    part("Do_VoDich", S, lambda m: m.torus(ORANGE, 0.49, 0.045, (0, 1.34, 0.0), seg=36, rseg=8, scale_y=1.6))
+
+    def logo(m):
+        lx, ly, lz = -0.2, chest + 0.02, -0.47
+        m.cyl(JERSEY_WHITE, (0.3, 0.02, 0.3), (lx, ly, lz), rot=(90, 0, 0), seg=24)
+        tube(m, LOGO_RED, ring_pts(lx + 0.02, ly - 0.05, lz - 0.02, 0.07, n=16)[:13], 0.014, seg=6, sub=2)
+        m.sphere(LOGO_RED, (0.05, 0.05, 0.03), (lx + 0.06, ly + 0.1, lz - 0.025), seg=10, rings=6)
+        tube(m, LOGO_RED, [(lx + 0.04, ly + 0.06, lz - 0.025), (lx + 0.0, ly - 0.0, lz - 0.025), (lx + 0.07, ly - 0.01, lz - 0.025),
+                           (lx + 0.07, ly - 0.07, lz - 0.025)], 0.014, seg=6, sub=3)
+        for k in range(4):
+            w = 0.1 - 0.018 * k
+            m.box(LOGO_RED, (w, 0.014, 0.01), (lx - 0.06 - w * 0.5 + 0.02, ly + 0.07 - 0.028 * k, lz - 0.025), round_=0.3)
+    part("Do_VoDich_Logo_VienMong", S, logo)
+    out.append(text_obj("Do_VoDich_So_KhongVien", "66", 0.28, (0.2, chest + 0.04, -0.49), ORANGE, "Spine", depth=0.015))
+
+    def khan(m):
+        m.torus(ORANGE, 0.34, 0.08, (0, 1.68, 0.0), seg=28, rseg=8, scale_y=1.2)
+        for s in (-1, 1):
+            m.box(INK, (0.13, 0.34, 0.05), (s * 0.24, 1.48, -0.42), (0, 0, s * 12), round_=0.3)
+            m.box(ORANGE, (0.13, 0.06, 0.055), (s * 0.24, 1.4, -0.425), (0, 0, s * 12), round_=0.3)
+    part("Do_FanQuyDo", S, khan)
+    out.append(text_obj("Do_FanQuyDo_So_KhongVien", "7", 0.34, (0.0, chest - 0.1, -0.51), JERSEY_WHITE, "Spine", depth=0.015))
+
+    def tay_xop(m):
+        m.box(JERSEY_WHITE, (0.34, 0.3, 0.12), (0.8, 1.06, -0.12), round_=0.35)
+        m.box(JERSEY_WHITE, (0.13, 0.44, 0.11), (0.86, 1.38, -0.12), round_=0.45)
+    part("Do_FanQuyDo_Tay", HL, tay_xop)
+    out.append(text_obj("Do_FanQuyDo_So1_KhongVien", "#1", 0.18, (0.8, 1.04, -0.19), RED_KIT, "Hand_L", depth=0.01))
+
+    def tien(m):
+        for k in range(4):
+            m.box(MONEY if k % 2 == 0 else MONEY_DARK, (0.36, 0.18, 0.012), (0.82, 1.02 + 0.02 * k, -0.2 - 0.014 * k), (0, 0, -25 + 12 * k), round_=0.15)
+        m.sphere(MONEY_DARK, (0.07, 0.07, 0.02), (0.82, 1.05, -0.26), seg=10, rings=5)
+    part("Do_DaiGia_Tien_VienMong", HL, tien)
+    return out
 
 
 # ================================================================ chu no (F-082 AC-1)
